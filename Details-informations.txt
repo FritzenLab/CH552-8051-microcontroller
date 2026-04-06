@@ -1,0 +1,4 @@
+- Onboard LED pin: P3.0
+
+- UART1 pinout: P3.2 (TX) / P3.4 (RX)
+- UART1 ISR (interrupt) is number 7, not 10 as the datasheet says
