@@ -10,6 +10,7 @@ unsigned char led_state = 0;
 unsigned int serialTime= 0;
 unsigned int counter= 0;
 uint8_t rawAnalog = 0;  
+uint16_t finalAnalog = 0;
 
 void timer0_ISR(void) __interrupt(1) __using(1);
 void blink_led(void);
@@ -61,7 +62,10 @@ void blink_led(void) {
         P3 &= ~(1 << 0); // LED OFF
     }
 }
-
+uint16_t rawToMillivolts(uint8_t raw) {
+    if (raw < 46) return 0;
+    return 300 + ((uint32_t)(raw - 46) * 3000) / 117;
+}
 void main(void) {
     clock_init();
     timer0_init();
@@ -99,10 +103,11 @@ void main(void) {
         }
         if(serialTime > 100){
             rawAnalog= analogReading();
+            finalAnalog= rawToMillivolts(rawAnalog);
             serialTime= 0;
             counter++;
             
-            Serial_println_uint(rawAnalog);
+            Serial_println_uint(finalAnalog);
         }
         
     }

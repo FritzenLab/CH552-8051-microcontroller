@@ -42,15 +42,15 @@ C:   00000001  l_BSEG_BYTES
 C:   00000001  s_PSEG                          
 C:   00000001  s_XISEG                         
 C:   00000001  s_XSEG                          
-C:   00000002  l_OSEG                          
 C:   00000003  l_GSFINAL                       
 C:   00000003  l_GSINIT0                       
+C:   00000004  l_OSEG                          
 C:   00000008  l_REG_BANK_0                    
 C:   00000008  s_REG_BANK_1                    
 C:   0000000A  l_GSINIT2                       
 C:   00000010  s_REG_BANK_2                    
-C:   00000011  l_GSINIT                        
-C:   00000012  s_OSEG                          
+C:   00000014  s_OSEG                          
+C:   00000015  l_GSINIT                        
 C:   00000018  s_BIT_BANK                      
 C:   00000018  s_REG_BANK_3                    
 C:   00000020  s_BSEG_BYTES                    
@@ -72,17 +72,17 @@ C:   00000054  s_GSINIT0
 C:   00000057  s_GSINIT1                       
 C:   00000057  s_GSINIT2                       
 C:   00000061  s_GSINIT3                       
-C:   00000074  l_DSEG                          
+C:   00000078  l_DSEG                          
 C:   00000083  s_GSINIT4                       
 C:   000000AD  s_GSINIT                        
 C:   000000AD  s_GSINIT5                       
-C:   000000BE  s_GSFINAL                       
-C:   000000C1  s_CSEG                          
+C:   000000C2  s_GSFINAL                       
+C:   000000C5  s_CSEG                          
 C:   000000DF  l_SSEG                          
 C:   00000100  l_IRAM                          
-C:   0000038E  l_CSEG                          
-C:   0000044F  s_CONST                         
-C:   0000044F  s_XINIT                         
+C:   000004B4  l_CSEG                          
+C:   00000579  s_CONST                         
+C:   00000579  s_XINIT                         
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -392,7 +392,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-DSEG                                00000000    00000074 =         116. bytes (REL,CON)
+DSEG                                00000000    00000078 =         120. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -402,20 +402,25 @@ DSEG                                00000000    00000074 =         116. bytes (R
      0000000D  _serialTime                        adc_example
      0000000F  _counter                           adc_example
      00000011  _rawAnalog                         adc_example
+     00000012  _finalAnalog                       adc_example
+
 ASxxxx Linker V03.00/V05.40 + sdld,  page 11.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-OSEG                                00000012    00000002 =           2. bytes (REL,OVR)
+OSEG                                00000014    00000004 =           4. bytes (REL,OVR)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000012  _VoltageCMPModeInit_PARM_2         adc
-     00000012  __divsint_PARM_2                   _divuint
-     00000012  __divuint_PARM_2                   _divuint
-     00000012  __modsint_PARM_2                   _moduint
-     00000012  __moduint_PARM_2                   _moduint
+     00000014  _VoltageCMPModeInit_PARM_2         adc
+     00000014  __divsint_PARM_2                   _divuint
+     00000014  __divslong_PARM_2                  _divulong
+     00000014  __divuint_PARM_2                   _divuint
+     00000014  __divulong_PARM_2                  _divulong
+     00000014  __modsint_PARM_2                   _moduint
+     00000014  __moduint_PARM_2                   _moduint
+     00000014  __mullong_PARM_2                   _mullong
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
 Hexadecimal  [32-Bits]
@@ -491,7 +496,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSINIT                              000000AD    00000011 =          17. bytes (REL,CON,CODE)
+GSINIT                              000000AD    00000015 =          21. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -500,7 +505,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSFINAL                             000000BE    00000003 =           3. bytes (REL,CON,CODE)
+GSFINAL                             000000C2    00000003 =           3. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -509,29 +514,33 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000C1    0000038E =         910. bytes (REL,CON,CODE)
+CSEG                                000000C5    000004B4 =        1204. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   000000C1  _analogReading                     adc_example
-C:   000000CC  _clock_init                        adc_example
-C:   000000DE  _timer0_ISR                        adc_example
-C:   0000010F  _timer0_init                       adc_example
-C:   00000122  _blink_led                         adc_example
-C:   00000146  _main                              adc_example
-C:   000001B9  _ADCInit                           adc
-C:   000001C6  _ADC_ChannelSelect                 adc
-C:   00000200  _VoltageCMPModeInit                adc
-C:   00000261  _Serial_begin                      serial
-C:   0000028B  _Serial_write                      serial
-C:   00000295  _Serial_print                      serial
-C:   000002C0  _Serial_print_uint                 serial
-C:   0000039B  _Serial_println                    serial
-C:   000003AA  _Serial_println_uint               serial
-C:   000003B9  __divuint                          _divuint
-C:   000003E2  __moduint                          _moduint
-C:   0000042F  __gptrget                          _gptrget
-C:   0000044B  ___sdcc_external_startup           _startup
+C:   000000C5  _analogReading                     adc_example
+C:   000000D0  _clock_init                        adc_example
+C:   000000E2  _timer0_ISR                        adc_example
+C:   00000113  _timer0_init                       adc_example
+C:   00000126  _blink_led                         adc_example
+C:   0000014A  _rawToMillivolts                   adc_example
+C:   00000196  _main                              adc_example
+C:   00000210  _ADCInit                           adc
+C:   0000021D  _ADC_ChannelSelect                 adc
+C:   00000257  _VoltageCMPModeInit                adc
+C:   000002B8  _Serial_begin                      serial
+C:   000002E2  _Serial_write                      serial
+C:   000002EC  _Serial_print                      serial
+C:   00000317  _Serial_print_uint                 serial
+C:   000003F2  _Serial_println                    serial
+C:   00000401  _Serial_println_uint               serial
+C:   00000410  __divuint                          _divuint
+C:   00000439  __divulong                         _divulong
+C:   0000049E  __mullong                          _mullong
+C:   0000049E  __mullong_dummy                    _mullong
+C:   0000050C  __moduint                          _moduint
+C:   00000559  __gptrget                          _gptrget
+C:   00000575  ___sdcc_external_startup           _startup
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
 
@@ -546,10 +555,14 @@ Libraries Linked                          [ object file ]
 
 C:\Program Files\SDCC\bin\..\lib\small/libint.lib
                                           [ _divuint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/liblong.lib
+                                          [ _divulong.rel ]
 C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
                                           [ crtclear.rel ]
 C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
                                           [ crtxinit.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/liblong.lib
+                                          [ _mullong.rel ]
 C:\Program Files\SDCC\bin\..\lib\small/libint.lib
                                           [ _moduint.rel ]
 C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib

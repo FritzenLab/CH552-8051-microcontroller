@@ -9,6 +9,7 @@
 ; Public variables in this module
 ;--------------------------------------------------------
 	.globl _main
+	.globl _rawToMillivolts
 	.globl _timer0_init
 	.globl _analogReading
 	.globl _Serial_println_uint
@@ -249,6 +250,7 @@
 	.globl _B
 	.globl _ACC
 	.globl _PSW
+	.globl _finalAnalog
 	.globl _rawAnalog
 	.globl _counter
 	.globl _serialTime
@@ -523,6 +525,8 @@ _counter::
 	.ds 2
 _rawAnalog::
 	.ds 1
+_finalAnalog::
+	.ds 2
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
@@ -668,6 +672,9 @@ sdcc_atomic_compare_exchange_gptr_impl::
 	mov	(_counter + 1),a
 ;	adc-example.c:12: uint8_t rawAnalog = 0;  
 	mov	_rawAnalog,a
+;	adc-example.c:13: uint16_t finalAnalog = 0;
+	mov	_finalAnalog,a
+	mov	(_finalAnalog + 1),a
 	.area GSFINAL (CODE)
 	ljmp	__sdcc_program_startup
 ;--------------------------------------------------------
@@ -685,7 +692,7 @@ __sdcc_program_startup:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'analogReading'
 ;------------------------------------------------------------
-;	adc-example.c:19: uint8_t analogReading(void) {
+;	adc-example.c:20: uint8_t analogReading(void) {
 ;	-----------------------------------------
 ;	 function analogReading
 ;	-----------------------------------------
@@ -698,44 +705,44 @@ _analogReading:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	adc-example.c:20: ADC_START = 1;          // start conversion, hardware clears it when done
+;	adc-example.c:21: ADC_START = 1;          // start conversion, hardware clears it when done
 ;	assignBit
 	setb	_ADC_START
-;	adc-example.c:21: while (ADC_START);      // wait until auto-cleared
+;	adc-example.c:22: while (ADC_START);      // wait until auto-cleared
 00101$:
 	jb	_ADC_START,00101$
-;	adc-example.c:22: ADC_IF = 0;             // clear interrupt flag
+;	adc-example.c:23: ADC_IF = 0;             // clear interrupt flag
 ;	assignBit
 	clr	_ADC_IF
-;	adc-example.c:23: return ADC_DATA;        // return 8-bit result
+;	adc-example.c:24: return ADC_DATA;        // return 8-bit result
 	mov	dpl, _ADC_DATA
-;	adc-example.c:24: }
+;	adc-example.c:25: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'clock_init'
 ;------------------------------------------------------------
-;	adc-example.c:26: void clock_init(void) {
+;	adc-example.c:27: void clock_init(void) {
 ;	-----------------------------------------
 ;	 function clock_init
 ;	-----------------------------------------
 _clock_init:
-;	adc-example.c:27: SAFE_MOD = 0x55;
+;	adc-example.c:28: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	adc-example.c:28: SAFE_MOD = 0xAA;
+;	adc-example.c:29: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	adc-example.c:30: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
+;	adc-example.c:31: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
 	mov	a,#0xf8
 	anl	a,_CLOCK_CFG
 	orl	a,#0x06
 	mov	_CLOCK_CFG,a
-;	adc-example.c:32: SAFE_MOD = 0x00;
+;	adc-example.c:33: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	adc-example.c:33: }
+;	adc-example.c:34: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_ISR'
 ;------------------------------------------------------------
-;	adc-example.c:35: void timer0_ISR(void) __interrupt(INT_NO_TMR0) {
+;	adc-example.c:36: void timer0_ISR(void) __interrupt(INT_NO_TMR0) {
 ;	-----------------------------------------
 ;	 function timer0_ISR
 ;	-----------------------------------------
@@ -745,14 +752,14 @@ _timer0_ISR:
 	push	ar6
 	push	psw
 	mov	psw,#0x00
-;	adc-example.c:36: TF0 = 0;  // clear overflow flag (important for robustness)
+;	adc-example.c:37: TF0 = 0;  // clear overflow flag (important for robustness)
 ;	assignBit
 	clr	_TF0
-;	adc-example.c:37: TH0 = 0xB1;
+;	adc-example.c:38: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	adc-example.c:38: TL0 = 0xE0;
+;	adc-example.c:39: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	adc-example.c:39: tick_10ms++;
+;	adc-example.c:40: tick_10ms++;
 	mov	r6,_tick_10ms
 	mov	r7,(_tick_10ms + 1)
 	mov	a,#0x01
@@ -761,13 +768,13 @@ _timer0_ISR:
 	clr	a
 	addc	a, r7
 	mov	(_tick_10ms + 1),a
-;	adc-example.c:40: serialTime++;
+;	adc-example.c:41: serialTime++;
 	inc	_serialTime
 	clr	a
 	cjne	a,_serialTime,00103$
 	inc	(_serialTime + 1)
 00103$:
-;	adc-example.c:41: }
+;	adc-example.c:42: }
 	pop	psw
 	pop	ar6
 	pop	ar7
@@ -779,39 +786,39 @@ _timer0_ISR:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_init'
 ;------------------------------------------------------------
-;	adc-example.c:43: void timer0_init(void) {
+;	adc-example.c:44: void timer0_init(void) {
 ;	-----------------------------------------
 ;	 function timer0_init
 ;	-----------------------------------------
 _timer0_init:
-;	adc-example.c:44: TMOD &= ~0x03;  // clear Timer0 mode bits
+;	adc-example.c:45: TMOD &= ~0x03;  // clear Timer0 mode bits
 	anl	_TMOD,#0xfc
-;	adc-example.c:45: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
+;	adc-example.c:46: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
 	orl	_TMOD,#0x01
-;	adc-example.c:49: TH0 = 0xB1;
+;	adc-example.c:50: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	adc-example.c:50: TL0 = 0xE0;
+;	adc-example.c:51: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	adc-example.c:52: ET0 = 1;   // enable Timer0 interrupt
+;	adc-example.c:53: ET0 = 1;   // enable Timer0 interrupt
 ;	assignBit
 	setb	_ET0
-;	adc-example.c:53: TR0 = 1;   // start Timer0
+;	adc-example.c:54: TR0 = 1;   // start Timer0
 ;	assignBit
 	setb	_TR0
-;	adc-example.c:54: EA = 1;
+;	adc-example.c:55: EA = 1;
 ;	assignBit
 	setb	_EA
-;	adc-example.c:55: }
+;	adc-example.c:56: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'blink_led'
 ;------------------------------------------------------------
-;	adc-example.c:57: void blink_led(void) {
+;	adc-example.c:58: void blink_led(void) {
 ;	-----------------------------------------
 ;	 function blink_led
 ;	-----------------------------------------
 _blink_led:
-;	adc-example.c:58: if(tick_10ms % 60 < 30){
+;	adc-example.c:59: if(tick_10ms % 60 < 30){
 	mov	__moduint_PARM_2,#0x3c
 	mov	(__moduint_PARM_2 + 1),#0x00
 	mov	dpl, _tick_10ms
@@ -825,53 +832,106 @@ _blink_led:
 	mov	a,r7
 	subb	a,#0x00
 	jnc	00102$
-;	adc-example.c:59: P3 |= (1 << 0);  // LED ON
+;	adc-example.c:60: P3 |= (1 << 0);  // LED ON
 	orl	_P3,#0x01
 	ret
 00102$:
-;	adc-example.c:61: P3 &= ~(1 << 0); // LED OFF
+;	adc-example.c:62: P3 &= ~(1 << 0); // LED OFF
 	anl	_P3,#0xfe
-;	adc-example.c:63: }
+;	adc-example.c:64: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'rawToMillivolts'
+;------------------------------------------------------------
+;raw           Allocated to registers r7 
+;------------------------------------------------------------
+;	adc-example.c:65: uint16_t rawToMillivolts(uint8_t raw) {
+;	-----------------------------------------
+;	 function rawToMillivolts
+;	-----------------------------------------
+_rawToMillivolts:
+	mov	r7, dpl
+;	adc-example.c:66: if (raw < 46) return 0;
+	cjne	r7,#0x2e,00111$
+00111$:
+	jnc	00102$
+	mov	dptr,#0x0000
+	ret
+00102$:
+;	adc-example.c:67: return 300 + ((uint32_t)(raw - 46) * 3000) / 117;
+	mov	a,r7
+	add	a,#0xd2
+	mov	__mullong_PARM_2, a
+	mov	(__mullong_PARM_2 + 1),#0x00
+	mov	(__mullong_PARM_2 + 2),#0x00
+	mov	(__mullong_PARM_2 + 3),#0x00
+	mov	dptr,#0x0bb8
+	clr	a
+	mov	b,a
+	lcall	__mullong
+	mov	r4, dpl
+	mov	r5, dph
+	mov	r6, b
+	mov	r7, a
+	mov	__divulong_PARM_2,#0x75
+	clr	a
+	mov	(__divulong_PARM_2 + 1),a
+	mov	(__divulong_PARM_2 + 2),a
+	mov	(__divulong_PARM_2 + 3),a
+	mov	dpl, r4
+	mov	dph, r5
+	mov	b, r6
+	mov	a, r7
+	lcall	__divulong
+	mov	r4, dpl
+	mov	r5, dph
+	mov	a,#0x2c
+	add	a, r4
+	mov	dpl,a
+	mov	a,#0x01
+	addc	a, r5
+	mov	dph,a
+;	adc-example.c:68: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;	adc-example.c:65: void main(void) {
+;	adc-example.c:69: void main(void) {
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	adc-example.c:66: clock_init();
+;	adc-example.c:70: clock_init();
 	lcall	_clock_init
-;	adc-example.c:67: timer0_init();
+;	adc-example.c:71: timer0_init();
 	lcall	_timer0_init
-;	adc-example.c:70: SAFE_MOD = 0x55;
+;	adc-example.c:74: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	adc-example.c:71: SAFE_MOD = 0xAA;
+;	adc-example.c:75: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	adc-example.c:72: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
+;	adc-example.c:76: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
 	anl	_GLOBAL_CFG,#0xfe
-;	adc-example.c:73: SAFE_MOD = 0x00;
+;	adc-example.c:77: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	adc-example.c:77: P3_MOD_OC &= ~0x01;   // not open-drain
+;	adc-example.c:81: P3_MOD_OC &= ~0x01;   // not open-drain
 	anl	_P3_MOD_OC,#0xfe
-;	adc-example.c:78: P3_DIR_PU |= 0x01;    // output, with pull-up
+;	adc-example.c:82: P3_DIR_PU |= 0x01;    // output, with pull-up
 	orl	_P3_DIR_PU,#0x01
-;	adc-example.c:81: P1_MOD_OC |=  (1 << 4);   // open-drain mode → required for pull-up
+;	adc-example.c:85: P1_MOD_OC |=  (1 << 4);   // open-drain mode → required for pull-up
 	orl	_P1_MOD_OC,#0x10
-;	adc-example.c:82: P1_DIR_PU  |=  (1 << 4);  // pull-up enabled
+;	adc-example.c:86: P1_DIR_PU  |=  (1 << 4);  // pull-up enabled
 	orl	_P1_DIR_PU,#0x10
-;	adc-example.c:86: ADCInit(0);                    // 0 = slow (384 Fosc), no interrupt
+;	adc-example.c:90: ADCInit(0);                    // 0 = slow (384 Fosc), no interrupt
 	mov	dpl, #0x00
 	lcall	_ADCInit
-;	adc-example.c:87: ADC_ChannelSelect(2);          // AIN0 = P1.1
+;	adc-example.c:91: ADC_ChannelSelect(2);          // AIN0 = P1.1
 	mov	dpl, #0x02
 	lcall	_ADC_ChannelSelect
-;	adc-example.c:89: Serial_begin();
+;	adc-example.c:93: Serial_begin();
 	lcall	_Serial_begin
-;	adc-example.c:91: while (1) {
+;	adc-example.c:95: while (1) {
 00107$:
-;	adc-example.c:92: button = !(P1 & (1 << 4)); // pressed = 1
+;	adc-example.c:96: button = !(P1 & (1 << 4)); // pressed = 1
 	mov	a,_P1
 	swap	a
 	anl	a,#0x01
@@ -880,44 +940,46 @@ _main:
 	mov  _main_sloc0_1_0,c
 	clr	a
 	rlc	a
-;	adc-example.c:94: if(button){
+;	adc-example.c:98: if(button){
 	mov	_button,a
 	mov	(_button + 1),#0x00
 	orl	a,(_button + 1)
 	jz	00102$
-;	adc-example.c:95: blink_led();
+;	adc-example.c:99: blink_led();
 	lcall	_blink_led
 	sjmp	00103$
 00102$:
-;	adc-example.c:98: P3 &= ~0x01;   // LED OFF            
+;	adc-example.c:102: P3 &= ~0x01;   // LED OFF            
 	anl	_P3,#0xfe
 00103$:
-;	adc-example.c:100: if(serialTime > 100){
+;	adc-example.c:104: if(serialTime > 100){
 	clr	c
 	mov	a,#0x64
 	subb	a,_serialTime
 	clr	a
 	subb	a,(_serialTime + 1)
 	jnc	00107$
-;	adc-example.c:101: rawAnalog= analogReading();
+;	adc-example.c:105: rawAnalog= analogReading();
 	lcall	_analogReading
-	mov	_rawAnalog,dpl
-;	adc-example.c:102: serialTime= 0;
+;	adc-example.c:106: finalAnalog= rawToMillivolts(rawAnalog);
+	mov  _rawAnalog,dpl
+	lcall	_rawToMillivolts
+	mov	_finalAnalog,dpl
+	mov	(_finalAnalog + 1),dph
+;	adc-example.c:107: serialTime= 0;
 	clr	a
 	mov	_serialTime,a
 	mov	(_serialTime + 1),a
-;	adc-example.c:103: counter++;
+;	adc-example.c:108: counter++;
 	inc	_counter
 	cjne	a,_counter,00132$
 	inc	(_counter + 1)
 00132$:
-;	adc-example.c:105: Serial_println_uint(rawAnalog);
-	mov	r6,_rawAnalog
-	mov	r7,#0x00
-	mov	dpl, r6
-	mov	dph, r7
+;	adc-example.c:110: Serial_println_uint(finalAnalog);
+	mov	dpl,_finalAnalog
+	mov	dph,(_finalAnalog + 1)
 	lcall	_Serial_println_uint
-;	adc-example.c:109: }
+;	adc-example.c:114: }
 	sjmp	00107$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
