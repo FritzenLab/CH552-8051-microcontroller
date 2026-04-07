@@ -1,0 +1,576 @@
+ASxxxx Linker V03.00/V05.40 + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+CABS                                00000000    00000000 =           0. bytes (ABS,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000000  l_BIT_BANK                      
+C:   00000000  l_CABS                          
+C:   00000000  l_CONST                         
+C:   00000000  l_GSINIT1                       
+C:   00000000  l_GSINIT5                       
+C:   00000000  l_IABS                          
+C:   00000000  l_ISEG                          
+C:   00000000  l_PSEG                          
+C:   00000000  l_REG_BANK_1                    
+C:   00000000  l_REG_BANK_2                    
+C:   00000000  l_REG_BANK_3                    
+C:   00000000  l_RSEG                          
+C:   00000000  l_RSEG0                         
+C:   00000000  l_RSEG1                         
+C:   00000000  l_XABS                          
+C:   00000000  l_XINIT                         
+C:   00000000  l_XISEG                         
+C:   00000000  l_XSEG                          
+C:   00000000  l__CODE                         
+C:   00000000  s_BSEG                          
+C:   00000000  s_CABS                          
+C:   00000000  s_DSEG                          
+C:   00000000  s_HOME                          
+C:   00000000  s_IABS                          
+C:   00000000  s_ISEG                          
+C:   00000000  s_REG_BANK_0                    
+C:   00000000  s_RSEG                          
+C:   00000000  s_RSEG0                         
+C:   00000000  s_RSEG1                         
+C:   00000000  s_XABS                          
+C:   00000001  l_BSEG                          
+C:   00000001  l_BSEG_BYTES                    
+C:   00000001  s_PSEG                          
+C:   00000001  s_XISEG                         
+C:   00000001  s_XSEG                          
+C:   00000002  l_OSEG                          
+C:   00000003  l_GSFINAL                       
+C:   00000003  l_GSINIT0                       
+C:   00000008  l_REG_BANK_0                    
+C:   00000008  s_REG_BANK_1                    
+C:   0000000A  l_GSINIT2                       
+C:   00000010  s_REG_BANK_2                    
+C:   00000011  l_GSINIT                        
+C:   00000012  s_OSEG                          
+C:   00000018  s_BIT_BANK                      
+C:   00000018  s_REG_BANK_3                    
+C:   00000020  s_BSEG_BYTES                    
+C:   00000020  s__CODE                         
+C:   00000021  s_SSEG                          
+C:   00000022  l_GSINIT3                       
+ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+CABS                                00000000    00000000 =           0. bytes (ABS,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   0000002A  l_GSINIT4                       
+C:   00000054  l_HOME                          
+C:   00000054  s_GSINIT0                       
+C:   00000057  s_GSINIT1                       
+C:   00000057  s_GSINIT2                       
+C:   00000061  s_GSINIT3                       
+C:   00000074  l_DSEG                          
+C:   00000083  s_GSINIT4                       
+C:   000000AD  s_GSINIT                        
+C:   000000AD  s_GSINIT5                       
+C:   000000BE  s_GSFINAL                       
+C:   000000C1  s_CSEG                          
+C:   000000DF  l_SSEG                          
+C:   00000100  l_IRAM                          
+C:   0000038E  l_CSEG                          
+C:   0000044F  s_CONST                         
+C:   0000044F  s_XINIT                         
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           _startup
+     00000080  _ADC_CHAN0                         serial
+     00000080  _ADC_CTRL                          serial
+     00000081  _ADC_CHAN1                         serial
+     00000081  _SP                                serial
+     00000082  _DPL                               serial
+     00000083  _CMP_CHAN                          serial
+     00000083  _DPH                               serial
+     00000084  _ADC_START                         serial
+     00000084  _ROM_ADDR_L                        serial
+     00000085  _ADC_IF                            serial
+     00000085  _ROM_ADDR_H                        serial
+     00000086  _CMP_IF                            serial
+     00000086  _ROM_CTRL                          serial
+     00000087  _CMPO                              serial
+     00000087  _PCON                              serial
+     00000088  _IT0                               serial
+     00000088  _TCON                              serial
+     00000089  _IE0                               serial
+     00000089  _TMOD                              serial
+     0000008A  _IT1                               serial
+     0000008A  _TL0                               serial
+     0000008B  _IE1                               serial
+     0000008B  _TL1                               serial
+     0000008C  _TH0                               serial
+     0000008C  _TR0                               serial
+     0000008D  _TF0                               serial
+     0000008D  _TH1                               serial
+     0000008E  _ROM_DATA_L                        serial
+     0000008E  _TR1                               serial
+     0000008F  _ROM_DATA_H                        serial
+     0000008F  _TF1                               serial
+     00000090  _CAP1                              serial
+     00000090  _P1                                serial
+     00000090  _T2                                serial
+     00000090  _TIN0                              serial
+     00000091  _AIN0                              serial
+     00000091  _CAP2                              serial
+     00000091  _T2EX                              serial
+     00000091  _TIN1                              serial
+     00000091  _USB_C_CTRL                        serial
+     00000091  _VBUS2                             serial
+     00000092  _P1_MOD_OC                         serial
+     00000092  _RXD_                              serial
+     00000093  _P1_DIR_PU                         serial
+     00000093  _TXD_                              serial
+     00000094  _AIN1                              serial
+     00000094  _CAP1_                             serial
+     00000094  _SCS                               serial
+     00000094  _T2_                               serial
+ASxxxx Linker V03.00/V05.40 + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000094  _TIN2                              serial
+     00000094  _UCC1                              serial
+     00000095  _AIN2                              serial
+     00000095  _MOSI                              serial
+     00000095  _PWM1                              serial
+     00000095  _TIN3                              serial
+     00000095  _UCC2                              serial
+     00000096  _MISO                              serial
+     00000096  _P3_MOD_OC                         serial
+     00000096  _RXD1                              serial
+     00000096  _TIN4                              serial
+     00000097  _P3_DIR_PU                         serial
+     00000097  _SCK                               serial
+     00000097  _TIN5                              serial
+     00000097  _TXD1                              serial
+     00000098  _RI                                serial
+     00000098  _SCON                              serial
+     00000099  _SBUF                              serial
+     00000099  _TI                                serial
+     0000009A  _ADC_CFG                           serial
+     0000009A  _RB8                               serial
+     0000009B  _PWM_DATA2                         serial
+     0000009B  _TB8                               serial
+     0000009C  _PWM_DATA1                         serial
+     0000009C  _REN                               serial
+     0000009D  _PWM_CTRL                          serial
+     0000009D  _SM2                               serial
+     0000009E  _PWM_CK_SE                         serial
+     0000009E  _SM1                               serial
+     0000009F  _ADC_DATA                          serial
+     0000009F  _SM0                               serial
+     000000A0  _P2                                serial
+     000000A0  __XPAGE                            
+     000000A1  _SAFE_MOD                          serial
+     000000A2  _XBUS_AUX                          serial
+     000000A8  _EX0                               serial
+     000000A8  _IE                                serial
+     000000A9  _ET0                               serial
+     000000A9  _WAKE_CTRL                         serial
+     000000AA  _EX1                               serial
+     000000AB  _ET1                               serial
+     000000AC  _ES                                serial
+     000000AD  _ET2                               serial
+     000000AE  _E_DIS                             serial
+     000000AF  _EA                                serial
+     000000B0  _P3                                serial
+     000000B0  _PWM1_                             serial
+     000000B0  _RXD                               serial
+     000000B1  _GLOBAL_CFG                        serial
+     000000B1  _PWM2_                             serial
+     000000B1  _TXD                               serial
+ASxxxx Linker V03.00/V05.40 + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000000B2  _AIN3                              serial
+     000000B2  _INT0                              serial
+     000000B2  _TXD1_                             serial
+     000000B2  _VBUS1                             serial
+     000000B3  _INT1                              serial
+     000000B4  _PWM2                              serial
+     000000B4  _RXD1_                             serial
+     000000B4  _T0                                serial
+     000000B5  _T1                                serial
+     000000B6  _UDP                               serial
+     000000B7  _UDM                               serial
+     000000B8  _IP                                serial
+     000000B8  _PX0                               serial
+     000000B9  _CLOCK_CFG                         serial
+     000000B9  _PT0                               serial
+     000000BA  _PX1                               serial
+     000000BB  _PT1                               serial
+     000000BC  _PS                                serial
+     000000BD  _PT2                               serial
+     000000BE  _PL_FLAG                           serial
+     000000BF  _PH_FLAG                           serial
+     000000C0  _SCON1                             serial
+     000000C0  _U1RI                              serial
+     000000C1  _SBUF1                             serial
+     000000C1  _U1TI                              serial
+     000000C2  _SBAUD1                            serial
+     000000C2  _U1RB8                             serial
+     000000C3  _TKEY_CTRL                         serial
+     000000C3  _U1TB8                             serial
+     000000C4  _TKEY_DATL                         serial
+     000000C4  _U1REN                             serial
+     000000C5  _TKEY_DATH                         serial
+     000000C5  _U1SMOD                            serial
+     000000C6  _PIN_FUNC                          serial
+     000000C7  _GPIO_IE                           serial
+     000000C7  _U1SM0                             serial
+     000000C8  _CP_RL2                            serial
+     000000C8  _T2CON                             serial
+     000000C9  _C_T2                              serial
+     000000C9  _T2MOD                             serial
+     000000CA  _RCAP2L                            serial
+     000000CA  _TR2                               serial
+     000000CB  _EXEN2                             serial
+     000000CB  _RCAP2H                            serial
+     000000CC  _TCLK                              serial
+     000000CC  _TL2                               serial
+     000000CD  _RCLK                              serial
+     000000CD  _TH2                               serial
+     000000CE  _EXF2                              serial
+     000000CE  _T2CAP1L                           serial
+     000000CF  _CAP1F                             serial
+ASxxxx Linker V03.00/V05.40 + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000000CF  _T2CAP1H                           serial
+     000000CF  _TF2                               serial
+     000000D0  _P                                 serial
+     000000D0  _PSW                               serial
+     000000D1  _F1                                serial
+     000000D1  _UDEV_CTRL                         serial
+     000000D2  _OV                                serial
+     000000D2  _UEP1_CTRL                         serial
+     000000D3  _RS0                               serial
+     000000D3  _UEP1_T_LEN                        serial
+     000000D4  _RS1                               serial
+     000000D4  _UEP2_CTRL                         serial
+     000000D5  _F0                                serial
+     000000D5  _UEP2_T_LEN                        serial
+     000000D6  _AC                                serial
+     000000D6  _UEP3_CTRL                         serial
+     000000D7  _CY                                serial
+     000000D7  _UEP3_T_LEN                        serial
+     000000D8  _UIF_BUS_RST                       serial
+     000000D8  _UIF_DETECT                        serial
+     000000D8  _USB_INT_FG                        serial
+     000000D9  _UIF_TRANSFER                      serial
+     000000D9  _USB_INT_ST                        serial
+     000000DA  _UIF_SUSPEND                       serial
+     000000DA  _USB_MIS_ST                        serial
+     000000DB  _UIF_HST_SOF                       serial
+     000000DB  _USB_RX_LEN                        serial
+     000000DC  _UEP0_CTRL                         serial
+     000000DC  _UIF_FIFO_OV                       serial
+     000000DD  _UEP0_T_LEN                        serial
+     000000DD  _U_SIE_FREE                        serial
+     000000DE  _UEP4_CTRL                         serial
+     000000DE  _U_TOG_OK                          serial
+     000000DF  _UEP4_T_LEN                        serial
+     000000DF  _U_IS_NAK                          serial
+     000000E0  _ACC                               serial
+     000000E1  _USB_INT_EN                        serial
+     000000E2  _USB_CTRL                          serial
+     000000E3  _USB_DEV_AD                        serial
+     000000E4  _UEP2_DMA_L                        serial
+     000000E5  _UEP2_DMA_H                        serial
+     000000E6  _UEP3_DMA_L                        serial
+     000000E7  _UEP3_DMA_H                        serial
+     000000E8  _IE_EX                             serial
+     000000E8  _IE_SPI0                           serial
+     000000E9  _IE_TKEY                           serial
+     000000E9  _IP_EX                             serial
+     000000EA  _IE_USB                            serial
+     000000EA  _UEP4_1_MOD                        serial
+     000000EB  _IE_ADC                            serial
+     000000EB  _UEP2_3_MOD                        serial
+ASxxxx Linker V03.00/V05.40 + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000000EC  _IE_UART1                          serial
+     000000EC  _UEP0_DMA_L                        serial
+     000000ED  _IE_PWMX                           serial
+     000000ED  _UEP0_DMA_H                        serial
+     000000EE  _IE_GPIO                           serial
+     000000EE  _UEP1_DMA_L                        serial
+     000000EF  _IE_WDOG                           serial
+     000000EF  _UEP1_DMA_H                        serial
+     000000F0  _B                                 serial
+     000000F5  _B_5                               _gptrget
+     000000F6  _B_6                               _gptrget
+     000000F7  _B_7                               _gptrget
+     000000F8  _S0_R_FIFO                         serial
+     000000F8  _SPI0_STAT                         serial
+     000000F9  _SPI0_DATA                         serial
+     000000FA  _S0_T_FIFO                         serial
+     000000FA  _SPI0_CTRL                         serial
+     000000FB  _S0_FREE                           serial
+     000000FB  _SPI0_CK_SE                        serial
+     000000FC  _S0_IF_BYTE                        serial
+     000000FC  _SPI0_SETUP                        serial
+     000000FD  _S0_IF_FIRST                       serial
+     000000FE  _RESET_KEEP                        serial
+     000000FE  _S0_IF_OV                          serial
+     000000FF  _S0_FST_ACT                        serial
+     000000FF  _WDOG_COUNT                        serial
+     00008584  _ROM_ADDR                          serial
+     00008F8E  _ROM_DATA                          serial
+     0000C5C4  _TKEY_DAT                          serial
+     0000CBCA  _RCAP2                             serial
+     0000CDCC  _T2COUNT                           serial
+     0000CFCE  _T2CAP1                            serial
+     0000E5E4  _UEP2_DMA                          serial
+     0000E7E6  _UEP3_DMA                          serial
+     0000EDEC  _UEP0_DMA                          serial
+     0000EFEE  _UEP1_DMA                          serial
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 8.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+BSEG_BYTES                          00000020    00000001 =           1. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 9.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+REG_BANK_0                          00000000    00000008 =           8. bytes (REL,OVR)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 10.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+DSEG                                00000000    00000074 =         116. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000008  _tick_10ms                         adc_example
+     0000000A  _button                            adc_example
+     0000000C  _led_state                         adc_example
+     0000000D  _serialTime                        adc_example
+     0000000F  _counter                           adc_example
+     00000011  _rawAnalog                         adc_example
+ASxxxx Linker V03.00/V05.40 + sdld,  page 11.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+OSEG                                00000012    00000002 =           2. bytes (REL,OVR)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000012  _VoltageCMPModeInit_PARM_2         adc
+     00000012  __divsint_PARM_2                   _divuint
+     00000012  __divuint_PARM_2                   _divuint
+     00000012  __modsint_PARM_2                   _moduint
+     00000012  __moduint_PARM_2                   _moduint
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+SSEG                                00000021    000000DF =         223. bytes (REL,OVR)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000021  __start__stack                     adc_example
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 13.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+HOME                                00000000    00000054 =          84. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000010  sdcc_atomic_exchange_rollback_st   adc_example
+C:   00000037  sdcc_atomic_exchange_gptr_impl     adc_example
+C:   00000037  sdcc_atomic_exchange_rollback_en   adc_example
+C:   00000047  sdcc_atomic_compare_exchange_gpt   adc_example
+C:   00000051  __sdcc_program_startup             adc_example
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 14.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT0                             00000054    00000003 =           3. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000054  __sdcc_gsinit_startup              
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 15.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT2                             00000057    0000000A =          10. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 16.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT3                             00000061    00000022 =          34. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000061  __mcs51_genXINIT                   
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 17.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT4                             00000083    0000002A =          42. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000083  __mcs51_genRAMCLEAR                
+C:   00000089  __mcs51_genXRAMCLEAR               
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 18.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT                              000000AD    00000011 =          17. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 19.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSFINAL                             000000BE    00000003 =           3. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 20.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+CSEG                                000000C1    0000038E =         910. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   000000C1  _analogReading                     adc_example
+C:   000000CC  _clock_init                        adc_example
+C:   000000DE  _timer0_ISR                        adc_example
+C:   0000010F  _timer0_init                       adc_example
+C:   00000122  _blink_led                         adc_example
+C:   00000146  _main                              adc_example
+C:   000001B9  _ADCInit                           adc
+C:   000001C6  _ADC_ChannelSelect                 adc
+C:   00000200  _VoltageCMPModeInit                adc
+C:   00000261  _Serial_begin                      serial
+C:   0000028B  _Serial_write                      serial
+C:   00000295  _Serial_print                      serial
+C:   000002C0  _Serial_print_uint                 serial
+C:   0000039B  _Serial_println                    serial
+C:   000003AA  _Serial_println_uint               serial
+C:   000003B9  __divuint                          _divuint
+C:   000003E2  __moduint                          _moduint
+C:   0000042F  __gptrget                          _gptrget
+C:   0000044B  ___sdcc_external_startup           _startup
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
+
+Files Linked                              [ module(s) ]
+
+adc-example.rel                           [  ]
+adc.rel                                   [  ]
+serial.rel                                [  ]
+
+
+Libraries Linked                          [ object file ]
+
+C:\Program Files\SDCC\bin\..\lib\small/libint.lib
+                                          [ _divuint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtclear.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtxinit.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/libint.lib
+                                          [ _moduint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtxclear.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtpagesfr.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtstart.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
+                                          [ _gptrget.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
+                                          [ _startup.rel ]
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 22.
+
+User Base Address Definitions
+
+HOME = 0x0000
+XSEG = 0x0001
+PSEG = 0x0001
+ISEG = 0x0000
+BSEG = 0x0000
+
+
