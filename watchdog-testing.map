@@ -1,0 +1,548 @@
+ASxxxx Linker V03.00/V05.40 + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+CABS                                00000000    00000000 =           0. bytes (ABS,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000000  l_BIT_BANK                      
+C:   00000000  l_CABS                          
+C:   00000000  l_CONST                         
+C:   00000000  l_GSINIT1                       
+C:   00000000  l_GSINIT5                       
+C:   00000000  l_IABS                          
+C:   00000000  l_ISEG                          
+C:   00000000  l_OSEG                          
+C:   00000000  l_PSEG                          
+C:   00000000  l_REG_BANK_2                    
+C:   00000000  l_REG_BANK_3                    
+C:   00000000  l_RSEG                          
+C:   00000000  l_RSEG0                         
+C:   00000000  l_RSEG1                         
+C:   00000000  l_XABS                          
+C:   00000000  l_XINIT                         
+C:   00000000  l_XISEG                         
+C:   00000000  l_XSEG                          
+C:   00000000  l__CODE                         
+C:   00000000  s_BSEG                          
+C:   00000000  s_CABS                          
+C:   00000000  s_DSEG                          
+C:   00000000  s_HOME                          
+C:   00000000  s_IABS                          
+C:   00000000  s_ISEG                          
+C:   00000000  s_REG_BANK_0                    
+C:   00000000  s_RSEG                          
+C:   00000000  s_RSEG0                         
+C:   00000000  s_RSEG1                         
+C:   00000000  s_XABS                          
+C:   00000001  l_BSEG_BYTES                    
+C:   00000001  s_PSEG                          
+C:   00000001  s_XISEG                         
+C:   00000001  s_XSEG                          
+C:   00000003  l_GSFINAL                       
+C:   00000003  l_GSINIT0                       
+C:   00000004  l_BSEG                          
+C:   00000008  l_REG_BANK_0                    
+C:   00000008  l_REG_BANK_1                    
+C:   00000008  s_REG_BANK_1                    
+C:   0000000A  l_GSINIT2                       
+C:   00000010  s_REG_BANK_2                    
+C:   00000018  s_BIT_BANK                      
+C:   00000018  s_OSEG                          
+C:   00000018  s_REG_BANK_3                    
+C:   00000020  s_BSEG_BYTES                    
+C:   00000020  s__CODE                         
+C:   00000021  s_SSEG                          
+C:   00000022  l_GSINIT3                       
+C:   00000026  l_GSINIT                        
+ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+CABS                                00000000    00000000 =           0. bytes (ABS,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   0000002A  l_GSINIT4                       
+C:   0000005C  l_HOME                          
+C:   0000005C  s_GSINIT0                       
+C:   0000005F  s_GSINIT1                       
+C:   0000005F  s_GSINIT2                       
+C:   00000069  s_GSINIT3                       
+C:   00000080  l_DSEG                          
+C:   0000008B  s_GSINIT4                       
+C:   000000B5  s_GSINIT                        
+C:   000000B5  s_GSINIT5                       
+C:   000000DB  s_GSFINAL                       
+C:   000000DE  s_CSEG                          
+C:   000000DF  l_SSEG                          
+C:   00000100  l_IRAM                          
+C:   0000017D  l_CSEG                          
+C:   0000025B  s_CONST                         
+C:   0000025B  s_XINIT                         
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           _startup
+     00000080  _ADC_CHAN0                         watchdog_testing
+     00000080  _ADC_CTRL                          watchdog_testing
+     00000081  _ADC_CHAN1                         watchdog_testing
+     00000081  _SP                                watchdog_testing
+     00000082  _DPL                               watchdog_testing
+     00000083  _CMP_CHAN                          watchdog_testing
+     00000083  _DPH                               watchdog_testing
+     00000084  _ADC_START                         watchdog_testing
+     00000084  _ROM_ADDR_L                        watchdog_testing
+     00000085  _ADC_IF                            watchdog_testing
+     00000085  _ROM_ADDR_H                        watchdog_testing
+     00000086  _CMP_IF                            watchdog_testing
+     00000086  _ROM_CTRL                          watchdog_testing
+     00000087  _CMPO                              watchdog_testing
+     00000087  _PCON                              watchdog_testing
+     00000088  _IT0                               watchdog_testing
+     00000088  _TCON                              watchdog_testing
+     00000089  _IE0                               watchdog_testing
+     00000089  _TMOD                              watchdog_testing
+     0000008A  _IT1                               watchdog_testing
+     0000008A  _TL0                               watchdog_testing
+     0000008B  _IE1                               watchdog_testing
+     0000008B  _TL1                               watchdog_testing
+     0000008C  _TH0                               watchdog_testing
+     0000008C  _TR0                               watchdog_testing
+     0000008D  _TF0                               watchdog_testing
+     0000008D  _TH1                               watchdog_testing
+     0000008E  _ROM_DATA_L                        watchdog_testing
+     0000008E  _TR1                               watchdog_testing
+     0000008F  _ROM_DATA_H                        watchdog_testing
+     0000008F  _TF1                               watchdog_testing
+     00000090  _CAP1                              watchdog_testing
+     00000090  _P1                                watchdog_testing
+     00000090  _T2                                watchdog_testing
+     00000090  _TIN0                              watchdog_testing
+     00000091  _AIN0                              watchdog_testing
+     00000091  _CAP2                              watchdog_testing
+     00000091  _T2EX                              watchdog_testing
+     00000091  _TIN1                              watchdog_testing
+     00000091  _USB_C_CTRL                        watchdog_testing
+     00000091  _VBUS2                             watchdog_testing
+     00000092  _P1_MOD_OC                         watchdog_testing
+     00000092  _RXD_                              watchdog_testing
+     00000093  _P1_DIR_PU                         watchdog_testing
+     00000093  _TXD_                              watchdog_testing
+     00000094  _AIN1                              watchdog_testing
+     00000094  _CAP1_                             watchdog_testing
+     00000094  _SCS                               watchdog_testing
+     00000094  _T2_                               watchdog_testing
+ASxxxx Linker V03.00/V05.40 + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000094  _TIN2                              watchdog_testing
+     00000094  _UCC1                              watchdog_testing
+     00000095  _AIN2                              watchdog_testing
+     00000095  _MOSI                              watchdog_testing
+     00000095  _PWM1                              watchdog_testing
+     00000095  _TIN3                              watchdog_testing
+     00000095  _UCC2                              watchdog_testing
+     00000096  _MISO                              watchdog_testing
+     00000096  _P3_MOD_OC                         watchdog_testing
+     00000096  _RXD1                              watchdog_testing
+     00000096  _TIN4                              watchdog_testing
+     00000097  _P3_DIR_PU                         watchdog_testing
+     00000097  _SCK                               watchdog_testing
+     00000097  _TIN5                              watchdog_testing
+     00000097  _TXD1                              watchdog_testing
+     00000098  _RI                                watchdog_testing
+     00000098  _SCON                              watchdog_testing
+     00000099  _SBUF                              watchdog_testing
+     00000099  _TI                                watchdog_testing
+     0000009A  _ADC_CFG                           watchdog_testing
+     0000009A  _RB8                               watchdog_testing
+     0000009B  _PWM_DATA2                         watchdog_testing
+     0000009B  _TB8                               watchdog_testing
+     0000009C  _PWM_DATA1                         watchdog_testing
+     0000009C  _REN                               watchdog_testing
+     0000009D  _PWM_CTRL                          watchdog_testing
+     0000009D  _SM2                               watchdog_testing
+     0000009E  _PWM_CK_SE                         watchdog_testing
+     0000009E  _SM1                               watchdog_testing
+     0000009F  _ADC_DATA                          watchdog_testing
+     0000009F  _SM0                               watchdog_testing
+     000000A0  _P2                                watchdog_testing
+     000000A0  __XPAGE                            
+     000000A1  _SAFE_MOD                          watchdog_testing
+     000000A2  _XBUS_AUX                          watchdog_testing
+     000000A8  _EX0                               watchdog_testing
+     000000A8  _IE                                watchdog_testing
+     000000A9  _ET0                               watchdog_testing
+     000000A9  _WAKE_CTRL                         watchdog_testing
+     000000AA  _EX1                               watchdog_testing
+     000000AB  _ET1                               watchdog_testing
+     000000AC  _ES                                watchdog_testing
+     000000AD  _ET2                               watchdog_testing
+     000000AE  _E_DIS                             watchdog_testing
+     000000AF  _EA                                watchdog_testing
+     000000B0  _P3                                watchdog_testing
+     000000B0  _PWM1_                             watchdog_testing
+     000000B0  _RXD                               watchdog_testing
+     000000B1  _GLOBAL_CFG                        watchdog_testing
+     000000B1  _PWM2_                             watchdog_testing
+     000000B1  _TXD                               watchdog_testing
+ASxxxx Linker V03.00/V05.40 + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000000B2  _AIN3                              watchdog_testing
+     000000B2  _INT0                              watchdog_testing
+     000000B2  _TXD1_                             watchdog_testing
+     000000B2  _VBUS1                             watchdog_testing
+     000000B3  _INT1                              watchdog_testing
+     000000B4  _PWM2                              watchdog_testing
+     000000B4  _RXD1_                             watchdog_testing
+     000000B4  _T0                                watchdog_testing
+     000000B5  _T1                                watchdog_testing
+     000000B6  _UDP                               watchdog_testing
+     000000B7  _UDM                               watchdog_testing
+     000000B8  _IP                                watchdog_testing
+     000000B8  _PX0                               watchdog_testing
+     000000B9  _CLOCK_CFG                         watchdog_testing
+     000000B9  _PT0                               watchdog_testing
+     000000BA  _PX1                               watchdog_testing
+     000000BB  _PT1                               watchdog_testing
+     000000BC  _PS                                watchdog_testing
+     000000BD  _PT2                               watchdog_testing
+     000000BE  _PL_FLAG                           watchdog_testing
+     000000BF  _PH_FLAG                           watchdog_testing
+     000000C0  _SCON1                             watchdog_testing
+     000000C0  _U1RI                              watchdog_testing
+     000000C1  _SBUF1                             watchdog_testing
+     000000C1  _U1TI                              watchdog_testing
+     000000C2  _SBAUD1                            watchdog_testing
+     000000C2  _U1RB8                             watchdog_testing
+     000000C3  _TKEY_CTRL                         watchdog_testing
+     000000C3  _U1TB8                             watchdog_testing
+     000000C4  _TKEY_DATL                         watchdog_testing
+     000000C4  _U1REN                             watchdog_testing
+     000000C5  _TKEY_DATH                         watchdog_testing
+     000000C5  _U1SMOD                            watchdog_testing
+     000000C6  _PIN_FUNC                          watchdog_testing
+     000000C7  _GPIO_IE                           watchdog_testing
+     000000C7  _U1SM0                             watchdog_testing
+     000000C8  _CP_RL2                            watchdog_testing
+     000000C8  _T2CON                             watchdog_testing
+     000000C9  _C_T2                              watchdog_testing
+     000000C9  _T2MOD                             watchdog_testing
+     000000CA  _RCAP2L                            watchdog_testing
+     000000CA  _TR2                               watchdog_testing
+     000000CB  _EXEN2                             watchdog_testing
+     000000CB  _RCAP2H                            watchdog_testing
+     000000CC  _TCLK                              watchdog_testing
+     000000CC  _TL2                               watchdog_testing
+     000000CD  _RCLK                              watchdog_testing
+     000000CD  _TH2                               watchdog_testing
+     000000CE  _EXF2                              watchdog_testing
+     000000CE  _T2CAP1L                           watchdog_testing
+     000000CF  _CAP1F                             watchdog_testing
+ASxxxx Linker V03.00/V05.40 + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000000CF  _T2CAP1H                           watchdog_testing
+     000000CF  _TF2                               watchdog_testing
+     000000D0  _P                                 watchdog_testing
+     000000D0  _PSW                               watchdog_testing
+     000000D1  _F1                                watchdog_testing
+     000000D1  _UDEV_CTRL                         watchdog_testing
+     000000D2  _OV                                watchdog_testing
+     000000D2  _UEP1_CTRL                         watchdog_testing
+     000000D3  _RS0                               watchdog_testing
+     000000D3  _UEP1_T_LEN                        watchdog_testing
+     000000D4  _RS1                               watchdog_testing
+     000000D4  _UEP2_CTRL                         watchdog_testing
+     000000D5  _F0                                watchdog_testing
+     000000D5  _UEP2_T_LEN                        watchdog_testing
+     000000D6  _AC                                watchdog_testing
+     000000D6  _UEP3_CTRL                         watchdog_testing
+     000000D7  _CY                                watchdog_testing
+     000000D7  _UEP3_T_LEN                        watchdog_testing
+     000000D8  _UIF_BUS_RST                       watchdog_testing
+     000000D8  _UIF_DETECT                        watchdog_testing
+     000000D8  _USB_INT_FG                        watchdog_testing
+     000000D9  _UIF_TRANSFER                      watchdog_testing
+     000000D9  _USB_INT_ST                        watchdog_testing
+     000000DA  _UIF_SUSPEND                       watchdog_testing
+     000000DA  _USB_MIS_ST                        watchdog_testing
+     000000DB  _UIF_HST_SOF                       watchdog_testing
+     000000DB  _USB_RX_LEN                        watchdog_testing
+     000000DC  _UEP0_CTRL                         watchdog_testing
+     000000DC  _UIF_FIFO_OV                       watchdog_testing
+     000000DD  _UEP0_T_LEN                        watchdog_testing
+     000000DD  _U_SIE_FREE                        watchdog_testing
+     000000DE  _UEP4_CTRL                         watchdog_testing
+     000000DE  _U_TOG_OK                          watchdog_testing
+     000000DF  _UEP4_T_LEN                        watchdog_testing
+     000000DF  _U_IS_NAK                          watchdog_testing
+     000000E0  _ACC                               watchdog_testing
+     000000E1  _USB_INT_EN                        watchdog_testing
+     000000E2  _USB_CTRL                          watchdog_testing
+     000000E3  _USB_DEV_AD                        watchdog_testing
+     000000E4  _UEP2_DMA_L                        watchdog_testing
+     000000E5  _UEP2_DMA_H                        watchdog_testing
+     000000E6  _UEP3_DMA_L                        watchdog_testing
+     000000E7  _UEP3_DMA_H                        watchdog_testing
+     000000E8  _IE_EX                             watchdog_testing
+     000000E8  _IE_SPI0                           watchdog_testing
+     000000E9  _IE_TKEY                           watchdog_testing
+     000000E9  _IP_EX                             watchdog_testing
+     000000EA  _IE_USB                            watchdog_testing
+     000000EA  _UEP4_1_MOD                        watchdog_testing
+     000000EB  _IE_ADC                            watchdog_testing
+     000000EB  _UEP2_3_MOD                        watchdog_testing
+ASxxxx Linker V03.00/V05.40 + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000000EC  _IE_UART1                          watchdog_testing
+     000000EC  _UEP0_DMA_L                        watchdog_testing
+     000000ED  _IE_PWMX                           watchdog_testing
+     000000ED  _UEP0_DMA_H                        watchdog_testing
+     000000EE  _IE_GPIO                           watchdog_testing
+     000000EE  _UEP1_DMA_L                        watchdog_testing
+     000000EF  _IE_WDOG                           watchdog_testing
+     000000EF  _UEP1_DMA_H                        watchdog_testing
+     000000F0  _B                                 watchdog_testing
+     000000F8  _S0_R_FIFO                         watchdog_testing
+     000000F8  _SPI0_STAT                         watchdog_testing
+     000000F9  _SPI0_DATA                         watchdog_testing
+     000000FA  _S0_T_FIFO                         watchdog_testing
+     000000FA  _SPI0_CTRL                         watchdog_testing
+     000000FB  _S0_FREE                           watchdog_testing
+     000000FB  _SPI0_CK_SE                        watchdog_testing
+     000000FC  _S0_IF_BYTE                        watchdog_testing
+     000000FC  _SPI0_SETUP                        watchdog_testing
+     000000FD  _S0_IF_FIRST                       watchdog_testing
+     000000FE  _RESET_KEEP                        watchdog_testing
+     000000FE  _S0_IF_OV                          watchdog_testing
+     000000FF  _S0_FST_ACT                        watchdog_testing
+     000000FF  _WDOG_COUNT                        watchdog_testing
+     00008584  _ROM_ADDR                          watchdog_testing
+     00008F8E  _ROM_DATA                          watchdog_testing
+     0000C5C4  _TKEY_DAT                          watchdog_testing
+     0000CBCA  _RCAP2                             watchdog_testing
+     0000CDCC  _T2COUNT                           watchdog_testing
+     0000CFCE  _T2CAP1                            watchdog_testing
+     0000E5E4  _UEP2_DMA                          watchdog_testing
+     0000E7E6  _UEP3_DMA                          watchdog_testing
+     0000EDEC  _UEP0_DMA                          watchdog_testing
+     0000EFEE  _UEP1_DMA                          watchdog_testing
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 8.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+BSEG_BYTES                          00000020    00000001 =           1. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 9.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+REG_BANK_0                          00000000    00000008 =           8. bytes (REL,OVR)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 10.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+REG_BANK_1                          00000008    00000008 =           8. bytes (REL,OVR)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 11.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+DSEG                                00000000    00000080 =         128. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000010  _tick_10ms                         watchdog_testing
+     00000012  _debounceTimer                     watchdog_testing
+     00000014  _wdtCounter                        watchdog_testing
+     00000016  _serialTime                        watchdog_testing
+     00000018  _counter                           watchdog_testing
+     0000001C  _t                                 watchdog_testing
+ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+SSEG                                00000021    000000DF =         223. bytes (REL,OVR)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000021  __start__stack                     watchdog_testing
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 13.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+HOME                                00000000    0000005C =          92. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000018  sdcc_atomic_exchange_rollback_st   watchdog_testing
+C:   0000003F  sdcc_atomic_exchange_gptr_impl     watchdog_testing
+C:   0000003F  sdcc_atomic_exchange_rollback_en   watchdog_testing
+C:   0000004F  sdcc_atomic_compare_exchange_gpt   watchdog_testing
+C:   00000059  __sdcc_program_startup             watchdog_testing
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 14.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT0                             0000005C    00000003 =           3. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   0000005C  __sdcc_gsinit_startup              
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 15.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT2                             0000005F    0000000A =          10. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 16.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT3                             00000069    00000022 =          34. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000069  __mcs51_genXINIT                   
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 17.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT4                             0000008B    0000002A =          42. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   0000008B  __mcs51_genRAMCLEAR                
+C:   00000091  __mcs51_genXRAMCLEAR               
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 18.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT                              000000B5    00000026 =          38. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 19.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSFINAL                             000000DB    00000003 =           3. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 20.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+CSEG                                000000DE    0000017D =         381. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   000000DE  _clock_init                        watchdog_testing
+C:   000000F3  _INT1_ISR                          watchdog_testing
+C:   00000104  _timer0_ISR                        watchdog_testing
+C:   0000014F  _timer0_init                       watchdog_testing
+C:   0000016A  _extint1_init                      watchdog_testing
+C:   0000016F  _blink_led                         watchdog_testing
+C:   0000019B  _main                              watchdog_testing
+C:   00000257  ___sdcc_external_startup           _startup
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
+
+Files Linked                              [ module(s) ]
+
+watchdog-testing.rel                      [  ]
+
+
+Libraries Linked                          [ object file ]
+
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtclear.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtxinit.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtxclear.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtpagesfr.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtstart.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
+                                          [ _startup.rel ]
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 22.
+
+User Base Address Definitions
+
+HOME = 0x0000
+XSEG = 0x0001
+PSEG = 0x0001
+ISEG = 0x0000
+BSEG = 0x0000
+
+

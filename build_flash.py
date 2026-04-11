@@ -84,7 +84,7 @@ def main():
         sys.exit(1)
 
     # ── Discover companion libraries ──────────────────────────────────
-    companions = find_companion_sources(main_file)
+    companions = []
 
     print("=" * 54)
     print(f"  Main file : {main_file}")
