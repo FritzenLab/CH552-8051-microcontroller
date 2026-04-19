@@ -504,338 +504,365 @@
                                     504 ;--------------------------------------------------------
                                     505 ; overlayable items in internal ram
                                     506 ;--------------------------------------------------------
-                                    507 	.area	OSEG    (OVR,DATA)
-                                    508 ;--------------------------------------------------------
-                                    509 ; indirectly addressable internal ram data
-                                    510 ;--------------------------------------------------------
-                                    511 	.area ISEG    (DATA)
-                                    512 ;--------------------------------------------------------
-                                    513 ; absolute internal ram data
-                                    514 ;--------------------------------------------------------
+                                    507 ;--------------------------------------------------------
+                                    508 ; indirectly addressable internal ram data
+                                    509 ;--------------------------------------------------------
+                                    510 	.area ISEG    (DATA)
+                                    511 ;--------------------------------------------------------
+                                    512 ; absolute internal ram data
+                                    513 ;--------------------------------------------------------
+                                    514 	.area IABS    (ABS,DATA)
                                     515 	.area IABS    (ABS,DATA)
-                                    516 	.area IABS    (ABS,DATA)
-                                    517 ;--------------------------------------------------------
-                                    518 ; bit data
-                                    519 ;--------------------------------------------------------
-                                    520 	.area BSEG    (BIT)
-                                    521 ;--------------------------------------------------------
-                                    522 ; paged external ram data
-                                    523 ;--------------------------------------------------------
-                                    524 	.area PSEG    (PAG,XDATA)
-                                    525 ;--------------------------------------------------------
-                                    526 ; uninitialized external ram data
-                                    527 ;--------------------------------------------------------
-                                    528 	.area XSEG    (XDATA)
-                                    529 ;--------------------------------------------------------
-                                    530 ; absolute external ram data
-                                    531 ;--------------------------------------------------------
-                                    532 	.area XABS    (ABS,XDATA)
-                                    533 ;--------------------------------------------------------
-                                    534 ; initialized external ram data
-                                    535 ;--------------------------------------------------------
-                                    536 	.area XISEG   (XDATA)
-                                    537 	.area HOME    (CODE)
-                                    538 	.area GSINIT0 (CODE)
-                                    539 	.area GSINIT1 (CODE)
-                                    540 	.area GSINIT2 (CODE)
-                                    541 	.area GSINIT3 (CODE)
-                                    542 	.area GSINIT4 (CODE)
-                                    543 	.area GSINIT5 (CODE)
-                                    544 	.area GSINIT  (CODE)
-                                    545 	.area GSFINAL (CODE)
-                                    546 	.area CSEG    (CODE)
-                                    547 ;--------------------------------------------------------
-                                    548 ; global & static initialisations
-                                    549 ;--------------------------------------------------------
-                                    550 	.area HOME    (CODE)
-                                    551 	.area GSINIT  (CODE)
-                                    552 	.area GSFINAL (CODE)
-                                    553 	.area GSINIT  (CODE)
-                                    554 ;--------------------------------------------------------
-                                    555 ; Home
-                                    556 ;--------------------------------------------------------
+                                    516 ;--------------------------------------------------------
+                                    517 ; bit data
+                                    518 ;--------------------------------------------------------
+                                    519 	.area BSEG    (BIT)
+                                    520 ;--------------------------------------------------------
+                                    521 ; paged external ram data
+                                    522 ;--------------------------------------------------------
+                                    523 	.area PSEG    (PAG,XDATA)
+                                    524 ;--------------------------------------------------------
+                                    525 ; uninitialized external ram data
+                                    526 ;--------------------------------------------------------
+                                    527 	.area XSEG    (XDATA)
+                                    528 ;--------------------------------------------------------
+                                    529 ; absolute external ram data
+                                    530 ;--------------------------------------------------------
+                                    531 	.area XABS    (ABS,XDATA)
+                                    532 ;--------------------------------------------------------
+                                    533 ; initialized external ram data
+                                    534 ;--------------------------------------------------------
+                                    535 	.area XISEG   (XDATA)
+                                    536 	.area HOME    (CODE)
+                                    537 	.area GSINIT0 (CODE)
+                                    538 	.area GSINIT1 (CODE)
+                                    539 	.area GSINIT2 (CODE)
+                                    540 	.area GSINIT3 (CODE)
+                                    541 	.area GSINIT4 (CODE)
+                                    542 	.area GSINIT5 (CODE)
+                                    543 	.area GSINIT  (CODE)
+                                    544 	.area GSFINAL (CODE)
+                                    545 	.area CSEG    (CODE)
+                                    546 ;--------------------------------------------------------
+                                    547 ; global & static initialisations
+                                    548 ;--------------------------------------------------------
+                                    549 	.area HOME    (CODE)
+                                    550 	.area GSINIT  (CODE)
+                                    551 	.area GSFINAL (CODE)
+                                    552 	.area GSINIT  (CODE)
+                                    553 ;--------------------------------------------------------
+                                    554 ; Home
+                                    555 ;--------------------------------------------------------
+                                    556 	.area HOME    (CODE)
                                     557 	.area HOME    (CODE)
-                                    558 	.area HOME    (CODE)
-                                    559 ;--------------------------------------------------------
-                                    560 ; code
-                                    561 ;--------------------------------------------------------
-                                    562 	.area CSEG    (CODE)
-                                    563 ;------------------------------------------------------------
-                                    564 ;Allocation info for local variables in function 'Serial_begin'
-                                    565 ;------------------------------------------------------------
-                                    566 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:5: void Serial_begin(void) {
-                                    567 ;	-----------------------------------------
-                                    568 ;	 function Serial_begin
-                                    569 ;	-----------------------------------------
-      000248                        570 _Serial_begin:
-                           000007   571 	ar7 = 0x07
-                           000006   572 	ar6 = 0x06
-                           000005   573 	ar5 = 0x05
-                           000004   574 	ar4 = 0x04
-                           000003   575 	ar3 = 0x03
-                           000002   576 	ar2 = 0x02
-                           000001   577 	ar1 = 0x01
-                           000000   578 	ar0 = 0x00
-                                    579 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:6: SAFE_MOD = 0x55;
-      000248 75 A1 55         [24]  580 	mov	_SAFE_MOD,#0x55
-                                    581 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:7: SAFE_MOD = 0xAA;
-      00024B 75 A1 AA         [24]  582 	mov	_SAFE_MOD,#0xaa
-                                    583 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:8: PIN_FUNC |= bUART1_PIN_X;   // UART1 on P3.2/P3.4
-      00024E 43 C6 20         [24]  584 	orl	_PIN_FUNC,#0x20
-                                    585 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:9: SAFE_MOD = 0x00;
-      000251 75 A1 00         [24]  586 	mov	_SAFE_MOD,#0x00
-                                    587 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:12: T2MOD = 0;
-      000254 75 C9 00         [24]  588 	mov	_T2MOD,#0x00
-                                    589 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:13: T2CON = 0;
-      000257 75 C8 00         [24]  590 	mov	_T2CON,#0x00
-                                    591 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:16: P3_MOD_OC &= ~(1 << 2);
-      00025A 53 96 FB         [24]  592 	anl	_P3_MOD_OC,#0xfb
-                                    593 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:17: P3_DIR_PU  |=  (1 << 2);
-      00025D 43 97 04         [24]  594 	orl	_P3_DIR_PU,#0x04
-                                    595 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:20: P3_MOD_OC &= ~(1 << 4);
-      000260 53 96 EF         [24]  596 	anl	_P3_MOD_OC,#0xef
-                                    597 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:21: P3_DIR_PU  &= ~(1 << 4);
-      000263 53 97 EF         [24]  598 	anl	_P3_DIR_PU,#0xef
-                                    599 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:24: U1SM0  = 0;      // 8-bit
-                                    600 ;	assignBit
-      000266 C2 C7            [12]  601 	clr	_U1SM0
-                                    602 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:25: U1SMOD = 1;      // baud x2
-                                    603 ;	assignBit
-      000268 D2 C5            [12]  604 	setb	_U1SMOD
-                                    605 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:26: SBAUD1 = 0x64;   // 9600 baud @ 24 MHz
-      00026A 75 C2 64         [24]  606 	mov	_SBAUD1,#0x64
-                                    607 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:28: U1REN  = 1;      // enable RX
-                                    608 ;	assignBit
-      00026D D2 C4            [12]  609 	setb	_U1REN
-                                    610 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:29: U1TI   = 1;      // mark TX ready
-                                    611 ;	assignBit
-      00026F D2 C1            [12]  612 	setb	_U1TI
-                                    613 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:30: }
-      000271 22               [24]  614 	ret
-                                    615 ;------------------------------------------------------------
-                                    616 ;Allocation info for local variables in function 'Serial_write'
-                                    617 ;------------------------------------------------------------
-                                    618 ;c             Allocated to registers r7 
-                                    619 ;------------------------------------------------------------
-                                    620 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:33: void Serial_write(char c) {
-                                    621 ;	-----------------------------------------
-                                    622 ;	 function Serial_write
-                                    623 ;	-----------------------------------------
-      000272                        624 _Serial_write:
-      000272 AF 82            [24]  625 	mov	r7, dpl
-                                    626 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:34: while (!U1TI);   // wait for TX ready
-      000274                        627 00101$:
-                                    628 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:35: U1TI = 0;        // clear flag
-                                    629 ;	assignBit
-      000274 10 C1 02         [24]  630 	jbc	_U1TI,00118$
-      000277 80 FB            [24]  631 	sjmp	00101$
-      000279                        632 00118$:
-                                    633 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:36: SBUF1 = c;       // send
-      000279 8F C1            [24]  634 	mov	_SBUF1,r7
-                                    635 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:37: }
-      00027B 22               [24]  636 	ret
-                                    637 ;------------------------------------------------------------
-                                    638 ;Allocation info for local variables in function 'Serial_print'
-                                    639 ;------------------------------------------------------------
-                                    640 ;s             Allocated to registers 
-                                    641 ;------------------------------------------------------------
-                                    642 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:40: void Serial_print(const char *s) {
-                                    643 ;	-----------------------------------------
-                                    644 ;	 function Serial_print
-                                    645 ;	-----------------------------------------
-      00027C                        646 _Serial_print:
-      00027C AD 82            [24]  647 	mov	r5, dpl
-      00027E AE 83            [24]  648 	mov	r6, dph
-      000280 AF F0            [24]  649 	mov	r7, b
-                                    650 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:41: while (*s) Serial_write(*s++);
-      000282                        651 00101$:
-      000282 8D 82            [24]  652 	mov	dpl,r5
-      000284 8E 83            [24]  653 	mov	dph,r6
-      000286 8F F0            [24]  654 	mov	b,r7
-      000288 12 04 16         [24]  655 	lcall	__gptrget
-      00028B FC               [12]  656 	mov	r4,a
-      00028C 60 18            [24]  657 	jz	00104$
-      00028E 8C 82            [24]  658 	mov	dpl,r4
-      000290 0D               [12]  659 	inc	r5
-      000291 BD 00 01         [24]  660 	cjne	r5,#0x00,00120$
-      000294 0E               [12]  661 	inc	r6
-      000295                        662 00120$:
-      000295 C0 07            [24]  663 	push	ar7
-      000297 C0 06            [24]  664 	push	ar6
-      000299 C0 05            [24]  665 	push	ar5
-      00029B 12 02 72         [24]  666 	lcall	_Serial_write
-      00029E D0 05            [24]  667 	pop	ar5
-      0002A0 D0 06            [24]  668 	pop	ar6
-      0002A2 D0 07            [24]  669 	pop	ar7
-      0002A4 80 DC            [24]  670 	sjmp	00101$
-      0002A6                        671 00104$:
-                                    672 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:42: }
-      0002A6 22               [24]  673 	ret
-                                    674 ;------------------------------------------------------------
-                                    675 ;Allocation info for local variables in function 'Serial_print_uint'
-                                    676 ;------------------------------------------------------------
-                                    677 ;v             Allocated to registers r6 r7 
-                                    678 ;------------------------------------------------------------
-                                    679 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:45: void Serial_print_uint(unsigned int v) {
-                                    680 ;	-----------------------------------------
-                                    681 ;	 function Serial_print_uint
-                                    682 ;	-----------------------------------------
-      0002A7                        683 _Serial_print_uint:
-      0002A7 AE 82            [24]  684 	mov	r6, dpl
-      0002A9 AF 83            [24]  685 	mov	r7, dph
-                                    686 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:46: if (v >= 10000) Serial_write('0' + (v / 10000) % 10);
-      0002AB C3               [12]  687 	clr	c
-      0002AC EE               [12]  688 	mov	a,r6
-      0002AD 94 10            [12]  689 	subb	a,#0x10
-      0002AF EF               [12]  690 	mov	a,r7
-      0002B0 94 27            [12]  691 	subb	a,#0x27
-      0002B2 40 26            [24]  692 	jc	00102$
-      0002B4 75 1E 10         [24]  693 	mov	__divuint_PARM_2,#0x10
-      0002B7 75 1F 27         [24]  694 	mov	(__divuint_PARM_2 + 1),#0x27
-      0002BA 8E 82            [24]  695 	mov	dpl, r6
-      0002BC 8F 83            [24]  696 	mov	dph, r7
-      0002BE C0 07            [24]  697 	push	ar7
-      0002C0 C0 06            [24]  698 	push	ar6
-      0002C2 12 03 A0         [24]  699 	lcall	__divuint
-      0002C5 AC 82            [24]  700 	mov	r4, dpl
-      0002C7 75 F0 0A         [24]  701 	mov	b,#0x0a
-      0002CA EC               [12]  702 	mov	a,r4
-      0002CB 84               [48]  703 	div	ab
-      0002CC AC F0            [24]  704 	mov	r4,b
-      0002CE 74 30            [12]  705 	mov	a,#0x30
-      0002D0 2C               [12]  706 	add	a, r4
-      0002D1 F5 82            [12]  707 	mov	dpl,a
-      0002D3 12 02 72         [24]  708 	lcall	_Serial_write
-      0002D6 D0 06            [24]  709 	pop	ar6
-      0002D8 D0 07            [24]  710 	pop	ar7
-      0002DA                        711 00102$:
-                                    712 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:47: if (v >= 1000)  Serial_write('0' + (v / 1000)  % 10);
-      0002DA C3               [12]  713 	clr	c
-      0002DB EE               [12]  714 	mov	a,r6
-      0002DC 94 E8            [12]  715 	subb	a,#0xe8
-      0002DE EF               [12]  716 	mov	a,r7
-      0002DF 94 03            [12]  717 	subb	a,#0x03
-      0002E1 40 26            [24]  718 	jc	00104$
-      0002E3 75 1E E8         [24]  719 	mov	__divuint_PARM_2,#0xe8
-      0002E6 75 1F 03         [24]  720 	mov	(__divuint_PARM_2 + 1),#0x03
-      0002E9 8E 82            [24]  721 	mov	dpl, r6
-      0002EB 8F 83            [24]  722 	mov	dph, r7
-      0002ED C0 07            [24]  723 	push	ar7
-      0002EF C0 06            [24]  724 	push	ar6
-      0002F1 12 03 A0         [24]  725 	lcall	__divuint
-      0002F4 AC 82            [24]  726 	mov	r4, dpl
-      0002F6 75 F0 0A         [24]  727 	mov	b,#0x0a
-      0002F9 EC               [12]  728 	mov	a,r4
-      0002FA 84               [48]  729 	div	ab
-      0002FB AC F0            [24]  730 	mov	r4,b
-      0002FD 74 30            [12]  731 	mov	a,#0x30
-      0002FF 2C               [12]  732 	add	a, r4
-      000300 F5 82            [12]  733 	mov	dpl,a
-      000302 12 02 72         [24]  734 	lcall	_Serial_write
-      000305 D0 06            [24]  735 	pop	ar6
-      000307 D0 07            [24]  736 	pop	ar7
-      000309                        737 00104$:
-                                    738 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:48: if (v >= 100)   Serial_write('0' + (v / 100)   % 10);
-      000309 C3               [12]  739 	clr	c
-      00030A EE               [12]  740 	mov	a,r6
-      00030B 94 64            [12]  741 	subb	a,#0x64
-      00030D EF               [12]  742 	mov	a,r7
-      00030E 94 00            [12]  743 	subb	a,#0x00
-      000310 40 28            [24]  744 	jc	00106$
-      000312 75 1E 64         [24]  745 	mov	__divuint_PARM_2,#0x64
-      000315 75 1F 00         [24]  746 	mov	(__divuint_PARM_2 + 1),#0x00
-      000318 8E 82            [24]  747 	mov	dpl, r6
-      00031A 8F 83            [24]  748 	mov	dph, r7
-      00031C C0 07            [24]  749 	push	ar7
-      00031E C0 06            [24]  750 	push	ar6
-      000320 12 03 A0         [24]  751 	lcall	__divuint
-      000323 75 1E 0A         [24]  752 	mov	__moduint_PARM_2,#0x0a
-      000326 75 1F 00         [24]  753 	mov	(__moduint_PARM_2 + 1),#0x00
-      000329 12 03 C9         [24]  754 	lcall	__moduint
-      00032C AC 82            [24]  755 	mov	r4, dpl
-      00032E 74 30            [12]  756 	mov	a,#0x30
-      000330 2C               [12]  757 	add	a, r4
-      000331 F5 82            [12]  758 	mov	dpl,a
-      000333 12 02 72         [24]  759 	lcall	_Serial_write
-      000336 D0 06            [24]  760 	pop	ar6
-      000338 D0 07            [24]  761 	pop	ar7
-      00033A                        762 00106$:
-                                    763 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:49: if (v >= 10)    Serial_write('0' + (v / 10)    % 10);
-      00033A C3               [12]  764 	clr	c
-      00033B EE               [12]  765 	mov	a,r6
-      00033C 94 0A            [12]  766 	subb	a,#0x0a
-      00033E EF               [12]  767 	mov	a,r7
-      00033F 94 00            [12]  768 	subb	a,#0x00
-      000341 40 28            [24]  769 	jc	00108$
-      000343 75 1E 0A         [24]  770 	mov	__divuint_PARM_2,#0x0a
-      000346 75 1F 00         [24]  771 	mov	(__divuint_PARM_2 + 1),#0x00
-      000349 8E 82            [24]  772 	mov	dpl, r6
-      00034B 8F 83            [24]  773 	mov	dph, r7
-      00034D C0 07            [24]  774 	push	ar7
-      00034F C0 06            [24]  775 	push	ar6
-      000351 12 03 A0         [24]  776 	lcall	__divuint
-      000354 75 1E 0A         [24]  777 	mov	__moduint_PARM_2,#0x0a
-      000357 75 1F 00         [24]  778 	mov	(__moduint_PARM_2 + 1),#0x00
-      00035A 12 03 C9         [24]  779 	lcall	__moduint
-      00035D AC 82            [24]  780 	mov	r4, dpl
-      00035F 74 30            [12]  781 	mov	a,#0x30
-      000361 2C               [12]  782 	add	a, r4
-      000362 F5 82            [12]  783 	mov	dpl,a
-      000364 12 02 72         [24]  784 	lcall	_Serial_write
-      000367 D0 06            [24]  785 	pop	ar6
-      000369 D0 07            [24]  786 	pop	ar7
-      00036B                        787 00108$:
-                                    788 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:50: Serial_write('0' + (v % 10));
-      00036B 75 1E 0A         [24]  789 	mov	__moduint_PARM_2,#0x0a
-      00036E 75 1F 00         [24]  790 	mov	(__moduint_PARM_2 + 1),#0x00
-      000371 8E 82            [24]  791 	mov	dpl, r6
-      000373 8F 83            [24]  792 	mov	dph, r7
-      000375 12 03 C9         [24]  793 	lcall	__moduint
-      000378 AE 82            [24]  794 	mov	r6, dpl
-      00037A 74 30            [12]  795 	mov	a,#0x30
-      00037C 2E               [12]  796 	add	a, r6
-      00037D F5 82            [12]  797 	mov	dpl,a
-                                    798 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:51: }
-      00037F 02 02 72         [24]  799 	ljmp	_Serial_write
-                                    800 ;------------------------------------------------------------
-                                    801 ;Allocation info for local variables in function 'Serial_println'
-                                    802 ;------------------------------------------------------------
-                                    803 ;s             Allocated to registers r5 r6 r7 
-                                    804 ;------------------------------------------------------------
-                                    805 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:54: void Serial_println(const char *s) {
-                                    806 ;	-----------------------------------------
-                                    807 ;	 function Serial_println
-                                    808 ;	-----------------------------------------
-      000382                        809 _Serial_println:
-                                    810 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:55: Serial_print(s);
-      000382 12 02 7C         [24]  811 	lcall	_Serial_print
-                                    812 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:56: Serial_write('\r');
-      000385 75 82 0D         [24]  813 	mov	dpl, #0x0d
-      000388 12 02 72         [24]  814 	lcall	_Serial_write
-                                    815 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:57: Serial_write('\n');
-      00038B 75 82 0A         [24]  816 	mov	dpl, #0x0a
-                                    817 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:58: }
-      00038E 02 02 72         [24]  818 	ljmp	_Serial_write
-                                    819 ;------------------------------------------------------------
-                                    820 ;Allocation info for local variables in function 'Serial_println_uint'
-                                    821 ;------------------------------------------------------------
-                                    822 ;v             Allocated to registers 
-                                    823 ;------------------------------------------------------------
-                                    824 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:61: void Serial_println_uint(unsigned int v) {
-                                    825 ;	-----------------------------------------
-                                    826 ;	 function Serial_println_uint
-                                    827 ;	-----------------------------------------
-      000391                        828 _Serial_println_uint:
-                                    829 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:62: Serial_print_uint(v);
-      000391 12 02 A7         [24]  830 	lcall	_Serial_print_uint
-                                    831 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:63: Serial_write('\r');
-      000394 75 82 0D         [24]  832 	mov	dpl, #0x0d
-      000397 12 02 72         [24]  833 	lcall	_Serial_write
-                                    834 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:64: Serial_write('\n');
-      00039A 75 82 0A         [24]  835 	mov	dpl, #0x0a
-                                    836 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:65: }
-      00039D 02 02 72         [24]  837 	ljmp	_Serial_write
-                                    838 	.area CSEG    (CODE)
-                                    839 	.area CONST   (CODE)
-                                    840 	.area XINIT   (CODE)
-                                    841 	.area CABS    (ABS,CODE)
+                                    558 ;--------------------------------------------------------
+                                    559 ; code
+                                    560 ;--------------------------------------------------------
+                                    561 	.area CSEG    (CODE)
+                                    562 ;------------------------------------------------------------
+                                    563 ;Allocation info for local variables in function 'Serial_begin'
+                                    564 ;------------------------------------------------------------
+                                    565 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:5: void Serial_begin(void) {
+                                    566 ;	-----------------------------------------
+                                    567 ;	 function Serial_begin
+                                    568 ;	-----------------------------------------
+      001ACF                        569 _Serial_begin:
+                           000007   570 	ar7 = 0x07
+                           000006   571 	ar6 = 0x06
+                           000005   572 	ar5 = 0x05
+                           000004   573 	ar4 = 0x04
+                           000003   574 	ar3 = 0x03
+                           000002   575 	ar2 = 0x02
+                           000001   576 	ar1 = 0x01
+                           000000   577 	ar0 = 0x00
+                                    578 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:6: SAFE_MOD = 0x55;
+      001ACF 75 A1 55         [24]  579 	mov	_SAFE_MOD,#0x55
+                                    580 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:7: SAFE_MOD = 0xAA;
+      001AD2 75 A1 AA         [24]  581 	mov	_SAFE_MOD,#0xaa
+                                    582 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:8: PIN_FUNC |= bUART1_PIN_X;   // UART1 on P3.2/P3.4
+      001AD5 43 C6 20         [24]  583 	orl	_PIN_FUNC,#0x20
+                                    584 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:9: SAFE_MOD = 0x00;
+      001AD8 75 A1 00         [24]  585 	mov	_SAFE_MOD,#0x00
+                                    586 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:12: T2MOD = 0;
+      001ADB 75 C9 00         [24]  587 	mov	_T2MOD,#0x00
+                                    588 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:13: T2CON = 0;
+      001ADE 75 C8 00         [24]  589 	mov	_T2CON,#0x00
+                                    590 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:16: P3_MOD_OC &= ~(1 << 2);
+      001AE1 53 96 FB         [24]  591 	anl	_P3_MOD_OC,#0xfb
+                                    592 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:17: P3_DIR_PU  |=  (1 << 2);
+      001AE4 43 97 04         [24]  593 	orl	_P3_DIR_PU,#0x04
+                                    594 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:20: P3_MOD_OC &= ~(1 << 4);
+      001AE7 53 96 EF         [24]  595 	anl	_P3_MOD_OC,#0xef
+                                    596 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:21: P3_DIR_PU  &= ~(1 << 4);
+      001AEA 53 97 EF         [24]  597 	anl	_P3_DIR_PU,#0xef
+                                    598 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:24: U1SM0  = 0;      // 8-bit
+                                    599 ;	assignBit
+      001AED C2 C7            [12]  600 	clr	_U1SM0
+                                    601 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:25: U1SMOD = 1;      // baud x2
+                                    602 ;	assignBit
+      001AEF D2 C5            [12]  603 	setb	_U1SMOD
+                                    604 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:26: SBAUD1 = 0x64;   // 9600 baud @ 24 MHz
+      001AF1 75 C2 64         [24]  605 	mov	_SBAUD1,#0x64
+                                    606 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:28: U1REN  = 1;      // enable RX
+                                    607 ;	assignBit
+      001AF4 D2 C4            [12]  608 	setb	_U1REN
+                                    609 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:29: U1TI   = 1;      // mark TX ready
+                                    610 ;	assignBit
+      001AF6 D2 C1            [12]  611 	setb	_U1TI
+                                    612 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:30: }
+      001AF8 22               [24]  613 	ret
+                                    614 ;------------------------------------------------------------
+                                    615 ;Allocation info for local variables in function 'Serial_write'
+                                    616 ;------------------------------------------------------------
+                                    617 ;c             Allocated to registers r7 
+                                    618 ;------------------------------------------------------------
+                                    619 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:33: void Serial_write(char c) {
+                                    620 ;	-----------------------------------------
+                                    621 ;	 function Serial_write
+                                    622 ;	-----------------------------------------
+      001AF9                        623 _Serial_write:
+      001AF9 AF 82            [24]  624 	mov	r7, dpl
+                                    625 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:34: while (!U1TI);   // wait for TX ready
+      001AFB                        626 00101$:
+                                    627 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:35: U1TI = 0;        // clear flag
+                                    628 ;	assignBit
+      001AFB 10 C1 02         [24]  629 	jbc	_U1TI,00118$
+      001AFE 80 FB            [24]  630 	sjmp	00101$
+      001B00                        631 00118$:
+                                    632 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:36: SBUF1 = c;       // send
+      001B00 8F C1            [24]  633 	mov	_SBUF1,r7
+                                    634 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:37: }
+      001B02 22               [24]  635 	ret
+                                    636 ;------------------------------------------------------------
+                                    637 ;Allocation info for local variables in function 'Serial_print'
+                                    638 ;------------------------------------------------------------
+                                    639 ;s             Allocated to registers 
+                                    640 ;------------------------------------------------------------
+                                    641 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:40: void Serial_print(const char *s) {
+                                    642 ;	-----------------------------------------
+                                    643 ;	 function Serial_print
+                                    644 ;	-----------------------------------------
+      001B03                        645 _Serial_print:
+      001B03 AD 82            [24]  646 	mov	r5, dpl
+      001B05 AE 83            [24]  647 	mov	r6, dph
+      001B07 AF F0            [24]  648 	mov	r7, b
+                                    649 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:41: while (*s) Serial_write(*s++);
+      001B09                        650 00101$:
+      001B09 8D 82            [24]  651 	mov	dpl,r5
+      001B0B 8E 83            [24]  652 	mov	dph,r6
+      001B0D 8F F0            [24]  653 	mov	b,r7
+      001B0F 12 1E 21         [24]  654 	lcall	__gptrget
+      001B12 FC               [12]  655 	mov	r4,a
+      001B13 60 18            [24]  656 	jz	00104$
+      001B15 0D               [12]  657 	inc	r5
+      001B16 BD 00 01         [24]  658 	cjne	r5,#0x00,00120$
+      001B19 0E               [12]  659 	inc	r6
+      001B1A                        660 00120$:
+      001B1A 8C 82            [24]  661 	mov	dpl, r4
+      001B1C C0 07            [24]  662 	push	ar7
+      001B1E C0 06            [24]  663 	push	ar6
+      001B20 C0 05            [24]  664 	push	ar5
+      001B22 12 1A F9         [24]  665 	lcall	_Serial_write
+      001B25 D0 05            [24]  666 	pop	ar5
+      001B27 D0 06            [24]  667 	pop	ar6
+      001B29 D0 07            [24]  668 	pop	ar7
+      001B2B 80 DC            [24]  669 	sjmp	00101$
+      001B2D                        670 00104$:
+                                    671 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:42: }
+      001B2D 22               [24]  672 	ret
+                                    673 ;------------------------------------------------------------
+                                    674 ;Allocation info for local variables in function 'Serial_print_uint'
+                                    675 ;------------------------------------------------------------
+                                    676 ;v             Allocated to registers r6 r7 
+                                    677 ;------------------------------------------------------------
+                                    678 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:45: void Serial_print_uint(unsigned int v) {
+                                    679 ;	-----------------------------------------
+                                    680 ;	 function Serial_print_uint
+                                    681 ;	-----------------------------------------
+      001B2E                        682 _Serial_print_uint:
+      001B2E AE 82            [24]  683 	mov	r6, dpl
+      001B30 AF 83            [24]  684 	mov	r7, dph
+                                    685 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:46: if (v >= 10000) Serial_write('0' + (v / 10000) % 10);
+      001B32 C3               [12]  686 	clr	c
+      001B33 EE               [12]  687 	mov	a,r6
+      001B34 94 10            [12]  688 	subb	a,#0x10
+      001B36 EF               [12]  689 	mov	a,r7
+      001B37 94 27            [12]  690 	subb	a,#0x27
+      001B39 40 2C            [24]  691 	jc	00102$
+      001B3B C0 07            [24]  692 	push	ar7
+      001B3D C0 06            [24]  693 	push	ar6
+      001B3F 74 10            [12]  694 	mov	a,#0x10
+      001B41 C0 E0            [24]  695 	push	acc
+      001B43 74 27            [12]  696 	mov	a,#0x27
+      001B45 C0 E0            [24]  697 	push	acc
+      001B47 8E 82            [24]  698 	mov	dpl, r6
+      001B49 8F 83            [24]  699 	mov	dph, r7
+      001B4B 12 1C 4C         [24]  700 	lcall	__divuint
+      001B4E AC 82            [24]  701 	mov	r4, dpl
+      001B50 15 81            [12]  702 	dec	sp
+      001B52 15 81            [12]  703 	dec	sp
+      001B54 75 F0 0A         [24]  704 	mov	b,#0x0a
+      001B57 EC               [12]  705 	mov	a,r4
+      001B58 84               [48]  706 	div	ab
+      001B59 AC F0            [24]  707 	mov	r4,b
+      001B5B 74 30            [12]  708 	mov	a,#0x30
+      001B5D 2C               [12]  709 	add	a, r4
+      001B5E F5 82            [12]  710 	mov	dpl,a
+      001B60 12 1A F9         [24]  711 	lcall	_Serial_write
+      001B63 D0 06            [24]  712 	pop	ar6
+      001B65 D0 07            [24]  713 	pop	ar7
+      001B67                        714 00102$:
+                                    715 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:47: if (v >= 1000)  Serial_write('0' + (v / 1000)  % 10);
+      001B67 C3               [12]  716 	clr	c
+      001B68 EE               [12]  717 	mov	a,r6
+      001B69 94 E8            [12]  718 	subb	a,#0xe8
+      001B6B EF               [12]  719 	mov	a,r7
+      001B6C 94 03            [12]  720 	subb	a,#0x03
+      001B6E 40 2C            [24]  721 	jc	00104$
+      001B70 C0 07            [24]  722 	push	ar7
+      001B72 C0 06            [24]  723 	push	ar6
+      001B74 74 E8            [12]  724 	mov	a,#0xe8
+      001B76 C0 E0            [24]  725 	push	acc
+      001B78 74 03            [12]  726 	mov	a,#0x03
+      001B7A C0 E0            [24]  727 	push	acc
+      001B7C 8E 82            [24]  728 	mov	dpl, r6
+      001B7E 8F 83            [24]  729 	mov	dph, r7
+      001B80 12 1C 4C         [24]  730 	lcall	__divuint
+      001B83 AC 82            [24]  731 	mov	r4, dpl
+      001B85 15 81            [12]  732 	dec	sp
+      001B87 15 81            [12]  733 	dec	sp
+      001B89 75 F0 0A         [24]  734 	mov	b,#0x0a
+      001B8C EC               [12]  735 	mov	a,r4
+      001B8D 84               [48]  736 	div	ab
+      001B8E AC F0            [24]  737 	mov	r4,b
+      001B90 74 30            [12]  738 	mov	a,#0x30
+      001B92 2C               [12]  739 	add	a, r4
+      001B93 F5 82            [12]  740 	mov	dpl,a
+      001B95 12 1A F9         [24]  741 	lcall	_Serial_write
+      001B98 D0 06            [24]  742 	pop	ar6
+      001B9A D0 07            [24]  743 	pop	ar7
+      001B9C                        744 00104$:
+                                    745 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:48: if (v >= 100)   Serial_write('0' + (v / 100)   % 10);
+      001B9C C3               [12]  746 	clr	c
+      001B9D EE               [12]  747 	mov	a,r6
+      001B9E 94 64            [12]  748 	subb	a,#0x64
+      001BA0 EF               [12]  749 	mov	a,r7
+      001BA1 94 00            [12]  750 	subb	a,#0x00
+      001BA3 40 32            [24]  751 	jc	00106$
+      001BA5 C0 07            [24]  752 	push	ar7
+      001BA7 C0 06            [24]  753 	push	ar6
+      001BA9 74 64            [12]  754 	mov	a,#0x64
+      001BAB C0 E0            [24]  755 	push	acc
+      001BAD E4               [12]  756 	clr	a
+      001BAE C0 E0            [24]  757 	push	acc
+      001BB0 8E 82            [24]  758 	mov	dpl, r6
+      001BB2 8F 83            [24]  759 	mov	dph, r7
+      001BB4 12 1C 4C         [24]  760 	lcall	__divuint
+      001BB7 15 81            [12]  761 	dec	sp
+      001BB9 15 81            [12]  762 	dec	sp
+      001BBB 74 0A            [12]  763 	mov	a,#0x0a
+      001BBD C0 E0            [24]  764 	push	acc
+      001BBF E4               [12]  765 	clr	a
+      001BC0 C0 E0            [24]  766 	push	acc
+      001BC2 12 1E AD         [24]  767 	lcall	__moduint
+      001BC5 AC 82            [24]  768 	mov	r4, dpl
+      001BC7 15 81            [12]  769 	dec	sp
+      001BC9 15 81            [12]  770 	dec	sp
+      001BCB 74 30            [12]  771 	mov	a,#0x30
+      001BCD 2C               [12]  772 	add	a, r4
+      001BCE F5 82            [12]  773 	mov	dpl,a
+      001BD0 12 1A F9         [24]  774 	lcall	_Serial_write
+      001BD3 D0 06            [24]  775 	pop	ar6
+      001BD5 D0 07            [24]  776 	pop	ar7
+      001BD7                        777 00106$:
+                                    778 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:49: if (v >= 10)    Serial_write('0' + (v / 10)    % 10);
+      001BD7 C3               [12]  779 	clr	c
+      001BD8 EE               [12]  780 	mov	a,r6
+      001BD9 94 0A            [12]  781 	subb	a,#0x0a
+      001BDB EF               [12]  782 	mov	a,r7
+      001BDC 94 00            [12]  783 	subb	a,#0x00
+      001BDE 40 32            [24]  784 	jc	00108$
+      001BE0 C0 07            [24]  785 	push	ar7
+      001BE2 C0 06            [24]  786 	push	ar6
+      001BE4 74 0A            [12]  787 	mov	a,#0x0a
+      001BE6 C0 E0            [24]  788 	push	acc
+      001BE8 E4               [12]  789 	clr	a
+      001BE9 C0 E0            [24]  790 	push	acc
+      001BEB 8E 82            [24]  791 	mov	dpl, r6
+      001BED 8F 83            [24]  792 	mov	dph, r7
+      001BEF 12 1C 4C         [24]  793 	lcall	__divuint
+      001BF2 15 81            [12]  794 	dec	sp
+      001BF4 15 81            [12]  795 	dec	sp
+      001BF6 74 0A            [12]  796 	mov	a,#0x0a
+      001BF8 C0 E0            [24]  797 	push	acc
+      001BFA E4               [12]  798 	clr	a
+      001BFB C0 E0            [24]  799 	push	acc
+      001BFD 12 1E AD         [24]  800 	lcall	__moduint
+      001C00 AC 82            [24]  801 	mov	r4, dpl
+      001C02 15 81            [12]  802 	dec	sp
+      001C04 15 81            [12]  803 	dec	sp
+      001C06 74 30            [12]  804 	mov	a,#0x30
+      001C08 2C               [12]  805 	add	a, r4
+      001C09 F5 82            [12]  806 	mov	dpl,a
+      001C0B 12 1A F9         [24]  807 	lcall	_Serial_write
+      001C0E D0 06            [24]  808 	pop	ar6
+      001C10 D0 07            [24]  809 	pop	ar7
+      001C12                        810 00108$:
+                                    811 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:50: Serial_write('0' + (v % 10));
+      001C12 74 0A            [12]  812 	mov	a,#0x0a
+      001C14 C0 E0            [24]  813 	push	acc
+      001C16 E4               [12]  814 	clr	a
+      001C17 C0 E0            [24]  815 	push	acc
+      001C19 8E 82            [24]  816 	mov	dpl, r6
+      001C1B 8F 83            [24]  817 	mov	dph, r7
+      001C1D 12 1E AD         [24]  818 	lcall	__moduint
+      001C20 AE 82            [24]  819 	mov	r6, dpl
+      001C22 15 81            [12]  820 	dec	sp
+      001C24 15 81            [12]  821 	dec	sp
+      001C26 74 30            [12]  822 	mov	a,#0x30
+      001C28 2E               [12]  823 	add	a, r6
+      001C29 F5 82            [12]  824 	mov	dpl,a
+                                    825 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:51: }
+      001C2B 02 1A F9         [24]  826 	ljmp	_Serial_write
+                                    827 ;------------------------------------------------------------
+                                    828 ;Allocation info for local variables in function 'Serial_println'
+                                    829 ;------------------------------------------------------------
+                                    830 ;s             Allocated to registers r5 r6 r7 
+                                    831 ;------------------------------------------------------------
+                                    832 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:54: void Serial_println(const char *s) {
+                                    833 ;	-----------------------------------------
+                                    834 ;	 function Serial_println
+                                    835 ;	-----------------------------------------
+      001C2E                        836 _Serial_println:
+                                    837 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:55: Serial_print(s);
+      001C2E 12 1B 03         [24]  838 	lcall	_Serial_print
+                                    839 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:56: Serial_write('\r');
+      001C31 75 82 0D         [24]  840 	mov	dpl, #0x0d
+      001C34 12 1A F9         [24]  841 	lcall	_Serial_write
+                                    842 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:57: Serial_write('\n');
+      001C37 75 82 0A         [24]  843 	mov	dpl, #0x0a
+                                    844 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:58: }
+      001C3A 02 1A F9         [24]  845 	ljmp	_Serial_write
+                                    846 ;------------------------------------------------------------
+                                    847 ;Allocation info for local variables in function 'Serial_println_uint'
+                                    848 ;------------------------------------------------------------
+                                    849 ;v             Allocated to registers r6 r7 
+                                    850 ;------------------------------------------------------------
+                                    851 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:61: void Serial_println_uint(unsigned int v) {
+                                    852 ;	-----------------------------------------
+                                    853 ;	 function Serial_println_uint
+                                    854 ;	-----------------------------------------
+      001C3D                        855 _Serial_println_uint:
+                                    856 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:62: Serial_print_uint(v);
+      001C3D 12 1B 2E         [24]  857 	lcall	_Serial_print_uint
+                                    858 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:63: Serial_write('\r');
+      001C40 75 82 0D         [24]  859 	mov	dpl, #0x0d
+      001C43 12 1A F9         [24]  860 	lcall	_Serial_write
+                                    861 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:64: Serial_write('\n');
+      001C46 75 82 0A         [24]  862 	mov	dpl, #0x0a
+                                    863 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:65: }
+      001C49 02 1A F9         [24]  864 	ljmp	_Serial_write
+                                    865 	.area CSEG    (CODE)
+                                    866 	.area CONST   (CODE)
+                                    867 	.area XINIT   (CODE)
+                                    868 	.area CABS    (ABS,CODE)

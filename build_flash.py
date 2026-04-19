@@ -17,6 +17,7 @@ SDCC_FLAGS = [
     "--iram-size", "256",
     "--xram-size", "0",
     "--code-size", "14336",
+    "--stack-auto",
     "-I.", f"-I{INC_DIR}",
 ]
 
@@ -84,7 +85,7 @@ def main():
         sys.exit(1)
 
     # ── Discover companion libraries ──────────────────────────────────
-    companions = []
+    companions = find_companion_sources(main_file)
 
     print("=" * 54)
     print(f"  Main file : {main_file}")

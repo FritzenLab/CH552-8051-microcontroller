@@ -2,15 +2,22 @@
 ; File Created by SDCC : free open source ISO C Compiler
 ; Version 4.5.0 #15242 (MINGW64)
 ;--------------------------------------------------------
-	.module watchdog_testing
+	.module BME680_sensor
 	
 	.optsdcc -mmcs51 --model-small
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
 	.globl _main
-	.globl _extint1_init
 	.globl _timer0_init
+	.globl _clock_init
+	.globl _timer0_ISR
+	.globl _BME680_update
+	.globl _BME680_init
+	.globl _Serial_println
+	.globl _Serial_print_uint
+	.globl _Serial_print
+	.globl _Serial_begin
 	.globl _UIF_BUS_RST
 	.globl _UIF_DETECT
 	.globl _UIF_TRANSFER
@@ -245,19 +252,7 @@
 	.globl _B
 	.globl _ACC
 	.globl _PSW
-	.globl _ledON
-	.globl _debounce
-	.globl _button_irq
-	.globl _t
-	.globl _counter
-	.globl _serialTime
-	.globl _wdtCounter
-	.globl _debounceTimer
 	.globl _tick_10ms
-	.globl _clock_init
-	.globl _INT1_ISR
-	.globl _timer0_ISR
-	.globl _blink_led
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -515,22 +510,11 @@ _UIF_BUS_RST	=	0x00d8
 	.area DSEG    (DATA)
 _tick_10ms::
 	.ds 2
-_debounceTimer::
-	.ds 2
-_wdtCounter::
-	.ds 2
-_serialTime::
-	.ds 2
-_counter::
-	.ds 2
-_t::
-	.ds 2
-_blink_base:
+_serialTime:
 	.ds 2
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
-	.area	OSEG    (OVR,DATA)
 ;--------------------------------------------------------
 ; Stack segment in internal ram
 ;--------------------------------------------------------
@@ -551,14 +535,6 @@ __start__stack:
 ; bit data
 ;--------------------------------------------------------
 	.area BSEG    (BIT)
-_button_irq::
-	.ds 1
-_debounce::
-	.ds 1
-_ledON::
-	.ds 1
-_wdt_started:
-	.ds 1
 ;--------------------------------------------------------
 ; paged external ram data
 ;--------------------------------------------------------
@@ -594,8 +570,6 @@ __interrupt_vect:
 	reti
 	.ds	7
 	ljmp	_timer0_ISR
-	.ds	5
-	ljmp	_INT1_ISR
 ; restartable atomic support routines
 	.ds	2
 sdcc_atomic_exchange_rollback_start::
@@ -667,37 +641,13 @@ sdcc_atomic_compare_exchange_gptr_impl::
 	.globl __mcs51_genXINIT
 	.globl __mcs51_genXRAMCLEAR
 	.globl __mcs51_genRAMCLEAR
-;	watchdog-testing.c:5: volatile unsigned int tick_10ms = 0;
+;	BME680-sensor.c:7: volatile unsigned int tick_10ms = 0;
 	clr	a
 	mov	_tick_10ms,a
 	mov	(_tick_10ms + 1),a
-;	watchdog-testing.c:6: volatile unsigned int debounceTimer = 0;
-	mov	_debounceTimer,a
-	mov	(_debounceTimer + 1),a
-;	watchdog-testing.c:7: volatile unsigned int wdtCounter = 1;
-	mov	_wdtCounter,#0x01
-	mov	(_wdtCounter + 1),a
-;	watchdog-testing.c:11: unsigned int serialTime= 0;
+;	BME680-sensor.c:8: static unsigned int   serialTime = 0;
 	mov	_serialTime,a
 	mov	(_serialTime + 1),a
-;	watchdog-testing.c:12: unsigned int counter= 0;
-	mov	_counter,a
-	mov	(_counter + 1),a
-;	watchdog-testing.c:15: static unsigned int blink_base = 0;
-	mov	_blink_base,a
-	mov	(_blink_base + 1),a
-;	watchdog-testing.c:8: volatile __bit button_irq = 0;
-;	assignBit
-	clr	_button_irq
-;	watchdog-testing.c:9: volatile __bit debounce = 0;
-;	assignBit
-	clr	_debounce
-;	watchdog-testing.c:10: volatile __bit ledON = 0;
-;	assignBit
-	clr	_ledON
-;	watchdog-testing.c:14: static __bit wdt_started = 0;
-;	assignBit
-	clr	_wdt_started
 	.area GSFINAL (CODE)
 	ljmp	__sdcc_program_startup
 ;--------------------------------------------------------
@@ -713,69 +663,9 @@ __sdcc_program_startup:
 ;--------------------------------------------------------
 	.area CSEG    (CODE)
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'clock_init'
-;------------------------------------------------------------
-;	watchdog-testing.c:22: void clock_init(void) {
-;	-----------------------------------------
-;	 function clock_init
-;	-----------------------------------------
-_clock_init:
-	ar7 = 0x07
-	ar6 = 0x06
-	ar5 = 0x05
-	ar4 = 0x04
-	ar3 = 0x03
-	ar2 = 0x02
-	ar1 = 0x01
-	ar0 = 0x00
-;	watchdog-testing.c:23: SAFE_MOD = 0x55;
-	mov	_SAFE_MOD,#0x55
-;	watchdog-testing.c:24: SAFE_MOD = 0xAA;
-	mov	_SAFE_MOD,#0xaa
-;	watchdog-testing.c:25: CLOCK_CFG |= bOSC_EN_INT; 
-	orl	_CLOCK_CFG,#0x80
-;	watchdog-testing.c:27: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
-	mov	a,#0xf8
-	anl	a,_CLOCK_CFG
-	orl	a,#0x06
-	mov	_CLOCK_CFG,a
-;	watchdog-testing.c:29: SAFE_MOD = 0x00;
-	mov	_SAFE_MOD,#0x00
-;	watchdog-testing.c:30: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'INT1_ISR'
-;------------------------------------------------------------
-;	watchdog-testing.c:31: void INT1_ISR(void) __interrupt (INT_NO_INT1)// You can do __interrupt (2) if you prefer 
-;	-----------------------------------------
-;	 function INT1_ISR
-;	-----------------------------------------
-_INT1_ISR:
-	push	acc
-;	watchdog-testing.c:33: if (!(P3 & (1 << 3))) {   // only accept if pin is LOW. This prevents
-	mov	a,_P3
-	jb	acc.3,00105$
-;	watchdog-testing.c:34: if (!debounce) {        // only register if not already debouncing
-	jb	_debounce,00105$
-;	watchdog-testing.c:35: button_irq = 1;
-;	assignBit
-	setb	_button_irq
-;	watchdog-testing.c:36: debounce = 1;       // arm immediately, atomically
-;	assignBit
-	setb	_debounce
-00105$:
-;	watchdog-testing.c:39: }
-	pop	acc
-	reti
-;	eliminated unneeded mov psw,# (no regs used in bank)
-;	eliminated unneeded push/pop not_psw
-;	eliminated unneeded push/pop dpl
-;	eliminated unneeded push/pop dph
-;	eliminated unneeded push/pop b
-;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_ISR'
 ;------------------------------------------------------------
-;	watchdog-testing.c:40: void timer0_ISR(void) __interrupt(1) __using(1){ 
+;	BME680-sensor.c:11: void timer0_ISR(void) __interrupt(INT_NO_TMR0) __using(1) {
 ;	-----------------------------------------
 ;	 function timer0_ISR
 ;	-----------------------------------------
@@ -791,14 +681,14 @@ _timer0_ISR:
 	push	acc
 	push	psw
 	mov	psw,#0x08
-;	watchdog-testing.c:42: TF0 = 0;  // clear overflow flag (important for robustness)
+;	BME680-sensor.c:12: TF0 = 0;
 ;	assignBit
 	clr	_TF0
-;	watchdog-testing.c:43: TH0 = 0xB1;
+;	BME680-sensor.c:13: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	watchdog-testing.c:44: TL0 = 0xE0;
+;	BME680-sensor.c:14: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	watchdog-testing.c:45: tick_10ms++; // this is the 10ms tick for LED blinking
+;	BME680-sensor.c:15: tick_10ms++;
 	mov	r6,_tick_10ms
 	mov	r7,(_tick_10ms + 1)
 	mov	a,#0x01
@@ -807,39 +697,13 @@ _timer0_ISR:
 	clr	a
 	addc	a, r7
 	mov	(_tick_10ms + 1),a
-;	watchdog-testing.c:46: serialTime++; // this is the timer for Serial_println transmissions
+;	BME680-sensor.c:16: serialTime++;
 	inc	_serialTime
 	clr	a
-	cjne	a,_serialTime,00119$
+	cjne	a,_serialTime,00103$
 	inc	(_serialTime + 1)
-00119$:
-;	watchdog-testing.c:47: if(debounce){ // if external interrupt happened, activate debounce timer
-	jnb	_debounce,00105$
-;	watchdog-testing.c:48: debounceTimer++;
-	mov	r6,_debounceTimer
-	mov	r7,(_debounceTimer + 1)
-	mov	a,#0x01
-	add	a, r6
-	mov	_debounceTimer,a
-	clr	a
-	addc	a, r7
-	mov	(_debounceTimer + 1),a
-;	watchdog-testing.c:49: if(debounceTimer >= 60){ // after 600ms of not detecting the push-button
-	clr	c
-	mov	a,_debounceTimer
-	subb	a,#0x3c
-	mov	a,(_debounceTimer + 1)
-	subb	a,#0x00
-	jc	00105$
-;	watchdog-testing.c:50: debounce= 0; // turn debounce delay OFF
-;	assignBit
-	clr	_debounce
-;	watchdog-testing.c:51: debounceTimer= 0; // and clear timer/counter for next time
-	clr	a
-	mov	_debounceTimer,a
-	mov	(_debounceTimer + 1),a
-00105$:
-;	watchdog-testing.c:54: }
+00103$:
+;	BME680-sensor.c:17: }
 	pop	psw
 	pop	acc
 	reti
@@ -847,13 +711,13 @@ _timer0_ISR:
 ;	eliminated unneeded push/pop dph
 ;	eliminated unneeded push/pop b
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'timer0_init'
+;Allocation info for local variables in function 'clock_init'
 ;------------------------------------------------------------
-;	watchdog-testing.c:58: void timer0_init(void) {
+;	BME680-sensor.c:20: void clock_init(void) {
 ;	-----------------------------------------
-;	 function timer0_init
+;	 function clock_init
 ;	-----------------------------------------
-_timer0_init:
+_clock_init:
 	ar7 = 0x07
 	ar6 = 0x06
 	ar5 = 0x05
@@ -862,224 +726,677 @@ _timer0_init:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	watchdog-testing.c:60: T2MOD &= ~bTMR_CLK;   // disable fast clock mode
-	anl	_T2MOD,#0x7f
-;	watchdog-testing.c:61: T2MOD &= ~bT0_CLK;    // Timer0 = Fsys/12
-	anl	_T2MOD,#0xef
-;	watchdog-testing.c:62: TMOD &= ~0x03;  // clear Timer0 mode bits
+;	BME680-sensor.c:21: SAFE_MOD = 0x55;
+	mov	_SAFE_MOD,#0x55
+;	BME680-sensor.c:22: SAFE_MOD = 0xAA;
+	mov	_SAFE_MOD,#0xaa
+;	BME680-sensor.c:23: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;   // Fsys = 24MHz
+	mov	a,#0xf8
+	anl	a,_CLOCK_CFG
+	orl	a,#0x06
+	mov	_CLOCK_CFG,a
+;	BME680-sensor.c:24: SAFE_MOD = 0x00;
+	mov	_SAFE_MOD,#0x00
+;	BME680-sensor.c:25: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'timer0_init'
+;------------------------------------------------------------
+;	BME680-sensor.c:28: void timer0_init(void) {
+;	-----------------------------------------
+;	 function timer0_init
+;	-----------------------------------------
+_timer0_init:
+;	BME680-sensor.c:29: TMOD &= ~0x03;
 	anl	_TMOD,#0xfc
-;	watchdog-testing.c:63: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
+;	BME680-sensor.c:30: TMOD |=  0x01;   // mode 1, 16-bit
 	orl	_TMOD,#0x01
-;	watchdog-testing.c:66: TH0 = 0xB1;
+;	BME680-sensor.c:31: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	watchdog-testing.c:67: TL0 = 0xE0;
+;	BME680-sensor.c:32: TL0 = 0xE0;      // 10ms @ 24MHz / 12
 	mov	_TL0,#0xe0
-;	watchdog-testing.c:69: TF0 = 0;
+;	BME680-sensor.c:33: TF0 = 0;
 ;	assignBit
 	clr	_TF0
-;	watchdog-testing.c:71: ET0 = 1;   // enable Timer0 interrupt
+;	BME680-sensor.c:34: ET0 = 1;
 ;	assignBit
 	setb	_ET0
-;	watchdog-testing.c:72: TR0 = 1;   // start Timer0
+;	BME680-sensor.c:35: TR0 = 1;
 ;	assignBit
 	setb	_TR0
-;	watchdog-testing.c:73: EA = 1;
+;	BME680-sensor.c:36: EA  = 1;
 ;	assignBit
 	setb	_EA
-;	watchdog-testing.c:74: }
+;	BME680-sensor.c:37: }
 	ret
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'extint1_init'
+;Allocation info for local variables in function 'print_fixed2'
 ;------------------------------------------------------------
-;	watchdog-testing.c:75: void extint1_init(void) {
-;	-----------------------------------------
-;	 function extint1_init
-;	-----------------------------------------
-_extint1_init:
-;	watchdog-testing.c:76: IT1 = 1;   // falling edge
-;	assignBit
-	setb	_IT1
-;	watchdog-testing.c:77: EX1 = 1;   // enable INT1
-;	assignBit
-	setb	_EX1
-;	watchdog-testing.c:78: }
-	ret
+;val           Allocated to stack - _bp +1 +4 
+;frac          Allocated to registers r4 
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'blink_led'
-;------------------------------------------------------------
-;t             Allocated to registers r6 r7 
-;phase         Allocated to registers r4 r5 
-;------------------------------------------------------------
-;	watchdog-testing.c:79: void blink_led(unsigned int t) {
+;	BME680-sensor.c:41: static void print_fixed2(int32_t val) {
 ;	-----------------------------------------
-;	 function blink_led
+;	 function print_fixed2
 ;	-----------------------------------------
-_blink_led:
-	mov	r6, dpl
-	mov	r7, dph
-;	watchdog-testing.c:80: unsigned int phase = t - blink_base;
-	mov	a,r6
+_print_fixed2:
+	push	_bp
+	mov	_bp,sp
+	push	dpl
+	push	dph
+	push	b
+	push	acc
+;	BME680-sensor.c:42: if (val < 0) {
+	mov	r0,_bp
+	inc	r0
+	inc	r0
+	inc	r0
+	inc	r0
+	mov	a,@r0
+	jnb	acc.7,00102$
+;	BME680-sensor.c:43: Serial_print("-");
+	mov	dptr,#___str_0
+	mov	b, #0x80
+	lcall	_Serial_print
+;	BME680-sensor.c:44: val = -val;
+	mov	r0,_bp
+	inc	r0
 	clr	c
-	subb	a,_blink_base
-	mov	r4,a
-	mov	a,r7
-	subb	a,(_blink_base + 1)
-	mov	r5,a
-;	watchdog-testing.c:82: if (phase < 30) {
-	clr	c
-	mov	a,r4
-	subb	a,#0x1e
-	mov	a,r5
-	subb	a,#0x00
-	jnc	00105$
-;	watchdog-testing.c:83: P3 |= (1 << 0);
-	orl	_P3,#0x01
-	ret
-00105$:
-;	watchdog-testing.c:84: } else if (phase < 60) {
-	clr	c
-	mov	a,r4
-	subb	a,#0x3c
-	mov	a,r5
-	subb	a,#0x00
-	jnc	00102$
-;	watchdog-testing.c:85: P3 &= ~(1 << 0);
-	anl	_P3,#0xfe
-	ret
-00102$:
-;	watchdog-testing.c:87: blink_base = t;
-	mov	_blink_base,r6
-	mov	(_blink_base + 1),r7
-;	watchdog-testing.c:88: wdtCounter++; 
-	mov	r6,_wdtCounter
-	mov	r7,(_wdtCounter + 1)
-	mov	a,#0x01
-	add	a, r6
-	mov	_wdtCounter,a
 	clr	a
-	addc	a, r7
-	mov	(_wdtCounter + 1),a
-;	watchdog-testing.c:90: }
+	subb	a,@r0
+	mov	@r0,a
+	inc	r0
+	clr	a
+	subb	a,@r0
+	mov	@r0,a
+	inc	r0
+	clr	a
+	subb	a,@r0
+	mov	@r0,a
+	inc	r0
+	clr	a
+	subb	a,@r0
+	mov	@r0,a
+00102$:
+;	BME680-sensor.c:46: Serial_print_uint((uint16_t)(val / 100));
+	mov	a,#0x64
+	push	acc
+	clr	a
+	push	acc
+	push	acc
+	push	acc
+	mov	r0,_bp
+	inc	r0
+	mov	dpl, @r0
+	inc	r0
+	mov	dph, @r0
+	inc	r0
+	mov	b, @r0
+	inc	r0
+	mov	a, @r0
+	lcall	__divslong
+	mov	r2, dpl
+	mov	r3, dph
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	dpl,r2
+	mov	dph,r3
+	lcall	_Serial_print_uint
+;	BME680-sensor.c:47: Serial_print(".");
+	mov	dptr,#___str_1
+	mov	b, #0x80
+	lcall	_Serial_print
+;	BME680-sensor.c:48: uint8_t frac = (uint8_t)(val % 100);
+	mov	a,#0x64
+	push	acc
+	clr	a
+	push	acc
+	push	acc
+	push	acc
+	mov	r0,_bp
+	inc	r0
+	mov	dpl, @r0
+	inc	r0
+	mov	dph, @r0
+	inc	r0
+	mov	b, @r0
+	inc	r0
+	mov	a, @r0
+	lcall	__modslong
+	mov	r4, dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+;	BME680-sensor.c:49: if (frac < 10) Serial_print("0");
+	cjne	r4,#0x0a,00120$
+00120$:
+	jnc	00104$
+	mov	dptr,#___str_2
+	mov	b, #0x80
+	push	ar4
+	lcall	_Serial_print
+	pop	ar4
+00104$:
+;	BME680-sensor.c:50: Serial_print_uint(frac);
+	mov	r7,#0x00
+	mov	dpl, r4
+	mov	dph, r7
+	lcall	_Serial_print_uint
+;	BME680-sensor.c:51: }
+	mov	sp,_bp
+	pop	_bp
 	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'print_pa_hpa'
+;------------------------------------------------------------
+;pa            Allocated to registers r4 r5 r6 r7 
+;hpa100        Allocated to stack - _bp +1 +4 
+;------------------------------------------------------------
+;	BME680-sensor.c:55: static void print_pa_hpa(uint32_t pa) {
+;	-----------------------------------------
+;	 function print_pa_hpa
+;	-----------------------------------------
+_print_pa_hpa:
+	push	_bp
+	mov	_bp,sp
+	mov	r4,dpl
+	mov	r5,dph
+	mov	r6,b
+	mov	r7,a
+	mov	a,sp
+	add	a,#0x04
+	mov	sp,a
+;	BME680-sensor.c:57: uint32_t hpa100 = pa / 10;   // hPa * 10 (one decimal)
+	mov	a,#0x0a
+	push	acc
+	clr	a
+	push	acc
+	push	acc
+	push	acc
+;	BME680-sensor.c:58: Serial_print_uint((uint16_t)(hpa100 / 10));
+	mov	dpl, r4
+	mov	dph, r5
+	mov	b, r6
+	mov	a, r7
+	lcall	__divulong
+	mov	r0,_bp
+	inc	r0
+	mov	@r0, dpl
+	inc	r0
+	mov	@r0, dph
+	inc	r0
+	mov	@r0, b
+	inc	r0
+	mov	@r0,a
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	a,#0x0a
+	push	acc
+	clr	a
+	push	acc
+	push	acc
+	push	acc
+	mov	r0,_bp
+	inc	r0
+	mov	dpl, @r0
+	inc	r0
+	mov	dph, @r0
+	inc	r0
+	mov	b, @r0
+	inc	r0
+	mov	a, @r0
+	lcall	__divulong
+	mov	r2, dpl
+	mov	r3, dph
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	dpl,r2
+	mov	dph,r3
+	lcall	_Serial_print_uint
+;	BME680-sensor.c:59: Serial_print(".");
+	mov	dptr,#___str_1
+	mov	b, #0x80
+	lcall	_Serial_print
+;	BME680-sensor.c:60: Serial_print_uint((uint8_t)(hpa100 % 10));
+	mov	a,#0x0a
+	push	acc
+	clr	a
+	push	acc
+	push	acc
+	push	acc
+	mov	r0,_bp
+	inc	r0
+	mov	dpl, @r0
+	inc	r0
+	mov	dph, @r0
+	inc	r0
+	mov	b, @r0
+	inc	r0
+	mov	a, @r0
+	lcall	__modulong
+	mov	r4, dpl
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	r7,#0x00
+	mov	dpl, r4
+	mov	dph, r7
+	lcall	_Serial_print_uint
+;	BME680-sensor.c:61: }
+	mov	sp,_bp
+	pop	_bp
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'print_humidity'
+;------------------------------------------------------------
+;val           Allocated to registers r4 r5 r6 r7 
+;------------------------------------------------------------
+;	BME680-sensor.c:64: static void print_humidity(uint32_t val) {
+;	-----------------------------------------
+;	 function print_humidity
+;	-----------------------------------------
+_print_humidity:
+	mov	r4,dpl
+	mov	r5,dph
+	mov	r6,b
+	mov	r7,a
+;	BME680-sensor.c:65: Serial_print_uint((uint16_t)(val / 1000));
+	push	ar7
+	push	ar6
+	push	ar5
+	push	ar4
+	mov	a,#0xe8
+	push	acc
+	mov	a,#0x03
+	push	acc
+	clr	a
+	push	acc
+	push	acc
+	mov	dpl, r4
+	mov	dph, r5
+	mov	b, r6
+	mov	a, r7
+	lcall	__divulong
+	mov	r0, dpl
+	mov	r1, dph
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	dpl,r0
+	mov	dph,r1
+	lcall	_Serial_print_uint
+;	BME680-sensor.c:66: Serial_print(".");
+	mov	dptr,#___str_1
+	mov	b, #0x80
+	lcall	_Serial_print
+	pop	ar4
+	pop	ar5
+	pop	ar6
+	pop	ar7
+;	BME680-sensor.c:67: Serial_print_uint((uint8_t)((val % 1000) / 100));
+	mov	a,#0xe8
+	push	acc
+	mov	a,#0x03
+	push	acc
+	clr	a
+	push	acc
+	push	acc
+	mov	dpl, r4
+	mov	dph, r5
+	mov	b, r6
+	mov	a, r7
+	lcall	__modulong
+	mov	r4, dpl
+	mov	r5, dph
+	mov	a,sp
+	add	a,#0xfc
+	mov	sp,a
+	mov	dpl,r4
+	mov	dph,r5
+	mov	a,#0x64
+	push	acc
+	clr	a
+	push	acc
+	lcall	__divsint
+	mov	r6, dpl
+	dec	sp
+	dec	sp
+	mov	r7,#0x00
+	mov	dpl, r6
+	mov	dph, r7
+;	BME680-sensor.c:68: }
+	ljmp	_Serial_print_uint
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;	watchdog-testing.c:92: void main(void) {
+;data          Allocated to stack - _bp +1 +12 
+;t             Allocated to registers r6 r7 
+;bme_ok        Allocated to registers 
+;i             Allocated to stack - _bp +13 +4 
+;------------------------------------------------------------
+;	BME680-sensor.c:71: void main(void) {
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	watchdog-testing.c:93: clock_init();
+	push	_bp
+	mov	a,sp
+	mov	_bp,a
+	add	a,#0x10
+	mov	sp,a
+;	BME680-sensor.c:74: P1_MOD_OC &= ~(1 << 6);   // not open-drain
+	anl	_P1_MOD_OC,#0xbf
+;	BME680-sensor.c:75: P1_DIR_PU  &= ~(1 << 6);  // input, no pull-up (float)
+	anl	_P1_DIR_PU,#0xbf
+;	BME680-sensor.c:79: P1_MOD_OC &= ~(1 << 4);   // push-pull output
+	anl	_P1_MOD_OC,#0xef
+;	BME680-sensor.c:80: P1_DIR_PU |=  (1 << 4);   // output enable
+	orl	_P1_DIR_PU,#0x10
+;	BME680-sensor.c:81: P1 &= ~(1 << 4);          // CS LOW — forces BME680 into SPI mode
+	anl	_P1,#0xef
+;	BME680-sensor.c:87: clock_init();
 	lcall	_clock_init
-;	watchdog-testing.c:94: extint1_init();
-	lcall	_extint1_init
-;	watchdog-testing.c:95: timer0_init();  
+;	BME680-sensor.c:88: timer0_init();
 	lcall	_timer0_init
-;	watchdog-testing.c:99: P3_MOD_OC &= ~(1 << 0);   // push-pull
-	anl	_P3_MOD_OC,#0xfe
-;	watchdog-testing.c:100: P3_DIR_PU |=  (1 << 0);   // enable strong output drive
-	orl	_P3_DIR_PU,#0x01
-;	watchdog-testing.c:103: P3_MOD_OC &= ~(1 << 3);   // normal input
-	anl	_P3_MOD_OC,#0xf7
-;	watchdog-testing.c:104: P3_DIR_PU |=  (1 << 3);   // enable pull-up
-	orl	_P3_DIR_PU,#0x08
-;	watchdog-testing.c:105: P3 |= (1 << 3);           // pull-up
-	orl	_P3,#0x08
-;	watchdog-testing.c:107: P3 &= ~(1 << 0);  // Make LED pin P3.0 "start" as OFF
-	anl	_P3,#0xfe
-;	watchdog-testing.c:109: while (1) {
-00120$:
-;	watchdog-testing.c:111: if (!wdt_started && tick_10ms > 50) {  // wait ~500ms
-	jb	_wdt_started,00102$
-	clr	c
-	mov	a,#0x32
-	subb	a,_tick_10ms
+;	BME680-sensor.c:96: for (i = 0; i < 200000UL; i++) { __asm nop __endasm; }
+	mov	a,_bp
+	add	a,#0x0d
+	mov	r0,a
 	clr	a
-	subb	a,(_tick_10ms + 1)
-	jnc	00102$
-;	watchdog-testing.c:112: SAFE_MOD = 0x55;
-	mov	_SAFE_MOD,#0x55
-;	watchdog-testing.c:113: SAFE_MOD = 0xAA;
-	mov	_SAFE_MOD,#0xaa
-;	watchdog-testing.c:114: GLOBAL_CFG |= bWDOG_EN;
-	orl	_GLOBAL_CFG,#0x01
-;	watchdog-testing.c:115: SAFE_MOD = 0x00;
-	mov	_SAFE_MOD,#0x00
-;	watchdog-testing.c:117: wdt_started = 1;
-;	assignBit
-	setb	_wdt_started
-00102$:
-;	watchdog-testing.c:120: if (wdtCounter < 5) {
+	mov	@r0,a
+	inc	r0
+	mov	@r0,a
+	inc	r0
+	mov	@r0,a
+	inc	r0
+	mov	@r0,a
+00116$:
+	mov	a,_bp
+	add	a,#0x0d
+	mov	r0,a
 	clr	c
-	mov	a,_wdtCounter
-	subb	a,#0x05
-	mov	a,(_wdtCounter + 1)
+	mov	a,@r0
+	subb	a,#0x40
+	inc	r0
+	mov	a,@r0
+	subb	a,#0x0d
+	inc	r0
+	mov	a,@r0
+	subb	a,#0x03
+	inc	r0
+	mov	a,@r0
 	subb	a,#0x00
-	jnc	00105$
-;	watchdog-testing.c:121: WDOG_COUNT = 0x01;   // feed normally
-	mov	_WDOG_COUNT,#0x01
-00105$:
-;	watchdog-testing.c:123: EA = 0;
+	jnc	00101$
+	nop	
+	mov	a,_bp
+	add	a,#0x0d
+	mov	r0,a
+	mov	ar4,@r0
+	inc	r0
+	mov	ar5,@r0
+	inc	r0
+	mov	ar6,@r0
+	inc	r0
+	mov	ar7,@r0
+	mov	a,_bp
+	add	a,#0x0d
+	mov	r0,a
+	mov	a,#0x01
+	add	a, r4
+	mov	@r0,a
+	clr	a
+	addc	a, r5
+	inc	r0
+	mov	@r0,a
+	clr	a
+	addc	a, r6
+	inc	r0
+	mov	@r0,a
+	clr	a
+	addc	a, r7
+	inc	r0
+	mov	@r0,a
+	sjmp	00116$
+00101$:
+;	BME680-sensor.c:102: SAFE_MOD = 0x55;
+	mov	_SAFE_MOD,#0x55
+;	BME680-sensor.c:103: SAFE_MOD = 0xAA;
+	mov	_SAFE_MOD,#0xaa
+;	BME680-sensor.c:104: GLOBAL_CFG &= ~bWDOG_EN;
+	anl	_GLOBAL_CFG,#0xfe
+;	BME680-sensor.c:105: SAFE_MOD = 0x00;
+	mov	_SAFE_MOD,#0x00
+;	BME680-sensor.c:107: Serial_begin();
+	lcall	_Serial_begin
+;	BME680-sensor.c:109: Serial_println("BME680 + CH552 starting...");
+	mov	dptr,#___str_3
+	mov	b, #0x80
+	lcall	_Serial_println
+;	BME680-sensor.c:111: bme_ok = BME680_init();
+	lcall	_BME680_init
+	mov	a, dpl
+;	BME680-sensor.c:113: if (!bme_ok) {
+	jnz	00109$
+;	BME680-sensor.c:114: Serial_println("BME680 init FAILED - check wiring!");
+	mov	dptr,#___str_4
+	mov	b, #0x80
+	lcall	_Serial_println
+;	BME680-sensor.c:116: P3_MOD_OC &= ~(1 << 0);
+	anl	_P3_MOD_OC,#0xfe
+;	BME680-sensor.c:117: P3_DIR_PU  |=  (1 << 0);
+	orl	_P3_DIR_PU,#0x01
+;	BME680-sensor.c:118: while (1) {
+00106$:
+;	BME680-sensor.c:119: EA = 0; t = tick_10ms; EA = 1;
 ;	assignBit
 	clr	_EA
-;	watchdog-testing.c:124: t = tick_10ms;
-	mov	_t,_tick_10ms
-	mov	(_t + 1),(_tick_10ms + 1)
-;	watchdog-testing.c:125: EA = 1;
+	mov	r6,_tick_10ms
+	mov	r7,(_tick_10ms + 1)
 ;	assignBit
 	setb	_EA
-;	watchdog-testing.c:127: if (button_irq && debounce) {
-	jnb	_button_irq,00110$
-	jnb	_debounce,00110$
-;	watchdog-testing.c:128: button_irq = 0;
-;	assignBit
-	clr	_button_irq
-;	watchdog-testing.c:130: if (ledON == 0) {
-	jb	_ledON,00107$
-;	watchdog-testing.c:131: ledON = 1;
-;	assignBit
-	setb	_ledON
-;	watchdog-testing.c:132: wdtCounter = 0;
+;	BME680-sensor.c:120: if (t % 10 < 5) P3 |=  (1 << 0);
+	mov	a,#0x0a
+	push	acc
 	clr	a
-	mov	_wdtCounter,a
-	mov	(_wdtCounter + 1),a
-	sjmp	00110$
-00107$:
-;	watchdog-testing.c:134: ledON = 0;
-;	assignBit
-	clr	_ledON
-00110$:
-;	watchdog-testing.c:138: if (ledON) {
-	jnb	_ledON,00113$
-;	watchdog-testing.c:139: blink_led(t);            
-	mov	dpl, _t
-	mov	dph, (_t + 1)
-	lcall	_blink_led
-00113$:
-;	watchdog-testing.c:143: if (wdtCounter >= 5) {
+	push	acc
+	mov	dpl, r6
+	mov	dph, r7
+	lcall	__moduint
+	mov	r6, dpl
+	mov	r7, dph
+	dec	sp
+	dec	sp
 	clr	c
-	mov	a,_wdtCounter
+	mov	a,r6
 	subb	a,#0x05
-	mov	a,(_wdtCounter + 1)
+	mov	a,r7
 	subb	a,#0x00
-	jc	00120$
-;	watchdog-testing.c:144: SAFE_MOD = 0x55;
-	mov	_SAFE_MOD,#0x55
-;	watchdog-testing.c:145: SAFE_MOD = 0xAA;
-	mov	_SAFE_MOD,#0xaa
-;	watchdog-testing.c:146: USB_CTRL = 0x00;
-	mov	_USB_CTRL,#0x00
-;	watchdog-testing.c:147: SAFE_MOD = 0x00;
-	mov	_SAFE_MOD,#0x00
-;	watchdog-testing.c:148: EA = 0;
+	jnc	00103$
+	orl	_P3,#0x01
+	sjmp	00106$
+00103$:
+;	BME680-sensor.c:121: else             P3 &= ~(1 << 0);
+	anl	_P3,#0xfe
+	sjmp	00106$
+00109$:
+;	BME680-sensor.c:125: Serial_println("BME680 OK");
+	mov	dptr,#___str_5
+	mov	b, #0x80
+	lcall	_Serial_println
+;	BME680-sensor.c:126: Serial_println("----------------------------");
+	mov	dptr,#___str_6
+	mov	b, #0x80
+	lcall	_Serial_println
+;	BME680-sensor.c:128: while (1) {
+00113$:
+;	BME680-sensor.c:129: EA = 0; t = tick_10ms; EA = 1;
 ;	assignBit
 	clr	_EA
-;	watchdog-testing.c:149: while (1) { __asm nop __endasm; }
-00115$:
-	nop	
-;	watchdog-testing.c:152: }
-	sjmp	00115$
+	mov	r6,_tick_10ms
+	mov	r7,(_tick_10ms + 1)
+;	assignBit
+	setb	_EA
+;	BME680-sensor.c:132: if (BME680_update(t, &data)) {
+	mov	r5,_bp
+	inc	r5
+	mov	ar2,r5
+	mov	r3,#0x00
+	mov	r4,#0x40
+	push	ar5
+	push	ar2
+	push	ar3
+	push	ar4
+	mov	dpl, r6
+	mov	dph, r7
+	lcall	_BME680_update
+	mov	r7, dpl
+	dec	sp
+	dec	sp
+	dec	sp
+	pop	ar5
+	mov	a,r7
+	jz	00113$
+;	BME680-sensor.c:134: Serial_print("Temp: ");
+	mov	dptr,#___str_7
+	mov	b, #0x80
+	push	ar5
+	lcall	_Serial_print
+	pop	ar5
+;	BME680-sensor.c:135: print_fixed2(data.temperature);
+	mov	ar1,r5
+	mov	ar3,@r1
+	inc	r1
+	mov	ar4,@r1
+	inc	r1
+	mov	ar6,@r1
+	inc	r1
+	mov	ar7,@r1
+	dec	r1
+	dec	r1
+	dec	r1
+	mov	dpl, r3
+	mov	dph, r4
+	mov	b, r6
+	mov	a, r7
+	push	ar5
+	lcall	_print_fixed2
+;	BME680-sensor.c:136: Serial_print(" C  |  Pres: ");
+	mov	dptr,#___str_8
+	mov	b, #0x80
+	lcall	_Serial_print
+	pop	ar5
+;	BME680-sensor.c:137: print_pa_hpa(data.pressure);
+	mov	a,#0x04
+	add	a, r5
+	mov	r1,a
+	mov	ar3,@r1
+	inc	r1
+	mov	ar4,@r1
+	inc	r1
+	mov	ar6,@r1
+	inc	r1
+	mov	ar7,@r1
+	dec	r1
+	dec	r1
+	dec	r1
+	mov	dpl, r3
+	mov	dph, r4
+	mov	b, r6
+	mov	a, r7
+	push	ar5
+	lcall	_print_pa_hpa
+;	BME680-sensor.c:138: Serial_print(" hPa  |  Hum: ");
+	mov	dptr,#___str_9
+	mov	b, #0x80
+	lcall	_Serial_print
+	pop	ar5
+;	BME680-sensor.c:139: print_humidity(data.humidity);
+	mov	a,#0x08
+	add	a, r5
+	mov	r1,a
+	mov	ar4,@r1
+	inc	r1
+	mov	ar5,@r1
+	inc	r1
+	mov	ar6,@r1
+	inc	r1
+	mov	ar7,@r1
+	dec	r1
+	dec	r1
+	dec	r1
+	mov	dpl, r4
+	mov	dph, r5
+	mov	b, r6
+	mov	a, r7
+	lcall	_print_humidity
+;	BME680-sensor.c:140: Serial_println(" %");
+	mov	dptr,#___str_10
+	mov	b, #0x80
+	lcall	_Serial_println
+	ljmp	00113$
+;	BME680-sensor.c:143: }
+	mov	sp,_bp
+	pop	_bp
+	ret
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
+	.area CONST   (CODE)
+___str_0:
+	.ascii "-"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_1:
+	.ascii "."
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_2:
+	.ascii "0"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_3:
+	.ascii "BME680 + CH552 starting..."
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_4:
+	.ascii "BME680 init FAILED - check wiring!"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_5:
+	.ascii "BME680 OK"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_6:
+	.ascii "----------------------------"
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_7:
+	.ascii "Temp: "
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_8:
+	.ascii " C  |  Pres: "
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_9:
+	.ascii " hPa  |  Hum: "
+	.db 0x00
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+___str_10:
+	.ascii " %"
+	.db 0x00
+	.area CSEG    (CODE)
 	.area XINIT   (CODE)
 	.area CABS    (ABS,CODE)

@@ -523,590 +523,563 @@
       000016                        523 	.ds 2
       000018                        524 _counter::
       000018                        525 	.ds 2
-      00001A                        526 _last_tick:
+      00001A                        526 _t::
       00001A                        527 	.ds 2
-      00001C                        528 _t::
+      00001C                        528 _blink_base:
       00001C                        529 	.ds 2
-      00001E                        530 _blink_base:
-      00001E                        531 	.ds 2
+                                    530 ;--------------------------------------------------------
+                                    531 ; overlayable items in internal ram
                                     532 ;--------------------------------------------------------
-                                    533 ; overlayable items in internal ram
+                                    533 	.area	OSEG    (OVR,DATA)
                                     534 ;--------------------------------------------------------
-                                    535 	.area	OSEG    (OVR,DATA)
+                                    535 ; Stack segment in internal ram
                                     536 ;--------------------------------------------------------
-                                    537 ; Stack segment in internal ram
-                                    538 ;--------------------------------------------------------
-                                    539 	.area SSEG
-      000021                        540 __start__stack:
-      000021                        541 	.ds	1
-                                    542 
+                                    537 	.area SSEG
+      000021                        538 __start__stack:
+      000021                        539 	.ds	1
+                                    540 
+                                    541 ;--------------------------------------------------------
+                                    542 ; indirectly addressable internal ram data
                                     543 ;--------------------------------------------------------
-                                    544 ; indirectly addressable internal ram data
+                                    544 	.area ISEG    (DATA)
                                     545 ;--------------------------------------------------------
-                                    546 	.area ISEG    (DATA)
+                                    546 ; absolute internal ram data
                                     547 ;--------------------------------------------------------
-                                    548 ; absolute internal ram data
-                                    549 ;--------------------------------------------------------
-                                    550 	.area IABS    (ABS,DATA)
-                                    551 	.area IABS    (ABS,DATA)
+                                    548 	.area IABS    (ABS,DATA)
+                                    549 	.area IABS    (ABS,DATA)
+                                    550 ;--------------------------------------------------------
+                                    551 ; bit data
                                     552 ;--------------------------------------------------------
-                                    553 ; bit data
-                                    554 ;--------------------------------------------------------
-                                    555 	.area BSEG    (BIT)
-      000000                        556 _button_irq::
-      000000                        557 	.ds 1
-      000001                        558 _debounce::
-      000001                        559 	.ds 1
-      000002                        560 _ledON::
-      000002                        561 	.ds 1
-      000003                        562 _wdt_started:
-      000003                        563 	.ds 1
+                                    553 	.area BSEG    (BIT)
+      000000                        554 _button_irq::
+      000000                        555 	.ds 1
+      000001                        556 _debounce::
+      000001                        557 	.ds 1
+      000002                        558 _ledON::
+      000002                        559 	.ds 1
+      000003                        560 _wdt_started:
+      000003                        561 	.ds 1
+                                    562 ;--------------------------------------------------------
+                                    563 ; paged external ram data
                                     564 ;--------------------------------------------------------
-                                    565 ; paged external ram data
+                                    565 	.area PSEG    (PAG,XDATA)
                                     566 ;--------------------------------------------------------
-                                    567 	.area PSEG    (PAG,XDATA)
+                                    567 ; uninitialized external ram data
                                     568 ;--------------------------------------------------------
-                                    569 ; uninitialized external ram data
+                                    569 	.area XSEG    (XDATA)
                                     570 ;--------------------------------------------------------
-                                    571 	.area XSEG    (XDATA)
+                                    571 ; absolute external ram data
                                     572 ;--------------------------------------------------------
-                                    573 ; absolute external ram data
+                                    573 	.area XABS    (ABS,XDATA)
                                     574 ;--------------------------------------------------------
-                                    575 	.area XABS    (ABS,XDATA)
+                                    575 ; initialized external ram data
                                     576 ;--------------------------------------------------------
-                                    577 ; initialized external ram data
-                                    578 ;--------------------------------------------------------
-                                    579 	.area XISEG   (XDATA)
-                                    580 	.area HOME    (CODE)
-                                    581 	.area GSINIT0 (CODE)
-                                    582 	.area GSINIT1 (CODE)
-                                    583 	.area GSINIT2 (CODE)
-                                    584 	.area GSINIT3 (CODE)
-                                    585 	.area GSINIT4 (CODE)
-                                    586 	.area GSINIT5 (CODE)
-                                    587 	.area GSINIT  (CODE)
-                                    588 	.area GSFINAL (CODE)
-                                    589 	.area CSEG    (CODE)
+                                    577 	.area XISEG   (XDATA)
+                                    578 	.area HOME    (CODE)
+                                    579 	.area GSINIT0 (CODE)
+                                    580 	.area GSINIT1 (CODE)
+                                    581 	.area GSINIT2 (CODE)
+                                    582 	.area GSINIT3 (CODE)
+                                    583 	.area GSINIT4 (CODE)
+                                    584 	.area GSINIT5 (CODE)
+                                    585 	.area GSINIT  (CODE)
+                                    586 	.area GSFINAL (CODE)
+                                    587 	.area CSEG    (CODE)
+                                    588 ;--------------------------------------------------------
+                                    589 ; interrupt vector
                                     590 ;--------------------------------------------------------
-                                    591 ; interrupt vector
-                                    592 ;--------------------------------------------------------
-                                    593 	.area HOME    (CODE)
-      000000                        594 __interrupt_vect:
-      000000 02 00 5C         [24]  595 	ljmp	__sdcc_gsinit_startup
-      000003 32               [24]  596 	reti
-      000004                        597 	.ds	7
-      00000B 02 01 04         [24]  598 	ljmp	_timer0_ISR
-      00000E                        599 	.ds	5
-      000013 02 00 F3         [24]  600 	ljmp	_INT1_ISR
-                                    601 ; restartable atomic support routines
-      000016                        602 	.ds	2
-      000018                        603 sdcc_atomic_exchange_rollback_start::
-      000018 00               [12]  604 	nop
-      000019 00               [12]  605 	nop
-      00001A                        606 sdcc_atomic_exchange_pdata_impl:
-      00001A E2               [24]  607 	movx	a, @r0
-      00001B FB               [12]  608 	mov	r3, a
-      00001C EA               [12]  609 	mov	a, r2
-      00001D F2               [24]  610 	movx	@r0, a
-      00001E 80 2C            [24]  611 	sjmp	sdcc_atomic_exchange_exit
-      000020 00               [12]  612 	nop
-      000021 00               [12]  613 	nop
-      000022                        614 sdcc_atomic_exchange_xdata_impl:
-      000022 E0               [24]  615 	movx	a, @dptr
-      000023 FB               [12]  616 	mov	r3, a
-      000024 EA               [12]  617 	mov	a, r2
-      000025 F0               [24]  618 	movx	@dptr, a
-      000026 80 24            [24]  619 	sjmp	sdcc_atomic_exchange_exit
-      000028                        620 sdcc_atomic_compare_exchange_idata_impl:
-      000028 E6               [12]  621 	mov	a, @r0
-      000029 B5 02 02         [24]  622 	cjne	a, ar2, .+#5
-      00002C EB               [12]  623 	mov	a, r3
-      00002D F6               [12]  624 	mov	@r0, a
-      00002E 22               [24]  625 	ret
-      00002F 00               [12]  626 	nop
-      000030                        627 sdcc_atomic_compare_exchange_pdata_impl:
-      000030 E2               [24]  628 	movx	a, @r0
-      000031 B5 02 02         [24]  629 	cjne	a, ar2, .+#5
-      000034 EB               [12]  630 	mov	a, r3
-      000035 F2               [24]  631 	movx	@r0, a
-      000036 22               [24]  632 	ret
-      000037 00               [12]  633 	nop
-      000038                        634 sdcc_atomic_compare_exchange_xdata_impl:
-      000038 E0               [24]  635 	movx	a, @dptr
-      000039 B5 02 02         [24]  636 	cjne	a, ar2, .+#5
-      00003C EB               [12]  637 	mov	a, r3
-      00003D F0               [24]  638 	movx	@dptr, a
-      00003E 22               [24]  639 	ret
-      00003F                        640 sdcc_atomic_exchange_rollback_end::
-                                    641 
-      00003F                        642 sdcc_atomic_exchange_gptr_impl::
-      00003F 30 F6 E0         [24]  643 	jnb	b.6, sdcc_atomic_exchange_xdata_impl
-      000042 A8 82            [24]  644 	mov	r0, dpl
-      000044 20 F5 D3         [24]  645 	jb	b.5, sdcc_atomic_exchange_pdata_impl
-      000047                        646 sdcc_atomic_exchange_idata_impl:
-      000047 EA               [12]  647 	mov	a, r2
-      000048 C6               [12]  648 	xch	a, @r0
-      000049 F5 82            [12]  649 	mov	dpl, a
-      00004B 22               [24]  650 	ret
-      00004C                        651 sdcc_atomic_exchange_exit:
-      00004C 8B 82            [24]  652 	mov	dpl, r3
-      00004E 22               [24]  653 	ret
-      00004F                        654 sdcc_atomic_compare_exchange_gptr_impl::
-      00004F 30 F6 E6         [24]  655 	jnb	b.6, sdcc_atomic_compare_exchange_xdata_impl
-      000052 A8 82            [24]  656 	mov	r0, dpl
-      000054 20 F5 D9         [24]  657 	jb	b.5, sdcc_atomic_compare_exchange_pdata_impl
-      000057 80 CF            [24]  658 	sjmp	sdcc_atomic_compare_exchange_idata_impl
+                                    591 	.area HOME    (CODE)
+      000000                        592 __interrupt_vect:
+      000000 02 00 5C         [24]  593 	ljmp	__sdcc_gsinit_startup
+      000003 32               [24]  594 	reti
+      000004                        595 	.ds	7
+      00000B 02 01 00         [24]  596 	ljmp	_timer0_ISR
+      00000E                        597 	.ds	5
+      000013 02 00 EF         [24]  598 	ljmp	_INT1_ISR
+                                    599 ; restartable atomic support routines
+      000016                        600 	.ds	2
+      000018                        601 sdcc_atomic_exchange_rollback_start::
+      000018 00               [12]  602 	nop
+      000019 00               [12]  603 	nop
+      00001A                        604 sdcc_atomic_exchange_pdata_impl:
+      00001A E2               [24]  605 	movx	a, @r0
+      00001B FB               [12]  606 	mov	r3, a
+      00001C EA               [12]  607 	mov	a, r2
+      00001D F2               [24]  608 	movx	@r0, a
+      00001E 80 2C            [24]  609 	sjmp	sdcc_atomic_exchange_exit
+      000020 00               [12]  610 	nop
+      000021 00               [12]  611 	nop
+      000022                        612 sdcc_atomic_exchange_xdata_impl:
+      000022 E0               [24]  613 	movx	a, @dptr
+      000023 FB               [12]  614 	mov	r3, a
+      000024 EA               [12]  615 	mov	a, r2
+      000025 F0               [24]  616 	movx	@dptr, a
+      000026 80 24            [24]  617 	sjmp	sdcc_atomic_exchange_exit
+      000028                        618 sdcc_atomic_compare_exchange_idata_impl:
+      000028 E6               [12]  619 	mov	a, @r0
+      000029 B5 02 02         [24]  620 	cjne	a, ar2, .+#5
+      00002C EB               [12]  621 	mov	a, r3
+      00002D F6               [12]  622 	mov	@r0, a
+      00002E 22               [24]  623 	ret
+      00002F 00               [12]  624 	nop
+      000030                        625 sdcc_atomic_compare_exchange_pdata_impl:
+      000030 E2               [24]  626 	movx	a, @r0
+      000031 B5 02 02         [24]  627 	cjne	a, ar2, .+#5
+      000034 EB               [12]  628 	mov	a, r3
+      000035 F2               [24]  629 	movx	@r0, a
+      000036 22               [24]  630 	ret
+      000037 00               [12]  631 	nop
+      000038                        632 sdcc_atomic_compare_exchange_xdata_impl:
+      000038 E0               [24]  633 	movx	a, @dptr
+      000039 B5 02 02         [24]  634 	cjne	a, ar2, .+#5
+      00003C EB               [12]  635 	mov	a, r3
+      00003D F0               [24]  636 	movx	@dptr, a
+      00003E 22               [24]  637 	ret
+      00003F                        638 sdcc_atomic_exchange_rollback_end::
+                                    639 
+      00003F                        640 sdcc_atomic_exchange_gptr_impl::
+      00003F 30 F6 E0         [24]  641 	jnb	b.6, sdcc_atomic_exchange_xdata_impl
+      000042 A8 82            [24]  642 	mov	r0, dpl
+      000044 20 F5 D3         [24]  643 	jb	b.5, sdcc_atomic_exchange_pdata_impl
+      000047                        644 sdcc_atomic_exchange_idata_impl:
+      000047 EA               [12]  645 	mov	a, r2
+      000048 C6               [12]  646 	xch	a, @r0
+      000049 F5 82            [12]  647 	mov	dpl, a
+      00004B 22               [24]  648 	ret
+      00004C                        649 sdcc_atomic_exchange_exit:
+      00004C 8B 82            [24]  650 	mov	dpl, r3
+      00004E 22               [24]  651 	ret
+      00004F                        652 sdcc_atomic_compare_exchange_gptr_impl::
+      00004F 30 F6 E6         [24]  653 	jnb	b.6, sdcc_atomic_compare_exchange_xdata_impl
+      000052 A8 82            [24]  654 	mov	r0, dpl
+      000054 20 F5 D9         [24]  655 	jb	b.5, sdcc_atomic_compare_exchange_pdata_impl
+      000057 80 CF            [24]  656 	sjmp	sdcc_atomic_compare_exchange_idata_impl
+                                    657 ;--------------------------------------------------------
+                                    658 ; global & static initialisations
                                     659 ;--------------------------------------------------------
-                                    660 ; global & static initialisations
-                                    661 ;--------------------------------------------------------
-                                    662 	.area HOME    (CODE)
+                                    660 	.area HOME    (CODE)
+                                    661 	.area GSINIT  (CODE)
+                                    662 	.area GSFINAL (CODE)
                                     663 	.area GSINIT  (CODE)
-                                    664 	.area GSFINAL (CODE)
-                                    665 	.area GSINIT  (CODE)
-                                    666 	.globl __sdcc_gsinit_startup
-                                    667 	.globl __sdcc_program_startup
-                                    668 	.globl __start__stack
-                                    669 	.globl __mcs51_genXINIT
-                                    670 	.globl __mcs51_genXRAMCLEAR
-                                    671 	.globl __mcs51_genRAMCLEAR
-                                    672 ;	watchdog-testing.c:5: volatile unsigned int tick_10ms = 0;
-      0000B5 E4               [12]  673 	clr	a
-      0000B6 F5 10            [12]  674 	mov	_tick_10ms,a
-      0000B8 F5 11            [12]  675 	mov	(_tick_10ms + 1),a
-                                    676 ;	watchdog-testing.c:6: volatile unsigned int debounceTimer = 0;
-      0000BA F5 12            [12]  677 	mov	_debounceTimer,a
-      0000BC F5 13            [12]  678 	mov	(_debounceTimer + 1),a
-                                    679 ;	watchdog-testing.c:7: volatile unsigned int wdtCounter = 1;
-      0000BE 75 14 01         [24]  680 	mov	_wdtCounter,#0x01
-      0000C1 F5 15            [12]  681 	mov	(_wdtCounter + 1),a
-                                    682 ;	watchdog-testing.c:11: unsigned int serialTime= 0;
-      0000C3 F5 16            [12]  683 	mov	_serialTime,a
-      0000C5 F5 17            [12]  684 	mov	(_serialTime + 1),a
-                                    685 ;	watchdog-testing.c:12: unsigned int counter= 0;
-      0000C7 F5 18            [12]  686 	mov	_counter,a
-      0000C9 F5 19            [12]  687 	mov	(_counter + 1),a
-                                    688 ;	watchdog-testing.c:13: static unsigned int last_tick = 0;
-      0000CB F5 1A            [12]  689 	mov	_last_tick,a
-      0000CD F5 1B            [12]  690 	mov	(_last_tick + 1),a
-                                    691 ;	watchdog-testing.c:16: static unsigned int blink_base = 0;
-      0000CF F5 1E            [12]  692 	mov	_blink_base,a
-      0000D1 F5 1F            [12]  693 	mov	(_blink_base + 1),a
-                                    694 ;	watchdog-testing.c:8: volatile __bit button_irq = 0;
-                                    695 ;	assignBit
-      0000D3 C2 00            [12]  696 	clr	_button_irq
-                                    697 ;	watchdog-testing.c:9: volatile __bit debounce = 0;
-                                    698 ;	assignBit
-      0000D5 C2 01            [12]  699 	clr	_debounce
-                                    700 ;	watchdog-testing.c:10: volatile __bit ledON = 0;
-                                    701 ;	assignBit
-      0000D7 C2 02            [12]  702 	clr	_ledON
-                                    703 ;	watchdog-testing.c:15: static __bit wdt_started = 0;
-                                    704 ;	assignBit
-      0000D9 C2 03            [12]  705 	clr	_wdt_started
-                                    706 	.area GSFINAL (CODE)
-      0000DB 02 00 59         [24]  707 	ljmp	__sdcc_program_startup
-                                    708 ;--------------------------------------------------------
-                                    709 ; Home
-                                    710 ;--------------------------------------------------------
-                                    711 	.area HOME    (CODE)
-                                    712 	.area HOME    (CODE)
-      000059                        713 __sdcc_program_startup:
-      000059 02 01 9B         [24]  714 	ljmp	_main
-                                    715 ;	return from main will return to caller
-                                    716 ;--------------------------------------------------------
-                                    717 ; code
-                                    718 ;--------------------------------------------------------
-                                    719 	.area CSEG    (CODE)
-                                    720 ;------------------------------------------------------------
-                                    721 ;Allocation info for local variables in function 'clock_init'
-                                    722 ;------------------------------------------------------------
-                                    723 ;	watchdog-testing.c:23: void clock_init(void) {
-                                    724 ;	-----------------------------------------
-                                    725 ;	 function clock_init
-                                    726 ;	-----------------------------------------
-      0000DE                        727 _clock_init:
-                           000007   728 	ar7 = 0x07
-                           000006   729 	ar6 = 0x06
-                           000005   730 	ar5 = 0x05
-                           000004   731 	ar4 = 0x04
-                           000003   732 	ar3 = 0x03
-                           000002   733 	ar2 = 0x02
-                           000001   734 	ar1 = 0x01
-                           000000   735 	ar0 = 0x00
-                                    736 ;	watchdog-testing.c:24: SAFE_MOD = 0x55;
-      0000DE 75 A1 55         [24]  737 	mov	_SAFE_MOD,#0x55
-                                    738 ;	watchdog-testing.c:25: SAFE_MOD = 0xAA;
-      0000E1 75 A1 AA         [24]  739 	mov	_SAFE_MOD,#0xaa
-                                    740 ;	watchdog-testing.c:26: CLOCK_CFG |= bOSC_EN_INT; 
-      0000E4 43 B9 80         [24]  741 	orl	_CLOCK_CFG,#0x80
-                                    742 ;	watchdog-testing.c:28: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
-      0000E7 74 F8            [12]  743 	mov	a,#0xf8
-      0000E9 55 B9            [12]  744 	anl	a,_CLOCK_CFG
-      0000EB 44 06            [12]  745 	orl	a,#0x06
-      0000ED F5 B9            [12]  746 	mov	_CLOCK_CFG,a
-                                    747 ;	watchdog-testing.c:30: SAFE_MOD = 0x00;
-      0000EF 75 A1 00         [24]  748 	mov	_SAFE_MOD,#0x00
-                                    749 ;	watchdog-testing.c:31: }
-      0000F2 22               [24]  750 	ret
-                                    751 ;------------------------------------------------------------
-                                    752 ;Allocation info for local variables in function 'INT1_ISR'
-                                    753 ;------------------------------------------------------------
-                                    754 ;	watchdog-testing.c:32: void INT1_ISR(void) __interrupt (INT_NO_INT1)// You can do __interrupt (2) if you prefer 
-                                    755 ;	-----------------------------------------
-                                    756 ;	 function INT1_ISR
-                                    757 ;	-----------------------------------------
-      0000F3                        758 _INT1_ISR:
-      0000F3 C0 E0            [24]  759 	push	acc
-                                    760 ;	watchdog-testing.c:34: if (!(P3 & (1 << 3))) {   // only accept if pin is LOW. This prevents
-      0000F5 E5 B0            [12]  761 	mov	a,_P3
-      0000F7 20 E3 07         [24]  762 	jb	acc.3,00105$
-                                    763 ;	watchdog-testing.c:35: if (!debounce) {        // only register if not already debouncing
-      0000FA 20 01 04         [24]  764 	jb	_debounce,00105$
-                                    765 ;	watchdog-testing.c:36: button_irq = 1;
-                                    766 ;	assignBit
-      0000FD D2 00            [12]  767 	setb	_button_irq
-                                    768 ;	watchdog-testing.c:37: debounce = 1;       // arm immediately, atomically
-                                    769 ;	assignBit
-      0000FF D2 01            [12]  770 	setb	_debounce
-      000101                        771 00105$:
-                                    772 ;	watchdog-testing.c:40: }
-      000101 D0 E0            [24]  773 	pop	acc
-      000103 32               [24]  774 	reti
-                                    775 ;	eliminated unneeded mov psw,# (no regs used in bank)
-                                    776 ;	eliminated unneeded push/pop not_psw
-                                    777 ;	eliminated unneeded push/pop dpl
-                                    778 ;	eliminated unneeded push/pop dph
-                                    779 ;	eliminated unneeded push/pop b
-                                    780 ;------------------------------------------------------------
-                                    781 ;Allocation info for local variables in function 'timer0_ISR'
-                                    782 ;------------------------------------------------------------
-                                    783 ;	watchdog-testing.c:41: void timer0_ISR(void) __interrupt(1) __using(1){ 
-                                    784 ;	-----------------------------------------
-                                    785 ;	 function timer0_ISR
-                                    786 ;	-----------------------------------------
-      000104                        787 _timer0_ISR:
-                           00000F   788 	ar7 = 0x0f
-                           00000E   789 	ar6 = 0x0e
-                           00000D   790 	ar5 = 0x0d
-                           00000C   791 	ar4 = 0x0c
-                           00000B   792 	ar3 = 0x0b
-                           00000A   793 	ar2 = 0x0a
-                           000009   794 	ar1 = 0x09
-                           000008   795 	ar0 = 0x08
-      000104 C0 E0            [24]  796 	push	acc
-      000106 C0 D0            [24]  797 	push	psw
-      000108 75 D0 08         [24]  798 	mov	psw,#0x08
-                                    799 ;	watchdog-testing.c:43: TF0 = 0;  // clear overflow flag (important for robustness)
-                                    800 ;	assignBit
-      00010B C2 8D            [12]  801 	clr	_TF0
-                                    802 ;	watchdog-testing.c:44: TH0 = 0xB1;
-      00010D 75 8C B1         [24]  803 	mov	_TH0,#0xb1
-                                    804 ;	watchdog-testing.c:45: TL0 = 0xE0;
-      000110 75 8A E0         [24]  805 	mov	_TL0,#0xe0
-                                    806 ;	watchdog-testing.c:46: tick_10ms++; // this is the 10ms tick for LED blinking
-      000113 AE 10            [24]  807 	mov	r6,_tick_10ms
-      000115 AF 11            [24]  808 	mov	r7,(_tick_10ms + 1)
-      000117 74 01            [12]  809 	mov	a,#0x01
-      000119 2E               [12]  810 	add	a, r6
-      00011A F5 10            [12]  811 	mov	_tick_10ms,a
-      00011C E4               [12]  812 	clr	a
-      00011D 3F               [12]  813 	addc	a, r7
-      00011E F5 11            [12]  814 	mov	(_tick_10ms + 1),a
-                                    815 ;	watchdog-testing.c:47: serialTime++; // this is the timer for Serial_println transmissions
-      000120 05 16            [12]  816 	inc	_serialTime
-      000122 E4               [12]  817 	clr	a
-      000123 B5 16 02         [24]  818 	cjne	a,_serialTime,00119$
-      000126 05 17            [12]  819 	inc	(_serialTime + 1)
-      000128                        820 00119$:
-                                    821 ;	watchdog-testing.c:48: if(debounce){ // if external interrupt happened, activate debounce timer
-      000128 30 01 1F         [24]  822 	jnb	_debounce,00105$
-                                    823 ;	watchdog-testing.c:49: debounceTimer++;
-      00012B AE 12            [24]  824 	mov	r6,_debounceTimer
-      00012D AF 13            [24]  825 	mov	r7,(_debounceTimer + 1)
-      00012F 74 01            [12]  826 	mov	a,#0x01
-      000131 2E               [12]  827 	add	a, r6
-      000132 F5 12            [12]  828 	mov	_debounceTimer,a
-      000134 E4               [12]  829 	clr	a
-      000135 3F               [12]  830 	addc	a, r7
-      000136 F5 13            [12]  831 	mov	(_debounceTimer + 1),a
-                                    832 ;	watchdog-testing.c:50: if(debounceTimer >= 60){ // after 600ms of not detecting the push-button
-      000138 C3               [12]  833 	clr	c
-      000139 E5 12            [12]  834 	mov	a,_debounceTimer
-      00013B 94 3C            [12]  835 	subb	a,#0x3c
-      00013D E5 13            [12]  836 	mov	a,(_debounceTimer + 1)
-      00013F 94 00            [12]  837 	subb	a,#0x00
-      000141 40 07            [24]  838 	jc	00105$
-                                    839 ;	watchdog-testing.c:51: debounce= 0; // turn debounce delay OFF
-                                    840 ;	assignBit
-      000143 C2 01            [12]  841 	clr	_debounce
-                                    842 ;	watchdog-testing.c:52: debounceTimer= 0; // and clear timer/counter for next time
-      000145 E4               [12]  843 	clr	a
-      000146 F5 12            [12]  844 	mov	_debounceTimer,a
-      000148 F5 13            [12]  845 	mov	(_debounceTimer + 1),a
-      00014A                        846 00105$:
-                                    847 ;	watchdog-testing.c:55: }
-      00014A D0 D0            [24]  848 	pop	psw
-      00014C D0 E0            [24]  849 	pop	acc
-      00014E 32               [24]  850 	reti
-                                    851 ;	eliminated unneeded push/pop dpl
-                                    852 ;	eliminated unneeded push/pop dph
-                                    853 ;	eliminated unneeded push/pop b
-                                    854 ;------------------------------------------------------------
-                                    855 ;Allocation info for local variables in function 'timer0_init'
-                                    856 ;------------------------------------------------------------
-                                    857 ;	watchdog-testing.c:59: void timer0_init(void) {
-                                    858 ;	-----------------------------------------
-                                    859 ;	 function timer0_init
-                                    860 ;	-----------------------------------------
-      00014F                        861 _timer0_init:
-                           000007   862 	ar7 = 0x07
-                           000006   863 	ar6 = 0x06
-                           000005   864 	ar5 = 0x05
-                           000004   865 	ar4 = 0x04
-                           000003   866 	ar3 = 0x03
-                           000002   867 	ar2 = 0x02
-                           000001   868 	ar1 = 0x01
-                           000000   869 	ar0 = 0x00
-                                    870 ;	watchdog-testing.c:61: T2MOD &= ~bTMR_CLK;   // disable fast clock mode
-      00014F 53 C9 7F         [24]  871 	anl	_T2MOD,#0x7f
-                                    872 ;	watchdog-testing.c:62: T2MOD &= ~bT0_CLK;    // Timer0 = Fsys/12
-      000152 53 C9 EF         [24]  873 	anl	_T2MOD,#0xef
-                                    874 ;	watchdog-testing.c:63: TMOD &= ~0x03;  // clear Timer0 mode bits
-      000155 53 89 FC         [24]  875 	anl	_TMOD,#0xfc
-                                    876 ;	watchdog-testing.c:64: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
-      000158 43 89 01         [24]  877 	orl	_TMOD,#0x01
-                                    878 ;	watchdog-testing.c:67: TH0 = 0xB1;
-      00015B 75 8C B1         [24]  879 	mov	_TH0,#0xb1
-                                    880 ;	watchdog-testing.c:68: TL0 = 0xE0;
-      00015E 75 8A E0         [24]  881 	mov	_TL0,#0xe0
-                                    882 ;	watchdog-testing.c:70: TF0 = 0;
-                                    883 ;	assignBit
-      000161 C2 8D            [12]  884 	clr	_TF0
-                                    885 ;	watchdog-testing.c:72: ET0 = 1;   // enable Timer0 interrupt
-                                    886 ;	assignBit
-      000163 D2 A9            [12]  887 	setb	_ET0
-                                    888 ;	watchdog-testing.c:73: TR0 = 1;   // start Timer0
-                                    889 ;	assignBit
-      000165 D2 8C            [12]  890 	setb	_TR0
-                                    891 ;	watchdog-testing.c:74: EA = 1;
-                                    892 ;	assignBit
-      000167 D2 AF            [12]  893 	setb	_EA
-                                    894 ;	watchdog-testing.c:75: }
-      000169 22               [24]  895 	ret
-                                    896 ;------------------------------------------------------------
-                                    897 ;Allocation info for local variables in function 'extint1_init'
-                                    898 ;------------------------------------------------------------
-                                    899 ;	watchdog-testing.c:76: void extint1_init(void) {
-                                    900 ;	-----------------------------------------
-                                    901 ;	 function extint1_init
-                                    902 ;	-----------------------------------------
-      00016A                        903 _extint1_init:
-                                    904 ;	watchdog-testing.c:77: IT1 = 1;   // falling edge
-                                    905 ;	assignBit
-      00016A D2 8A            [12]  906 	setb	_IT1
-                                    907 ;	watchdog-testing.c:78: EX1 = 1;   // enable INT1
-                                    908 ;	assignBit
-      00016C D2 AA            [12]  909 	setb	_EX1
-                                    910 ;	watchdog-testing.c:79: }
-      00016E 22               [24]  911 	ret
+                                    664 	.globl __sdcc_gsinit_startup
+                                    665 	.globl __sdcc_program_startup
+                                    666 	.globl __start__stack
+                                    667 	.globl __mcs51_genXINIT
+                                    668 	.globl __mcs51_genXRAMCLEAR
+                                    669 	.globl __mcs51_genRAMCLEAR
+                                    670 ;	watchdog-testing.c:5: volatile unsigned int tick_10ms = 0;
+      0000B5 E4               [12]  671 	clr	a
+      0000B6 F5 10            [12]  672 	mov	_tick_10ms,a
+      0000B8 F5 11            [12]  673 	mov	(_tick_10ms + 1),a
+                                    674 ;	watchdog-testing.c:6: volatile unsigned int debounceTimer = 0;
+      0000BA F5 12            [12]  675 	mov	_debounceTimer,a
+      0000BC F5 13            [12]  676 	mov	(_debounceTimer + 1),a
+                                    677 ;	watchdog-testing.c:7: volatile unsigned int wdtCounter = 1;
+      0000BE 75 14 01         [24]  678 	mov	_wdtCounter,#0x01
+      0000C1 F5 15            [12]  679 	mov	(_wdtCounter + 1),a
+                                    680 ;	watchdog-testing.c:11: unsigned int serialTime= 0;
+      0000C3 F5 16            [12]  681 	mov	_serialTime,a
+      0000C5 F5 17            [12]  682 	mov	(_serialTime + 1),a
+                                    683 ;	watchdog-testing.c:12: unsigned int counter= 0;
+      0000C7 F5 18            [12]  684 	mov	_counter,a
+      0000C9 F5 19            [12]  685 	mov	(_counter + 1),a
+                                    686 ;	watchdog-testing.c:15: static unsigned int blink_base = 0;
+      0000CB F5 1C            [12]  687 	mov	_blink_base,a
+      0000CD F5 1D            [12]  688 	mov	(_blink_base + 1),a
+                                    689 ;	watchdog-testing.c:8: volatile __bit button_irq = 0;
+                                    690 ;	assignBit
+      0000CF C2 00            [12]  691 	clr	_button_irq
+                                    692 ;	watchdog-testing.c:9: volatile __bit debounce = 0;
+                                    693 ;	assignBit
+      0000D1 C2 01            [12]  694 	clr	_debounce
+                                    695 ;	watchdog-testing.c:10: volatile __bit ledON = 0;
+                                    696 ;	assignBit
+      0000D3 C2 02            [12]  697 	clr	_ledON
+                                    698 ;	watchdog-testing.c:14: static __bit wdt_started = 0;
+                                    699 ;	assignBit
+      0000D5 C2 03            [12]  700 	clr	_wdt_started
+                                    701 	.area GSFINAL (CODE)
+      0000D7 02 00 59         [24]  702 	ljmp	__sdcc_program_startup
+                                    703 ;--------------------------------------------------------
+                                    704 ; Home
+                                    705 ;--------------------------------------------------------
+                                    706 	.area HOME    (CODE)
+                                    707 	.area HOME    (CODE)
+      000059                        708 __sdcc_program_startup:
+      000059 02 01 A4         [24]  709 	ljmp	_main
+                                    710 ;	return from main will return to caller
+                                    711 ;--------------------------------------------------------
+                                    712 ; code
+                                    713 ;--------------------------------------------------------
+                                    714 	.area CSEG    (CODE)
+                                    715 ;------------------------------------------------------------
+                                    716 ;Allocation info for local variables in function 'clock_init'
+                                    717 ;------------------------------------------------------------
+                                    718 ;	watchdog-testing.c:22: void clock_init(void) {
+                                    719 ;	-----------------------------------------
+                                    720 ;	 function clock_init
+                                    721 ;	-----------------------------------------
+      0000DA                        722 _clock_init:
+                           000007   723 	ar7 = 0x07
+                           000006   724 	ar6 = 0x06
+                           000005   725 	ar5 = 0x05
+                           000004   726 	ar4 = 0x04
+                           000003   727 	ar3 = 0x03
+                           000002   728 	ar2 = 0x02
+                           000001   729 	ar1 = 0x01
+                           000000   730 	ar0 = 0x00
+                                    731 ;	watchdog-testing.c:23: SAFE_MOD = 0x55;
+      0000DA 75 A1 55         [24]  732 	mov	_SAFE_MOD,#0x55
+                                    733 ;	watchdog-testing.c:24: SAFE_MOD = 0xAA;
+      0000DD 75 A1 AA         [24]  734 	mov	_SAFE_MOD,#0xaa
+                                    735 ;	watchdog-testing.c:25: CLOCK_CFG |= bOSC_EN_INT; 
+      0000E0 43 B9 80         [24]  736 	orl	_CLOCK_CFG,#0x80
+                                    737 ;	watchdog-testing.c:27: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
+      0000E3 74 F8            [12]  738 	mov	a,#0xf8
+      0000E5 55 B9            [12]  739 	anl	a,_CLOCK_CFG
+      0000E7 44 06            [12]  740 	orl	a,#0x06
+      0000E9 F5 B9            [12]  741 	mov	_CLOCK_CFG,a
+                                    742 ;	watchdog-testing.c:29: SAFE_MOD = 0x00;
+      0000EB 75 A1 00         [24]  743 	mov	_SAFE_MOD,#0x00
+                                    744 ;	watchdog-testing.c:30: }
+      0000EE 22               [24]  745 	ret
+                                    746 ;------------------------------------------------------------
+                                    747 ;Allocation info for local variables in function 'INT1_ISR'
+                                    748 ;------------------------------------------------------------
+                                    749 ;	watchdog-testing.c:31: void INT1_ISR(void) __interrupt (INT_NO_INT1)// You can do __interrupt (2) if you prefer 
+                                    750 ;	-----------------------------------------
+                                    751 ;	 function INT1_ISR
+                                    752 ;	-----------------------------------------
+      0000EF                        753 _INT1_ISR:
+      0000EF C0 E0            [24]  754 	push	acc
+                                    755 ;	watchdog-testing.c:33: if (!(P3 & (1 << 3))) {   // only accept if pin is LOW. This prevents
+      0000F1 E5 B0            [12]  756 	mov	a,_P3
+      0000F3 20 E3 07         [24]  757 	jb	acc.3,00105$
+                                    758 ;	watchdog-testing.c:34: if (!debounce) {        // only register if not already debouncing
+      0000F6 20 01 04         [24]  759 	jb	_debounce,00105$
+                                    760 ;	watchdog-testing.c:35: button_irq = 1;
+                                    761 ;	assignBit
+      0000F9 D2 00            [12]  762 	setb	_button_irq
+                                    763 ;	watchdog-testing.c:36: debounce = 1;       // arm immediately, atomically
+                                    764 ;	assignBit
+      0000FB D2 01            [12]  765 	setb	_debounce
+      0000FD                        766 00105$:
+                                    767 ;	watchdog-testing.c:39: }
+      0000FD D0 E0            [24]  768 	pop	acc
+      0000FF 32               [24]  769 	reti
+                                    770 ;	eliminated unneeded mov psw,# (no regs used in bank)
+                                    771 ;	eliminated unneeded push/pop not_psw
+                                    772 ;	eliminated unneeded push/pop dpl
+                                    773 ;	eliminated unneeded push/pop dph
+                                    774 ;	eliminated unneeded push/pop b
+                                    775 ;------------------------------------------------------------
+                                    776 ;Allocation info for local variables in function 'timer0_ISR'
+                                    777 ;------------------------------------------------------------
+                                    778 ;	watchdog-testing.c:40: void timer0_ISR(void) __interrupt(1) __using(1){ 
+                                    779 ;	-----------------------------------------
+                                    780 ;	 function timer0_ISR
+                                    781 ;	-----------------------------------------
+      000100                        782 _timer0_ISR:
+                           00000F   783 	ar7 = 0x0f
+                           00000E   784 	ar6 = 0x0e
+                           00000D   785 	ar5 = 0x0d
+                           00000C   786 	ar4 = 0x0c
+                           00000B   787 	ar3 = 0x0b
+                           00000A   788 	ar2 = 0x0a
+                           000009   789 	ar1 = 0x09
+                           000008   790 	ar0 = 0x08
+      000100 C0 E0            [24]  791 	push	acc
+      000102 C0 D0            [24]  792 	push	psw
+      000104 75 D0 08         [24]  793 	mov	psw,#0x08
+                                    794 ;	watchdog-testing.c:42: TF0 = 0;  // clear overflow flag (important for robustness)
+                                    795 ;	assignBit
+      000107 C2 8D            [12]  796 	clr	_TF0
+                                    797 ;	watchdog-testing.c:43: TH0 = 0xB1;
+      000109 75 8C B1         [24]  798 	mov	_TH0,#0xb1
+                                    799 ;	watchdog-testing.c:44: TL0 = 0xE0;
+      00010C 75 8A E0         [24]  800 	mov	_TL0,#0xe0
+                                    801 ;	watchdog-testing.c:45: tick_10ms++; // this is the 10ms tick for LED blinking
+      00010F AE 10            [24]  802 	mov	r6,_tick_10ms
+      000111 AF 11            [24]  803 	mov	r7,(_tick_10ms + 1)
+      000113 74 01            [12]  804 	mov	a,#0x01
+      000115 2E               [12]  805 	add	a, r6
+      000116 F5 10            [12]  806 	mov	_tick_10ms,a
+      000118 E4               [12]  807 	clr	a
+      000119 3F               [12]  808 	addc	a, r7
+      00011A F5 11            [12]  809 	mov	(_tick_10ms + 1),a
+                                    810 ;	watchdog-testing.c:46: serialTime++; // this is the timer for Serial_println transmissions
+      00011C 05 16            [12]  811 	inc	_serialTime
+      00011E E4               [12]  812 	clr	a
+      00011F B5 16 02         [24]  813 	cjne	a,_serialTime,00119$
+      000122 05 17            [12]  814 	inc	(_serialTime + 1)
+      000124                        815 00119$:
+                                    816 ;	watchdog-testing.c:47: if(debounce){ // if external interrupt happened, activate debounce timer
+      000124 30 01 1F         [24]  817 	jnb	_debounce,00105$
+                                    818 ;	watchdog-testing.c:48: debounceTimer++;
+      000127 AE 12            [24]  819 	mov	r6,_debounceTimer
+      000129 AF 13            [24]  820 	mov	r7,(_debounceTimer + 1)
+      00012B 74 01            [12]  821 	mov	a,#0x01
+      00012D 2E               [12]  822 	add	a, r6
+      00012E F5 12            [12]  823 	mov	_debounceTimer,a
+      000130 E4               [12]  824 	clr	a
+      000131 3F               [12]  825 	addc	a, r7
+      000132 F5 13            [12]  826 	mov	(_debounceTimer + 1),a
+                                    827 ;	watchdog-testing.c:49: if(debounceTimer >= 60){ // after 600ms of not detecting the push-button
+      000134 C3               [12]  828 	clr	c
+      000135 E5 12            [12]  829 	mov	a,_debounceTimer
+      000137 94 3C            [12]  830 	subb	a,#0x3c
+      000139 E5 13            [12]  831 	mov	a,(_debounceTimer + 1)
+      00013B 94 00            [12]  832 	subb	a,#0x00
+      00013D 40 07            [24]  833 	jc	00105$
+                                    834 ;	watchdog-testing.c:50: debounce= 0; // turn debounce delay OFF
+                                    835 ;	assignBit
+      00013F C2 01            [12]  836 	clr	_debounce
+                                    837 ;	watchdog-testing.c:51: debounceTimer= 0; // and clear timer/counter for next time
+      000141 E4               [12]  838 	clr	a
+      000142 F5 12            [12]  839 	mov	_debounceTimer,a
+      000144 F5 13            [12]  840 	mov	(_debounceTimer + 1),a
+      000146                        841 00105$:
+                                    842 ;	watchdog-testing.c:54: }
+      000146 D0 D0            [24]  843 	pop	psw
+      000148 D0 E0            [24]  844 	pop	acc
+      00014A 32               [24]  845 	reti
+                                    846 ;	eliminated unneeded push/pop dpl
+                                    847 ;	eliminated unneeded push/pop dph
+                                    848 ;	eliminated unneeded push/pop b
+                                    849 ;------------------------------------------------------------
+                                    850 ;Allocation info for local variables in function 'timer0_init'
+                                    851 ;------------------------------------------------------------
+                                    852 ;	watchdog-testing.c:58: void timer0_init(void) {
+                                    853 ;	-----------------------------------------
+                                    854 ;	 function timer0_init
+                                    855 ;	-----------------------------------------
+      00014B                        856 _timer0_init:
+                           000007   857 	ar7 = 0x07
+                           000006   858 	ar6 = 0x06
+                           000005   859 	ar5 = 0x05
+                           000004   860 	ar4 = 0x04
+                           000003   861 	ar3 = 0x03
+                           000002   862 	ar2 = 0x02
+                           000001   863 	ar1 = 0x01
+                           000000   864 	ar0 = 0x00
+                                    865 ;	watchdog-testing.c:60: T2MOD &= ~bTMR_CLK;   // disable fast clock mode
+      00014B 53 C9 7F         [24]  866 	anl	_T2MOD,#0x7f
+                                    867 ;	watchdog-testing.c:61: T2MOD &= ~bT0_CLK;    // Timer0 = Fsys/12
+      00014E 53 C9 EF         [24]  868 	anl	_T2MOD,#0xef
+                                    869 ;	watchdog-testing.c:62: TMOD &= ~0x03;  // clear Timer0 mode bits
+      000151 53 89 FC         [24]  870 	anl	_TMOD,#0xfc
+                                    871 ;	watchdog-testing.c:63: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
+      000154 43 89 01         [24]  872 	orl	_TMOD,#0x01
+                                    873 ;	watchdog-testing.c:66: TH0 = 0xB1;
+      000157 75 8C B1         [24]  874 	mov	_TH0,#0xb1
+                                    875 ;	watchdog-testing.c:67: TL0 = 0xE0;
+      00015A 75 8A E0         [24]  876 	mov	_TL0,#0xe0
+                                    877 ;	watchdog-testing.c:69: TF0 = 0;
+                                    878 ;	assignBit
+      00015D C2 8D            [12]  879 	clr	_TF0
+                                    880 ;	watchdog-testing.c:71: ET0 = 1;   // enable Timer0 interrupt
+                                    881 ;	assignBit
+      00015F D2 A9            [12]  882 	setb	_ET0
+                                    883 ;	watchdog-testing.c:72: TR0 = 1;   // start Timer0
+                                    884 ;	assignBit
+      000161 D2 8C            [12]  885 	setb	_TR0
+                                    886 ;	watchdog-testing.c:73: EA = 1;
+                                    887 ;	assignBit
+      000163 D2 AF            [12]  888 	setb	_EA
+                                    889 ;	watchdog-testing.c:74: }
+      000165 22               [24]  890 	ret
+                                    891 ;------------------------------------------------------------
+                                    892 ;Allocation info for local variables in function 'extint1_init'
+                                    893 ;------------------------------------------------------------
+                                    894 ;	watchdog-testing.c:75: void extint1_init(void) {
+                                    895 ;	-----------------------------------------
+                                    896 ;	 function extint1_init
+                                    897 ;	-----------------------------------------
+      000166                        898 _extint1_init:
+                                    899 ;	watchdog-testing.c:76: IT1 = 1;   // falling edge
+                                    900 ;	assignBit
+      000166 D2 8A            [12]  901 	setb	_IT1
+                                    902 ;	watchdog-testing.c:77: EX1 = 1;   // enable INT1
+                                    903 ;	assignBit
+      000168 D2 AA            [12]  904 	setb	_EX1
+                                    905 ;	watchdog-testing.c:78: }
+      00016A 22               [24]  906 	ret
+                                    907 ;------------------------------------------------------------
+                                    908 ;Allocation info for local variables in function 'blink_led'
+                                    909 ;------------------------------------------------------------
+                                    910 ;t             Allocated to registers r6 r7 
+                                    911 ;phase         Allocated to registers r4 r5 
                                     912 ;------------------------------------------------------------
-                                    913 ;Allocation info for local variables in function 'blink_led'
-                                    914 ;------------------------------------------------------------
-                                    915 ;t             Allocated to registers r6 r7 
-                                    916 ;phase         Allocated to registers r4 r5 
-                                    917 ;------------------------------------------------------------
-                                    918 ;	watchdog-testing.c:80: void blink_led(unsigned int t) {
-                                    919 ;	-----------------------------------------
-                                    920 ;	 function blink_led
-                                    921 ;	-----------------------------------------
-      00016F                        922 _blink_led:
-      00016F AE 82            [24]  923 	mov	r6, dpl
-      000171 AF 83            [24]  924 	mov	r7, dph
-                                    925 ;	watchdog-testing.c:86: unsigned int phase = t - blink_base;
-      000173 EE               [12]  926 	mov	a,r6
-      000174 C3               [12]  927 	clr	c
-      000175 95 1E            [12]  928 	subb	a,_blink_base
-      000177 FC               [12]  929 	mov	r4,a
-      000178 EF               [12]  930 	mov	a,r7
-      000179 95 1F            [12]  931 	subb	a,(_blink_base + 1)
-      00017B FD               [12]  932 	mov	r5,a
-                                    933 ;	watchdog-testing.c:88: if (phase < 30) {
-      00017C C3               [12]  934 	clr	c
-      00017D EC               [12]  935 	mov	a,r4
-      00017E 94 1E            [12]  936 	subb	a,#0x1e
-      000180 ED               [12]  937 	mov	a,r5
-      000181 94 00            [12]  938 	subb	a,#0x00
-      000183 50 04            [24]  939 	jnc	00105$
-                                    940 ;	watchdog-testing.c:89: P3 |= (1 << 0);
-      000185 43 B0 01         [24]  941 	orl	_P3,#0x01
-      000188 22               [24]  942 	ret
-      000189                        943 00105$:
-                                    944 ;	watchdog-testing.c:90: } else if (phase < 60) {
-      000189 C3               [12]  945 	clr	c
-      00018A EC               [12]  946 	mov	a,r4
-      00018B 94 3C            [12]  947 	subb	a,#0x3c
-      00018D ED               [12]  948 	mov	a,r5
-      00018E 94 00            [12]  949 	subb	a,#0x00
-      000190 50 04            [24]  950 	jnc	00102$
-                                    951 ;	watchdog-testing.c:91: P3 &= ~(1 << 0);
-      000192 53 B0 FE         [24]  952 	anl	_P3,#0xfe
-      000195 22               [24]  953 	ret
-      000196                        954 00102$:
-                                    955 ;	watchdog-testing.c:93: blink_base = t;
-      000196 8E 1E            [24]  956 	mov	_blink_base,r6
-      000198 8F 1F            [24]  957 	mov	(_blink_base + 1),r7
-                                    958 ;	watchdog-testing.c:95: }
-      00019A 22               [24]  959 	ret
-                                    960 ;------------------------------------------------------------
-                                    961 ;Allocation info for local variables in function 'main'
-                                    962 ;------------------------------------------------------------
-                                    963 ;	watchdog-testing.c:97: void main(void) {
-                                    964 ;	-----------------------------------------
-                                    965 ;	 function main
-                                    966 ;	-----------------------------------------
-      00019B                        967 _main:
-                                    968 ;	watchdog-testing.c:98: clock_init();
-      00019B 12 00 DE         [24]  969 	lcall	_clock_init
-                                    970 ;	watchdog-testing.c:99: extint1_init();
-      00019E 12 01 6A         [24]  971 	lcall	_extint1_init
-                                    972 ;	watchdog-testing.c:100: timer0_init();  
-      0001A1 12 01 4F         [24]  973 	lcall	_timer0_init
-                                    974 ;	watchdog-testing.c:104: P3_MOD_OC &= ~(1 << 0);   // push-pull
-      0001A4 53 96 FE         [24]  975 	anl	_P3_MOD_OC,#0xfe
-                                    976 ;	watchdog-testing.c:105: P3_DIR_PU |=  (1 << 0);   // enable strong output drive
-      0001A7 43 97 01         [24]  977 	orl	_P3_DIR_PU,#0x01
-                                    978 ;	watchdog-testing.c:108: P3_MOD_OC &= ~(1 << 3);   // normal input
-      0001AA 53 96 F7         [24]  979 	anl	_P3_MOD_OC,#0xf7
-                                    980 ;	watchdog-testing.c:109: P3_DIR_PU |=  (1 << 3);   // enable pull-up
-      0001AD 43 97 08         [24]  981 	orl	_P3_DIR_PU,#0x08
-                                    982 ;	watchdog-testing.c:110: P3 |= (1 << 3);           // pull-up
-      0001B0 43 B0 08         [24]  983 	orl	_P3,#0x08
-                                    984 ;	watchdog-testing.c:112: P3 &= ~(1 << 0);  // Make LED pin P3.0 "start" as OFF
-      0001B3 53 B0 FE         [24]  985 	anl	_P3,#0xfe
-                                    986 ;	watchdog-testing.c:114: while (1) {
-      0001B6                        987 00122$:
-                                    988 ;	watchdog-testing.c:116: if (!wdt_started && tick_10ms > 50) {  // wait ~500ms
-      0001B6 20 03 18         [24]  989 	jb	_wdt_started,00102$
-      0001B9 C3               [12]  990 	clr	c
-      0001BA 74 32            [12]  991 	mov	a,#0x32
-      0001BC 95 10            [12]  992 	subb	a,_tick_10ms
-      0001BE E4               [12]  993 	clr	a
-      0001BF 95 11            [12]  994 	subb	a,(_tick_10ms + 1)
-      0001C1 50 0E            [24]  995 	jnc	00102$
-                                    996 ;	watchdog-testing.c:117: SAFE_MOD = 0x55;
-      0001C3 75 A1 55         [24]  997 	mov	_SAFE_MOD,#0x55
-                                    998 ;	watchdog-testing.c:118: SAFE_MOD = 0xAA;
-      0001C6 75 A1 AA         [24]  999 	mov	_SAFE_MOD,#0xaa
-                                   1000 ;	watchdog-testing.c:119: GLOBAL_CFG |= bWDOG_EN;
-      0001C9 43 B1 01         [24] 1001 	orl	_GLOBAL_CFG,#0x01
-                                   1002 ;	watchdog-testing.c:120: SAFE_MOD = 0x00;
-      0001CC 75 A1 00         [24] 1003 	mov	_SAFE_MOD,#0x00
-                                   1004 ;	watchdog-testing.c:122: wdt_started = 1;
-                                   1005 ;	assignBit
-      0001CF D2 03            [12] 1006 	setb	_wdt_started
-      0001D1                       1007 00102$:
-                                   1008 ;	watchdog-testing.c:125: if (wdtCounter < 4) {
-      0001D1 C3               [12] 1009 	clr	c
-      0001D2 E5 14            [12] 1010 	mov	a,_wdtCounter
-      0001D4 94 04            [12] 1011 	subb	a,#0x04
-      0001D6 E5 15            [12] 1012 	mov	a,(_wdtCounter + 1)
-      0001D8 94 00            [12] 1013 	subb	a,#0x00
-      0001DA 50 03            [24] 1014 	jnc	00105$
-                                   1015 ;	watchdog-testing.c:126: WDOG_COUNT = 0x01;   // feed normally
-      0001DC 75 FF 01         [24] 1016 	mov	_WDOG_COUNT,#0x01
-      0001DF                       1017 00105$:
-                                   1018 ;	watchdog-testing.c:128: EA = 0;
-                                   1019 ;	assignBit
-      0001DF C2 AF            [12] 1020 	clr	_EA
-                                   1021 ;	watchdog-testing.c:129: t = tick_10ms;
-      0001E1 85 10 1C         [24] 1022 	mov	_t,_tick_10ms
-      0001E4 85 11 1D         [24] 1023 	mov	(_t + 1),(_tick_10ms + 1)
-                                   1024 ;	watchdog-testing.c:130: EA = 1;
-                                   1025 ;	assignBit
-      0001E7 D2 AF            [12] 1026 	setb	_EA
-                                   1027 ;	watchdog-testing.c:132: if (button_irq && debounce) {
-      0001E9 30 00 19         [24] 1028 	jnb	_button_irq,00110$
-      0001EC 30 01 16         [24] 1029 	jnb	_debounce,00110$
-                                   1030 ;	watchdog-testing.c:133: button_irq = 0;
-                                   1031 ;	assignBit
-      0001EF C2 00            [12] 1032 	clr	_button_irq
-                                   1033 ;	watchdog-testing.c:135: if (ledON == 0) {
-      0001F1 20 02 0F         [24] 1034 	jb	_ledON,00107$
-                                   1035 ;	watchdog-testing.c:136: ledON = 1;
-                                   1036 ;	assignBit
-      0001F4 D2 02            [12] 1037 	setb	_ledON
-                                   1038 ;	watchdog-testing.c:138: last_tick = t;                
-      0001F6 85 1C 1A         [24] 1039 	mov	_last_tick,_t
-      0001F9 85 1D 1B         [24] 1040 	mov	(_last_tick + 1),(_t + 1)
-                                   1041 ;	watchdog-testing.c:139: wdtCounter = 0;
-      0001FC E4               [12] 1042 	clr	a
-      0001FD F5 14            [12] 1043 	mov	_wdtCounter,a
-      0001FF F5 15            [12] 1044 	mov	(_wdtCounter + 1),a
-      000201 80 02            [24] 1045 	sjmp	00110$
-      000203                       1046 00107$:
-                                   1047 ;	watchdog-testing.c:141: ledON = 0;
-                                   1048 ;	assignBit
-      000203 C2 02            [12] 1049 	clr	_ledON
-      000205                       1050 00110$:
-                                   1051 ;	watchdog-testing.c:145: if (ledON) {
-      000205 30 02 30         [24] 1052 	jnb	_ledON,00115$
-                                   1053 ;	watchdog-testing.c:146: blink_led(t);
-      000208 85 1C 82         [24] 1054 	mov	dpl, _t
-      00020B 85 1D 83         [24] 1055 	mov	dph, (_t + 1)
-      00020E 12 01 6F         [24] 1056 	lcall	_blink_led
-                                   1057 ;	watchdog-testing.c:148: if ((t - last_tick) >= 200) {
-      000211 E5 1C            [12] 1058 	mov	a,_t
-      000213 C3               [12] 1059 	clr	c
-      000214 95 1A            [12] 1060 	subb	a,_last_tick
-      000216 FE               [12] 1061 	mov	r6,a
-      000217 E5 1D            [12] 1062 	mov	a,(_t + 1)
-      000219 95 1B            [12] 1063 	subb	a,(_last_tick + 1)
-      00021B FF               [12] 1064 	mov	r7,a
-      00021C C3               [12] 1065 	clr	c
-      00021D EE               [12] 1066 	mov	a,r6
-      00021E 94 C8            [12] 1067 	subb	a,#0xc8
-      000220 EF               [12] 1068 	mov	a,r7
-      000221 94 00            [12] 1069 	subb	a,#0x00
-      000223 40 13            [24] 1070 	jc	00115$
-                                   1071 ;	watchdog-testing.c:150: last_tick = t;
-      000225 85 1C 1A         [24] 1072 	mov	_last_tick,_t
-      000228 85 1D 1B         [24] 1073 	mov	(_last_tick + 1),(_t + 1)
-                                   1074 ;	watchdog-testing.c:152: wdtCounter++;
-      00022B AE 14            [24] 1075 	mov	r6,_wdtCounter
-      00022D AF 15            [24] 1076 	mov	r7,(_wdtCounter + 1)
-      00022F 74 01            [12] 1077 	mov	a,#0x01
-      000231 2E               [12] 1078 	add	a, r6
-      000232 F5 14            [12] 1079 	mov	_wdtCounter,a
-      000234 E4               [12] 1080 	clr	a
-      000235 3F               [12] 1081 	addc	a, r7
-      000236 F5 15            [12] 1082 	mov	(_wdtCounter + 1),a
-      000238                       1083 00115$:
-                                   1084 ;	watchdog-testing.c:157: if (wdtCounter >= 4) {
-      000238 C3               [12] 1085 	clr	c
-      000239 E5 14            [12] 1086 	mov	a,_wdtCounter
-      00023B 94 04            [12] 1087 	subb	a,#0x04
-      00023D E5 15            [12] 1088 	mov	a,(_wdtCounter + 1)
-      00023F 94 00            [12] 1089 	subb	a,#0x00
-      000241 50 03            [24] 1090 	jnc	00200$
-      000243 02 01 B6         [24] 1091 	ljmp	00122$
-      000246                       1092 00200$:
-                                   1093 ;	watchdog-testing.c:158: SAFE_MOD = 0x55;
-      000246 75 A1 55         [24] 1094 	mov	_SAFE_MOD,#0x55
-                                   1095 ;	watchdog-testing.c:159: SAFE_MOD = 0xAA;
-      000249 75 A1 AA         [24] 1096 	mov	_SAFE_MOD,#0xaa
-                                   1097 ;	watchdog-testing.c:160: USB_CTRL = 0x00;
-      00024C 75 E2 00         [24] 1098 	mov	_USB_CTRL,#0x00
-                                   1099 ;	watchdog-testing.c:161: SAFE_MOD = 0x00;
-      00024F 75 A1 00         [24] 1100 	mov	_SAFE_MOD,#0x00
-                                   1101 ;	watchdog-testing.c:162: EA = 0;
-                                   1102 ;	assignBit
-      000252 C2 AF            [12] 1103 	clr	_EA
-                                   1104 ;	watchdog-testing.c:163: while (1) { __asm nop __endasm; }
-      000254                       1105 00117$:
-      000254 00               [12] 1106 	nop	
-                                   1107 ;	watchdog-testing.c:166: }
-      000255 80 FD            [24] 1108 	sjmp	00117$
-                                   1109 	.area CSEG    (CODE)
-                                   1110 	.area CONST   (CODE)
-                                   1111 	.area XINIT   (CODE)
-                                   1112 	.area CABS    (ABS,CODE)
+                                    913 ;	watchdog-testing.c:79: void blink_led(unsigned int t) {
+                                    914 ;	-----------------------------------------
+                                    915 ;	 function blink_led
+                                    916 ;	-----------------------------------------
+      00016B                        917 _blink_led:
+      00016B AE 82            [24]  918 	mov	r6, dpl
+      00016D AF 83            [24]  919 	mov	r7, dph
+                                    920 ;	watchdog-testing.c:80: unsigned int phase = t - blink_base;
+      00016F EE               [12]  921 	mov	a,r6
+      000170 C3               [12]  922 	clr	c
+      000171 95 1C            [12]  923 	subb	a,_blink_base
+      000173 FC               [12]  924 	mov	r4,a
+      000174 EF               [12]  925 	mov	a,r7
+      000175 95 1D            [12]  926 	subb	a,(_blink_base + 1)
+      000177 FD               [12]  927 	mov	r5,a
+                                    928 ;	watchdog-testing.c:82: if (phase < 30) {
+      000178 C3               [12]  929 	clr	c
+      000179 EC               [12]  930 	mov	a,r4
+      00017A 94 1E            [12]  931 	subb	a,#0x1e
+      00017C ED               [12]  932 	mov	a,r5
+      00017D 94 00            [12]  933 	subb	a,#0x00
+      00017F 50 04            [24]  934 	jnc	00105$
+                                    935 ;	watchdog-testing.c:83: P3 |= (1 << 0);
+      000181 43 B0 01         [24]  936 	orl	_P3,#0x01
+      000184 22               [24]  937 	ret
+      000185                        938 00105$:
+                                    939 ;	watchdog-testing.c:84: } else if (phase < 60) {
+      000185 C3               [12]  940 	clr	c
+      000186 EC               [12]  941 	mov	a,r4
+      000187 94 3C            [12]  942 	subb	a,#0x3c
+      000189 ED               [12]  943 	mov	a,r5
+      00018A 94 00            [12]  944 	subb	a,#0x00
+      00018C 50 04            [24]  945 	jnc	00102$
+                                    946 ;	watchdog-testing.c:85: P3 &= ~(1 << 0);
+      00018E 53 B0 FE         [24]  947 	anl	_P3,#0xfe
+      000191 22               [24]  948 	ret
+      000192                        949 00102$:
+                                    950 ;	watchdog-testing.c:87: blink_base = t;
+      000192 8E 1C            [24]  951 	mov	_blink_base,r6
+      000194 8F 1D            [24]  952 	mov	(_blink_base + 1),r7
+                                    953 ;	watchdog-testing.c:88: wdtCounter++; 
+      000196 AE 14            [24]  954 	mov	r6,_wdtCounter
+      000198 AF 15            [24]  955 	mov	r7,(_wdtCounter + 1)
+      00019A 74 01            [12]  956 	mov	a,#0x01
+      00019C 2E               [12]  957 	add	a, r6
+      00019D F5 14            [12]  958 	mov	_wdtCounter,a
+      00019F E4               [12]  959 	clr	a
+      0001A0 3F               [12]  960 	addc	a, r7
+      0001A1 F5 15            [12]  961 	mov	(_wdtCounter + 1),a
+                                    962 ;	watchdog-testing.c:90: }
+      0001A3 22               [24]  963 	ret
+                                    964 ;------------------------------------------------------------
+                                    965 ;Allocation info for local variables in function 'main'
+                                    966 ;------------------------------------------------------------
+                                    967 ;	watchdog-testing.c:92: void main(void) {
+                                    968 ;	-----------------------------------------
+                                    969 ;	 function main
+                                    970 ;	-----------------------------------------
+      0001A4                        971 _main:
+                                    972 ;	watchdog-testing.c:93: clock_init();
+      0001A4 12 00 DA         [24]  973 	lcall	_clock_init
+                                    974 ;	watchdog-testing.c:94: extint1_init();
+      0001A7 12 01 66         [24]  975 	lcall	_extint1_init
+                                    976 ;	watchdog-testing.c:95: timer0_init();  
+      0001AA 12 01 4B         [24]  977 	lcall	_timer0_init
+                                    978 ;	watchdog-testing.c:99: P3_MOD_OC &= ~(1 << 0);   // push-pull
+      0001AD 53 96 FE         [24]  979 	anl	_P3_MOD_OC,#0xfe
+                                    980 ;	watchdog-testing.c:100: P3_DIR_PU |=  (1 << 0);   // enable strong output drive
+      0001B0 43 97 01         [24]  981 	orl	_P3_DIR_PU,#0x01
+                                    982 ;	watchdog-testing.c:103: P3_MOD_OC &= ~(1 << 3);   // normal input
+      0001B3 53 96 F7         [24]  983 	anl	_P3_MOD_OC,#0xf7
+                                    984 ;	watchdog-testing.c:104: P3_DIR_PU |=  (1 << 3);   // enable pull-up
+      0001B6 43 97 08         [24]  985 	orl	_P3_DIR_PU,#0x08
+                                    986 ;	watchdog-testing.c:105: P3 |= (1 << 3);           // pull-up
+      0001B9 43 B0 08         [24]  987 	orl	_P3,#0x08
+                                    988 ;	watchdog-testing.c:107: P3 &= ~(1 << 0);  // Make LED pin P3.0 "start" as OFF
+      0001BC 53 B0 FE         [24]  989 	anl	_P3,#0xfe
+                                    990 ;	watchdog-testing.c:109: while (1) {
+      0001BF                        991 00120$:
+                                    992 ;	watchdog-testing.c:111: if (!wdt_started && tick_10ms > 50) {  // wait ~500ms
+      0001BF 20 03 18         [24]  993 	jb	_wdt_started,00102$
+      0001C2 C3               [12]  994 	clr	c
+      0001C3 74 32            [12]  995 	mov	a,#0x32
+      0001C5 95 10            [12]  996 	subb	a,_tick_10ms
+      0001C7 E4               [12]  997 	clr	a
+      0001C8 95 11            [12]  998 	subb	a,(_tick_10ms + 1)
+      0001CA 50 0E            [24]  999 	jnc	00102$
+                                   1000 ;	watchdog-testing.c:112: SAFE_MOD = 0x55;
+      0001CC 75 A1 55         [24] 1001 	mov	_SAFE_MOD,#0x55
+                                   1002 ;	watchdog-testing.c:113: SAFE_MOD = 0xAA;
+      0001CF 75 A1 AA         [24] 1003 	mov	_SAFE_MOD,#0xaa
+                                   1004 ;	watchdog-testing.c:114: GLOBAL_CFG |= bWDOG_EN;
+      0001D2 43 B1 01         [24] 1005 	orl	_GLOBAL_CFG,#0x01
+                                   1006 ;	watchdog-testing.c:115: SAFE_MOD = 0x00;
+      0001D5 75 A1 00         [24] 1007 	mov	_SAFE_MOD,#0x00
+                                   1008 ;	watchdog-testing.c:117: wdt_started = 1;
+                                   1009 ;	assignBit
+      0001D8 D2 03            [12] 1010 	setb	_wdt_started
+      0001DA                       1011 00102$:
+                                   1012 ;	watchdog-testing.c:120: if (wdtCounter < 5) {
+      0001DA C3               [12] 1013 	clr	c
+      0001DB E5 14            [12] 1014 	mov	a,_wdtCounter
+      0001DD 94 05            [12] 1015 	subb	a,#0x05
+      0001DF E5 15            [12] 1016 	mov	a,(_wdtCounter + 1)
+      0001E1 94 00            [12] 1017 	subb	a,#0x00
+      0001E3 50 03            [24] 1018 	jnc	00105$
+                                   1019 ;	watchdog-testing.c:121: WDOG_COUNT = 0x01;   // feed normally
+      0001E5 75 FF 01         [24] 1020 	mov	_WDOG_COUNT,#0x01
+      0001E8                       1021 00105$:
+                                   1022 ;	watchdog-testing.c:123: EA = 0;
+                                   1023 ;	assignBit
+      0001E8 C2 AF            [12] 1024 	clr	_EA
+                                   1025 ;	watchdog-testing.c:124: t = tick_10ms;
+      0001EA 85 10 1A         [24] 1026 	mov	_t,_tick_10ms
+      0001ED 85 11 1B         [24] 1027 	mov	(_t + 1),(_tick_10ms + 1)
+                                   1028 ;	watchdog-testing.c:125: EA = 1;
+                                   1029 ;	assignBit
+      0001F0 D2 AF            [12] 1030 	setb	_EA
+                                   1031 ;	watchdog-testing.c:127: if (button_irq && debounce) {
+      0001F2 30 00 13         [24] 1032 	jnb	_button_irq,00110$
+      0001F5 30 01 10         [24] 1033 	jnb	_debounce,00110$
+                                   1034 ;	watchdog-testing.c:128: button_irq = 0;
+                                   1035 ;	assignBit
+      0001F8 C2 00            [12] 1036 	clr	_button_irq
+                                   1037 ;	watchdog-testing.c:130: if (ledON == 0) {
+      0001FA 20 02 09         [24] 1038 	jb	_ledON,00107$
+                                   1039 ;	watchdog-testing.c:131: ledON = 1;
+                                   1040 ;	assignBit
+      0001FD D2 02            [12] 1041 	setb	_ledON
+                                   1042 ;	watchdog-testing.c:132: wdtCounter = 0;
+      0001FF E4               [12] 1043 	clr	a
+      000200 F5 14            [12] 1044 	mov	_wdtCounter,a
+      000202 F5 15            [12] 1045 	mov	(_wdtCounter + 1),a
+      000204 80 02            [24] 1046 	sjmp	00110$
+      000206                       1047 00107$:
+                                   1048 ;	watchdog-testing.c:134: ledON = 0;
+                                   1049 ;	assignBit
+      000206 C2 02            [12] 1050 	clr	_ledON
+      000208                       1051 00110$:
+                                   1052 ;	watchdog-testing.c:138: if (ledON) {
+      000208 30 02 09         [24] 1053 	jnb	_ledON,00113$
+                                   1054 ;	watchdog-testing.c:139: blink_led(t);            
+      00020B 85 1A 82         [24] 1055 	mov	dpl, _t
+      00020E 85 1B 83         [24] 1056 	mov	dph, (_t + 1)
+      000211 12 01 6B         [24] 1057 	lcall	_blink_led
+      000214                       1058 00113$:
+                                   1059 ;	watchdog-testing.c:143: if (wdtCounter >= 5) {
+      000214 C3               [12] 1060 	clr	c
+      000215 E5 14            [12] 1061 	mov	a,_wdtCounter
+      000217 94 05            [12] 1062 	subb	a,#0x05
+      000219 E5 15            [12] 1063 	mov	a,(_wdtCounter + 1)
+      00021B 94 00            [12] 1064 	subb	a,#0x00
+      00021D 40 A0            [24] 1065 	jc	00120$
+                                   1066 ;	watchdog-testing.c:144: SAFE_MOD = 0x55;
+      00021F 75 A1 55         [24] 1067 	mov	_SAFE_MOD,#0x55
+                                   1068 ;	watchdog-testing.c:145: SAFE_MOD = 0xAA;
+      000222 75 A1 AA         [24] 1069 	mov	_SAFE_MOD,#0xaa
+                                   1070 ;	watchdog-testing.c:146: USB_CTRL = 0x00;
+      000225 75 E2 00         [24] 1071 	mov	_USB_CTRL,#0x00
+                                   1072 ;	watchdog-testing.c:147: SAFE_MOD = 0x00;
+      000228 75 A1 00         [24] 1073 	mov	_SAFE_MOD,#0x00
+                                   1074 ;	watchdog-testing.c:148: EA = 0;
+                                   1075 ;	assignBit
+      00022B C2 AF            [12] 1076 	clr	_EA
+                                   1077 ;	watchdog-testing.c:149: while (1) { __asm nop __endasm; }
+      00022D                       1078 00115$:
+      00022D 00               [12] 1079 	nop	
+                                   1080 ;	watchdog-testing.c:152: }
+      00022E 80 FD            [24] 1081 	sjmp	00115$
+                                   1082 	.area CSEG    (CODE)
+                                   1083 	.area CONST   (CODE)
+                                   1084 	.area XINIT   (CODE)
+                                   1085 	.area CABS    (ABS,CODE)

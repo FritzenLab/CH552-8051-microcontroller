@@ -8,7 +8,6 @@
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
-	.globl _VoltageCMPModeInit_PARM_2
 	.globl _UIF_BUS_RST
 	.globl _UIF_DETECT
 	.globl _UIF_TRANSFER
@@ -502,11 +501,6 @@ _UIF_BUS_RST	=	0x00d8
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
-	.area	OSEG    (OVR,DATA)
-	.area	OSEG    (OVR,DATA)
-	.area	OSEG    (OVR,DATA)
-_VoltageCMPModeInit_PARM_2:
-	.ds 1
 ;--------------------------------------------------------
 ; indirectly addressable internal ram data
 ;--------------------------------------------------------
@@ -649,7 +643,7 @@ _ADC_ChannelSelect:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'VoltageCMPModeInit'
 ;------------------------------------------------------------
-;re            Allocated with name '_VoltageCMPModeInit_PARM_2'
+;re            Allocated to stack - _bp -3 +1 
 ;fo            Allocated to registers r7 
 ;------------------------------------------------------------
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:64: uint8_t VoltageCMPModeInit(uint8_t fo,uint8_t re)
@@ -657,12 +651,16 @@ _ADC_ChannelSelect:
 ;	 function VoltageCMPModeInit
 ;	-----------------------------------------
 _VoltageCMPModeInit:
+	push	_bp
+	mov	_bp,sp
 	mov	r7, dpl
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:66: ADC_CFG |= bCMP_EN;                                                        // level comparison power enable
 	orl	_ADC_CFG,#0x04
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:67: if(re == 1){
-	mov	a,#0x01
-	cjne	a,_VoltageCMPModeInit_PARM_2,00123$
+	mov	a,_bp
+	add	a,#0xfd
+	mov	r0,a
+	cjne	@r0,#0x01,00123$
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:68: if(fo == 0) {ADC_CHAN1 =0;ADC_CHAN0=0;CMP_CHAN =0;}                      // AIN0 and AIN1
 	mov	a,r7
 	jnz	00108$
@@ -696,11 +694,13 @@ _VoltageCMPModeInit:
 00102$:
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:71: else return FAIL;
 	mov	dpl, #0xff
-	ret
+	sjmp	00125$
 00123$:
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:73: else if(re == 3){
-	mov	a,#0x03
-	cjne	a,_VoltageCMPModeInit_PARM_2,00120$
+	mov	a,_bp
+	add	a,#0xfd
+	mov	r0,a
+	cjne	@r0,#0x03,00120$
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:74: if(fo == 0) {ADC_CHAN1 =0;ADC_CHAN0=0;CMP_CHAN =0;}                      //AIN0 and AIN1
 	mov	a,r7
 	jnz	00117$
@@ -734,15 +734,17 @@ _VoltageCMPModeInit:
 00111$:
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:77: else return FAIL;
 	mov	dpl, #0xff
-	ret
+	sjmp	00125$
 00120$:
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:79: else return FAIL;
 	mov	dpl, #0xff
-	ret
+	sjmp	00125$
 00124$:
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:85: return SUCCESS;
 	mov	dpl, #0x01
+00125$:
 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:86: }
+	pop	_bp
 	ret
 	.area CSEG    (CODE)
 	.area CONST   (CODE)

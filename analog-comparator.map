@@ -1,0 +1,546 @@
+ASxxxx Linker V03.00/V05.40 + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+CABS                                00000000    00000000 =           0. bytes (ABS,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000000  l_BIT_BANK                      
+C:   00000000  l_CABS                          
+C:   00000000  l_CONST                         
+C:   00000000  l_GSINIT1                       
+C:   00000000  l_GSINIT5                       
+C:   00000000  l_IABS                          
+C:   00000000  l_ISEG                          
+C:   00000000  l_OSEG                          
+C:   00000000  l_PSEG                          
+C:   00000000  l_REG_BANK_2                    
+C:   00000000  l_REG_BANK_3                    
+C:   00000000  l_RSEG                          
+C:   00000000  l_RSEG0                         
+C:   00000000  l_RSEG1                         
+C:   00000000  l_XABS                          
+C:   00000000  l_XINIT                         
+C:   00000000  l_XISEG                         
+C:   00000000  l_XSEG                          
+C:   00000000  l__CODE                         
+C:   00000000  s_BSEG                          
+C:   00000000  s_CABS                          
+C:   00000000  s_DSEG                          
+C:   00000000  s_HOME                          
+C:   00000000  s_IABS                          
+C:   00000000  s_ISEG                          
+C:   00000000  s_REG_BANK_0                    
+C:   00000000  s_RSEG                          
+C:   00000000  s_RSEG0                         
+C:   00000000  s_RSEG1                         
+C:   00000000  s_XABS                          
+C:   00000001  l_BSEG_BYTES                    
+C:   00000001  s_PSEG                          
+C:   00000001  s_XISEG                         
+C:   00000001  s_XSEG                          
+C:   00000002  l_BSEG                          
+C:   00000003  l_GSFINAL                       
+C:   00000003  l_GSINIT0                       
+C:   00000008  l_REG_BANK_0                    
+C:   00000008  l_REG_BANK_1                    
+C:   00000008  s_REG_BANK_1                    
+C:   0000000A  l_GSINIT2                       
+C:   00000010  s_REG_BANK_2                    
+C:   00000015  l_GSINIT                        
+C:   00000018  s_BIT_BANK                      
+C:   00000018  s_OSEG                          
+C:   00000018  s_REG_BANK_3                    
+C:   00000020  s_BSEG_BYTES                    
+C:   00000020  s__CODE                         
+C:   00000021  s_SSEG                          
+C:   00000022  l_GSINIT3                       
+ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+CABS                                00000000    00000000 =           0. bytes (ABS,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   0000002A  l_GSINIT4                       
+C:   00000054  l_HOME                          
+C:   00000054  s_GSINIT0                       
+C:   00000057  s_GSINIT1                       
+C:   00000057  s_GSINIT2                       
+C:   00000061  s_GSINIT3                       
+C:   0000007A  l_DSEG                          
+C:   00000083  s_GSINIT4                       
+C:   000000AD  s_GSINIT                        
+C:   000000AD  s_GSINIT5                       
+C:   000000C2  s_GSFINAL                       
+C:   000000C5  s_CSEG                          
+C:   000000D3  l_CSEG                          
+C:   000000DF  l_SSEG                          
+C:   00000100  l_IRAM                          
+C:   00000198  s_CONST                         
+C:   00000198  s_XINIT                         
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           _startup
+     00000080  _ADC_CHAN0                         analog_comparator
+     00000080  _ADC_CTRL                          analog_comparator
+     00000081  _ADC_CHAN1                         analog_comparator
+     00000081  _SP                                analog_comparator
+     00000082  _DPL                               analog_comparator
+     00000083  _CMP_CHAN                          analog_comparator
+     00000083  _DPH                               analog_comparator
+     00000084  _ADC_START                         analog_comparator
+     00000084  _ROM_ADDR_L                        analog_comparator
+     00000085  _ADC_IF                            analog_comparator
+     00000085  _ROM_ADDR_H                        analog_comparator
+     00000086  _CMP_IF                            analog_comparator
+     00000086  _ROM_CTRL                          analog_comparator
+     00000087  _CMPO                              analog_comparator
+     00000087  _PCON                              analog_comparator
+     00000088  _IT0                               analog_comparator
+     00000088  _TCON                              analog_comparator
+     00000089  _IE0                               analog_comparator
+     00000089  _TMOD                              analog_comparator
+     0000008A  _IT1                               analog_comparator
+     0000008A  _TL0                               analog_comparator
+     0000008B  _IE1                               analog_comparator
+     0000008B  _TL1                               analog_comparator
+     0000008C  _TH0                               analog_comparator
+     0000008C  _TR0                               analog_comparator
+     0000008D  _TF0                               analog_comparator
+     0000008D  _TH1                               analog_comparator
+     0000008E  _ROM_DATA_L                        analog_comparator
+     0000008E  _TR1                               analog_comparator
+     0000008F  _ROM_DATA_H                        analog_comparator
+     0000008F  _TF1                               analog_comparator
+     00000090  _CAP1                              analog_comparator
+     00000090  _P1                                analog_comparator
+     00000090  _T2                                analog_comparator
+     00000090  _TIN0                              analog_comparator
+     00000091  _AIN0                              analog_comparator
+     00000091  _CAP2                              analog_comparator
+     00000091  _T2EX                              analog_comparator
+     00000091  _TIN1                              analog_comparator
+     00000091  _USB_C_CTRL                        analog_comparator
+     00000091  _VBUS2                             analog_comparator
+     00000092  _P1_MOD_OC                         analog_comparator
+     00000092  _RXD_                              analog_comparator
+     00000093  _P1_DIR_PU                         analog_comparator
+     00000093  _TXD_                              analog_comparator
+     00000094  _AIN1                              analog_comparator
+     00000094  _CAP1_                             analog_comparator
+     00000094  _SCS                               analog_comparator
+     00000094  _T2_                               analog_comparator
+ASxxxx Linker V03.00/V05.40 + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000094  _TIN2                              analog_comparator
+     00000094  _UCC1                              analog_comparator
+     00000095  _AIN2                              analog_comparator
+     00000095  _MOSI                              analog_comparator
+     00000095  _PWM1                              analog_comparator
+     00000095  _TIN3                              analog_comparator
+     00000095  _UCC2                              analog_comparator
+     00000096  _MISO                              analog_comparator
+     00000096  _P3_MOD_OC                         analog_comparator
+     00000096  _RXD1                              analog_comparator
+     00000096  _TIN4                              analog_comparator
+     00000097  _P3_DIR_PU                         analog_comparator
+     00000097  _SCK                               analog_comparator
+     00000097  _TIN5                              analog_comparator
+     00000097  _TXD1                              analog_comparator
+     00000098  _RI                                analog_comparator
+     00000098  _SCON                              analog_comparator
+     00000099  _SBUF                              analog_comparator
+     00000099  _TI                                analog_comparator
+     0000009A  _ADC_CFG                           analog_comparator
+     0000009A  _RB8                               analog_comparator
+     0000009B  _PWM_DATA2                         analog_comparator
+     0000009B  _TB8                               analog_comparator
+     0000009C  _PWM_DATA1                         analog_comparator
+     0000009C  _REN                               analog_comparator
+     0000009D  _PWM_CTRL                          analog_comparator
+     0000009D  _SM2                               analog_comparator
+     0000009E  _PWM_CK_SE                         analog_comparator
+     0000009E  _SM1                               analog_comparator
+     0000009F  _ADC_DATA                          analog_comparator
+     0000009F  _SM0                               analog_comparator
+     000000A0  _P2                                analog_comparator
+     000000A0  __XPAGE                            
+     000000A1  _SAFE_MOD                          analog_comparator
+     000000A2  _XBUS_AUX                          analog_comparator
+     000000A8  _EX0                               analog_comparator
+     000000A8  _IE                                analog_comparator
+     000000A9  _ET0                               analog_comparator
+     000000A9  _WAKE_CTRL                         analog_comparator
+     000000AA  _EX1                               analog_comparator
+     000000AB  _ET1                               analog_comparator
+     000000AC  _ES                                analog_comparator
+     000000AD  _ET2                               analog_comparator
+     000000AE  _E_DIS                             analog_comparator
+     000000AF  _EA                                analog_comparator
+     000000B0  _P3                                analog_comparator
+     000000B0  _PWM1_                             analog_comparator
+     000000B0  _RXD                               analog_comparator
+     000000B1  _GLOBAL_CFG                        analog_comparator
+     000000B1  _PWM2_                             analog_comparator
+     000000B1  _TXD                               analog_comparator
+ASxxxx Linker V03.00/V05.40 + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000000B2  _AIN3                              analog_comparator
+     000000B2  _INT0                              analog_comparator
+     000000B2  _TXD1_                             analog_comparator
+     000000B2  _VBUS1                             analog_comparator
+     000000B3  _INT1                              analog_comparator
+     000000B4  _PWM2                              analog_comparator
+     000000B4  _RXD1_                             analog_comparator
+     000000B4  _T0                                analog_comparator
+     000000B5  _T1                                analog_comparator
+     000000B6  _UDP                               analog_comparator
+     000000B7  _UDM                               analog_comparator
+     000000B8  _IP                                analog_comparator
+     000000B8  _PX0                               analog_comparator
+     000000B9  _CLOCK_CFG                         analog_comparator
+     000000B9  _PT0                               analog_comparator
+     000000BA  _PX1                               analog_comparator
+     000000BB  _PT1                               analog_comparator
+     000000BC  _PS                                analog_comparator
+     000000BD  _PT2                               analog_comparator
+     000000BE  _PL_FLAG                           analog_comparator
+     000000BF  _PH_FLAG                           analog_comparator
+     000000C0  _SCON1                             analog_comparator
+     000000C0  _U1RI                              analog_comparator
+     000000C1  _SBUF1                             analog_comparator
+     000000C1  _U1TI                              analog_comparator
+     000000C2  _SBAUD1                            analog_comparator
+     000000C2  _U1RB8                             analog_comparator
+     000000C3  _TKEY_CTRL                         analog_comparator
+     000000C3  _U1TB8                             analog_comparator
+     000000C4  _TKEY_DATL                         analog_comparator
+     000000C4  _U1REN                             analog_comparator
+     000000C5  _TKEY_DATH                         analog_comparator
+     000000C5  _U1SMOD                            analog_comparator
+     000000C6  _PIN_FUNC                          analog_comparator
+     000000C7  _GPIO_IE                           analog_comparator
+     000000C7  _U1SM0                             analog_comparator
+     000000C8  _CP_RL2                            analog_comparator
+     000000C8  _T2CON                             analog_comparator
+     000000C9  _C_T2                              analog_comparator
+     000000C9  _T2MOD                             analog_comparator
+     000000CA  _RCAP2L                            analog_comparator
+     000000CA  _TR2                               analog_comparator
+     000000CB  _EXEN2                             analog_comparator
+     000000CB  _RCAP2H                            analog_comparator
+     000000CC  _TCLK                              analog_comparator
+     000000CC  _TL2                               analog_comparator
+     000000CD  _RCLK                              analog_comparator
+     000000CD  _TH2                               analog_comparator
+     000000CE  _EXF2                              analog_comparator
+     000000CE  _T2CAP1L                           analog_comparator
+     000000CF  _CAP1F                             analog_comparator
+ASxxxx Linker V03.00/V05.40 + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000000CF  _T2CAP1H                           analog_comparator
+     000000CF  _TF2                               analog_comparator
+     000000D0  _P                                 analog_comparator
+     000000D0  _PSW                               analog_comparator
+     000000D1  _F1                                analog_comparator
+     000000D1  _UDEV_CTRL                         analog_comparator
+     000000D2  _OV                                analog_comparator
+     000000D2  _UEP1_CTRL                         analog_comparator
+     000000D3  _RS0                               analog_comparator
+     000000D3  _UEP1_T_LEN                        analog_comparator
+     000000D4  _RS1                               analog_comparator
+     000000D4  _UEP2_CTRL                         analog_comparator
+     000000D5  _F0                                analog_comparator
+     000000D5  _UEP2_T_LEN                        analog_comparator
+     000000D6  _AC                                analog_comparator
+     000000D6  _UEP3_CTRL                         analog_comparator
+     000000D7  _CY                                analog_comparator
+     000000D7  _UEP3_T_LEN                        analog_comparator
+     000000D8  _UIF_BUS_RST                       analog_comparator
+     000000D8  _UIF_DETECT                        analog_comparator
+     000000D8  _USB_INT_FG                        analog_comparator
+     000000D9  _UIF_TRANSFER                      analog_comparator
+     000000D9  _USB_INT_ST                        analog_comparator
+     000000DA  _UIF_SUSPEND                       analog_comparator
+     000000DA  _USB_MIS_ST                        analog_comparator
+     000000DB  _UIF_HST_SOF                       analog_comparator
+     000000DB  _USB_RX_LEN                        analog_comparator
+     000000DC  _UEP0_CTRL                         analog_comparator
+     000000DC  _UIF_FIFO_OV                       analog_comparator
+     000000DD  _UEP0_T_LEN                        analog_comparator
+     000000DD  _U_SIE_FREE                        analog_comparator
+     000000DE  _UEP4_CTRL                         analog_comparator
+     000000DE  _U_TOG_OK                          analog_comparator
+     000000DF  _UEP4_T_LEN                        analog_comparator
+     000000DF  _U_IS_NAK                          analog_comparator
+     000000E0  _ACC                               analog_comparator
+     000000E1  _USB_INT_EN                        analog_comparator
+     000000E2  _USB_CTRL                          analog_comparator
+     000000E3  _USB_DEV_AD                        analog_comparator
+     000000E4  _UEP2_DMA_L                        analog_comparator
+     000000E5  _UEP2_DMA_H                        analog_comparator
+     000000E6  _UEP3_DMA_L                        analog_comparator
+     000000E7  _UEP3_DMA_H                        analog_comparator
+     000000E8  _IE_EX                             analog_comparator
+     000000E8  _IE_SPI0                           analog_comparator
+     000000E9  _IE_TKEY                           analog_comparator
+     000000E9  _IP_EX                             analog_comparator
+     000000EA  _IE_USB                            analog_comparator
+     000000EA  _UEP4_1_MOD                        analog_comparator
+     000000EB  _IE_ADC                            analog_comparator
+     000000EB  _UEP2_3_MOD                        analog_comparator
+ASxxxx Linker V03.00/V05.40 + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000000EC  _IE_UART1                          analog_comparator
+     000000EC  _UEP0_DMA_L                        analog_comparator
+     000000ED  _IE_PWMX                           analog_comparator
+     000000ED  _UEP0_DMA_H                        analog_comparator
+     000000EE  _IE_GPIO                           analog_comparator
+     000000EE  _UEP1_DMA_L                        analog_comparator
+     000000EF  _IE_WDOG                           analog_comparator
+     000000EF  _UEP1_DMA_H                        analog_comparator
+     000000F0  _B                                 analog_comparator
+     000000F8  _S0_R_FIFO                         analog_comparator
+     000000F8  _SPI0_STAT                         analog_comparator
+     000000F9  _SPI0_DATA                         analog_comparator
+     000000FA  _S0_T_FIFO                         analog_comparator
+     000000FA  _SPI0_CTRL                         analog_comparator
+     000000FB  _S0_FREE                           analog_comparator
+     000000FB  _SPI0_CK_SE                        analog_comparator
+     000000FC  _S0_IF_BYTE                        analog_comparator
+     000000FC  _SPI0_SETUP                        analog_comparator
+     000000FD  _S0_IF_FIRST                       analog_comparator
+     000000FE  _RESET_KEEP                        analog_comparator
+     000000FE  _S0_IF_OV                          analog_comparator
+     000000FF  _S0_FST_ACT                        analog_comparator
+     000000FF  _WDOG_COUNT                        analog_comparator
+     00008584  _ROM_ADDR                          analog_comparator
+     00008F8E  _ROM_DATA                          analog_comparator
+     0000C5C4  _TKEY_DAT                          analog_comparator
+     0000CBCA  _RCAP2                             analog_comparator
+     0000CDCC  _T2COUNT                           analog_comparator
+     0000CFCE  _T2CAP1                            analog_comparator
+     0000E5E4  _UEP2_DMA                          analog_comparator
+     0000E7E6  _UEP3_DMA                          analog_comparator
+     0000EDEC  _UEP0_DMA                          analog_comparator
+     0000EFEE  _UEP1_DMA                          analog_comparator
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 8.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+BSEG_BYTES                          00000020    00000001 =           1. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 9.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+REG_BANK_0                          00000000    00000008 =           8. bytes (REL,OVR)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 10.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+REG_BANK_1                          00000008    00000008 =           8. bytes (REL,OVR)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 11.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+DSEG                                00000000    0000007A =         122. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000010  _tick_10ms                         analog_comparator
+     00000012  _serialTime                        analog_comparator
+     00000014  _counter                           analog_comparator
+     00000016  _t                                 analog_comparator
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+SSEG                                00000021    000000DF =         223. bytes (REL,OVR)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000021  __start__stack                     analog_comparator
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 13.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+HOME                                00000000    00000054 =          84. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000010  sdcc_atomic_exchange_rollback_st   analog_comparator
+C:   00000037  sdcc_atomic_exchange_gptr_impl     analog_comparator
+C:   00000037  sdcc_atomic_exchange_rollback_en   analog_comparator
+C:   00000047  sdcc_atomic_compare_exchange_gpt   analog_comparator
+C:   00000051  __sdcc_program_startup             analog_comparator
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 14.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT0                             00000054    00000003 =           3. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000054  __sdcc_gsinit_startup              
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 15.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT2                             00000057    0000000A =          10. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 16.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT3                             00000061    00000022 =          34. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000061  __mcs51_genXINIT                   
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 17.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT4                             00000083    0000002A =          42. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   00000083  __mcs51_genRAMCLEAR                
+C:   00000089  __mcs51_genXRAMCLEAR               
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 18.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT                              000000AD    00000015 =          21. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 19.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSFINAL                             000000C2    00000003 =           3. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00/V05.40 + sdld,  page 20.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+CSEG                                000000C5    000000D3 =         211. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+C:   000000C5  _clock_init                        analog_comparator
+C:   000000DA  _timer0_ISR                        analog_comparator
+C:   000000FB  _timer0_init                       analog_comparator
+C:   00000116  _cmp_init                          analog_comparator
+C:   00000129  _blink_led                         analog_comparator
+C:   00000155  _main                              analog_comparator
+C:   00000194  ___sdcc_external_startup           _startup
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
+
+Files Linked                              [ module(s) ]
+
+analog-comparator.rel                     [  ]
+
+
+Libraries Linked                          [ object file ]
+
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtclear.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtxinit.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtxclear.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtpagesfr.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+                                          [ crtstart.rel ]
+C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
+                                          [ _startup.rel ]
+
+ASxxxx Linker V03.00/V05.40 + sdld,  page 22.
+
+User Base Address Definitions
+
+HOME = 0x0000
+XSEG = 0x0001
+PSEG = 0x0001
+ISEG = 0x0000
+BSEG = 0x0000
+
+

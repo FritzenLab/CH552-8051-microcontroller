@@ -2,14 +2,13 @@
 ; File Created by SDCC : free open source ISO C Compiler
 ; Version 4.5.0 #15242 (MINGW64)
 ;--------------------------------------------------------
-	.module watchdog_testing
+	.module analog_comparator
 	
 	.optsdcc -mmcs51 --model-small
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
 	.globl _main
-	.globl _extint1_init
 	.globl _timer0_init
 	.globl _UIF_BUS_RST
 	.globl _UIF_DETECT
@@ -246,17 +245,13 @@
 	.globl _ACC
 	.globl _PSW
 	.globl _ledON
-	.globl _debounce
-	.globl _button_irq
 	.globl _t
 	.globl _counter
 	.globl _serialTime
-	.globl _wdtCounter
-	.globl _debounceTimer
 	.globl _tick_10ms
 	.globl _clock_init
-	.globl _INT1_ISR
 	.globl _timer0_ISR
+	.globl _cmp_init
 	.globl _blink_led
 ;--------------------------------------------------------
 ; special function registers
@@ -515,10 +510,6 @@ _UIF_BUS_RST	=	0x00d8
 	.area DSEG    (DATA)
 _tick_10ms::
 	.ds 2
-_debounceTimer::
-	.ds 2
-_wdtCounter::
-	.ds 2
 _serialTime::
 	.ds 2
 _counter::
@@ -551,10 +542,6 @@ __start__stack:
 ; bit data
 ;--------------------------------------------------------
 	.area BSEG    (BIT)
-_button_irq::
-	.ds 1
-_debounce::
-	.ds 1
 _ledON::
 	.ds 1
 _wdt_started:
@@ -594,8 +581,6 @@ __interrupt_vect:
 	reti
 	.ds	7
 	ljmp	_timer0_ISR
-	.ds	5
-	ljmp	_INT1_ISR
 ; restartable atomic support routines
 	.ds	2
 sdcc_atomic_exchange_rollback_start::
@@ -667,35 +652,23 @@ sdcc_atomic_compare_exchange_gptr_impl::
 	.globl __mcs51_genXINIT
 	.globl __mcs51_genXRAMCLEAR
 	.globl __mcs51_genRAMCLEAR
-;	watchdog-testing.c:5: volatile unsigned int tick_10ms = 0;
+;	analog-comparator.c:5: volatile unsigned int tick_10ms = 0;
 	clr	a
 	mov	_tick_10ms,a
 	mov	(_tick_10ms + 1),a
-;	watchdog-testing.c:6: volatile unsigned int debounceTimer = 0;
-	mov	_debounceTimer,a
-	mov	(_debounceTimer + 1),a
-;	watchdog-testing.c:7: volatile unsigned int wdtCounter = 1;
-	mov	_wdtCounter,#0x01
-	mov	(_wdtCounter + 1),a
-;	watchdog-testing.c:11: unsigned int serialTime= 0;
+;	analog-comparator.c:7: unsigned int serialTime= 0;
 	mov	_serialTime,a
 	mov	(_serialTime + 1),a
-;	watchdog-testing.c:12: unsigned int counter= 0;
+;	analog-comparator.c:8: unsigned int counter= 0;
 	mov	_counter,a
 	mov	(_counter + 1),a
-;	watchdog-testing.c:15: static unsigned int blink_base = 0;
+;	analog-comparator.c:11: static unsigned int blink_base = 0;
 	mov	_blink_base,a
 	mov	(_blink_base + 1),a
-;	watchdog-testing.c:8: volatile __bit button_irq = 0;
-;	assignBit
-	clr	_button_irq
-;	watchdog-testing.c:9: volatile __bit debounce = 0;
-;	assignBit
-	clr	_debounce
-;	watchdog-testing.c:10: volatile __bit ledON = 0;
+;	analog-comparator.c:6: volatile __bit ledON = 0;
 ;	assignBit
 	clr	_ledON
-;	watchdog-testing.c:14: static __bit wdt_started = 0;
+;	analog-comparator.c:10: static __bit wdt_started = 0;
 ;	assignBit
 	clr	_wdt_started
 	.area GSFINAL (CODE)
@@ -715,7 +688,7 @@ __sdcc_program_startup:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'clock_init'
 ;------------------------------------------------------------
-;	watchdog-testing.c:22: void clock_init(void) {
+;	analog-comparator.c:18: void clock_init(void) {
 ;	-----------------------------------------
 ;	 function clock_init
 ;	-----------------------------------------
@@ -728,54 +701,25 @@ _clock_init:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	watchdog-testing.c:23: SAFE_MOD = 0x55;
+;	analog-comparator.c:19: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	watchdog-testing.c:24: SAFE_MOD = 0xAA;
+;	analog-comparator.c:20: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	watchdog-testing.c:25: CLOCK_CFG |= bOSC_EN_INT; 
+;	analog-comparator.c:21: CLOCK_CFG |= bOSC_EN_INT; 
 	orl	_CLOCK_CFG,#0x80
-;	watchdog-testing.c:27: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
+;	analog-comparator.c:23: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
 	mov	a,#0xf8
 	anl	a,_CLOCK_CFG
 	orl	a,#0x06
 	mov	_CLOCK_CFG,a
-;	watchdog-testing.c:29: SAFE_MOD = 0x00;
+;	analog-comparator.c:25: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	watchdog-testing.c:30: }
+;	analog-comparator.c:26: }
 	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'INT1_ISR'
-;------------------------------------------------------------
-;	watchdog-testing.c:31: void INT1_ISR(void) __interrupt (INT_NO_INT1)// You can do __interrupt (2) if you prefer 
-;	-----------------------------------------
-;	 function INT1_ISR
-;	-----------------------------------------
-_INT1_ISR:
-	push	acc
-;	watchdog-testing.c:33: if (!(P3 & (1 << 3))) {   // only accept if pin is LOW. This prevents
-	mov	a,_P3
-	jb	acc.3,00105$
-;	watchdog-testing.c:34: if (!debounce) {        // only register if not already debouncing
-	jb	_debounce,00105$
-;	watchdog-testing.c:35: button_irq = 1;
-;	assignBit
-	setb	_button_irq
-;	watchdog-testing.c:36: debounce = 1;       // arm immediately, atomically
-;	assignBit
-	setb	_debounce
-00105$:
-;	watchdog-testing.c:39: }
-	pop	acc
-	reti
-;	eliminated unneeded mov psw,# (no regs used in bank)
-;	eliminated unneeded push/pop not_psw
-;	eliminated unneeded push/pop dpl
-;	eliminated unneeded push/pop dph
-;	eliminated unneeded push/pop b
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_ISR'
 ;------------------------------------------------------------
-;	watchdog-testing.c:40: void timer0_ISR(void) __interrupt(1) __using(1){ 
+;	analog-comparator.c:28: void timer0_ISR(void) __interrupt(1) __using(1){ 
 ;	-----------------------------------------
 ;	 function timer0_ISR
 ;	-----------------------------------------
@@ -791,14 +735,14 @@ _timer0_ISR:
 	push	acc
 	push	psw
 	mov	psw,#0x08
-;	watchdog-testing.c:42: TF0 = 0;  // clear overflow flag (important for robustness)
+;	analog-comparator.c:30: TF0 = 0;  // clear overflow flag (important for robustness)
 ;	assignBit
 	clr	_TF0
-;	watchdog-testing.c:43: TH0 = 0xB1;
+;	analog-comparator.c:31: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	watchdog-testing.c:44: TL0 = 0xE0;
+;	analog-comparator.c:32: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	watchdog-testing.c:45: tick_10ms++; // this is the 10ms tick for LED blinking
+;	analog-comparator.c:33: tick_10ms++; // this is the 10ms tick for LED blinking
 	mov	r6,_tick_10ms
 	mov	r7,(_tick_10ms + 1)
 	mov	a,#0x01
@@ -807,39 +751,7 @@ _timer0_ISR:
 	clr	a
 	addc	a, r7
 	mov	(_tick_10ms + 1),a
-;	watchdog-testing.c:46: serialTime++; // this is the timer for Serial_println transmissions
-	inc	_serialTime
-	clr	a
-	cjne	a,_serialTime,00119$
-	inc	(_serialTime + 1)
-00119$:
-;	watchdog-testing.c:47: if(debounce){ // if external interrupt happened, activate debounce timer
-	jnb	_debounce,00105$
-;	watchdog-testing.c:48: debounceTimer++;
-	mov	r6,_debounceTimer
-	mov	r7,(_debounceTimer + 1)
-	mov	a,#0x01
-	add	a, r6
-	mov	_debounceTimer,a
-	clr	a
-	addc	a, r7
-	mov	(_debounceTimer + 1),a
-;	watchdog-testing.c:49: if(debounceTimer >= 60){ // after 600ms of not detecting the push-button
-	clr	c
-	mov	a,_debounceTimer
-	subb	a,#0x3c
-	mov	a,(_debounceTimer + 1)
-	subb	a,#0x00
-	jc	00105$
-;	watchdog-testing.c:50: debounce= 0; // turn debounce delay OFF
-;	assignBit
-	clr	_debounce
-;	watchdog-testing.c:51: debounceTimer= 0; // and clear timer/counter for next time
-	clr	a
-	mov	_debounceTimer,a
-	mov	(_debounceTimer + 1),a
-00105$:
-;	watchdog-testing.c:54: }
+;	analog-comparator.c:35: }
 	pop	psw
 	pop	acc
 	reti
@@ -849,7 +761,7 @@ _timer0_ISR:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_init'
 ;------------------------------------------------------------
-;	watchdog-testing.c:58: void timer0_init(void) {
+;	analog-comparator.c:37: void timer0_init(void) {
 ;	-----------------------------------------
 ;	 function timer0_init
 ;	-----------------------------------------
@@ -862,47 +774,53 @@ _timer0_init:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	watchdog-testing.c:60: T2MOD &= ~bTMR_CLK;   // disable fast clock mode
+;	analog-comparator.c:39: T2MOD &= ~bTMR_CLK;   // disable fast clock mode
 	anl	_T2MOD,#0x7f
-;	watchdog-testing.c:61: T2MOD &= ~bT0_CLK;    // Timer0 = Fsys/12
+;	analog-comparator.c:40: T2MOD &= ~bT0_CLK;    // Timer0 = Fsys/12
 	anl	_T2MOD,#0xef
-;	watchdog-testing.c:62: TMOD &= ~0x03;  // clear Timer0 mode bits
+;	analog-comparator.c:41: TMOD &= ~0x03;  // clear Timer0 mode bits
 	anl	_TMOD,#0xfc
-;	watchdog-testing.c:63: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
+;	analog-comparator.c:42: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
 	orl	_TMOD,#0x01
-;	watchdog-testing.c:66: TH0 = 0xB1;
+;	analog-comparator.c:45: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	watchdog-testing.c:67: TL0 = 0xE0;
+;	analog-comparator.c:46: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	watchdog-testing.c:69: TF0 = 0;
+;	analog-comparator.c:48: TF0 = 0;
 ;	assignBit
 	clr	_TF0
-;	watchdog-testing.c:71: ET0 = 1;   // enable Timer0 interrupt
+;	analog-comparator.c:50: ET0 = 1;   // enable Timer0 interrupt
 ;	assignBit
 	setb	_ET0
-;	watchdog-testing.c:72: TR0 = 1;   // start Timer0
+;	analog-comparator.c:51: TR0 = 1;   // start Timer0
 ;	assignBit
 	setb	_TR0
-;	watchdog-testing.c:73: EA = 1;
+;	analog-comparator.c:52: EA = 1;
 ;	assignBit
 	setb	_EA
-;	watchdog-testing.c:74: }
+;	analog-comparator.c:53: }
 	ret
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'extint1_init'
+;Allocation info for local variables in function 'cmp_init'
 ;------------------------------------------------------------
-;	watchdog-testing.c:75: void extint1_init(void) {
+;	analog-comparator.c:54: void cmp_init(void) {
 ;	-----------------------------------------
-;	 function extint1_init
+;	 function cmp_init
 ;	-----------------------------------------
-_extint1_init:
-;	watchdog-testing.c:76: IT1 = 1;   // falling edge
-;	assignBit
-	setb	_IT1
-;	watchdog-testing.c:77: EX1 = 1;   // enable INT1
-;	assignBit
-	setb	_EX1
-;	watchdog-testing.c:78: }
+_cmp_init:
+;	analog-comparator.c:56: ADC_CFG = bCMP_EN;
+	mov	_ADC_CFG,#0x04
+;	analog-comparator.c:61: ADC_CTRL = 0x00;
+	mov	_ADC_CTRL,#0x00
+;	analog-comparator.c:64: P1_MOD_OC &= ~(1 << 1);
+	anl	_P1_MOD_OC,#0xfd
+;	analog-comparator.c:65: P1_DIR_PU &= ~(1 << 1);
+	anl	_P1_DIR_PU,#0xfd
+;	analog-comparator.c:68: P1_MOD_OC &= ~(1 << 4);
+	anl	_P1_MOD_OC,#0xef
+;	analog-comparator.c:69: P1_DIR_PU &= ~(1 << 4);
+	anl	_P1_DIR_PU,#0xef
+;	analog-comparator.c:70: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'blink_led'
@@ -910,14 +828,14 @@ _extint1_init:
 ;t             Allocated to registers r6 r7 
 ;phase         Allocated to registers r4 r5 
 ;------------------------------------------------------------
-;	watchdog-testing.c:79: void blink_led(unsigned int t) {
+;	analog-comparator.c:71: void blink_led(unsigned int t) {
 ;	-----------------------------------------
 ;	 function blink_led
 ;	-----------------------------------------
 _blink_led:
 	mov	r6, dpl
 	mov	r7, dph
-;	watchdog-testing.c:80: unsigned int phase = t - blink_base;
+;	analog-comparator.c:72: unsigned int phase = t - blink_base;
 	mov	a,r6
 	clr	c
 	subb	a,_blink_base
@@ -925,160 +843,90 @@ _blink_led:
 	mov	a,r7
 	subb	a,(_blink_base + 1)
 	mov	r5,a
-;	watchdog-testing.c:82: if (phase < 30) {
+;	analog-comparator.c:74: if (phase < 15) {
+	clr	c
+	mov	a,r4
+	subb	a,#0x0f
+	mov	a,r5
+	subb	a,#0x00
+	jnc	00105$
+;	analog-comparator.c:75: P3 |= (1 << 0);
+	orl	_P3,#0x01
+	ret
+00105$:
+;	analog-comparator.c:76: } else if (phase < 30) {
 	clr	c
 	mov	a,r4
 	subb	a,#0x1e
 	mov	a,r5
 	subb	a,#0x00
-	jnc	00105$
-;	watchdog-testing.c:83: P3 |= (1 << 0);
-	orl	_P3,#0x01
-	ret
-00105$:
-;	watchdog-testing.c:84: } else if (phase < 60) {
-	clr	c
-	mov	a,r4
-	subb	a,#0x3c
-	mov	a,r5
-	subb	a,#0x00
 	jnc	00102$
-;	watchdog-testing.c:85: P3 &= ~(1 << 0);
+;	analog-comparator.c:77: P3 &= ~(1 << 0);
 	anl	_P3,#0xfe
 	ret
 00102$:
-;	watchdog-testing.c:87: blink_base = t;
+;	analog-comparator.c:79: blink_base = t;         
 	mov	_blink_base,r6
 	mov	(_blink_base + 1),r7
-;	watchdog-testing.c:88: wdtCounter++; 
-	mov	r6,_wdtCounter
-	mov	r7,(_wdtCounter + 1)
-	mov	a,#0x01
-	add	a, r6
-	mov	_wdtCounter,a
-	clr	a
-	addc	a, r7
-	mov	(_wdtCounter + 1),a
-;	watchdog-testing.c:90: }
+;	analog-comparator.c:81: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;	watchdog-testing.c:92: void main(void) {
+;	analog-comparator.c:83: void main(void) {
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	watchdog-testing.c:93: clock_init();
+;	analog-comparator.c:84: clock_init();    
 	lcall	_clock_init
-;	watchdog-testing.c:94: extint1_init();
-	lcall	_extint1_init
-;	watchdog-testing.c:95: timer0_init();  
+;	analog-comparator.c:85: timer0_init();  
 	lcall	_timer0_init
-;	watchdog-testing.c:99: P3_MOD_OC &= ~(1 << 0);   // push-pull
+;	analog-comparator.c:86: cmp_init();
+	lcall	_cmp_init
+;	analog-comparator.c:90: P3_MOD_OC &= ~(1 << 0);   // push-pull
 	anl	_P3_MOD_OC,#0xfe
-;	watchdog-testing.c:100: P3_DIR_PU |=  (1 << 0);   // enable strong output drive
+;	analog-comparator.c:91: P3_DIR_PU |=  (1 << 0);   // enable strong output drive
 	orl	_P3_DIR_PU,#0x01
-;	watchdog-testing.c:103: P3_MOD_OC &= ~(1 << 3);   // normal input
-	anl	_P3_MOD_OC,#0xf7
-;	watchdog-testing.c:104: P3_DIR_PU |=  (1 << 3);   // enable pull-up
-	orl	_P3_DIR_PU,#0x08
-;	watchdog-testing.c:105: P3 |= (1 << 3);           // pull-up
-	orl	_P3,#0x08
-;	watchdog-testing.c:107: P3 &= ~(1 << 0);  // Make LED pin P3.0 "start" as OFF
+;	analog-comparator.c:93: P3 &= ~(1 << 0);  // Make LED pin P3.0 "start" as OFF
 	anl	_P3,#0xfe
-;	watchdog-testing.c:109: while (1) {
-00120$:
-;	watchdog-testing.c:111: if (!wdt_started && tick_10ms > 50) {  // wait ~500ms
-	jb	_wdt_started,00102$
-	clr	c
-	mov	a,#0x32
-	subb	a,_tick_10ms
-	clr	a
-	subb	a,(_tick_10ms + 1)
-	jnc	00102$
-;	watchdog-testing.c:112: SAFE_MOD = 0x55;
-	mov	_SAFE_MOD,#0x55
-;	watchdog-testing.c:113: SAFE_MOD = 0xAA;
-	mov	_SAFE_MOD,#0xaa
-;	watchdog-testing.c:114: GLOBAL_CFG |= bWDOG_EN;
-	orl	_GLOBAL_CFG,#0x01
-;	watchdog-testing.c:115: SAFE_MOD = 0x00;
-	mov	_SAFE_MOD,#0x00
-;	watchdog-testing.c:117: wdt_started = 1;
-;	assignBit
-	setb	_wdt_started
-00102$:
-;	watchdog-testing.c:120: if (wdtCounter < 5) {
-	clr	c
-	mov	a,_wdtCounter
-	subb	a,#0x05
-	mov	a,(_wdtCounter + 1)
-	subb	a,#0x00
-	jnc	00105$
-;	watchdog-testing.c:121: WDOG_COUNT = 0x01;   // feed normally
-	mov	_WDOG_COUNT,#0x01
-00105$:
-;	watchdog-testing.c:123: EA = 0;
+;	analog-comparator.c:95: while (1) {        
+00109$:
+;	analog-comparator.c:97: EA = 0;
 ;	assignBit
 	clr	_EA
-;	watchdog-testing.c:124: t = tick_10ms;
+;	analog-comparator.c:98: t = tick_10ms;
 	mov	_t,_tick_10ms
 	mov	(_t + 1),(_tick_10ms + 1)
-;	watchdog-testing.c:125: EA = 1;
+;	analog-comparator.c:99: EA = 1;
 ;	assignBit
 	setb	_EA
-;	watchdog-testing.c:127: if (button_irq && debounce) {
-	jnb	_button_irq,00110$
-	jnb	_debounce,00110$
-;	watchdog-testing.c:128: button_irq = 0;
-;	assignBit
-	clr	_button_irq
-;	watchdog-testing.c:130: if (ledON == 0) {
-	jb	_ledON,00107$
-;	watchdog-testing.c:131: ledON = 1;
+;	analog-comparator.c:101: if (CMPO) {
+	jnb	_CMPO,00104$
+;	analog-comparator.c:102: if (!ledON) {
+	jb	_ledON,00105$
+;	analog-comparator.c:103: ledON = 1;
 ;	assignBit
 	setb	_ledON
-;	watchdog-testing.c:132: wdtCounter = 0;
-	clr	a
-	mov	_wdtCounter,a
-	mov	(_wdtCounter + 1),a
-	sjmp	00110$
-00107$:
-;	watchdog-testing.c:134: ledON = 0;
+;	analog-comparator.c:104: blink_base = t;  // reset blink phase when comparator first triggers
+	mov	_blink_base,_t
+	mov	(_blink_base + 1),(_t + 1)
+	sjmp	00105$
+00104$:
+;	analog-comparator.c:107: ledON = 0;
 ;	assignBit
 	clr	_ledON
-00110$:
-;	watchdog-testing.c:138: if (ledON) {
-	jnb	_ledON,00113$
-;	watchdog-testing.c:139: blink_led(t);            
+;	analog-comparator.c:108: P3 &= ~(1 << 0);  // make sure LED goes off immediately when pot drops below reference
+	anl	_P3,#0xfe
+00105$:
+;	analog-comparator.c:111: if (ledON) {
+	jnb	_ledON,00109$
+;	analog-comparator.c:112: blink_led(t);   // called every loop iteration while CMPO is high
 	mov	dpl, _t
 	mov	dph, (_t + 1)
 	lcall	_blink_led
-00113$:
-;	watchdog-testing.c:143: if (wdtCounter >= 5) {
-	clr	c
-	mov	a,_wdtCounter
-	subb	a,#0x05
-	mov	a,(_wdtCounter + 1)
-	subb	a,#0x00
-	jc	00120$
-;	watchdog-testing.c:144: SAFE_MOD = 0x55;
-	mov	_SAFE_MOD,#0x55
-;	watchdog-testing.c:145: SAFE_MOD = 0xAA;
-	mov	_SAFE_MOD,#0xaa
-;	watchdog-testing.c:146: USB_CTRL = 0x00;
-	mov	_USB_CTRL,#0x00
-;	watchdog-testing.c:147: SAFE_MOD = 0x00;
-	mov	_SAFE_MOD,#0x00
-;	watchdog-testing.c:148: EA = 0;
-;	assignBit
-	clr	_EA
-;	watchdog-testing.c:149: while (1) { __asm nop __endasm; }
-00115$:
-	nop	
-;	watchdog-testing.c:152: }
-	sjmp	00115$
+;	analog-comparator.c:115: }
+	sjmp	00109$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area XINIT   (CODE)

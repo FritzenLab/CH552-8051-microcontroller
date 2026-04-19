@@ -1,4 +1,10 @@
-- Onboard LED pin: P3.0
+- Onboard LED pin: P3.0 (active HIGH)
 
 - UART1 pinout: P3.2 (TX) / P3.4 (RX)
 - UART1 ISR (interrupt) is number 7, not 10 as the datasheet says
+
+- Push button with external interrupt: P3.3 (active LOW, so GND -> Push button -> P3.3)
+
+- Analog comparator:
+IN+ = AIN0 (P1.1) → potentiometer → ADC_CHAN1=0, ADC_CHAN0=0
+IN- = AIN1 (P1.4) → resistor divider (your "half scale" reference) → CMP_CHAN=0

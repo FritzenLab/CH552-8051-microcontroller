@@ -55,8 +55,8 @@ C:   00000018  s_REG_BANK_3
 C:   00000020  s_BSEG_BYTES                    
 C:   00000020  s__CODE                         
 C:   00000021  s_SSEG                          
+C:   00000022  l_GSINIT                        
 C:   00000022  l_GSINIT3                       
-C:   00000026  l_GSINIT                        
 ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
@@ -72,17 +72,17 @@ C:   0000005C  s_GSINIT0
 C:   0000005F  s_GSINIT1                       
 C:   0000005F  s_GSINIT2                       
 C:   00000069  s_GSINIT3                       
-C:   00000080  l_DSEG                          
+C:   0000007E  l_DSEG                          
 C:   0000008B  s_GSINIT4                       
 C:   000000B5  s_GSINIT                        
 C:   000000B5  s_GSINIT5                       
-C:   000000DB  s_GSFINAL                       
-C:   000000DE  s_CSEG                          
+C:   000000D7  s_GSFINAL                       
+C:   000000DA  s_CSEG                          
 C:   000000DF  l_SSEG                          
 C:   00000100  l_IRAM                          
-C:   0000017D  l_CSEG                          
-C:   0000025B  s_CONST                         
-C:   0000025B  s_XINIT                         
+C:   0000015A  l_CSEG                          
+C:   00000234  s_CONST                         
+C:   00000234  s_XINIT                         
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -398,7 +398,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-DSEG                                00000000    00000080 =         128. bytes (REL,CON)
+DSEG                                00000000    0000007E =         126. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -407,7 +407,7 @@ DSEG                                00000000    00000080 =         128. bytes (R
      00000014  _wdtCounter                        watchdog_testing
      00000016  _serialTime                        watchdog_testing
      00000018  _counter                           watchdog_testing
-     0000001C  _t                                 watchdog_testing
+     0000001A  _t                                 watchdog_testing
 ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
 Hexadecimal  [32-Bits]
 
@@ -482,7 +482,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSINIT                              000000B5    00000026 =          38. bytes (REL,CON,CODE)
+GSINIT                              000000B5    00000022 =          34. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -491,7 +491,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSFINAL                             000000DB    00000003 =           3. bytes (REL,CON,CODE)
+GSFINAL                             000000D7    00000003 =           3. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -500,18 +500,18 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000DE    0000017D =         381. bytes (REL,CON,CODE)
+CSEG                                000000DA    0000015A =         346. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   000000DE  _clock_init                        watchdog_testing
-C:   000000F3  _INT1_ISR                          watchdog_testing
-C:   00000104  _timer0_ISR                        watchdog_testing
-C:   0000014F  _timer0_init                       watchdog_testing
-C:   0000016A  _extint1_init                      watchdog_testing
-C:   0000016F  _blink_led                         watchdog_testing
-C:   0000019B  _main                              watchdog_testing
-C:   00000257  ___sdcc_external_startup           _startup
+C:   000000DA  _clock_init                        watchdog_testing
+C:   000000EF  _INT1_ISR                          watchdog_testing
+C:   00000100  _timer0_ISR                        watchdog_testing
+C:   0000014B  _timer0_init                       watchdog_testing
+C:   00000166  _extint1_init                      watchdog_testing
+C:   0000016B  _blink_led                         watchdog_testing
+C:   000001A4  _main                              watchdog_testing
+C:   00000230  ___sdcc_external_startup           _startup
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
 

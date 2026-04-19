@@ -10,7 +10,6 @@ volatile __bit debounce = 0;
 volatile __bit ledON = 0;
 unsigned int serialTime= 0;
 unsigned int counter= 0;
-static unsigned int last_tick = 0;
 unsigned int t;
 static __bit wdt_started = 0;
 static unsigned int blink_base = 0;
@@ -78,12 +77,7 @@ void extint1_init(void) {
     EX1 = 1;   // enable INT1
 }
 void blink_led(unsigned int t) {
-    /*if ((t % 60) < 30) {
-        P3 |= (1 << 0);   // ON
-    } else {
-        P3 &= ~(1 << 0);  // OFF
-    }*/
-   unsigned int phase = t - blink_base;
+    unsigned int phase = t - blink_base;
 
     if (phase < 30) {
         P3 |= (1 << 0);
@@ -91,6 +85,7 @@ void blink_led(unsigned int t) {
         P3 &= ~(1 << 0);
     } else {
         blink_base = t;
+        wdtCounter++; 
     }
 }
 
@@ -122,7 +117,7 @@ void main(void) {
             wdt_started = 1;
         }
         // Feed watchdog every iteration unless we want a reset
-        if (wdtCounter < 4) {
+        if (wdtCounter < 5) {
             WDOG_COUNT = 0x01;   // feed normally
         }
         EA = 0;
@@ -134,8 +129,6 @@ void main(void) {
             //debounce= 1;
             if (ledON == 0) {
                 ledON = 1;
-                
-                last_tick = t;                
                 wdtCounter = 0;
             } else {
                 ledON = 0;
@@ -143,18 +136,11 @@ void main(void) {
         }
         
         if (ledON) {
-            blink_led(t);
-
-            if ((t - last_tick) >= 200) {
-                
-                last_tick = t;
-                
-                wdtCounter++;
-            }
+            blink_led(t);            
         }
 
         // Intentional watchdog trigger — stop feeding and hang
-        if (wdtCounter >= 4) {
+        if (wdtCounter >= 5) {
             SAFE_MOD = 0x55;
             SAFE_MOD = 0xAA;
             USB_CTRL = 0x00;

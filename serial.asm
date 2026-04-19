@@ -504,7 +504,6 @@ _UIF_BUS_RST	=	0x00d8
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
-	.area	OSEG    (OVR,DATA)
 ;--------------------------------------------------------
 ; indirectly addressable internal ram data
 ;--------------------------------------------------------
@@ -655,11 +654,11 @@ _Serial_print:
 	lcall	__gptrget
 	mov	r4,a
 	jz	00104$
-	mov	dpl,r4
 	inc	r5
 	cjne	r5,#0x00,00120$
 	inc	r6
 00120$:
+	mov	dpl, r4
 	push	ar7
 	push	ar6
 	push	ar5
@@ -690,14 +689,18 @@ _Serial_print_uint:
 	mov	a,r7
 	subb	a,#0x27
 	jc	00102$
-	mov	__divuint_PARM_2,#0x10
-	mov	(__divuint_PARM_2 + 1),#0x27
-	mov	dpl, r6
-	mov	dph, r7
 	push	ar7
 	push	ar6
+	mov	a,#0x10
+	push	acc
+	mov	a,#0x27
+	push	acc
+	mov	dpl, r6
+	mov	dph, r7
 	lcall	__divuint
 	mov	r4, dpl
+	dec	sp
+	dec	sp
 	mov	b,#0x0a
 	mov	a,r4
 	div	ab
@@ -716,14 +719,18 @@ _Serial_print_uint:
 	mov	a,r7
 	subb	a,#0x03
 	jc	00104$
-	mov	__divuint_PARM_2,#0xe8
-	mov	(__divuint_PARM_2 + 1),#0x03
-	mov	dpl, r6
-	mov	dph, r7
 	push	ar7
 	push	ar6
+	mov	a,#0xe8
+	push	acc
+	mov	a,#0x03
+	push	acc
+	mov	dpl, r6
+	mov	dph, r7
 	lcall	__divuint
 	mov	r4, dpl
+	dec	sp
+	dec	sp
 	mov	b,#0x0a
 	mov	a,r4
 	div	ab
@@ -742,17 +749,25 @@ _Serial_print_uint:
 	mov	a,r7
 	subb	a,#0x00
 	jc	00106$
-	mov	__divuint_PARM_2,#0x64
-	mov	(__divuint_PARM_2 + 1),#0x00
-	mov	dpl, r6
-	mov	dph, r7
 	push	ar7
 	push	ar6
+	mov	a,#0x64
+	push	acc
+	clr	a
+	push	acc
+	mov	dpl, r6
+	mov	dph, r7
 	lcall	__divuint
-	mov	__moduint_PARM_2,#0x0a
-	mov	(__moduint_PARM_2 + 1),#0x00
+	dec	sp
+	dec	sp
+	mov	a,#0x0a
+	push	acc
+	clr	a
+	push	acc
 	lcall	__moduint
 	mov	r4, dpl
+	dec	sp
+	dec	sp
 	mov	a,#0x30
 	add	a, r4
 	mov	dpl,a
@@ -767,17 +782,25 @@ _Serial_print_uint:
 	mov	a,r7
 	subb	a,#0x00
 	jc	00108$
-	mov	__divuint_PARM_2,#0x0a
-	mov	(__divuint_PARM_2 + 1),#0x00
-	mov	dpl, r6
-	mov	dph, r7
 	push	ar7
 	push	ar6
+	mov	a,#0x0a
+	push	acc
+	clr	a
+	push	acc
+	mov	dpl, r6
+	mov	dph, r7
 	lcall	__divuint
-	mov	__moduint_PARM_2,#0x0a
-	mov	(__moduint_PARM_2 + 1),#0x00
+	dec	sp
+	dec	sp
+	mov	a,#0x0a
+	push	acc
+	clr	a
+	push	acc
 	lcall	__moduint
 	mov	r4, dpl
+	dec	sp
+	dec	sp
 	mov	a,#0x30
 	add	a, r4
 	mov	dpl,a
@@ -786,12 +809,16 @@ _Serial_print_uint:
 	pop	ar7
 00108$:
 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:50: Serial_write('0' + (v % 10));
-	mov	__moduint_PARM_2,#0x0a
-	mov	(__moduint_PARM_2 + 1),#0x00
+	mov	a,#0x0a
+	push	acc
+	clr	a
+	push	acc
 	mov	dpl, r6
 	mov	dph, r7
 	lcall	__moduint
 	mov	r6, dpl
+	dec	sp
+	dec	sp
 	mov	a,#0x30
 	add	a, r6
 	mov	dpl,a
@@ -819,7 +846,7 @@ _Serial_println:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'Serial_println_uint'
 ;------------------------------------------------------------
-;v             Allocated to registers 
+;v             Allocated to registers r6 r7 
 ;------------------------------------------------------------
 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:61: void Serial_println_uint(unsigned int v) {
 ;	-----------------------------------------
