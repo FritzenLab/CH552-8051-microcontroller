@@ -2,12 +2,15 @@
 ; File Created by SDCC : free open source ISO C Compiler
 ; Version 4.5.0 #15242 (MINGW64)
 ;--------------------------------------------------------
-	.module serial
+	.module mpu9250
 	
 	.optsdcc -mmcs51 --model-small
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
+	.globl _CH554SPIMasterRead
+	.globl _CH554SPIMasterWrite
+	.globl _SPIMasterModeSet
 	.globl _UIF_BUS_RST
 	.globl _UIF_DETECT
 	.globl _UIF_TRANSFER
@@ -242,13 +245,9 @@
 	.globl _B
 	.globl _ACC
 	.globl _PSW
-	.globl _Serial_begin
-	.globl _Serial_write
-	.globl _Serial_print
-	.globl _Serial_print_uint
-	.globl _Serial_println
-	.globl _Serial_println_int
-	.globl _Serial_println_uint
+	.globl _MPU9250_init
+	.globl _MPU9250_whoami
+	.globl _MPU9250_readAccelGyro
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -502,6 +501,8 @@ _UIF_BUS_RST	=	0x00d8
 ; internal ram data
 ;--------------------------------------------------------
 	.area DSEG    (DATA)
+_whoami_cache:
+	.ds 1
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
@@ -551,6 +552,8 @@ _UIF_BUS_RST	=	0x00d8
 	.area GSINIT  (CODE)
 	.area GSFINAL (CODE)
 	.area GSINIT  (CODE)
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:9: static uint8_t whoami_cache = 0;
+	mov	_whoami_cache,#0x00
 ;--------------------------------------------------------
 ; Home
 ;--------------------------------------------------------
@@ -561,13 +564,16 @@ _UIF_BUS_RST	=	0x00d8
 ;--------------------------------------------------------
 	.area CSEG    (CODE)
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'Serial_begin'
+;Allocation info for local variables in function 'mpu_read_reg'
 ;------------------------------------------------------------
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:5: void Serial_begin(void) {
+;reg           Allocated to registers r7 
+;ret           Allocated to registers 
+;------------------------------------------------------------
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:11: static uint8_t mpu_read_reg(uint8_t reg)
 ;	-----------------------------------------
-;	 function Serial_begin
+;	 function mpu_read_reg
 ;	-----------------------------------------
-_Serial_begin:
+_mpu_read_reg:
 	ar7 = 0x07
 	ar6 = 0x06
 	ar5 = 0x05
@@ -576,448 +582,379 @@ _Serial_begin:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:6: SAFE_MOD = 0x55;
-	mov	_SAFE_MOD,#0x55
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:7: SAFE_MOD = 0xAA;
-	mov	_SAFE_MOD,#0xaa
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:8: PIN_FUNC |= bUART1_PIN_X;   // UART1 on P3.2/P3.4
-	orl	_PIN_FUNC,#0x20
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:9: SAFE_MOD = 0x00;
-	mov	_SAFE_MOD,#0x00
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:12: T2MOD = 0;
-	mov	_T2MOD,#0x00
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:13: T2CON = 0;
-	mov	_T2CON,#0x00
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:16: P3_MOD_OC &= ~(1 << 2);
-	anl	_P3_MOD_OC,#0xfb
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:17: P3_DIR_PU  |=  (1 << 2);
-	orl	_P3_DIR_PU,#0x04
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:20: P3_MOD_OC &= ~(1 << 4);
-	anl	_P3_MOD_OC,#0xef
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:21: P3_DIR_PU  &= ~(1 << 4);
-	anl	_P3_DIR_PU,#0xef
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:24: U1SM0  = 0;      // 8-bit
-;	assignBit
-	clr	_U1SM0
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:25: U1SMOD = 1;      // baud x2
-;	assignBit
-	setb	_U1SMOD
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:26: SBAUD1 = 0x64;   // 9600 baud @ 24 MHz
-	mov	_SBAUD1,#0x64
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:28: U1REN  = 1;      // enable RX
-;	assignBit
-	setb	_U1REN
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:29: U1TI   = 1;      // mark TX ready
-;	assignBit
-	setb	_U1TI
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:30: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'Serial_write'
-;------------------------------------------------------------
-;c             Allocated to registers r7 
-;------------------------------------------------------------
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:33: void Serial_write(char c) {
-;	-----------------------------------------
-;	 function Serial_write
-;	-----------------------------------------
-_Serial_write:
 	mov	r7, dpl
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:34: while (!U1TI);   // wait for TX ready
-00101$:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:35: U1TI = 0;        // clear flag
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:15: SPIMasterAssertCS();
 ;	assignBit
-	jbc	_U1TI,00118$
-	sjmp	00101$
-00118$:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:36: SBUF1 = c;       // send
-	mov	_SBUF1,r7
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:37: }
+	clr	_SCS
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:16: CH554SPIMasterWrite(reg | 0x80);   // read bit
+	mov	a,#0x80
+	orl	a,r7
+	mov	dpl,a
+	lcall	_CH554SPIMasterWrite
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:17: ret = CH554SPIMasterRead();
+	lcall	_CH554SPIMasterRead
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:18: SPIMasterDeassertCS();
+;	assignBit
+	setb	_SCS
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:20: return ret;
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:21: }
 	ret
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'Serial_print'
+;Allocation info for local variables in function 'mpu_write_reg'
 ;------------------------------------------------------------
-;s             Allocated to registers 
+;val           Allocated to stack - _bp -3 +1 
+;reg           Allocated to registers r7 
 ;------------------------------------------------------------
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:40: void Serial_print(const char *s) {
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:23: static void mpu_write_reg(uint8_t reg, uint8_t val)
 ;	-----------------------------------------
-;	 function Serial_print
+;	 function mpu_write_reg
 ;	-----------------------------------------
-_Serial_print:
-	mov	r5, dpl
-	mov	r6, dph
-	mov	r7, b
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:41: while (*s) Serial_write(*s++);
-00101$:
-	mov	dpl,r5
-	mov	dph,r6
-	mov	b,r7
-	lcall	__gptrget
-	mov	r4,a
-	jz	00104$
-	inc	r5
-	cjne	r5,#0x00,00120$
-	inc	r6
-00120$:
-	mov	dpl, r4
-	push	ar7
-	push	ar6
-	push	ar5
-	lcall	_Serial_write
-	pop	ar5
-	pop	ar6
-	pop	ar7
-	sjmp	00101$
-00104$:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:42: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'Serial_print_uint'
-;------------------------------------------------------------
-;v             Allocated to registers r6 r7 
-;------------------------------------------------------------
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:45: void Serial_print_uint(unsigned int v) {
-;	-----------------------------------------
-;	 function Serial_print_uint
-;	-----------------------------------------
-_Serial_print_uint:
-	mov	r6, dpl
-	mov	r7, dph
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:46: if (v >= 10000) Serial_write('0' + (v / 10000) % 10);
-	clr	c
-	mov	a,r6
-	subb	a,#0x10
-	mov	a,r7
-	subb	a,#0x27
-	jc	00102$
-	push	ar7
-	push	ar6
-	mov	a,#0x10
-	push	acc
-	mov	a,#0x27
-	push	acc
-	mov	dpl, r6
-	mov	dph, r7
-	lcall	__divuint
-	mov	r4, dpl
-	dec	sp
-	dec	sp
-	mov	b,#0x0a
-	mov	a,r4
-	div	ab
-	mov	r4,b
-	mov	a,#0x30
-	add	a, r4
-	mov	dpl,a
-	lcall	_Serial_write
-	pop	ar6
-	pop	ar7
-00102$:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:47: if (v >= 1000)  Serial_write('0' + (v / 1000)  % 10);
-	clr	c
-	mov	a,r6
-	subb	a,#0xe8
-	mov	a,r7
-	subb	a,#0x03
-	jc	00104$
-	push	ar7
-	push	ar6
-	mov	a,#0xe8
-	push	acc
-	mov	a,#0x03
-	push	acc
-	mov	dpl, r6
-	mov	dph, r7
-	lcall	__divuint
-	mov	r4, dpl
-	dec	sp
-	dec	sp
-	mov	b,#0x0a
-	mov	a,r4
-	div	ab
-	mov	r4,b
-	mov	a,#0x30
-	add	a, r4
-	mov	dpl,a
-	lcall	_Serial_write
-	pop	ar6
-	pop	ar7
-00104$:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:48: if (v >= 100)   Serial_write('0' + (v / 100)   % 10);
-	clr	c
-	mov	a,r6
-	subb	a,#0x64
-	mov	a,r7
-	subb	a,#0x00
-	jc	00106$
-	push	ar7
-	push	ar6
-	mov	a,#0x64
-	push	acc
-	clr	a
-	push	acc
-	mov	dpl, r6
-	mov	dph, r7
-	lcall	__divuint
-	dec	sp
-	dec	sp
-	mov	a,#0x0a
-	push	acc
-	clr	a
-	push	acc
-	lcall	__moduint
-	mov	r4, dpl
-	dec	sp
-	dec	sp
-	mov	a,#0x30
-	add	a, r4
-	mov	dpl,a
-	lcall	_Serial_write
-	pop	ar6
-	pop	ar7
-00106$:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:49: if (v >= 10)    Serial_write('0' + (v / 10)    % 10);
-	clr	c
-	mov	a,r6
-	subb	a,#0x0a
-	mov	a,r7
-	subb	a,#0x00
-	jc	00108$
-	push	ar7
-	push	ar6
-	mov	a,#0x0a
-	push	acc
-	clr	a
-	push	acc
-	mov	dpl, r6
-	mov	dph, r7
-	lcall	__divuint
-	dec	sp
-	dec	sp
-	mov	a,#0x0a
-	push	acc
-	clr	a
-	push	acc
-	lcall	__moduint
-	mov	r4, dpl
-	dec	sp
-	dec	sp
-	mov	a,#0x30
-	add	a, r4
-	mov	dpl,a
-	lcall	_Serial_write
-	pop	ar6
-	pop	ar7
-00108$:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:50: Serial_write('0' + (v % 10));
-	mov	a,#0x0a
-	push	acc
-	clr	a
-	push	acc
-	mov	dpl, r6
-	mov	dph, r7
-	lcall	__moduint
-	mov	r6, dpl
-	dec	sp
-	dec	sp
-	mov	a,#0x30
-	add	a, r6
-	mov	dpl,a
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:51: }
-	ljmp	_Serial_write
-;------------------------------------------------------------
-;Allocation info for local variables in function 'Serial_println'
-;------------------------------------------------------------
-;s             Allocated to registers r5 r6 r7 
-;------------------------------------------------------------
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:54: void Serial_println(const char *s) {
-;	-----------------------------------------
-;	 function Serial_println
-;	-----------------------------------------
-_Serial_println:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:55: Serial_print(s);
-	lcall	_Serial_print
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:56: Serial_write('\r');
-	mov	dpl, #0x0d
-	lcall	_Serial_write
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:57: Serial_write('\n');
-	mov	dpl, #0x0a
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:58: }
-	ljmp	_Serial_write
-;------------------------------------------------------------
-;Allocation info for local variables in function 'Serial_println_int'
-;------------------------------------------------------------
-;v             Allocated to registers r6 r7 
-;buf           Allocated to stack - _bp +1 +8 
-;i             Allocated to stack - _bp +9 +2 
-;------------------------------------------------------------
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:60: void Serial_println_int(int16_t v)
-;	-----------------------------------------
-;	 function Serial_println_int
-;	-----------------------------------------
-_Serial_println_int:
+_mpu_write_reg:
 	push	_bp
-	mov	a,sp
-	mov	_bp,a
-	add	a,#0x0a
-	mov	sp,a
-	mov	r6, dpl
-	mov	r7, dph
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:65: if(v < 0) {
-	mov	ar4,r6
-	mov	ar5,r7
-	mov	a,r5
-	jnb	acc.7,00112$
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:66: Serial_write('-');
-	mov	dpl, #0x2d
-	push	ar7
-	push	ar6
-	lcall	_Serial_write
-	pop	ar6
-	pop	ar7
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:67: v = -v;
-	clr	c
-	clr	a
-	subb	a,r6
-	mov	r6,a
-	clr	a
-	subb	a,r7
-	mov	r7,a
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:71: do {
-00112$:
-	mov	r5,_bp
-	inc	r5
+	mov	_bp,sp
+	mov	r7, dpl
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:25: SPIMasterAssertCS();
+;	assignBit
+	clr	_SCS
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:26: CH554SPIMasterWrite(reg & 0x7F);   // write
+	mov	a,#0x7f
+	anl	a,r7
+	mov	dpl,a
+	lcall	_CH554SPIMasterWrite
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:27: CH554SPIMasterWrite(val);
 	mov	a,_bp
-	add	a,#0x09
+	add	a,#0xfd
 	mov	r0,a
-	clr	a
-	mov	@r0,a
-	inc	r0
-	mov	@r0,a
-00103$:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:72: buf[i++] = '0' + (v % 10);
-	mov	a,_bp
-	add	a,#0x09
-	mov	r0,a
-	mov	a,@r0
-	add	a, r5
-	mov	r1,a
-	mov	a,_bp
-	add	a,#0x09
-	mov	r0,a
-	inc	@r0
-	cjne	@r0,#0x00,00143$
-	inc	r0
-	inc	@r0
-00143$:
-	push	ar5
-	mov	ar2,r6
-	mov	ar5,r7
-	push	ar5
-	push	ar2
-	push	ar1
-	mov	a,#0x0a
-	push	acc
-	clr	a
-	push	acc
-	mov	dpl, r2
-	mov	dph, r5
-	lcall	__modsint
-	mov	r3, dpl
-	dec	sp
-	dec	sp
-	pop	ar1
-	pop	ar2
-	pop	ar5
-	mov	a,#0x30
-	add	a, r3
-	mov	@r1,a
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:73: v /= 10;
-	mov	a,#0x0a
-	push	acc
-	clr	a
-	push	acc
-	mov	dpl, r2
-	mov	dph, r5
-	lcall	__divsint
-	mov	r4, dpl
-	mov	r5, dph
-	dec	sp
-	dec	sp
-	mov	ar6,r4
-	mov	ar7,r5
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:74: } while(v > 0);
-	mov	ar4,r6
-	mov	ar5,r7
-	clr	c
-	clr	a
-	subb	a,r4
-	mov	a,#(0x00 ^ 0x80)
-	mov	b,r5
-	xrl	b,#0x80
-	subb	a,b
-	pop	ar5
-	jc	00103$
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:77: while(i--)
-	mov	a,_bp
-	add	a,#0x09
-	mov	r0,a
-	mov	ar6,@r0
-	inc	r0
-	mov	ar7,@r0
-00106$:
-	mov	ar3,r6
-	mov	ar4,r7
-	dec	r6
-	cjne	r6,#0xff,00145$
-	dec	r7
-00145$:
-	mov	a,r3
-	orl	a,r4
-	jz	00108$
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:78: Serial_write(buf[i]);
-	mov	a,r6
-	add	a, r5
-	mov	r1,a
-	mov	dpl,@r1
-	push	ar7
-	push	ar6
-	push	ar5
-	lcall	_Serial_write
-	pop	ar5
-	pop	ar6
-	pop	ar7
-	sjmp	00106$
-00108$:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:79: Serial_write('\r');
-	mov	dpl, #0x0d
-	lcall	_Serial_write
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:80: Serial_write('\n');
-	mov	dpl, #0x0a
-	lcall	_Serial_write
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:81: }
-	mov	sp,_bp
+	mov	dpl, @r0
+	lcall	_CH554SPIMasterWrite
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:28: SPIMasterDeassertCS();
+;	assignBit
+	setb	_SCS
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:29: }
 	pop	_bp
 	ret
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'Serial_println_uint'
+;Allocation info for local variables in function 'MPU9250_init'
 ;------------------------------------------------------------
-;v             Allocated to registers r6 r7 
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:31: void MPU9250_init(void)
+;	-----------------------------------------
+;	 function MPU9250_init
+;	-----------------------------------------
+_MPU9250_init:
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:34: SPIMasterModeSet(0);
+	mov	dpl, #0x00
+	lcall	_SPIMasterModeSet
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:37: mpu_write_reg(REG_PWR_MGMT_1, 0x00);
+	clr	a
+	push	acc
+	mov	dpl, #0x6b
+	lcall	_mpu_write_reg
+	dec	sp
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:40: whoami_cache = mpu_read_reg(REG_WHO_AM_I);
+	mov	dpl, #0x75
+	lcall	_mpu_read_reg
+	mov	_whoami_cache,dpl
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:41: }
+	ret
 ;------------------------------------------------------------
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:84: void Serial_println_uint(unsigned int v) {
+;Allocation info for local variables in function 'MPU9250_whoami'
+;------------------------------------------------------------
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:43: uint8_t MPU9250_whoami(void)
 ;	-----------------------------------------
-;	 function Serial_println_uint
+;	 function MPU9250_whoami
 ;	-----------------------------------------
-_Serial_println_uint:
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:85: Serial_print_uint(v);
-	lcall	_Serial_print_uint
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:86: Serial_write('\r');
-	mov	dpl, #0x0d
-	lcall	_Serial_write
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:87: Serial_write('\n');
-	mov	dpl, #0x0a
-;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:88: }
-	ljmp	_Serial_write
+_MPU9250_whoami:
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:45: return whoami_cache;
+	mov	dpl, _whoami_cache
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:46: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'MPU9250_readAccelGyro'
+;------------------------------------------------------------
+;ay            Allocated to stack - _bp -5 +3 
+;az            Allocated to stack - _bp -8 +3 
+;gx            Allocated to stack - _bp -11 +3 
+;gy            Allocated to stack - _bp -14 +3 
+;gz            Allocated to stack - _bp -17 +3 
+;ax            Allocated to stack - _bp +1 +3 
+;buf           Allocated to stack - _bp +6 +14 
+;i             Allocated to registers r4 
+;sloc0         Allocated to stack - _bp +4 +2 
+;------------------------------------------------------------
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:48: uint8_t MPU9250_readAccelGyro(
+;	-----------------------------------------
+;	 function MPU9250_readAccelGyro
+;	-----------------------------------------
+_MPU9250_readAccelGyro:
+	push	_bp
+	mov	_bp,sp
+	push	dpl
+	push	dph
+	push	b
+	mov	a,sp
+	add	a,#0x10
+	mov	sp,a
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:54: SPIMasterAssertCS();
+;	assignBit
+	clr	_SCS
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:55: CH554SPIMasterWrite(REG_ACCEL_XOUT_H | 0x80);
+	mov	dpl, #0xbb
+	lcall	_CH554SPIMasterWrite
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:57: for(uint8_t i=0; i<14; i++)
+	mov	a,_bp
+	add	a,#0x06
+	mov	r1,a
+	mov	r4,#0x00
+00103$:
+	cjne	r4,#0x0e,00120$
+00120$:
+	jnc	00101$
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:58: buf[i] = CH554SPIMasterRead();
+	mov	a,r4
+	add	a, r1
+	mov	r0,a
+	push	ar4
+	push	ar1
+	push	ar0
+	lcall	_CH554SPIMasterRead
+	mov	a, dpl
+	pop	ar0
+	pop	ar1
+	pop	ar4
+	mov	@r0,a
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:57: for(uint8_t i=0; i<14; i++)
+	inc	r4
+	sjmp	00103$
+00101$:
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:60: SPIMasterDeassertCS();
+;	assignBit
+	setb	_SCS
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:62: *ax = ((int16_t)buf[0] << 8) | buf[1];
+	mov	ar4,@r1
+	mov	ar3,r4
+	mov	r4,#0x00
+	mov	a,r1
+	inc	a
+	mov	r0,a
+	mov	ar2,@r0
+	mov	r7,#0x00
+	mov	a,r2
+	orl	ar4,a
+	mov	a,r7
+	orl	ar3,a
+	mov	r0,_bp
+	inc	r0
+	mov	dpl,@r0
+	inc	r0
+	mov	dph,@r0
+	inc	r0
+	mov	b,@r0
+	mov	a,r4
+	lcall	__gptrput
+	inc	dptr
+	mov	a,r3
+	lcall	__gptrput
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:63: *ay = ((int16_t)buf[2] << 8) | buf[3];
+	mov	a,_bp
+	add	a,#0xfb
+	mov	r0,a
+	mov	ar5,@r0
+	inc	r0
+	mov	ar6,@r0
+	inc	r0
+	mov	ar7,@r0
+	mov	a,#0x02
+	add	a, r1
+	mov	r0,a
+	mov	ar4,@r0
+	mov	a,_bp
+	add	a,#0x04
+	mov	r0,a
+	inc	r0
+	mov	@r0,ar4
+	dec	r0
+	mov	@r0,#0x00
+	mov	a,#0x03
+	add	a, r1
+	mov	r0,a
+	mov	ar2,@r0
+	mov	r4,#0x00
+	mov	a,_bp
+	add	a,#0x04
+	mov	r0,a
+	inc	r0
+	mov	a,@r0
+	orl	ar4,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	mov	a,r2
+	lcall	__gptrput
+	inc	dptr
+	mov	a,r4
+	lcall	__gptrput
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:64: *az = ((int16_t)buf[4] << 8) | buf[5];
+	mov	a,_bp
+	add	a,#0xf8
+	mov	r0,a
+	mov	ar5,@r0
+	inc	r0
+	mov	ar6,@r0
+	inc	r0
+	mov	ar7,@r0
+	mov	a,#0x04
+	add	a, r1
+	mov	r0,a
+	mov	ar4,@r0
+	mov	a,_bp
+	add	a,#0x04
+	mov	r0,a
+	inc	r0
+	mov	@r0,ar4
+	dec	r0
+	mov	@r0,#0x00
+	mov	a,#0x05
+	add	a, r1
+	mov	r0,a
+	mov	ar2,@r0
+	mov	r4,#0x00
+	mov	a,_bp
+	add	a,#0x04
+	mov	r0,a
+	inc	r0
+	mov	a,@r0
+	orl	ar4,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	mov	a,r2
+	lcall	__gptrput
+	inc	dptr
+	mov	a,r4
+	lcall	__gptrput
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:66: *gx = ((int16_t)buf[8]  << 8) | buf[9];
+	mov	a,_bp
+	add	a,#0xf5
+	mov	r0,a
+	mov	ar5,@r0
+	inc	r0
+	mov	ar6,@r0
+	inc	r0
+	mov	ar7,@r0
+	mov	a,#0x08
+	add	a, r1
+	mov	r0,a
+	mov	ar4,@r0
+	mov	a,_bp
+	add	a,#0x04
+	mov	r0,a
+	inc	r0
+	mov	@r0,ar4
+	dec	r0
+	mov	@r0,#0x00
+	mov	a,#0x09
+	add	a, r1
+	mov	r0,a
+	mov	ar2,@r0
+	mov	r4,#0x00
+	mov	a,_bp
+	add	a,#0x04
+	mov	r0,a
+	inc	r0
+	mov	a,@r0
+	orl	ar4,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	mov	a,r2
+	lcall	__gptrput
+	inc	dptr
+	mov	a,r4
+	lcall	__gptrput
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:67: *gy = ((int16_t)buf[10] << 8) | buf[11];
+	mov	a,_bp
+	add	a,#0xf2
+	mov	r0,a
+	mov	ar5,@r0
+	inc	r0
+	mov	ar6,@r0
+	inc	r0
+	mov	ar7,@r0
+	mov	a,#0x0a
+	add	a, r1
+	mov	r0,a
+	mov	ar4,@r0
+	mov	a,_bp
+	add	a,#0x04
+	mov	r0,a
+	inc	r0
+	mov	@r0,ar4
+	dec	r0
+	mov	@r0,#0x00
+	mov	a,#0x0b
+	add	a, r1
+	mov	r0,a
+	mov	ar2,@r0
+	mov	r4,#0x00
+	mov	a,_bp
+	add	a,#0x04
+	mov	r0,a
+	inc	r0
+	mov	a,@r0
+	orl	ar4,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	mov	a,r2
+	lcall	__gptrput
+	inc	dptr
+	mov	a,r4
+	lcall	__gptrput
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:68: *gz = ((int16_t)buf[12] << 8) | buf[13];
+	mov	a,_bp
+	add	a,#0xef
+	mov	r0,a
+	mov	ar5,@r0
+	inc	r0
+	mov	ar6,@r0
+	inc	r0
+	mov	ar7,@r0
+	mov	a,#0x0c
+	add	a, r1
+	mov	r0,a
+	mov	ar4,@r0
+	mov	a,_bp
+	add	a,#0x04
+	mov	r0,a
+	inc	r0
+	mov	@r0,ar4
+	dec	r0
+	mov	@r0,#0x00
+	mov	a,#0x0d
+	add	a, r1
+	mov	r1,a
+	mov	ar2,@r1
+	mov	r4,#0x00
+	mov	a,_bp
+	add	a,#0x04
+	mov	r0,a
+	inc	r0
+	mov	a,@r0
+	orl	ar4,a
+	mov	dpl,r5
+	mov	dph,r6
+	mov	b,r7
+	mov	a,r2
+	lcall	__gptrput
+	inc	dptr
+	mov	a,r4
+	lcall	__gptrput
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:70: return 1;
+	mov	dpl, #0x01
+;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:71: }
+	mov	sp,_bp
+	pop	_bp
+	ret
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area XINIT   (CODE)

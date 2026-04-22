@@ -1,5 +1,5 @@
 -muwx
--i BME680-sensor.ihx
+-i mpu9250-test.ihx
 -M
 -I 0x0100
 -X 0x0000
@@ -15,9 +15,10 @@
 -l libint
 -l liblong
 -l libfloat
-BME680-sensor.rel
+mpu9250-test.rel
 adc.rel
-BME680.rel
+mpu9250.rel
 serial.rel
+spi.rel
 
 -e

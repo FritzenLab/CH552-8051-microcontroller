@@ -35,7 +35,10 @@ void SPIMasterModeSet(uint8_t mode)
     P1_DIR_PU &= 0xBF;                                                        //MISO禁用上拉电阻
 
     // Set clock speed
-    SPI0_CK_SE = 0x02;
+    //SPI0_CK_SE = 0x02;
+
+    // Set clock speed
+    SPI0_CK_SE = 11;   // 1 MHz at Fsys = 24 MHz
 }
 
 /*******************************************************************************

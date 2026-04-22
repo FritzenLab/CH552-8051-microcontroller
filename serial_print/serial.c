@@ -57,6 +57,29 @@ void Serial_println(const char *s) {
     Serial_write('\n');
 }
 
+void Serial_println_int(int16_t v)
+{
+    char buf[8];
+    int i = 0;
+
+    if(v < 0) {
+        Serial_write('-');
+        v = -v;
+    }
+
+    // Convert to decimal
+    do {
+        buf[i++] = '0' + (v % 10);
+        v /= 10;
+    } while(v > 0);
+
+    // Print reversed
+    while(i--)
+        Serial_write(buf[i]);
+    Serial_write('\r');
+    Serial_write('\n');
+}
+
 // Print integer + newline
 void Serial_println_uint(unsigned int v) {
     Serial_print_uint(v);

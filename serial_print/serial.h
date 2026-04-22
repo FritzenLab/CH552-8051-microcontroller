@@ -13,6 +13,8 @@ void Serial_print(const char *s);
 // Print unsigned integer
 void Serial_print_uint(unsigned int v);
 
+void Serial_println_int(int16_t v);
+
 // Print string + newline
 void Serial_println(const char *s);
 

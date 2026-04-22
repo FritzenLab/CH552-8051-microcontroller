@@ -5,6 +5,15 @@
 
 - Push button with external interrupt: P3.3 (active LOW, so GND -> Push button -> P3.3)
 
+- Analog input pin tested:
+Input AIN2 on P1.5 (according to CH552 datasheet)
+
 - Analog comparator:
 IN+ = AIN0 (P1.1) → potentiometer → ADC_CHAN1=0, ADC_CHAN0=0
 IN- = AIN1 (P1.4) → resistor divider (your "half scale" reference) → CMP_CHAN=0
+
+- SPI pinout for MPU-9250 accel/gyro:
+SCL (clock) -> P1.7
+SDA (MOSI) -> P1.5
+AD0/SDO (MISO) -> P1.6 
+nCS (Chip select) -> P1.4
