@@ -24,7 +24,7 @@ void timer0_ISR(void) __interrupt(INT_NO_TMR0) {
     TH0 = 0xB1;
     TL0 = 0xE0;
     
-    if(tick_10ms >= 30) {
+    if(tick_10ms >= 50) {
         tick_10ms = 0;
     } else{
         tick_10ms++;
@@ -47,7 +47,7 @@ void timer0_init(void) {
 }
 
 void blink_led(void) {
-    if(tick_10ms % 30 < 15){
+    if(tick_10ms % 50 < 25){
         P3 |= (1 << 0);  // LED ON
     } else {
         P3 &= ~(1 << 0); // LED OFF

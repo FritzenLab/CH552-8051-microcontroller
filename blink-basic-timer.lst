@@ -710,10 +710,10 @@
       00001F 75 8C B1         [24]  710 	mov	_TH0,#0xb1
                                     711 ;	blink-basic-timer.c:25: TL0 = 0xE0;
       000022 75 8A E0         [24]  712 	mov	_TL0,#0xe0
-                                    713 ;	blink-basic-timer.c:27: if(tick_10ms >= 30) {
+                                    713 ;	blink-basic-timer.c:27: if(tick_10ms >= 50) {
       000025 C3               [12]  714 	clr	c
       000026 E5*00            [12]  715 	mov	a,_tick_10ms
-      000028 94 1E            [12]  716 	subb	a,#0x1e
+      000028 94 32            [12]  716 	subb	a,#0x32
       00002A E5*01            [12]  717 	mov	a,(_tick_10ms + 1)
       00002C 94 00            [12]  718 	subb	a,#0x00
       00002E 40 07            [24]  719 	jc	00102$
@@ -777,8 +777,8 @@
                                     777 ;	 function blink_led
                                     778 ;	-----------------------------------------
       000060                        779 _blink_led:
-                                    780 ;	blink-basic-timer.c:50: if(tick_10ms % 30 < 15){
-      000060 74 1E            [12]  781 	mov	a,#0x1e
+                                    780 ;	blink-basic-timer.c:50: if(tick_10ms % 50 < 25){
+      000060 74 32            [12]  781 	mov	a,#0x32
       000062 C0 E0            [24]  782 	push	acc
       000064 E4               [12]  783 	clr	a
       000065 C0 E0            [24]  784 	push	acc
@@ -791,16 +791,16 @@
       000076 15 81            [12]  791 	dec	sp
       000078 C3               [12]  792 	clr	c
       000079 EE               [12]  793 	mov	a,r6
-      00007A 94 0F            [12]  794 	subb	a,#0x0f
+      00007A 94 19            [12]  794 	subb	a,#0x19
       00007C EF               [12]  795 	mov	a,r7
       00007D 94 00            [12]  796 	subb	a,#0x00
       00007F 50 04            [24]  797 	jnc	00102$
-                                    798 ;	blink-basic-timer.c:51: P3 |= (1 << 0);  // LED ON
-      000081 43 B0 01         [24]  799 	orl	_P3,#0x01
+                                    798 ;	blink-basic-timer.c:51: P3 |= (1 << 0) | (1 << 5);  // both LEDs ON
+      000081 43 B0 21         [24]  799 	orl	_P3,#0x21
       000084 22               [24]  800 	ret
       000085                        801 00102$:
-                                    802 ;	blink-basic-timer.c:53: P3 &= ~(1 << 0); // LED OFF
-      000085 53 B0 FE         [24]  803 	anl	_P3,#0xfe
+                                    802 ;	blink-basic-timer.c:53: P3 &= ~((1 << 0) | (1 << 5)); // both LEDs OFF
+      000085 53 B0 DE         [24]  803 	anl	_P3,#0xde
                                     804 ;	blink-basic-timer.c:55: }
       000088 22               [24]  805 	ret
                                     806 ;------------------------------------------------------------
@@ -823,15 +823,15 @@
       000095 53 B1 FE         [24]  823 	anl	_GLOBAL_CFG,#0xfe
                                     824 ;	blink-basic-timer.c:65: SAFE_MOD = 0x00;
       000098 75 A1 00         [24]  825 	mov	_SAFE_MOD,#0x00
-                                    826 ;	blink-basic-timer.c:69: P3_MOD_OC &= ~0x01;   // not open-drain
-      00009B 53 96 FE         [24]  827 	anl	_P3_MOD_OC,#0xfe
-                                    828 ;	blink-basic-timer.c:70: P3_DIR_PU |= 0x01;    // output, with pull-up
-      00009E 43 97 01         [24]  829 	orl	_P3_DIR_PU,#0x01
-                                    830 ;	blink-basic-timer.c:72: while (1) {
+                                    826 ;	blink-basic-timer.c:68: P3_MOD_OC &= ~(0x01 | 0x20);   // not open-drain
+      00009B 53 96 DE         [24]  827 	anl	_P3_MOD_OC,#0xde
+                                    828 ;	blink-basic-timer.c:69: P3_DIR_PU |= (0x01 | 0x20);    // output, with pull-up
+      00009E 43 97 21         [24]  829 	orl	_P3_DIR_PU,#0x21
+                                    830 ;	blink-basic-timer.c:71: while (1) {
       0000A1                        831 00102$:
-                                    832 ;	blink-basic-timer.c:73: blink_led();        
+                                    832 ;	blink-basic-timer.c:72: blink_led();        
       0000A1 12r00r60         [24]  833 	lcall	_blink_led
-                                    834 ;	blink-basic-timer.c:75: }
+                                    834 ;	blink-basic-timer.c:74: }
       0000A4 80 FB            [24]  835 	sjmp	00102$
                                     836 	.area CSEG    (CODE)
                                     837 	.area CONST   (CODE)

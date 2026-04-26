@@ -710,10 +710,10 @@ _timer0_ISR:
 	mov	_TH0,#0xb1
 ;	blink-basic-timer.c:25: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	blink-basic-timer.c:27: if(tick_10ms >= 30) {
+;	blink-basic-timer.c:27: if(tick_10ms >= 50) {
 	clr	c
 	mov	a,_tick_10ms
-	subb	a,#0x1e
+	subb	a,#0x32
 	mov	a,(_tick_10ms + 1)
 	subb	a,#0x00
 	jc	00102$
@@ -777,8 +777,8 @@ _timer0_init:
 ;	 function blink_led
 ;	-----------------------------------------
 _blink_led:
-;	blink-basic-timer.c:50: if(tick_10ms % 30 < 15){
-	mov	a,#0x1e
+;	blink-basic-timer.c:50: if(tick_10ms % 50 < 25){
+	mov	a,#0x32
 	push	acc
 	clr	a
 	push	acc
@@ -791,16 +791,16 @@ _blink_led:
 	dec	sp
 	clr	c
 	mov	a,r6
-	subb	a,#0x0f
+	subb	a,#0x19
 	mov	a,r7
 	subb	a,#0x00
 	jnc	00102$
-;	blink-basic-timer.c:51: P3 |= (1 << 0);  // LED ON
-	orl	_P3,#0x01
+;	blink-basic-timer.c:51: P3 |= (1 << 0) | (1 << 5);  // both LEDs ON
+	orl	_P3,#0x21
 	ret
 00102$:
-;	blink-basic-timer.c:53: P3 &= ~(1 << 0); // LED OFF
-	anl	_P3,#0xfe
+;	blink-basic-timer.c:53: P3 &= ~((1 << 0) | (1 << 5)); // both LEDs OFF
+	anl	_P3,#0xde
 ;	blink-basic-timer.c:55: }
 	ret
 ;------------------------------------------------------------
@@ -823,15 +823,15 @@ _main:
 	anl	_GLOBAL_CFG,#0xfe
 ;	blink-basic-timer.c:65: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	blink-basic-timer.c:69: P3_MOD_OC &= ~0x01;   // not open-drain
-	anl	_P3_MOD_OC,#0xfe
-;	blink-basic-timer.c:70: P3_DIR_PU |= 0x01;    // output, with pull-up
-	orl	_P3_DIR_PU,#0x01
-;	blink-basic-timer.c:72: while (1) {
+;	blink-basic-timer.c:68: P3_MOD_OC &= ~(0x01 | 0x20);   // not open-drain
+	anl	_P3_MOD_OC,#0xde
+;	blink-basic-timer.c:69: P3_DIR_PU |= (0x01 | 0x20);    // output, with pull-up
+	orl	_P3_DIR_PU,#0x21
+;	blink-basic-timer.c:71: while (1) {
 00102$:
-;	blink-basic-timer.c:73: blink_led();        
+;	blink-basic-timer.c:72: blink_led();        
 	lcall	_blink_led
-;	blink-basic-timer.c:75: }
+;	blink-basic-timer.c:74: }
 	sjmp	00102$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
