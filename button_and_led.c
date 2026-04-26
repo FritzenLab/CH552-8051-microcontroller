@@ -1,12 +1,19 @@
 #include "inc\ch554.h"
 #include <stdint.h>
-#include "serial_print\serial.h" // Serial printing
+#include <compiler.h> 
 
-volatile unsigned int tick_10ms = 0;
+volatile unsigned int tick_100us = 0;
 unsigned int button;
 unsigned char led_state = 0;
-unsigned int serialTime= 0;
+__bit currentButton= 0;
 unsigned int counter= 0;
+// Debounce state
+volatile unsigned int debounce_start = 0;
+__bit raw= 0;
+__bit raw_button_prev = 0;
+__bit raw_button_prev_accepted = 0;  // tracks last accepted (debounced) state
+// 20ms debounce threshold: 20ms / 100us = 200 ticks
+#define DEBOUNCE_TICKS 200
 
 void timer0_ISR(void) __interrupt(1) __using(1);
 void blink_led(void);
@@ -23,20 +30,37 @@ void clock_init(void) {
 
 void timer0_ISR(void) __interrupt(INT_NO_TMR0) {
     TF0 = 0;  // clear overflow flag (important for robustness)
-    TH0 = 0xB1;
-    TL0 = 0xE0;
-    tick_10ms++;
-    serialTime++;
+
+    // This is for 10ms ticks
+    /*TH0 = 0xB1;
+    TL0 = 0xE0;*/
+
+    // 100us @ 24MHz: tick = 24M/12 = 2MHz = 0.5us
+    // 100us / 0.5us = 200 ticks; 65536-200 = 65336 = 0xFF38
+    TH0 = 0xFF;
+    TL0 = 0x38;
+
+    if(tick_100us <= 5000){
+        tick_100us++;
+    }else{
+        tick_100us= 0;
+    }
+        
 }
 
 void timer0_init(void) {
     TMOD &= ~0x03;  // clear Timer0 mode bits
     TMOD |=  0x01;  // Timer0 mode 1: 16-bit
 
-    // 10ms @ 24MHz: tick = 24M/12 = 2MHz = 0.5us
+    /*// 10ms @ 24MHz: tick = 24M/12 = 2MHz = 0.5us
     // 10ms / 0.5us = 20000 ticks; 65536-20000 = 45536 = 0xB1E0
     TH0 = 0xB1;
-    TL0 = 0xE0;
+    TL0 = 0xE0;*/
+
+    // 100us @ 24MHz: tick = 24M/12 = 2MHz = 0.5us
+    // 100us / 0.5us = 200 ticks; 65536-200 = 65336 = 0xFF38
+    TH0 = 0xFF;
+    TL0 = 0x38;
 
     ET0 = 1;   // enable Timer0 interrupt
     TR0 = 1;   // start Timer0
@@ -44,7 +68,7 @@ void timer0_init(void) {
 }
 
 void blink_led(void) {
-    if(tick_10ms % 60 < 30){
+    if(tick_100us % 5000 < 2500){
         P3 |= (1 << 0);  // LED ON
     } else {
         P3 &= ~(1 << 0); // LED OFF
@@ -74,18 +98,25 @@ void main(void) {
     Serial_begin();
 
     while (1) {
-        button = !(P1 & (1 << 4)); // pressed = 1
+        raw = !(P1 & (1 << 4)); // read raw pin, pressed = 1
 
-        if(button) blink_led();
-        else {
-            P3 &= ~0x01;   // LED OFF            
+        if (raw != raw_button_prev) {
+            // pin changed — restart the debounce timer
+            debounce_start = tick_100us;
+            raw_button_prev = raw;
+        } else if ((tick_100us - debounce_start) >= DEBOUNCE_TICKS) {
+            // pin has been stable for 20ms — accept it
+            if (raw == 1 && raw_button_prev_accepted == 0) {
+                // rising edge only: toggle blink state on each press
+                currentButton = !currentButton;
+                raw_button_prev_accepted = 1;
+            } else if (raw == 0) {
+                // button released — arm for next press
+                raw_button_prev_accepted = 0;
+            }
         }
-        if(serialTime > 100){
-            serialTime= 0;
-            counter++;
-            //Serial_print("Counter = ");
-            Serial_println_uint(counter);
-        }
-        
+
+        if (currentButton) blink_led();
+        else P3 &= ~0x01; // LED OFF
     }
 }

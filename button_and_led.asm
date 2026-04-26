@@ -10,8 +10,6 @@
 ;--------------------------------------------------------
 	.globl _main
 	.globl _timer0_init
-	.globl _Serial_println_uint
-	.globl _Serial_begin
 	.globl _UIF_BUS_RST
 	.globl _UIF_DETECT
 	.globl _UIF_TRANSFER
@@ -246,11 +244,15 @@
 	.globl _B
 	.globl _ACC
 	.globl _PSW
+	.globl _raw_button_prev_accepted
+	.globl _raw_button_prev
+	.globl _raw
+	.globl _currentButton
+	.globl _debounce_start
 	.globl _counter
-	.globl _serialTime
 	.globl _led_state
 	.globl _button
-	.globl _tick_10ms
+	.globl _tick_100us
 	.globl _clock_init
 	.globl _timer0_ISR
 	.globl _blink_led
@@ -507,15 +509,15 @@ _UIF_BUS_RST	=	0x00d8
 ; internal ram data
 ;--------------------------------------------------------
 	.area DSEG    (DATA)
-_tick_10ms::
+_tick_100us::
 	.ds 2
 _button::
 	.ds 2
 _led_state::
 	.ds 1
-_serialTime::
-	.ds 2
 _counter::
+	.ds 2
+_debounce_start::
 	.ds 2
 ;--------------------------------------------------------
 ; overlayable items in internal ram
@@ -540,7 +542,13 @@ __start__stack:
 ; bit data
 ;--------------------------------------------------------
 	.area BSEG    (BIT)
-_main_sloc0_1_0:
+_currentButton::
+	.ds 1
+_raw::
+	.ds 1
+_raw_button_prev::
+	.ds 1
+_raw_button_prev_accepted::
 	.ds 1
 ;--------------------------------------------------------
 ; paged external ram data
@@ -648,18 +656,30 @@ sdcc_atomic_compare_exchange_gptr_impl::
 	.globl __mcs51_genXINIT
 	.globl __mcs51_genXRAMCLEAR
 	.globl __mcs51_genRAMCLEAR
-;	button_and_led.c:5: volatile unsigned int tick_10ms = 0;
+;	button_and_led.c:5: volatile unsigned int tick_100us = 0;
 	clr	a
-	mov	_tick_10ms,a
-	mov	(_tick_10ms + 1),a
+	mov	_tick_100us,a
+	mov	(_tick_100us + 1),a
 ;	button_and_led.c:7: unsigned char led_state = 0;
 	mov	_led_state,a
-;	button_and_led.c:8: unsigned int serialTime= 0;
-	mov	_serialTime,a
-	mov	(_serialTime + 1),a
 ;	button_and_led.c:9: unsigned int counter= 0;
 	mov	_counter,a
 	mov	(_counter + 1),a
+;	button_and_led.c:11: volatile unsigned int debounce_start = 0;
+	mov	_debounce_start,a
+	mov	(_debounce_start + 1),a
+;	button_and_led.c:8: __bit currentButton= 0;
+;	assignBit
+	clr	_currentButton
+;	button_and_led.c:12: __bit raw= 0;
+;	assignBit
+	clr	_raw
+;	button_and_led.c:13: __bit raw_button_prev = 0;
+;	assignBit
+	clr	_raw_button_prev
+;	button_and_led.c:14: __bit raw_button_prev_accepted = 0;  // tracks last accepted (debounced) state
+;	assignBit
+	clr	_raw_button_prev_accepted
 	.area GSFINAL (CODE)
 	ljmp	__sdcc_program_startup
 ;--------------------------------------------------------
@@ -677,7 +697,7 @@ __sdcc_program_startup:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'clock_init'
 ;------------------------------------------------------------
-;	button_and_led.c:15: void clock_init(void) {
+;	button_and_led.c:22: void clock_init(void) {
 ;	-----------------------------------------
 ;	 function clock_init
 ;	-----------------------------------------
@@ -690,23 +710,23 @@ _clock_init:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	button_and_led.c:16: SAFE_MOD = 0x55;
+;	button_and_led.c:23: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	button_and_led.c:17: SAFE_MOD = 0xAA;
+;	button_and_led.c:24: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	button_and_led.c:19: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
+;	button_and_led.c:26: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
 	mov	a,#0xf8
 	anl	a,_CLOCK_CFG
 	orl	a,#0x06
 	mov	_CLOCK_CFG,a
-;	button_and_led.c:21: SAFE_MOD = 0x00;
+;	button_and_led.c:28: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	button_and_led.c:22: }
+;	button_and_led.c:29: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_ISR'
 ;------------------------------------------------------------
-;	button_and_led.c:24: void timer0_ISR(void) __interrupt(INT_NO_TMR0) {
+;	button_and_led.c:31: void timer0_ISR(void) __interrupt(INT_NO_TMR0) {
 ;	-----------------------------------------
 ;	 function timer0_ISR
 ;	-----------------------------------------
@@ -716,29 +736,37 @@ _timer0_ISR:
 	push	ar6
 	push	psw
 	mov	psw,#0x00
-;	button_and_led.c:25: TF0 = 0;  // clear overflow flag (important for robustness)
+;	button_and_led.c:32: TF0 = 0;  // clear overflow flag (important for robustness)
 ;	assignBit
 	clr	_TF0
-;	button_and_led.c:26: TH0 = 0xB1;
-	mov	_TH0,#0xb1
-;	button_and_led.c:27: TL0 = 0xE0;
-	mov	_TL0,#0xe0
-;	button_and_led.c:28: tick_10ms++;
-	mov	r6,_tick_10ms
-	mov	r7,(_tick_10ms + 1)
+;	button_and_led.c:40: TH0 = 0xFF;
+	mov	_TH0,#0xff
+;	button_and_led.c:41: TL0 = 0x38;
+	mov	_TL0,#0x38
+;	button_and_led.c:43: if(tick_100us <= 5000){
+	clr	c
+	mov	a,#0x88
+	subb	a,_tick_100us
+	mov	a,#0x13
+	subb	a,(_tick_100us + 1)
+	jc	00102$
+;	button_and_led.c:44: tick_100us++;
+	mov	r6,_tick_100us
+	mov	r7,(_tick_100us + 1)
 	mov	a,#0x01
 	add	a, r6
-	mov	_tick_10ms,a
+	mov	_tick_100us,a
 	clr	a
 	addc	a, r7
-	mov	(_tick_10ms + 1),a
-;	button_and_led.c:29: serialTime++;
-	inc	_serialTime
+	mov	(_tick_100us + 1),a
+	sjmp	00104$
+00102$:
+;	button_and_led.c:46: tick_100us= 0;
 	clr	a
-	cjne	a,_serialTime,00103$
-	inc	(_serialTime + 1)
-00103$:
-;	button_and_led.c:30: }
+	mov	_tick_100us,a
+	mov	(_tick_100us + 1),a
+00104$:
+;	button_and_led.c:49: }
 	pop	psw
 	pop	ar6
 	pop	ar7
@@ -750,134 +778,156 @@ _timer0_ISR:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_init'
 ;------------------------------------------------------------
-;	button_and_led.c:32: void timer0_init(void) {
+;	button_and_led.c:51: void timer0_init(void) {
 ;	-----------------------------------------
 ;	 function timer0_init
 ;	-----------------------------------------
 _timer0_init:
-;	button_and_led.c:33: TMOD &= ~0x03;  // clear Timer0 mode bits
+;	button_and_led.c:52: TMOD &= ~0x03;  // clear Timer0 mode bits
 	anl	_TMOD,#0xfc
-;	button_and_led.c:34: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
+;	button_and_led.c:53: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
 	orl	_TMOD,#0x01
-;	button_and_led.c:38: TH0 = 0xB1;
-	mov	_TH0,#0xb1
-;	button_and_led.c:39: TL0 = 0xE0;
-	mov	_TL0,#0xe0
-;	button_and_led.c:41: ET0 = 1;   // enable Timer0 interrupt
+;	button_and_led.c:62: TH0 = 0xFF;
+	mov	_TH0,#0xff
+;	button_and_led.c:63: TL0 = 0x38;
+	mov	_TL0,#0x38
+;	button_and_led.c:65: ET0 = 1;   // enable Timer0 interrupt
 ;	assignBit
 	setb	_ET0
-;	button_and_led.c:42: TR0 = 1;   // start Timer0
+;	button_and_led.c:66: TR0 = 1;   // start Timer0
 ;	assignBit
 	setb	_TR0
-;	button_and_led.c:43: EA = 1;
+;	button_and_led.c:67: EA = 1;
 ;	assignBit
 	setb	_EA
-;	button_and_led.c:44: }
+;	button_and_led.c:68: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'blink_led'
 ;------------------------------------------------------------
-;	button_and_led.c:46: void blink_led(void) {
+;	button_and_led.c:70: void blink_led(void) {
 ;	-----------------------------------------
 ;	 function blink_led
 ;	-----------------------------------------
 _blink_led:
-;	button_and_led.c:47: if(tick_10ms % 60 < 30){
-	mov	__moduint_PARM_2,#0x3c
-	mov	(__moduint_PARM_2 + 1),#0x00
-	mov	dpl, _tick_10ms
-	mov	dph, (_tick_10ms + 1)
+;	button_and_led.c:71: if(tick_100us % 5000 < 2500){
+	mov	a,#0x88
+	push	acc
+	mov	a,#0x13
+	push	acc
+	mov	dpl, _tick_100us
+	mov	dph, (_tick_100us + 1)
 	lcall	__moduint
 	mov	r6, dpl
 	mov	r7, dph
+	dec	sp
+	dec	sp
 	clr	c
 	mov	a,r6
-	subb	a,#0x1e
+	subb	a,#0xc4
 	mov	a,r7
-	subb	a,#0x00
+	subb	a,#0x09
 	jnc	00102$
-;	button_and_led.c:48: P3 |= (1 << 0);  // LED ON
+;	button_and_led.c:72: P3 |= (1 << 0);  // LED ON
 	orl	_P3,#0x01
 	ret
 00102$:
-;	button_and_led.c:50: P3 &= ~(1 << 0); // LED OFF
+;	button_and_led.c:74: P3 &= ~(1 << 0); // LED OFF
 	anl	_P3,#0xfe
-;	button_and_led.c:52: }
+;	button_and_led.c:76: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;	button_and_led.c:54: void main(void) {
+;	button_and_led.c:78: void main(void) {
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	button_and_led.c:55: clock_init();
+;	button_and_led.c:79: clock_init();
 	lcall	_clock_init
-;	button_and_led.c:56: timer0_init();
+;	button_and_led.c:80: timer0_init();
 	lcall	_timer0_init
-;	button_and_led.c:59: SAFE_MOD = 0x55;
+;	button_and_led.c:83: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	button_and_led.c:60: SAFE_MOD = 0xAA;
+;	button_and_led.c:84: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	button_and_led.c:61: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
+;	button_and_led.c:85: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
 	anl	_GLOBAL_CFG,#0xfe
-;	button_and_led.c:62: SAFE_MOD = 0x00;
+;	button_and_led.c:86: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	button_and_led.c:66: P3_MOD_OC &= ~0x01;   // not open-drain
+;	button_and_led.c:90: P3_MOD_OC &= ~0x01;   // not open-drain
 	anl	_P3_MOD_OC,#0xfe
-;	button_and_led.c:67: P3_DIR_PU |= 0x01;    // output, with pull-up
+;	button_and_led.c:91: P3_DIR_PU |= 0x01;    // output, with pull-up
 	orl	_P3_DIR_PU,#0x01
-;	button_and_led.c:70: P1_MOD_OC |=  (1 << 4);   // open-drain mode → required for pull-up
+;	button_and_led.c:94: P1_MOD_OC |=  (1 << 4);   // open-drain mode → required for pull-up
 	orl	_P1_MOD_OC,#0x10
-;	button_and_led.c:71: P1_DIR_PU  |=  (1 << 4);  // pull-up enabled
+;	button_and_led.c:95: P1_DIR_PU  |=  (1 << 4);  // pull-up enabled
 	orl	_P1_DIR_PU,#0x10
-;	button_and_led.c:74: Serial_begin();
+;	button_and_led.c:98: Serial_begin();
 	lcall	_Serial_begin
-;	button_and_led.c:76: while (1) {
-00107$:
-;	button_and_led.c:77: button = !(P1 & (1 << 4)); // pressed = 1
+;	button_and_led.c:100: while (1) {
+00116$:
+;	button_and_led.c:101: raw = !(P1 & (1 << 4)); // read raw pin, pressed = 1
 	mov	a,_P1
 	swap	a
 	anl	a,#0x01
-	cjne	a,#0x01,00129$
-00129$:
-	mov  _main_sloc0_1_0,c
-	clr	a
-	rlc	a
-;	button_and_led.c:79: if(button) blink_led();
-	mov	_button,a
-	mov	(_button + 1),#0x00
-	orl	a,(_button + 1)
-	jz	00102$
-	lcall	_blink_led
-	sjmp	00103$
-00102$:
-;	button_and_led.c:81: P3 &= ~0x01;   // LED OFF            
-	anl	_P3,#0xfe
-00103$:
-;	button_and_led.c:83: if(serialTime > 100){
+	cjne	a,#0x01,00162$
+00162$:
+;	button_and_led.c:103: if (raw != raw_button_prev) {
+	mov  _raw,c
+	jb	_raw_button_prev,00163$
+	cpl	c
+00163$:
+	jc	00110$
+;	button_and_led.c:105: debounce_start = tick_100us;
+	mov	_debounce_start,_tick_100us
+	mov	(_debounce_start + 1),(_tick_100us + 1)
+;	button_and_led.c:106: raw_button_prev = raw;
+;	assignBit
+	mov	c,_raw
+	mov	_raw_button_prev,c
+	sjmp	00111$
+00110$:
+;	button_and_led.c:107: } else if ((tick_100us - debounce_start) >= DEBOUNCE_TICKS) {
+	mov	a,_tick_100us
 	clr	c
-	mov	a,#0x64
-	subb	a,_serialTime
-	clr	a
-	subb	a,(_serialTime + 1)
-	jnc	00107$
-;	button_and_led.c:84: serialTime= 0;
-	clr	a
-	mov	_serialTime,a
-	mov	(_serialTime + 1),a
-;	button_and_led.c:85: counter++;
-	inc	_counter
-	cjne	a,_counter,00132$
-	inc	(_counter + 1)
-00132$:
-;	button_and_led.c:87: Serial_println_uint(counter);
-	mov	dpl, _counter
-	mov	dph, (_counter + 1)
-	lcall	_Serial_println_uint
-;	button_and_led.c:91: }
-	sjmp	00107$
+	subb	a,_debounce_start
+	mov	r6,a
+	mov	a,(_tick_100us + 1)
+	subb	a,(_debounce_start + 1)
+	mov	r7,a
+	clr	c
+	mov	a,r6
+	subb	a,#0xc8
+	mov	a,r7
+	subb	a,#0x00
+	jc	00111$
+;	button_and_led.c:109: if (raw == 1 && raw_button_prev_accepted == 0) {
+	jnb	_raw,00104$
+	jb	_raw_button_prev_accepted,00104$
+;	button_and_led.c:111: currentButton = !currentButton;
+	cpl	_currentButton
+;	button_and_led.c:112: raw_button_prev_accepted = 1;
+;	assignBit
+	setb	_raw_button_prev_accepted
+	sjmp	00111$
+00104$:
+;	button_and_led.c:113: } else if (raw == 0) {
+	jb	_raw,00111$
+;	button_and_led.c:115: raw_button_prev_accepted = 0;
+;	assignBit
+	clr	_raw_button_prev_accepted
+00111$:
+;	button_and_led.c:119: if (currentButton) blink_led();
+	jnb	_currentButton,00113$
+	lcall	_blink_led
+	sjmp	00116$
+00113$:
+;	button_and_led.c:120: else P3 &= ~0x01; // LED OFF
+	anl	_P3,#0xfe
+;	button_and_led.c:122: }
+	sjmp	00116$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area XINIT   (CODE)
