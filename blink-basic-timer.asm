@@ -246,7 +246,7 @@
 	.globl _PSW
 	.globl _counter
 	.globl _led_state
-	.globl _tick_10ms
+	.globl _tick_100us
 	.globl _clock_init
 	.globl _timer0_ISR
 	.globl _blink_led
@@ -503,7 +503,7 @@ _UIF_BUS_RST	=	0x00d8
 ; internal ram data
 ;--------------------------------------------------------
 	.area DSEG    (DATA)
-_tick_10ms::
+_tick_100us::
 	.ds 2
 _led_state::
 	.ds 1
@@ -638,10 +638,10 @@ sdcc_atomic_compare_exchange_gptr_impl::
 	.globl __mcs51_genXINIT
 	.globl __mcs51_genXRAMCLEAR
 	.globl __mcs51_genRAMCLEAR
-;	blink-basic-timer.c:4: volatile unsigned int tick_10ms = 0;
+;	blink-basic-timer.c:4: volatile unsigned int tick_100us = 0;
 	clr	a
-	mov	_tick_10ms,a
-	mov	(_tick_10ms + 1),a
+	mov	_tick_100us,a
+	mov	(_tick_100us + 1),a
 ;	blink-basic-timer.c:5: unsigned char led_state = 0;
 	mov	_led_state,a
 ;	blink-basic-timer.c:6: unsigned int counter= 0;
@@ -706,34 +706,34 @@ _timer0_ISR:
 ;	blink-basic-timer.c:22: TF0 = 0;  // clear overflow flag (important for robustness)
 ;	assignBit
 	clr	_TF0
-;	blink-basic-timer.c:24: TH0 = 0xB1;
-	mov	_TH0,#0xb1
-;	blink-basic-timer.c:25: TL0 = 0xE0;
-	mov	_TL0,#0xe0
-;	blink-basic-timer.c:27: if(tick_10ms >= 50) {
+;	blink-basic-timer.c:29: TH0 = 0xFF;
+	mov	_TH0,#0xff
+;	blink-basic-timer.c:30: TL0 = 0x38;
+	mov	_TL0,#0x38
+;	blink-basic-timer.c:32: if(tick_100us >= 5000) {
 	clr	c
-	mov	a,_tick_10ms
-	subb	a,#0x32
-	mov	a,(_tick_10ms + 1)
-	subb	a,#0x00
+	mov	a,_tick_100us
+	subb	a,#0x88
+	mov	a,(_tick_100us + 1)
+	subb	a,#0x13
 	jc	00102$
-;	blink-basic-timer.c:28: tick_10ms = 0;
+;	blink-basic-timer.c:33: tick_100us = 0;
 	clr	a
-	mov	_tick_10ms,a
-	mov	(_tick_10ms + 1),a
+	mov	_tick_100us,a
+	mov	(_tick_100us + 1),a
 	sjmp	00104$
 00102$:
-;	blink-basic-timer.c:30: tick_10ms++;
-	mov	r6,_tick_10ms
-	mov	r7,(_tick_10ms + 1)
+;	blink-basic-timer.c:35: tick_100us++;
+	mov	r6,_tick_100us
+	mov	r7,(_tick_100us + 1)
 	mov	a,#0x01
 	add	a, r6
-	mov	_tick_10ms,a
+	mov	_tick_100us,a
 	clr	a
 	addc	a, r7
-	mov	(_tick_10ms + 1),a
+	mov	(_tick_100us + 1),a
 00104$:
-;	blink-basic-timer.c:33: }
+;	blink-basic-timer.c:38: }
 	pop	psw
 	pop	ar6
 	pop	ar7
@@ -745,45 +745,45 @@ _timer0_ISR:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_init'
 ;------------------------------------------------------------
-;	blink-basic-timer.c:35: void timer0_init(void) {
+;	blink-basic-timer.c:40: void timer0_init(void) {
 ;	-----------------------------------------
 ;	 function timer0_init
 ;	-----------------------------------------
 _timer0_init:
-;	blink-basic-timer.c:36: TMOD &= ~0x03;  // clear Timer0 mode bits
+;	blink-basic-timer.c:41: TMOD &= ~0x03;  // clear Timer0 mode bits
 	anl	_TMOD,#0xfc
-;	blink-basic-timer.c:37: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
+;	blink-basic-timer.c:42: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
 	orl	_TMOD,#0x01
-;	blink-basic-timer.c:41: TH0 = 0xB1;
-	mov	_TH0,#0xb1
-;	blink-basic-timer.c:42: TL0 = 0xE0;
-	mov	_TL0,#0xe0
-;	blink-basic-timer.c:44: ET0 = 1;   // enable Timer0 interrupt
+;	blink-basic-timer.c:51: TH0 = 0xFF;
+	mov	_TH0,#0xff
+;	blink-basic-timer.c:52: TL0 = 0x38;
+	mov	_TL0,#0x38
+;	blink-basic-timer.c:54: ET0 = 1;   // enable Timer0 interrupt
 ;	assignBit
 	setb	_ET0
-;	blink-basic-timer.c:45: TR0 = 1;   // start Timer0
+;	blink-basic-timer.c:55: TR0 = 1;   // start Timer0
 ;	assignBit
 	setb	_TR0
-;	blink-basic-timer.c:46: EA = 1;
+;	blink-basic-timer.c:56: EA = 1;
 ;	assignBit
 	setb	_EA
-;	blink-basic-timer.c:47: }
+;	blink-basic-timer.c:57: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'blink_led'
 ;------------------------------------------------------------
-;	blink-basic-timer.c:49: void blink_led(void) {
+;	blink-basic-timer.c:59: void blink_led(void) {
 ;	-----------------------------------------
 ;	 function blink_led
 ;	-----------------------------------------
 _blink_led:
-;	blink-basic-timer.c:50: if(tick_10ms % 50 < 25){
-	mov	a,#0x32
+;	blink-basic-timer.c:60: if(tick_100us % 5000 < 2500){
+	mov	a,#0x88
 	push	acc
-	clr	a
+	mov	a,#0x13
 	push	acc
-	mov	dpl, _tick_10ms
-	mov	dph, (_tick_10ms + 1)
+	mov	dpl, _tick_100us
+	mov	dph, (_tick_100us + 1)
 	lcall	__moduint
 	mov	r6, dpl
 	mov	r7, dph
@@ -791,47 +791,47 @@ _blink_led:
 	dec	sp
 	clr	c
 	mov	a,r6
-	subb	a,#0x19
+	subb	a,#0xc4
 	mov	a,r7
-	subb	a,#0x00
+	subb	a,#0x09
 	jnc	00102$
-;	blink-basic-timer.c:51: P3 |= (1 << 0) | (1 << 5);  // both LEDs ON
-	orl	_P3,#0x21
+;	blink-basic-timer.c:61: P3 |= (1 << 0);  // LED ON
+	orl	_P3,#0x01
 	ret
 00102$:
-;	blink-basic-timer.c:53: P3 &= ~((1 << 0) | (1 << 5)); // both LEDs OFF
-	anl	_P3,#0xde
-;	blink-basic-timer.c:55: }
+;	blink-basic-timer.c:63: P3 &= ~(1 << 0); // LED OFF
+	anl	_P3,#0xfe
+;	blink-basic-timer.c:65: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;	blink-basic-timer.c:57: void main(void) {
+;	blink-basic-timer.c:67: void main(void) {
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	blink-basic-timer.c:58: clock_init();
+;	blink-basic-timer.c:68: clock_init();
 	lcall	_clock_init
-;	blink-basic-timer.c:59: timer0_init();
+;	blink-basic-timer.c:69: timer0_init();
 	lcall	_timer0_init
-;	blink-basic-timer.c:62: SAFE_MOD = 0x55;
+;	blink-basic-timer.c:72: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	blink-basic-timer.c:63: SAFE_MOD = 0xAA;
+;	blink-basic-timer.c:73: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	blink-basic-timer.c:64: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
+;	blink-basic-timer.c:74: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
 	anl	_GLOBAL_CFG,#0xfe
-;	blink-basic-timer.c:65: SAFE_MOD = 0x00;
+;	blink-basic-timer.c:75: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	blink-basic-timer.c:68: P3_MOD_OC &= ~(0x01 | 0x20);   // not open-drain
-	anl	_P3_MOD_OC,#0xde
-;	blink-basic-timer.c:69: P3_DIR_PU |= (0x01 | 0x20);    // output, with pull-up
-	orl	_P3_DIR_PU,#0x21
-;	blink-basic-timer.c:71: while (1) {
+;	blink-basic-timer.c:79: P3_MOD_OC &= ~0x01;   // not open-drain
+	anl	_P3_MOD_OC,#0xfe
+;	blink-basic-timer.c:80: P3_DIR_PU |= 0x01;    // output, with pull-up
+	orl	_P3_DIR_PU,#0x01
+;	blink-basic-timer.c:82: while (1) {
 00102$:
-;	blink-basic-timer.c:72: blink_led();        
+;	blink-basic-timer.c:83: blink_led();        
 	lcall	_blink_led
-;	blink-basic-timer.c:74: }
+;	blink-basic-timer.c:85: }
 	sjmp	00102$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)

@@ -80,9 +80,9 @@ C:   000000BB  s_GSFINAL
 C:   000000BE  s_CSEG                          
 C:   000000F1  l_SSEG                          
 C:   00000100  l_IRAM                          
-C:   00000739  l_CSEG                          
-C:   000007F7  s_CONST                         
-C:   000007F7  s_XINIT                         
+C:   0000073A  l_CSEG                          
+C:   000007F8  s_CONST                         
+C:   000007F8  s_XINIT                         
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -387,7 +387,7 @@ DSEG                                00000000    00000080 =         128. bytes (R
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000008  _tick_10ms                         blink_basic_timer
+     00000008  _tick_100us                        blink_basic_timer
      0000000A  _led_state                         blink_basic_timer
      0000000B  _counter                           blink_basic_timer
      0000000E  _bp                                _bp
@@ -484,7 +484,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000BE    00000739 =        1849. bytes (REL,CON,CODE)
+CSEG                                000000BE    0000073A =        1850. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -492,36 +492,36 @@ C:   000000BE  _clock_init                        blink_basic_timer
 C:   000000D0  _timer0_ISR                        blink_basic_timer
 C:   0000010B  _timer0_init                       blink_basic_timer
 C:   0000011E  _blink_led                         blink_basic_timer
-C:   00000147  _main                              blink_basic_timer
-C:   00000164  _ADCInit                           adc
-C:   00000171  _ADC_ChannelSelect                 adc
-C:   000001AB  _VoltageCMPModeInit                adc
-C:   0000024E  _MPU9250_init                      mpu9250
-C:   00000269  _MPU9250_whoami                    mpu9250
-C:   0000026D  _MPU9250_readAccelGyro             mpu9250
-C:   00000412  _Serial_begin                      serial
-C:   0000043C  _Serial_write                      serial
-C:   00000446  _Serial_print                      serial
-C:   00000471  _Serial_print_uint                 serial
-C:   00000571  _Serial_println                    serial
-C:   00000580  _Serial_println_int                serial
-C:   00000661  _Serial_println_uint               serial
-C:   00000670  _SPIMasterModeSet                  spi
-C:   00000690  _CH554SPIInterruptInit             spi
-C:   0000069C  _CH554SPIMasterWrite               spi
-C:   000006A3  _CH554SPIMasterRead                spi
-C:   000006AD  _SPISlvModeSet                     spi
-C:   000006BA  _CH554SPISlvWrite                  spi
-C:   000006C3  _CH554SPISlvRead                   spi
-C:   000006CC  __divuint                          _divuint
-C:   000006D6  __divint                           _divuint
-C:   000006FD  __gptrput                          _gptrput
-C:   00000718  __gptrget                          _gptrget
-C:   00000734  __modsint                          _modsint
-C:   00000771  __moduint                          _moduint
-C:   0000077B  __modint                           _moduint
-C:   000007B6  __divsint                          _divsint
-C:   000007F3  ___sdcc_external_startup           _startup
+C:   00000148  _main                              blink_basic_timer
+C:   00000165  _ADCInit                           adc
+C:   00000172  _ADC_ChannelSelect                 adc
+C:   000001AC  _VoltageCMPModeInit                adc
+C:   0000024F  _MPU9250_init                      mpu9250
+C:   0000026A  _MPU9250_whoami                    mpu9250
+C:   0000026E  _MPU9250_readAccelGyro             mpu9250
+C:   00000413  _Serial_begin                      serial
+C:   0000043D  _Serial_write                      serial
+C:   00000447  _Serial_print                      serial
+C:   00000472  _Serial_print_uint                 serial
+C:   00000572  _Serial_println                    serial
+C:   00000581  _Serial_println_int                serial
+C:   00000662  _Serial_println_uint               serial
+C:   00000671  _SPIMasterModeSet                  spi
+C:   00000691  _CH554SPIInterruptInit             spi
+C:   0000069D  _CH554SPIMasterWrite               spi
+C:   000006A4  _CH554SPIMasterRead                spi
+C:   000006AE  _SPISlvModeSet                     spi
+C:   000006BB  _CH554SPISlvWrite                  spi
+C:   000006C4  _CH554SPISlvRead                   spi
+C:   000006CD  __divuint                          _divuint
+C:   000006D7  __divint                           _divuint
+C:   000006FE  __gptrput                          _gptrput
+C:   00000719  __gptrget                          _gptrget
+C:   00000735  __modsint                          _modsint
+C:   00000772  __moduint                          _moduint
+C:   0000077C  __modint                           _moduint
+C:   000007B7  __divsint                          _divsint
+C:   000007F4  ___sdcc_external_startup           _startup
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 19.
 

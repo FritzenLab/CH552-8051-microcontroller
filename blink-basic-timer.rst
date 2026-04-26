@@ -246,7 +246,7 @@
                                     246 	.globl _PSW
                                     247 	.globl _counter
                                     248 	.globl _led_state
-                                    249 	.globl _tick_10ms
+                                    249 	.globl _tick_100us
                                     250 	.globl _clock_init
                                     251 	.globl _timer0_ISR
                                     252 	.globl _blink_led
@@ -503,7 +503,7 @@
                                     503 ; internal ram data
                                     504 ;--------------------------------------------------------
                                     505 	.area DSEG    (DATA)
-      000008                        506 _tick_10ms::
+      000008                        506 _tick_100us::
       000008                        507 	.ds 2
       00000A                        508 _led_state::
       00000A                        509 	.ds 1
@@ -638,10 +638,10 @@
                                     638 	.globl __mcs51_genXINIT
                                     639 	.globl __mcs51_genXRAMCLEAR
                                     640 	.globl __mcs51_genRAMCLEAR
-                                    641 ;	blink-basic-timer.c:4: volatile unsigned int tick_10ms = 0;
+                                    641 ;	blink-basic-timer.c:4: volatile unsigned int tick_100us = 0;
       0000AD E4               [12]  642 	clr	a
-      0000AE F5 08            [12]  643 	mov	_tick_10ms,a
-      0000B0 F5 09            [12]  644 	mov	(_tick_10ms + 1),a
+      0000AE F5 08            [12]  643 	mov	_tick_100us,a
+      0000B0 F5 09            [12]  644 	mov	(_tick_100us + 1),a
                                     645 ;	blink-basic-timer.c:5: unsigned char led_state = 0;
       0000B2 F5 0A            [12]  646 	mov	_led_state,a
                                     647 ;	blink-basic-timer.c:6: unsigned int counter= 0;
@@ -655,7 +655,7 @@
                                     655 	.area HOME    (CODE)
                                     656 	.area HOME    (CODE)
       000051                        657 __sdcc_program_startup:
-      000051 02 01 47         [24]  658 	ljmp	_main
+      000051 02 01 48         [24]  658 	ljmp	_main
                                     659 ;	return from main will return to caller
                                     660 ;--------------------------------------------------------
                                     661 ; code
@@ -706,34 +706,34 @@
                                     706 ;	blink-basic-timer.c:22: TF0 = 0;  // clear overflow flag (important for robustness)
                                     707 ;	assignBit
       0000DB C2 8D            [12]  708 	clr	_TF0
-                                    709 ;	blink-basic-timer.c:24: TH0 = 0xB1;
-      0000DD 75 8C B1         [24]  710 	mov	_TH0,#0xb1
-                                    711 ;	blink-basic-timer.c:25: TL0 = 0xE0;
-      0000E0 75 8A E0         [24]  712 	mov	_TL0,#0xe0
-                                    713 ;	blink-basic-timer.c:27: if(tick_10ms >= 50) {
+                                    709 ;	blink-basic-timer.c:29: TH0 = 0xFF;
+      0000DD 75 8C FF         [24]  710 	mov	_TH0,#0xff
+                                    711 ;	blink-basic-timer.c:30: TL0 = 0x38;
+      0000E0 75 8A 38         [24]  712 	mov	_TL0,#0x38
+                                    713 ;	blink-basic-timer.c:32: if(tick_100us >= 5000) {
       0000E3 C3               [12]  714 	clr	c
-      0000E4 E5 08            [12]  715 	mov	a,_tick_10ms
-      0000E6 94 32            [12]  716 	subb	a,#0x32
-      0000E8 E5 09            [12]  717 	mov	a,(_tick_10ms + 1)
-      0000EA 94 00            [12]  718 	subb	a,#0x00
+      0000E4 E5 08            [12]  715 	mov	a,_tick_100us
+      0000E6 94 88            [12]  716 	subb	a,#0x88
+      0000E8 E5 09            [12]  717 	mov	a,(_tick_100us + 1)
+      0000EA 94 13            [12]  718 	subb	a,#0x13
       0000EC 40 07            [24]  719 	jc	00102$
-                                    720 ;	blink-basic-timer.c:28: tick_10ms = 0;
+                                    720 ;	blink-basic-timer.c:33: tick_100us = 0;
       0000EE E4               [12]  721 	clr	a
-      0000EF F5 08            [12]  722 	mov	_tick_10ms,a
-      0000F1 F5 09            [12]  723 	mov	(_tick_10ms + 1),a
+      0000EF F5 08            [12]  722 	mov	_tick_100us,a
+      0000F1 F5 09            [12]  723 	mov	(_tick_100us + 1),a
       0000F3 80 0D            [24]  724 	sjmp	00104$
       0000F5                        725 00102$:
-                                    726 ;	blink-basic-timer.c:30: tick_10ms++;
-      0000F5 AE 08            [24]  727 	mov	r6,_tick_10ms
-      0000F7 AF 09            [24]  728 	mov	r7,(_tick_10ms + 1)
+                                    726 ;	blink-basic-timer.c:35: tick_100us++;
+      0000F5 AE 08            [24]  727 	mov	r6,_tick_100us
+      0000F7 AF 09            [24]  728 	mov	r7,(_tick_100us + 1)
       0000F9 74 01            [12]  729 	mov	a,#0x01
       0000FB 2E               [12]  730 	add	a, r6
-      0000FC F5 08            [12]  731 	mov	_tick_10ms,a
+      0000FC F5 08            [12]  731 	mov	_tick_100us,a
       0000FE E4               [12]  732 	clr	a
       0000FF 3F               [12]  733 	addc	a, r7
-      000100 F5 09            [12]  734 	mov	(_tick_10ms + 1),a
+      000100 F5 09            [12]  734 	mov	(_tick_100us + 1),a
       000102                        735 00104$:
-                                    736 ;	blink-basic-timer.c:33: }
+                                    736 ;	blink-basic-timer.c:38: }
       000102 D0 D0            [24]  737 	pop	psw
       000104 D0 06            [24]  738 	pop	ar6
       000106 D0 07            [24]  739 	pop	ar7
@@ -745,94 +745,94 @@
                                     745 ;------------------------------------------------------------
                                     746 ;Allocation info for local variables in function 'timer0_init'
                                     747 ;------------------------------------------------------------
-                                    748 ;	blink-basic-timer.c:35: void timer0_init(void) {
+                                    748 ;	blink-basic-timer.c:40: void timer0_init(void) {
                                     749 ;	-----------------------------------------
                                     750 ;	 function timer0_init
                                     751 ;	-----------------------------------------
       00010B                        752 _timer0_init:
-                                    753 ;	blink-basic-timer.c:36: TMOD &= ~0x03;  // clear Timer0 mode bits
+                                    753 ;	blink-basic-timer.c:41: TMOD &= ~0x03;  // clear Timer0 mode bits
       00010B 53 89 FC         [24]  754 	anl	_TMOD,#0xfc
-                                    755 ;	blink-basic-timer.c:37: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
+                                    755 ;	blink-basic-timer.c:42: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
       00010E 43 89 01         [24]  756 	orl	_TMOD,#0x01
-                                    757 ;	blink-basic-timer.c:41: TH0 = 0xB1;
-      000111 75 8C B1         [24]  758 	mov	_TH0,#0xb1
-                                    759 ;	blink-basic-timer.c:42: TL0 = 0xE0;
-      000114 75 8A E0         [24]  760 	mov	_TL0,#0xe0
-                                    761 ;	blink-basic-timer.c:44: ET0 = 1;   // enable Timer0 interrupt
+                                    757 ;	blink-basic-timer.c:51: TH0 = 0xFF;
+      000111 75 8C FF         [24]  758 	mov	_TH0,#0xff
+                                    759 ;	blink-basic-timer.c:52: TL0 = 0x38;
+      000114 75 8A 38         [24]  760 	mov	_TL0,#0x38
+                                    761 ;	blink-basic-timer.c:54: ET0 = 1;   // enable Timer0 interrupt
                                     762 ;	assignBit
       000117 D2 A9            [12]  763 	setb	_ET0
-                                    764 ;	blink-basic-timer.c:45: TR0 = 1;   // start Timer0
+                                    764 ;	blink-basic-timer.c:55: TR0 = 1;   // start Timer0
                                     765 ;	assignBit
       000119 D2 8C            [12]  766 	setb	_TR0
-                                    767 ;	blink-basic-timer.c:46: EA = 1;
+                                    767 ;	blink-basic-timer.c:56: EA = 1;
                                     768 ;	assignBit
       00011B D2 AF            [12]  769 	setb	_EA
-                                    770 ;	blink-basic-timer.c:47: }
+                                    770 ;	blink-basic-timer.c:57: }
       00011D 22               [24]  771 	ret
                                     772 ;------------------------------------------------------------
                                     773 ;Allocation info for local variables in function 'blink_led'
                                     774 ;------------------------------------------------------------
-                                    775 ;	blink-basic-timer.c:49: void blink_led(void) {
+                                    775 ;	blink-basic-timer.c:59: void blink_led(void) {
                                     776 ;	-----------------------------------------
                                     777 ;	 function blink_led
                                     778 ;	-----------------------------------------
       00011E                        779 _blink_led:
-                                    780 ;	blink-basic-timer.c:50: if(tick_10ms % 50 < 25){
-      00011E 74 32            [12]  781 	mov	a,#0x32
+                                    780 ;	blink-basic-timer.c:60: if(tick_100us % 5000 < 2500){
+      00011E 74 88            [12]  781 	mov	a,#0x88
       000120 C0 E0            [24]  782 	push	acc
-      000122 E4               [12]  783 	clr	a
-      000123 C0 E0            [24]  784 	push	acc
-      000125 85 08 82         [24]  785 	mov	dpl, _tick_10ms
-      000128 85 09 83         [24]  786 	mov	dph, (_tick_10ms + 1)
-      00012B 12 07 71         [24]  787 	lcall	__moduint
-      00012E AE 82            [24]  788 	mov	r6, dpl
-      000130 AF 83            [24]  789 	mov	r7, dph
-      000132 15 81            [12]  790 	dec	sp
-      000134 15 81            [12]  791 	dec	sp
-      000136 C3               [12]  792 	clr	c
-      000137 EE               [12]  793 	mov	a,r6
-      000138 94 19            [12]  794 	subb	a,#0x19
-      00013A EF               [12]  795 	mov	a,r7
-      00013B 94 00            [12]  796 	subb	a,#0x00
-      00013D 50 04            [24]  797 	jnc	00102$
-                                    798 ;	blink-basic-timer.c:51: P3 |= (1 << 0) | (1 << 5);  // both LEDs ON
-      00013F 43 B0 21         [24]  799 	orl	_P3,#0x21
-      000142 22               [24]  800 	ret
-      000143                        801 00102$:
-                                    802 ;	blink-basic-timer.c:53: P3 &= ~((1 << 0) | (1 << 5)); // both LEDs OFF
-      000143 53 B0 DE         [24]  803 	anl	_P3,#0xde
-                                    804 ;	blink-basic-timer.c:55: }
-      000146 22               [24]  805 	ret
+      000122 74 13            [12]  783 	mov	a,#0x13
+      000124 C0 E0            [24]  784 	push	acc
+      000126 85 08 82         [24]  785 	mov	dpl, _tick_100us
+      000129 85 09 83         [24]  786 	mov	dph, (_tick_100us + 1)
+      00012C 12 07 72         [24]  787 	lcall	__moduint
+      00012F AE 82            [24]  788 	mov	r6, dpl
+      000131 AF 83            [24]  789 	mov	r7, dph
+      000133 15 81            [12]  790 	dec	sp
+      000135 15 81            [12]  791 	dec	sp
+      000137 C3               [12]  792 	clr	c
+      000138 EE               [12]  793 	mov	a,r6
+      000139 94 C4            [12]  794 	subb	a,#0xc4
+      00013B EF               [12]  795 	mov	a,r7
+      00013C 94 09            [12]  796 	subb	a,#0x09
+      00013E 50 04            [24]  797 	jnc	00102$
+                                    798 ;	blink-basic-timer.c:61: P3 |= (1 << 0);  // LED ON
+      000140 43 B0 01         [24]  799 	orl	_P3,#0x01
+      000143 22               [24]  800 	ret
+      000144                        801 00102$:
+                                    802 ;	blink-basic-timer.c:63: P3 &= ~(1 << 0); // LED OFF
+      000144 53 B0 FE         [24]  803 	anl	_P3,#0xfe
+                                    804 ;	blink-basic-timer.c:65: }
+      000147 22               [24]  805 	ret
                                     806 ;------------------------------------------------------------
                                     807 ;Allocation info for local variables in function 'main'
                                     808 ;------------------------------------------------------------
-                                    809 ;	blink-basic-timer.c:57: void main(void) {
+                                    809 ;	blink-basic-timer.c:67: void main(void) {
                                     810 ;	-----------------------------------------
                                     811 ;	 function main
                                     812 ;	-----------------------------------------
-      000147                        813 _main:
-                                    814 ;	blink-basic-timer.c:58: clock_init();
-      000147 12 00 BE         [24]  815 	lcall	_clock_init
-                                    816 ;	blink-basic-timer.c:59: timer0_init();
-      00014A 12 01 0B         [24]  817 	lcall	_timer0_init
-                                    818 ;	blink-basic-timer.c:62: SAFE_MOD = 0x55;
-      00014D 75 A1 55         [24]  819 	mov	_SAFE_MOD,#0x55
-                                    820 ;	blink-basic-timer.c:63: SAFE_MOD = 0xAA;
-      000150 75 A1 AA         [24]  821 	mov	_SAFE_MOD,#0xaa
-                                    822 ;	blink-basic-timer.c:64: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
-      000153 53 B1 FE         [24]  823 	anl	_GLOBAL_CFG,#0xfe
-                                    824 ;	blink-basic-timer.c:65: SAFE_MOD = 0x00;
-      000156 75 A1 00         [24]  825 	mov	_SAFE_MOD,#0x00
-                                    826 ;	blink-basic-timer.c:68: P3_MOD_OC &= ~(0x01 | 0x20);   // not open-drain
-      000159 53 96 DE         [24]  827 	anl	_P3_MOD_OC,#0xde
-                                    828 ;	blink-basic-timer.c:69: P3_DIR_PU |= (0x01 | 0x20);    // output, with pull-up
-      00015C 43 97 21         [24]  829 	orl	_P3_DIR_PU,#0x21
-                                    830 ;	blink-basic-timer.c:71: while (1) {
-      00015F                        831 00102$:
-                                    832 ;	blink-basic-timer.c:72: blink_led();        
-      00015F 12 01 1E         [24]  833 	lcall	_blink_led
-                                    834 ;	blink-basic-timer.c:74: }
-      000162 80 FB            [24]  835 	sjmp	00102$
+      000148                        813 _main:
+                                    814 ;	blink-basic-timer.c:68: clock_init();
+      000148 12 00 BE         [24]  815 	lcall	_clock_init
+                                    816 ;	blink-basic-timer.c:69: timer0_init();
+      00014B 12 01 0B         [24]  817 	lcall	_timer0_init
+                                    818 ;	blink-basic-timer.c:72: SAFE_MOD = 0x55;
+      00014E 75 A1 55         [24]  819 	mov	_SAFE_MOD,#0x55
+                                    820 ;	blink-basic-timer.c:73: SAFE_MOD = 0xAA;
+      000151 75 A1 AA         [24]  821 	mov	_SAFE_MOD,#0xaa
+                                    822 ;	blink-basic-timer.c:74: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
+      000154 53 B1 FE         [24]  823 	anl	_GLOBAL_CFG,#0xfe
+                                    824 ;	blink-basic-timer.c:75: SAFE_MOD = 0x00;
+      000157 75 A1 00         [24]  825 	mov	_SAFE_MOD,#0x00
+                                    826 ;	blink-basic-timer.c:79: P3_MOD_OC &= ~0x01;   // not open-drain
+      00015A 53 96 FE         [24]  827 	anl	_P3_MOD_OC,#0xfe
+                                    828 ;	blink-basic-timer.c:80: P3_DIR_PU |= 0x01;    // output, with pull-up
+      00015D 43 97 01         [24]  829 	orl	_P3_DIR_PU,#0x01
+                                    830 ;	blink-basic-timer.c:82: while (1) {
+      000160                        831 00102$:
+                                    832 ;	blink-basic-timer.c:83: blink_led();        
+      000160 12 01 1E         [24]  833 	lcall	_blink_led
+                                    834 ;	blink-basic-timer.c:85: }
+      000163 80 FB            [24]  835 	sjmp	00102$
                                     836 	.area CSEG    (CODE)
                                     837 	.area CONST   (CODE)
                                     838 	.area XINIT   (CODE)

@@ -464,8 +464,8 @@ Symbol Table
  17 _clock_init                                                    000000 GR
   5 _counter                                                       000003 GR
   5 _led_state                                                     000002 GR
- 17 _main                                                          000089 GR
-  5 _tick_10ms                                                     000000 GR
+ 17 _main                                                          00008A GR
+  5 _tick_100us                                                    000000 GR
  17 _timer0_ISR                                                    000012 GR
  17 _timer0_init                                                   00004D GR
     a                                                           =  0000E0 L
@@ -713,7 +713,7 @@ Area Table
   14 GSINIT5                                    size      0   flags   20
   15 GSINIT                                     size      B   flags   20
   16 GSFINAL                                    size      3   flags   20
-  17 CSEG                                       size     A6   flags   20
+  17 CSEG                                       size     A7   flags   20
   18 CONST                                      size      0   flags   20
   19 XINIT                                      size      0   flags   20
   1A CABS                                       size      0   flags   28
