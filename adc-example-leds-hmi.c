@@ -78,8 +78,8 @@ void blinkTwoLEDs(uint8_t v) {
     tens = v / 10;
     unit = v % 10;
     // double: each digit needs ON+OFF transitions
-    tens = tens * 2;
-    unit = unit * 2;
+    //tens = tens * 2;
+    //unit = unit * 2;
     // reset state machine for fresh run
     countUnits   = 0;
     countTens    = 0;
@@ -97,7 +97,7 @@ void blinkNow(void) {
         if (unit > 0) {
             countUnits = 1;
         } else if (tens > 0) {
-            countTens = 1;     // skip units if digit is 0
+            countTens = 1;
         } else {
             blinkNowToggle = 0;
             conversionFinished = 1;
@@ -109,43 +109,47 @@ void blinkNow(void) {
     if (blinkCounter < 1500) return;
     blinkCounter = 0;
 
-    // Phase 1: blink units on P3.4
+    // Phase 1: blink units on P3.5
     if (countUnits == 1) {
         if (unit > 0) {
             if (unitON == 0) {
-                P3 |=  (1 << 4);   // LED ON
+                P3 |=  (1 << 5);   // LED ON
                 unitON = 1;
             } else {
-                P3 &= ~(1 << 4);   // LED OFF
+                P3 &= ~(1 << 5);   // LED OFF
                 unitON = 0;
-                unit--;
+                unit--;            // decrement only on OFF edge — one full blink per count
             }
         } else {
-            P3 &= ~(1 << 4);
+            P3 &= ~(1 << 5);       // FIX: was (1<<4), must clear units LED (P3.5) before switching phase
             unitON     = 0;
             countUnits = 0;
-            countTens  = 1;        // move to tens phase
+            countTens  = (tens > 0) ? 1 : 0;  // FIX: only enter tens phase if tens > 0
+            if (countTens == 0) {
+                blinkNowToggle = 0;
+                conversionFinished = 1;
+            }
         }
         return;
     }
 
-    // Phase 2: blink tens on P3.5
+    // Phase 2: blink tens on P3.4
     if (countTens == 1) {
         if (tens > 0) {
             if (tensON == 0) {
-                P3 |=  (1 << 5);   // LED ON
+                P3 |=  (1 << 4);   // LED ON
                 tensON = 1;
             } else {
-                P3 &= ~(1 << 5);   // LED OFF
+                P3 &= ~(1 << 4);   // LED OFF
                 tensON = 0;
-                tens--;
+                tens--;            // decrement only on OFF edge — one full blink per count
             }
         } else {
-            P3 &= ~(1 << 5);
+            P3 &= ~(1 << 4);       // FIX: was (1<<5), must clear tens LED (P3.4) when done
             tensON         = 0;
             countTens      = 0;
             blinkNowToggle = 0;
-            conversionFinished = 1;  // allow next ADC read
+            conversionFinished = 1;
         }
     }
 }
@@ -204,7 +208,12 @@ void main(void) {
         if (conversionFinished && !blinkNowToggle) {
             mVanalog = rawToMillivolts(analogReading());
             val = mVanalog / 50;
-            if (val > 100) val = 100;
+            if (val > 99){
+                val = 99;
+            }/*else if(val < 0){
+                val = 0;
+            }*/
+            
             blinkTwoLEDs(val);
             conversionFinished = 0;
         }

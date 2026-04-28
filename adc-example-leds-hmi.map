@@ -80,9 +80,9 @@ C:   000000DD  s_GSFINAL
 C:   000000DE  l_SSEG                          
 C:   000000E0  s_CSEG                          
 C:   00000100  l_IRAM                          
-C:   000009F4  l_CSEG                          
-C:   00000AD4  s_CONST                         
-C:   00000AD4  s_XINIT                         
+C:   000009F6  l_CSEG                          
+C:   00000AD6  s_CONST                         
+C:   00000AD6  s_XINIT                         
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -508,7 +508,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000E0    000009F4 =        2548. bytes (REL,CON,CODE)
+CSEG                                000000E0    000009F6 =        2550. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -519,41 +519,41 @@ C:   00000133  _timer0_init                       adc_example_leds_hmi
 C:   00000146  _blink_led                         adc_example_leds_hmi
 C:   0000016A  _rawToMillivolts                   adc_example_leds_hmi
 C:   000001C7  _blinkTwoLEDs                      adc_example_leds_hmi
-C:   0000020C  _blinkNow                          adc_example_leds_hmi
-C:   000002CD  _main                              adc_example_leds_hmi
-C:   00000364  _ADCInit                           adc
-C:   00000371  _ADC_ChannelSelect                 adc
-C:   000003AB  _VoltageCMPModeInit                adc
-C:   0000044E  _MPU9250_init                      mpu9250
-C:   00000469  _MPU9250_whoami                    mpu9250
-C:   0000046D  _MPU9250_readAccelGyro             mpu9250
-C:   00000612  _Serial_begin                      serial
-C:   0000063C  _Serial_write                      serial
-C:   00000646  _Serial_print                      serial
-C:   00000671  _Serial_print_uint                 serial
-C:   00000771  _Serial_println                    serial
-C:   00000780  _Serial_println_int                serial
-C:   00000861  _Serial_println_uint               serial
-C:   00000870  _SPIMasterModeSet                  spi
-C:   00000890  _CH554SPIInterruptInit             spi
-C:   0000089C  _CH554SPIMasterWrite               spi
-C:   000008A3  _CH554SPIMasterRead                spi
-C:   000008AD  _SPISlvModeSet                     spi
-C:   000008BA  _CH554SPISlvWrite                  spi
-C:   000008C3  _CH554SPISlvRead                   spi
-C:   000008CC  __divuint                          _divuint
-C:   000008D6  __divint                           _divuint
-C:   000008FD  __gptrput                          _gptrput
-C:   00000918  __divulong                         _divulong
-C:   0000091E  __divlong                          _divulong
-C:   00000985  __gptrget                          _gptrget
-C:   000009A1  __modsint                          _modsint
-C:   000009DE  __mullong                          _mullong
-C:   000009DE  __mullong_dummy                    _mullong
-C:   00000A4E  __moduint                          _moduint
-C:   00000A58  __modint                           _moduint
-C:   00000A93  __divsint                          _divsint
-C:   00000AD0  ___sdcc_external_startup           _startup
+C:   000001F5  _blinkNow                          adc_example_leds_hmi
+C:   000002CF  _main                              adc_example_leds_hmi
+C:   00000366  _ADCInit                           adc
+C:   00000373  _ADC_ChannelSelect                 adc
+C:   000003AD  _VoltageCMPModeInit                adc
+C:   00000450  _MPU9250_init                      mpu9250
+C:   0000046B  _MPU9250_whoami                    mpu9250
+C:   0000046F  _MPU9250_readAccelGyro             mpu9250
+C:   00000614  _Serial_begin                      serial
+C:   0000063E  _Serial_write                      serial
+C:   00000648  _Serial_print                      serial
+C:   00000673  _Serial_print_uint                 serial
+C:   00000773  _Serial_println                    serial
+C:   00000782  _Serial_println_int                serial
+C:   00000863  _Serial_println_uint               serial
+C:   00000872  _SPIMasterModeSet                  spi
+C:   00000892  _CH554SPIInterruptInit             spi
+C:   0000089E  _CH554SPIMasterWrite               spi
+C:   000008A5  _CH554SPIMasterRead                spi
+C:   000008AF  _SPISlvModeSet                     spi
+C:   000008BC  _CH554SPISlvWrite                  spi
+C:   000008C5  _CH554SPISlvRead                   spi
+C:   000008CE  __divuint                          _divuint
+C:   000008D8  __divint                           _divuint
+C:   000008FF  __gptrput                          _gptrput
+C:   0000091A  __divulong                         _divulong
+C:   00000920  __divlong                          _divulong
+C:   00000987  __gptrget                          _gptrget
+C:   000009A3  __modsint                          _modsint
+C:   000009E0  __mullong                          _mullong
+C:   000009E0  __mullong_dummy                    _mullong
+C:   00000A50  __moduint                          _moduint
+C:   00000A5A  __modint                           _moduint
+C:   00000A95  __divsint                          _divsint
+C:   00000AD2  ___sdcc_external_startup           _startup
 ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
 
 Files Linked                              [ module(s) ]
