@@ -69,9 +69,8 @@ void blink_led(void) {
 }
 
 uint16_t rawToMillivolts(uint8_t raw) {
-    if (raw < 46) return 0;
-    // linear mapping: Vref=3.3V, 8-bit ADC, offset-corrected
-    return 300 + ((uint32_t)(raw - 46) * 3000) / 117;
+    // linear mapping: Vref=5V, 8-bit ADC
+    return ((uint32_t)raw * 5000) / 255;
 }
 
 void blinkTwoLEDs(uint8_t v) {
@@ -105,8 +104,8 @@ void blinkNow(void) {
         }
     }
 
-    // 1500 * 100us = 150ms per half-blink
-    if (blinkCounter < 1500) return;
+    // 2500 * 100us = 250ms per half-blink
+    if (blinkCounter < 2500) return;
     blinkCounter = 0;
 
     // Phase 1: blink units on P3.5
@@ -210,10 +209,7 @@ void main(void) {
             val = mVanalog / 50;
             if (val > 99){
                 val = 99;
-            }/*else if(val < 0){
-                val = 0;
-            }*/
-            
+            }            
             blinkTwoLEDs(val);
             conversionFinished = 0;
         }

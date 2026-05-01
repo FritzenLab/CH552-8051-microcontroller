@@ -746,7 +746,7 @@
                                     746 	.area HOME    (CODE)
                                     747 	.area HOME    (CODE)
       000051                        748 __sdcc_program_startup:
-      000051 02 02 CF         [24]  749 	ljmp	_main
+      000051 02 02 BC         [24]  749 	ljmp	_main
                                     750 ;	return from main will return to caller
                                     751 ;--------------------------------------------------------
                                     752 ; code
@@ -923,408 +923,394 @@
                                     923 ;	-----------------------------------------
       00016A                        924 _rawToMillivolts:
       00016A AF 82            [24]  925 	mov	r7, dpl
-                                    926 ;	adc-example-leds-hmi.c:72: if (raw < 46) return 0;
-      00016C BF 2E 00         [24]  927 	cjne	r7,#0x2e,00111$
-      00016F                        928 00111$:
-      00016F 50 04            [24]  929 	jnc	00102$
-      000171 90 00 00         [24]  930 	mov	dptr,#0x0000
-      000174 22               [24]  931 	ret
-      000175                        932 00102$:
-                                    933 ;	adc-example-leds-hmi.c:74: return 300 + ((uint32_t)(raw - 46) * 3000) / 117;
-      000175 EF               [12]  934 	mov	a,r7
-      000176 24 D2            [12]  935 	add	a,#0xd2
-      000178 FF               [12]  936 	mov	r7,a
-      000179 7E 00            [12]  937 	mov	r6,#0x00
-      00017B 7D 00            [12]  938 	mov	r5,#0x00
-      00017D 7C 00            [12]  939 	mov	r4,#0x00
-      00017F C0 07            [24]  940 	push	ar7
-      000181 C0 06            [24]  941 	push	ar6
-      000183 C0 05            [24]  942 	push	ar5
-      000185 C0 04            [24]  943 	push	ar4
-      000187 90 0B B8         [24]  944 	mov	dptr,#0x0bb8
-      00018A E4               [12]  945 	clr	a
-      00018B F5 F0            [12]  946 	mov	b,a
-      00018D 12 09 E0         [24]  947 	lcall	__mullong
-      000190 AC 82            [24]  948 	mov	r4, dpl
-      000192 AD 83            [24]  949 	mov	r5, dph
-      000194 AE F0            [24]  950 	mov	r6, b
-      000196 FF               [12]  951 	mov	r7, a
-      000197 E5 81            [12]  952 	mov	a,sp
-      000199 24 FC            [12]  953 	add	a,#0xfc
-      00019B F5 81            [12]  954 	mov	sp,a
-      00019D 74 75            [12]  955 	mov	a,#0x75
-      00019F C0 E0            [24]  956 	push	acc
-      0001A1 E4               [12]  957 	clr	a
-      0001A2 C0 E0            [24]  958 	push	acc
-      0001A4 C0 E0            [24]  959 	push	acc
-      0001A6 C0 E0            [24]  960 	push	acc
-      0001A8 8C 82            [24]  961 	mov	dpl, r4
-      0001AA 8D 83            [24]  962 	mov	dph, r5
-      0001AC 8E F0            [24]  963 	mov	b, r6
-      0001AE EF               [12]  964 	mov	a, r7
-      0001AF 12 09 1A         [24]  965 	lcall	__divulong
-      0001B2 AC 82            [24]  966 	mov	r4, dpl
-      0001B4 AD 83            [24]  967 	mov	r5, dph
-      0001B6 E5 81            [12]  968 	mov	a,sp
-      0001B8 24 FC            [12]  969 	add	a,#0xfc
-      0001BA F5 81            [12]  970 	mov	sp,a
-      0001BC 74 2C            [12]  971 	mov	a,#0x2c
-      0001BE 2C               [12]  972 	add	a, r4
-      0001BF F5 82            [12]  973 	mov	dpl,a
-      0001C1 74 01            [12]  974 	mov	a,#0x01
-      0001C3 3D               [12]  975 	addc	a, r5
-      0001C4 F5 83            [12]  976 	mov	dph,a
-                                    977 ;	adc-example-leds-hmi.c:75: }
-      0001C6 22               [24]  978 	ret
-                                    979 ;------------------------------------------------------------
-                                    980 ;Allocation info for local variables in function 'blinkTwoLEDs'
-                                    981 ;------------------------------------------------------------
-                                    982 ;v             Allocated to registers r7 
-                                    983 ;------------------------------------------------------------
-                                    984 ;	adc-example-leds-hmi.c:77: void blinkTwoLEDs(uint8_t v) {
-                                    985 ;	-----------------------------------------
-                                    986 ;	 function blinkTwoLEDs
-                                    987 ;	-----------------------------------------
-      0001C7                        988 _blinkTwoLEDs:
-      0001C7 AF 82            [24]  989 	mov	r7, dpl
-                                    990 ;	adc-example-leds-hmi.c:78: tens = v / 10;
-      0001C9 8F 06            [24]  991 	mov	ar6,r7
-      0001CB 75 F0 0A         [24]  992 	mov	b,#0x0a
-      0001CE EE               [12]  993 	mov	a,r6
-      0001CF 84               [48]  994 	div	ab
-      0001D0 F5 0C            [12]  995 	mov	_tens, a
-      0001D2 75 0D 00         [24]  996 	mov	(_tens + 1),#0x00
-                                    997 ;	adc-example-leds-hmi.c:79: unit = v % 10;
-      0001D5 75 F0 0A         [24]  998 	mov	b,#0x0a
-      0001D8 EF               [12]  999 	mov	a,r7
-      0001D9 84               [48] 1000 	div	ab
-      0001DA AF F0            [24] 1001 	mov	r7,b
-      0001DC 8F 0E            [24] 1002 	mov	_unit,r7
-                                   1003 ;	adc-example-leds-hmi.c:84: countUnits   = 0;
-      0001DE E4               [12] 1004 	clr	a
-      0001DF F5 0F            [12] 1005 	mov	(_unit + 1),a
-      0001E1 F5 10            [12] 1006 	mov	_countUnits,a
-      0001E3 F5 11            [12] 1007 	mov	(_countUnits + 1),a
-                                   1008 ;	adc-example-leds-hmi.c:85: countTens    = 0;
-      0001E5 F5 12            [12] 1009 	mov	_countTens,a
-      0001E7 F5 13            [12] 1010 	mov	(_countTens + 1),a
-                                   1011 ;	adc-example-leds-hmi.c:86: unitON       = 0;
-                                   1012 ;	assignBit
-      0001E9 C2 02            [12] 1013 	clr	_unitON
-                                   1014 ;	adc-example-leds-hmi.c:87: tensON       = 0;
-                                   1015 ;	assignBit
-      0001EB C2 03            [12] 1016 	clr	_tensON
-                                   1017 ;	adc-example-leds-hmi.c:88: blinkCounter = 0;
-      0001ED E4               [12] 1018 	clr	a
-      0001EE F5 0A            [12] 1019 	mov	_blinkCounter,a
-      0001F0 F5 0B            [12] 1020 	mov	(_blinkCounter + 1),a
-                                   1021 ;	adc-example-leds-hmi.c:89: blinkNowToggle = 1;
-                                   1022 ;	assignBit
-      0001F2 D2 01            [12] 1023 	setb	_blinkNowToggle
-                                   1024 ;	adc-example-leds-hmi.c:90: }
-      0001F4 22               [24] 1025 	ret
-                                   1026 ;------------------------------------------------------------
-                                   1027 ;Allocation info for local variables in function 'blinkNow'
-                                   1028 ;------------------------------------------------------------
-                                   1029 ;	adc-example-leds-hmi.c:92: void blinkNow(void) {
-                                   1030 ;	-----------------------------------------
-                                   1031 ;	 function blinkNow
-                                   1032 ;	-----------------------------------------
-      0001F5                       1033 _blinkNow:
-                                   1034 ;	adc-example-leds-hmi.c:93: if (!blinkNowToggle) return;
-      0001F5 20 01 01         [24] 1035 	jb	_blinkNowToggle,00102$
-      0001F8 22               [24] 1036 	ret
-      0001F9                       1037 00102$:
-                                   1038 ;	adc-example-leds-hmi.c:96: if (countUnits == 0 && countTens == 0) {
-      0001F9 E5 10            [12] 1039 	mov	a,_countUnits
-      0001FB 45 11            [12] 1040 	orl	a,(_countUnits + 1)
-      0001FD 70 27            [24] 1041 	jnz	00110$
-      0001FF E5 12            [12] 1042 	mov	a,_countTens
-      000201 45 13            [12] 1043 	orl	a,(_countTens + 1)
-      000203 70 21            [24] 1044 	jnz	00110$
-                                   1045 ;	adc-example-leds-hmi.c:97: if (unit > 0) {
-      000205 E5 0E            [12] 1046 	mov	a,_unit
-      000207 45 0F            [12] 1047 	orl	a,(_unit + 1)
-      000209 60 08            [24] 1048 	jz	00107$
-                                   1049 ;	adc-example-leds-hmi.c:98: countUnits = 1;
-      00020B 75 10 01         [24] 1050 	mov	_countUnits,#0x01
-      00020E 75 11 00         [24] 1051 	mov	(_countUnits + 1),#0x00
-      000211 80 13            [24] 1052 	sjmp	00110$
-      000213                       1053 00107$:
-                                   1054 ;	adc-example-leds-hmi.c:99: } else if (tens > 0) {
-      000213 E5 0C            [12] 1055 	mov	a,_tens
-      000215 45 0D            [12] 1056 	orl	a,(_tens + 1)
-      000217 60 08            [24] 1057 	jz	00104$
-                                   1058 ;	adc-example-leds-hmi.c:100: countTens = 1;
-      000219 75 12 01         [24] 1059 	mov	_countTens,#0x01
-      00021C 75 13 00         [24] 1060 	mov	(_countTens + 1),#0x00
-      00021F 80 05            [24] 1061 	sjmp	00110$
-      000221                       1062 00104$:
-                                   1063 ;	adc-example-leds-hmi.c:102: blinkNowToggle = 0;
-                                   1064 ;	assignBit
-      000221 C2 01            [12] 1065 	clr	_blinkNowToggle
-                                   1066 ;	adc-example-leds-hmi.c:103: conversionFinished = 1;
-                                   1067 ;	assignBit
-      000223 D2 00            [12] 1068 	setb	_conversionFinished
-                                   1069 ;	adc-example-leds-hmi.c:104: return;
-      000225 22               [24] 1070 	ret
-      000226                       1071 00110$:
-                                   1072 ;	adc-example-leds-hmi.c:109: if (blinkCounter < 1500) return;
-      000226 C3               [12] 1073 	clr	c
-      000227 E5 0A            [12] 1074 	mov	a,_blinkCounter
-      000229 94 DC            [12] 1075 	subb	a,#0xdc
-      00022B E5 0B            [12] 1076 	mov	a,(_blinkCounter + 1)
-      00022D 94 05            [12] 1077 	subb	a,#0x05
-      00022F 50 01            [24] 1078 	jnc	00113$
-      000231 22               [24] 1079 	ret
-      000232                       1080 00113$:
-                                   1081 ;	adc-example-leds-hmi.c:110: blinkCounter = 0;
-      000232 E4               [12] 1082 	clr	a
-      000233 F5 0A            [12] 1083 	mov	_blinkCounter,a
-      000235 F5 0B            [12] 1084 	mov	(_blinkCounter + 1),a
-                                   1085 ;	adc-example-leds-hmi.c:113: if (countUnits == 1) {
-      000237 04               [12] 1086 	inc	a
-      000238 B5 10 06         [24] 1087 	cjne	a,_countUnits,00226$
-      00023B 14               [12] 1088 	dec	a
-      00023C B5 11 02         [24] 1089 	cjne	a,(_countUnits + 1),00226$
-      00023F 80 02            [24] 1090 	sjmp	00227$
-      000241                       1091 00226$:
-      000241 80 4E            [24] 1092 	sjmp	00123$
-      000243                       1093 00227$:
-                                   1094 ;	adc-example-leds-hmi.c:114: if (unit > 0) {
-      000243 E5 0E            [12] 1095 	mov	a,_unit
-      000245 45 0F            [12] 1096 	orl	a,(_unit + 1)
-      000247 60 1F            [24] 1097 	jz	00120$
-                                   1098 ;	adc-example-leds-hmi.c:115: if (unitON == 0) {
-      000249 20 02 07         [24] 1099 	jb	_unitON,00115$
-                                   1100 ;	adc-example-leds-hmi.c:116: P3 |=  (1 << 5);   // LED ON
-      00024C 43 B0 20         [24] 1101 	orl	_P3,#0x20
-                                   1102 ;	adc-example-leds-hmi.c:117: unitON = 1;
-                                   1103 ;	assignBit
-      00024F D2 02            [12] 1104 	setb	_unitON
-      000251 80 3D            [24] 1105 	sjmp	00121$
-      000253                       1106 00115$:
-                                   1107 ;	adc-example-leds-hmi.c:119: P3 &= ~(1 << 5);   // LED OFF
-      000253 53 B0 DF         [24] 1108 	anl	_P3,#0xdf
-                                   1109 ;	adc-example-leds-hmi.c:120: unitON = 0;
-                                   1110 ;	assignBit
-      000256 C2 02            [12] 1111 	clr	_unitON
-                                   1112 ;	adc-example-leds-hmi.c:121: unit--;            // decrement only on OFF edge — one full blink per count
-      000258 AE 0E            [24] 1113 	mov	r6,_unit
-      00025A AF 0F            [24] 1114 	mov	r7,(_unit + 1)
-      00025C EE               [12] 1115 	mov	a,r6
-      00025D 24 FF            [12] 1116 	add	a,#0xff
-      00025F F5 0E            [12] 1117 	mov	_unit,a
-      000261 EF               [12] 1118 	mov	a,r7
-      000262 34 FF            [12] 1119 	addc	a,#0xff
-      000264 F5 0F            [12] 1120 	mov	(_unit + 1),a
-      000266 80 28            [24] 1121 	sjmp	00121$
-      000268                       1122 00120$:
-                                   1123 ;	adc-example-leds-hmi.c:124: P3 &= ~(1 << 5);       // FIX: was (1<<4), must clear units LED (P3.5) before switching phase
-      000268 53 B0 DF         [24] 1124 	anl	_P3,#0xdf
-                                   1125 ;	adc-example-leds-hmi.c:125: unitON     = 0;
-                                   1126 ;	assignBit
-      00026B C2 02            [12] 1127 	clr	_unitON
-                                   1128 ;	adc-example-leds-hmi.c:126: countUnits = 0;
-      00026D E4               [12] 1129 	clr	a
-      00026E F5 10            [12] 1130 	mov	_countUnits,a
-      000270 F5 11            [12] 1131 	mov	(_countUnits + 1),a
-                                   1132 ;	adc-example-leds-hmi.c:127: countTens  = (tens > 0) ? 1 : 0;  // FIX: only enter tens phase if tens > 0
-      000272 E5 0C            [12] 1133 	mov	a,_tens
-      000274 45 0D            [12] 1134 	orl	a,(_tens + 1)
-      000276 60 06            [24] 1135 	jz	00134$
-      000278 7E 01            [12] 1136 	mov	r6,#0x01
-      00027A 7F 00            [12] 1137 	mov	r7,#0x00
-      00027C 80 04            [24] 1138 	sjmp	00135$
-      00027E                       1139 00134$:
-      00027E 7E 00            [12] 1140 	mov	r6,#0x00
-      000280 7F 00            [12] 1141 	mov	r7,#0x00
-      000282                       1142 00135$:
-      000282 8E 12            [24] 1143 	mov	_countTens,r6
-      000284 8F 13            [24] 1144 	mov	(_countTens + 1),r7
-                                   1145 ;	adc-example-leds-hmi.c:128: if (countTens == 0) {
-      000286 E5 12            [12] 1146 	mov	a,_countTens
-      000288 45 13            [12] 1147 	orl	a,(_countTens + 1)
-      00028A 70 04            [24] 1148 	jnz	00121$
-                                   1149 ;	adc-example-leds-hmi.c:129: blinkNowToggle = 0;
-                                   1150 ;	assignBit
-      00028C C2 01            [12] 1151 	clr	_blinkNowToggle
-                                   1152 ;	adc-example-leds-hmi.c:130: conversionFinished = 1;
-                                   1153 ;	assignBit
-      00028E D2 00            [12] 1154 	setb	_conversionFinished
-      000290                       1155 00121$:
-                                   1156 ;	adc-example-leds-hmi.c:133: return;
-      000290 22               [24] 1157 	ret
-      000291                       1158 00123$:
-                                   1159 ;	adc-example-leds-hmi.c:137: if (countTens == 1) {
-      000291 74 01            [12] 1160 	mov	a,#0x01
-      000293 B5 12 06         [24] 1161 	cjne	a,_countTens,00232$
-      000296 14               [12] 1162 	dec	a
-      000297 B5 13 02         [24] 1163 	cjne	a,(_countTens + 1),00232$
-      00029A 80 01            [24] 1164 	sjmp	00233$
-      00029C                       1165 00232$:
-      00029C 22               [24] 1166 	ret
-      00029D                       1167 00233$:
-                                   1168 ;	adc-example-leds-hmi.c:138: if (tens > 0) {
-      00029D E5 0C            [12] 1169 	mov	a,_tens
-      00029F 45 0D            [12] 1170 	orl	a,(_tens + 1)
-      0002A1 60 1D            [24] 1171 	jz	00128$
-                                   1172 ;	adc-example-leds-hmi.c:139: if (tensON == 0) {
-      0002A3 20 03 06         [24] 1173 	jb	_tensON,00125$
-                                   1174 ;	adc-example-leds-hmi.c:140: P3 |=  (1 << 4);   // LED ON
-      0002A6 43 B0 10         [24] 1175 	orl	_P3,#0x10
-                                   1176 ;	adc-example-leds-hmi.c:141: tensON = 1;
-                                   1177 ;	assignBit
-      0002A9 D2 03            [12] 1178 	setb	_tensON
-      0002AB 22               [24] 1179 	ret
-      0002AC                       1180 00125$:
-                                   1181 ;	adc-example-leds-hmi.c:143: P3 &= ~(1 << 4);   // LED OFF
-      0002AC 53 B0 EF         [24] 1182 	anl	_P3,#0xef
-                                   1183 ;	adc-example-leds-hmi.c:144: tensON = 0;
-                                   1184 ;	assignBit
-      0002AF C2 03            [12] 1185 	clr	_tensON
-                                   1186 ;	adc-example-leds-hmi.c:145: tens--;            // decrement only on OFF edge — one full blink per count
-      0002B1 AE 0C            [24] 1187 	mov	r6,_tens
-      0002B3 AF 0D            [24] 1188 	mov	r7,(_tens + 1)
-      0002B5 EE               [12] 1189 	mov	a,r6
-      0002B6 24 FF            [12] 1190 	add	a,#0xff
-      0002B8 F5 0C            [12] 1191 	mov	_tens,a
-      0002BA EF               [12] 1192 	mov	a,r7
-      0002BB 34 FF            [12] 1193 	addc	a,#0xff
-      0002BD F5 0D            [12] 1194 	mov	(_tens + 1),a
-      0002BF 22               [24] 1195 	ret
-      0002C0                       1196 00128$:
-                                   1197 ;	adc-example-leds-hmi.c:148: P3 &= ~(1 << 4);       // FIX: was (1<<5), must clear tens LED (P3.4) when done
-      0002C0 53 B0 EF         [24] 1198 	anl	_P3,#0xef
-                                   1199 ;	adc-example-leds-hmi.c:149: tensON         = 0;
-                                   1200 ;	assignBit
-      0002C3 C2 03            [12] 1201 	clr	_tensON
-                                   1202 ;	adc-example-leds-hmi.c:150: countTens      = 0;
-      0002C5 E4               [12] 1203 	clr	a
-      0002C6 F5 12            [12] 1204 	mov	_countTens,a
-      0002C8 F5 13            [12] 1205 	mov	(_countTens + 1),a
-                                   1206 ;	adc-example-leds-hmi.c:151: blinkNowToggle = 0;
-                                   1207 ;	assignBit
-      0002CA C2 01            [12] 1208 	clr	_blinkNowToggle
-                                   1209 ;	adc-example-leds-hmi.c:152: conversionFinished = 1;
-                                   1210 ;	assignBit
-      0002CC D2 00            [12] 1211 	setb	_conversionFinished
-                                   1212 ;	adc-example-leds-hmi.c:155: }
-      0002CE 22               [24] 1213 	ret
-                                   1214 ;------------------------------------------------------------
-                                   1215 ;Allocation info for local variables in function 'main'
-                                   1216 ;------------------------------------------------------------
-                                   1217 ;buttonNow     Allocated to registers r6 
-                                   1218 ;------------------------------------------------------------
-                                   1219 ;	adc-example-leds-hmi.c:157: void main(void) {
-                                   1220 ;	-----------------------------------------
-                                   1221 ;	 function main
-                                   1222 ;	-----------------------------------------
-      0002CF                       1223 _main:
-                                   1224 ;	adc-example-leds-hmi.c:158: clock_init();
-      0002CF 12 00 EB         [24] 1225 	lcall	_clock_init
-                                   1226 ;	adc-example-leds-hmi.c:159: timer0_init();
-      0002D2 12 01 33         [24] 1227 	lcall	_timer0_init
-                                   1228 ;	adc-example-leds-hmi.c:162: SAFE_MOD = 0x55;
-      0002D5 75 A1 55         [24] 1229 	mov	_SAFE_MOD,#0x55
-                                   1230 ;	adc-example-leds-hmi.c:163: SAFE_MOD = 0xAA;
-      0002D8 75 A1 AA         [24] 1231 	mov	_SAFE_MOD,#0xaa
-                                   1232 ;	adc-example-leds-hmi.c:164: GLOBAL_CFG &= ~bWDOG_EN;
-      0002DB 53 B1 FE         [24] 1233 	anl	_GLOBAL_CFG,#0xfe
-                                   1234 ;	adc-example-leds-hmi.c:165: SAFE_MOD = 0x00;
-      0002DE 75 A1 00         [24] 1235 	mov	_SAFE_MOD,#0x00
-                                   1236 ;	adc-example-leds-hmi.c:168: P3_MOD_OC &= ~(1 << 0);
-      0002E1 53 96 FE         [24] 1237 	anl	_P3_MOD_OC,#0xfe
-                                   1238 ;	adc-example-leds-hmi.c:169: P3_DIR_PU  |=  (1 << 0);
-      0002E4 43 97 01         [24] 1239 	orl	_P3_DIR_PU,#0x01
-                                   1240 ;	adc-example-leds-hmi.c:173: TMOD &= ~bT0_CT;                               // bT0_CT=0: timer, not counter on P3.4
-      0002E7 53 89 FB         [24] 1241 	anl	_TMOD,#0xfb
-                                   1242 ;	adc-example-leds-hmi.c:176: PIN_FUNC &= ~bUART1_PIN_X;
-      0002EA 53 C6 DF         [24] 1243 	anl	_PIN_FUNC,#0xdf
-                                   1244 ;	adc-example-leds-hmi.c:179: P3_MOD_OC &= ~((1 << 4) | (1 << 5));
-      0002ED 53 96 CF         [24] 1245 	anl	_P3_MOD_OC,#0xcf
-                                   1246 ;	adc-example-leds-hmi.c:180: P3_DIR_PU  |=  (1 << 4) | (1 << 5);
-      0002F0 43 97 30         [24] 1247 	orl	_P3_DIR_PU,#0x30
-                                   1248 ;	adc-example-leds-hmi.c:181: P3         &= ~((1 << 4) | (1 << 5));
-      0002F3 53 B0 CF         [24] 1249 	anl	_P3,#0xcf
-                                   1250 ;	adc-example-leds-hmi.c:185: P1_MOD_OC |=  (1 << 4);
-      0002F6 43 92 10         [24] 1251 	orl	_P1_MOD_OC,#0x10
-                                   1252 ;	adc-example-leds-hmi.c:186: P1_DIR_PU  |=  (1 << 4);
-      0002F9 43 93 10         [24] 1253 	orl	_P1_DIR_PU,#0x10
-                                   1254 ;	adc-example-leds-hmi.c:190: ADCInit(0);
-      0002FC 75 82 00         [24] 1255 	mov	dpl, #0x00
-      0002FF 12 03 66         [24] 1256 	lcall	_ADCInit
-                                   1257 ;	adc-example-leds-hmi.c:191: ADC_ChannelSelect(2);
-      000302 75 82 02         [24] 1258 	mov	dpl, #0x02
-      000305 12 03 73         [24] 1259 	lcall	_ADC_ChannelSelect
-                                   1260 ;	adc-example-leds-hmi.c:193: while (1) {
-      000308                       1261 00114$:
-                                   1262 ;	adc-example-leds-hmi.c:194: uint8_t buttonNow = !(P1 & (1 << 4));
-      000308 E5 90            [12] 1263 	mov	a,_P1
-      00030A C4               [12] 1264 	swap	a
-      00030B 54 01            [12] 1265 	anl	a,#0x01
-      00030D B4 01 00         [24] 1266 	cjne	a,#0x01,00166$
-      000310                       1267 00166$:
-      000310 92 08            [24] 1268 	mov  b0,c
-      000312 E4               [12] 1269 	clr	a
-      000313 33               [12] 1270 	rlc	a
-                                   1271 ;	adc-example-leds-hmi.c:197: if (buttonNow && !buttonPrev) {
-      000314 FE               [12] 1272 	mov	r6,a
-      000315 60 0B            [24] 1273 	jz	00104$
-      000317 20 04 08         [24] 1274 	jb	_buttonPrev,00104$
-                                   1275 ;	adc-example-leds-hmi.c:198: ledBlinkEnabled = !ledBlinkEnabled;
-      00031A B2 05            [12] 1276 	cpl	_ledBlinkEnabled
-                                   1277 ;	adc-example-leds-hmi.c:199: if (!ledBlinkEnabled) P3 &= ~(1 << 0);  // turn off immediately
-      00031C 20 05 03         [24] 1278 	jb	_ledBlinkEnabled,00104$
-      00031F 53 B0 FE         [24] 1279 	anl	_P3,#0xfe
-      000322                       1280 00104$:
-                                   1281 ;	adc-example-leds-hmi.c:201: buttonPrev = buttonNow;
-                                   1282 ;	assignBit
-      000322 EE               [12] 1283 	mov	a,r6
-      000323 24 FF            [12] 1284 	add	a,#0xff
-      000325 92 04            [24] 1285 	mov	_buttonPrev,c
-                                   1286 ;	adc-example-leds-hmi.c:203: if (ledBlinkEnabled) {
-      000327 30 05 03         [24] 1287 	jnb	_ledBlinkEnabled,00107$
-                                   1288 ;	adc-example-leds-hmi.c:204: blink_led();
-      00032A 12 01 46         [24] 1289 	lcall	_blink_led
-      00032D                       1290 00107$:
-                                   1291 ;	adc-example-leds-hmi.c:208: if (conversionFinished && !blinkNowToggle) {
-      00032D 30 00 31         [24] 1292 	jnb	_conversionFinished,00111$
-      000330 20 01 2E         [24] 1293 	jb	_blinkNowToggle,00111$
-                                   1294 ;	adc-example-leds-hmi.c:209: mVanalog = rawToMillivolts(analogReading());
-      000333 12 00 E0         [24] 1295 	lcall	_analogReading
-      000336 12 01 6A         [24] 1296 	lcall	_rawToMillivolts
-                                   1297 ;	adc-example-leds-hmi.c:210: val = mVanalog / 50;
-      000339 85 82 15         [24] 1298 	mov	_mVanalog,dpl
-      00033C 85 83 16         [24] 1299 	mov  (_mVanalog + 1),dph
-      00033F 74 32            [12] 1300 	mov	a,#0x32
-      000341 C0 E0            [24] 1301 	push	acc
-      000343 E4               [12] 1302 	clr	a
-      000344 C0 E0            [24] 1303 	push	acc
-      000346 12 08 CE         [24] 1304 	lcall	__divuint
-      000349 AE 82            [24] 1305 	mov	r6, dpl
-      00034B 15 81            [12] 1306 	dec	sp
-      00034D 15 81            [12] 1307 	dec	sp
-                                   1308 ;	adc-example-leds-hmi.c:211: if (val > 99){
-      00034F EE               [12] 1309 	mov	a,r6
-      000350 F5 17            [12] 1310 	mov	_val,a
-      000352 24 9C            [12] 1311 	add	a,#0xff - 0x63
-      000354 50 03            [24] 1312 	jnc	00109$
-                                   1313 ;	adc-example-leds-hmi.c:212: val = 99;
-      000356 75 17 63         [24] 1314 	mov	_val,#0x63
-      000359                       1315 00109$:
-                                   1316 ;	adc-example-leds-hmi.c:217: blinkTwoLEDs(val);
-      000359 85 17 82         [24] 1317 	mov	dpl, _val
-      00035C 12 01 C7         [24] 1318 	lcall	_blinkTwoLEDs
-                                   1319 ;	adc-example-leds-hmi.c:218: conversionFinished = 0;
-                                   1320 ;	assignBit
-      00035F C2 00            [12] 1321 	clr	_conversionFinished
-      000361                       1322 00111$:
-                                   1323 ;	adc-example-leds-hmi.c:221: blinkNow();
-      000361 12 01 F5         [24] 1324 	lcall	_blinkNow
-                                   1325 ;	adc-example-leds-hmi.c:223: }
-      000364 80 A2            [24] 1326 	sjmp	00114$
-                                   1327 	.area CSEG    (CODE)
-                                   1328 	.area CONST   (CODE)
-                                   1329 	.area XINIT   (CODE)
-                                   1330 	.area CABS    (ABS,CODE)
+                                    926 ;	adc-example-leds-hmi.c:75: return ((uint32_t)raw * 5000) / 255;
+      00016C 7E 00            [12]  927 	mov	r6,#0x00
+      00016E 7D 00            [12]  928 	mov	r5,#0x00
+      000170 7C 00            [12]  929 	mov	r4,#0x00
+      000172 C0 07            [24]  930 	push	ar7
+      000174 C0 06            [24]  931 	push	ar6
+      000176 C0 05            [24]  932 	push	ar5
+      000178 C0 04            [24]  933 	push	ar4
+      00017A 90 13 88         [24]  934 	mov	dptr,#0x1388
+      00017D E4               [12]  935 	clr	a
+      00017E F5 F0            [12]  936 	mov	b,a
+      000180 12 09 CD         [24]  937 	lcall	__mullong
+      000183 AC 82            [24]  938 	mov	r4, dpl
+      000185 AD 83            [24]  939 	mov	r5, dph
+      000187 AE F0            [24]  940 	mov	r6, b
+      000189 FF               [12]  941 	mov	r7, a
+      00018A E5 81            [12]  942 	mov	a,sp
+      00018C 24 FC            [12]  943 	add	a,#0xfc
+      00018E F5 81            [12]  944 	mov	sp,a
+      000190 74 FF            [12]  945 	mov	a,#0xff
+      000192 C0 E0            [24]  946 	push	acc
+      000194 E4               [12]  947 	clr	a
+      000195 C0 E0            [24]  948 	push	acc
+      000197 C0 E0            [24]  949 	push	acc
+      000199 C0 E0            [24]  950 	push	acc
+      00019B 8C 82            [24]  951 	mov	dpl, r4
+      00019D 8D 83            [24]  952 	mov	dph, r5
+      00019F 8E F0            [24]  953 	mov	b, r6
+      0001A1 EF               [12]  954 	mov	a, r7
+      0001A2 12 09 07         [24]  955 	lcall	__divulong
+      0001A5 AC 82            [24]  956 	mov	r4, dpl
+      0001A7 AD 83            [24]  957 	mov	r5, dph
+      0001A9 E5 81            [12]  958 	mov	a,sp
+      0001AB 24 FC            [12]  959 	add	a,#0xfc
+      0001AD F5 81            [12]  960 	mov	sp,a
+      0001AF 8C 82            [24]  961 	mov	dpl,r4
+      0001B1 8D 83            [24]  962 	mov	dph,r5
+                                    963 ;	adc-example-leds-hmi.c:76: }
+      0001B3 22               [24]  964 	ret
+                                    965 ;------------------------------------------------------------
+                                    966 ;Allocation info for local variables in function 'blinkTwoLEDs'
+                                    967 ;------------------------------------------------------------
+                                    968 ;v             Allocated to registers r7 
+                                    969 ;------------------------------------------------------------
+                                    970 ;	adc-example-leds-hmi.c:78: void blinkTwoLEDs(uint8_t v) {
+                                    971 ;	-----------------------------------------
+                                    972 ;	 function blinkTwoLEDs
+                                    973 ;	-----------------------------------------
+      0001B4                        974 _blinkTwoLEDs:
+      0001B4 AF 82            [24]  975 	mov	r7, dpl
+                                    976 ;	adc-example-leds-hmi.c:79: tens = v / 10;
+      0001B6 8F 06            [24]  977 	mov	ar6,r7
+      0001B8 75 F0 0A         [24]  978 	mov	b,#0x0a
+      0001BB EE               [12]  979 	mov	a,r6
+      0001BC 84               [48]  980 	div	ab
+      0001BD F5 0C            [12]  981 	mov	_tens, a
+      0001BF 75 0D 00         [24]  982 	mov	(_tens + 1),#0x00
+                                    983 ;	adc-example-leds-hmi.c:80: unit = v % 10;
+      0001C2 75 F0 0A         [24]  984 	mov	b,#0x0a
+      0001C5 EF               [12]  985 	mov	a,r7
+      0001C6 84               [48]  986 	div	ab
+      0001C7 AF F0            [24]  987 	mov	r7,b
+      0001C9 8F 0E            [24]  988 	mov	_unit,r7
+                                    989 ;	adc-example-leds-hmi.c:85: countUnits   = 0;
+      0001CB E4               [12]  990 	clr	a
+      0001CC F5 0F            [12]  991 	mov	(_unit + 1),a
+      0001CE F5 10            [12]  992 	mov	_countUnits,a
+      0001D0 F5 11            [12]  993 	mov	(_countUnits + 1),a
+                                    994 ;	adc-example-leds-hmi.c:86: countTens    = 0;
+      0001D2 F5 12            [12]  995 	mov	_countTens,a
+      0001D4 F5 13            [12]  996 	mov	(_countTens + 1),a
+                                    997 ;	adc-example-leds-hmi.c:87: unitON       = 0;
+                                    998 ;	assignBit
+      0001D6 C2 02            [12]  999 	clr	_unitON
+                                   1000 ;	adc-example-leds-hmi.c:88: tensON       = 0;
+                                   1001 ;	assignBit
+      0001D8 C2 03            [12] 1002 	clr	_tensON
+                                   1003 ;	adc-example-leds-hmi.c:89: blinkCounter = 0;
+      0001DA E4               [12] 1004 	clr	a
+      0001DB F5 0A            [12] 1005 	mov	_blinkCounter,a
+      0001DD F5 0B            [12] 1006 	mov	(_blinkCounter + 1),a
+                                   1007 ;	adc-example-leds-hmi.c:90: blinkNowToggle = 1;
+                                   1008 ;	assignBit
+      0001DF D2 01            [12] 1009 	setb	_blinkNowToggle
+                                   1010 ;	adc-example-leds-hmi.c:91: }
+      0001E1 22               [24] 1011 	ret
+                                   1012 ;------------------------------------------------------------
+                                   1013 ;Allocation info for local variables in function 'blinkNow'
+                                   1014 ;------------------------------------------------------------
+                                   1015 ;	adc-example-leds-hmi.c:93: void blinkNow(void) {
+                                   1016 ;	-----------------------------------------
+                                   1017 ;	 function blinkNow
+                                   1018 ;	-----------------------------------------
+      0001E2                       1019 _blinkNow:
+                                   1020 ;	adc-example-leds-hmi.c:94: if (!blinkNowToggle) return;
+      0001E2 20 01 01         [24] 1021 	jb	_blinkNowToggle,00102$
+      0001E5 22               [24] 1022 	ret
+      0001E6                       1023 00102$:
+                                   1024 ;	adc-example-leds-hmi.c:97: if (countUnits == 0 && countTens == 0) {
+      0001E6 E5 10            [12] 1025 	mov	a,_countUnits
+      0001E8 45 11            [12] 1026 	orl	a,(_countUnits + 1)
+      0001EA 70 27            [24] 1027 	jnz	00110$
+      0001EC E5 12            [12] 1028 	mov	a,_countTens
+      0001EE 45 13            [12] 1029 	orl	a,(_countTens + 1)
+      0001F0 70 21            [24] 1030 	jnz	00110$
+                                   1031 ;	adc-example-leds-hmi.c:98: if (unit > 0) {
+      0001F2 E5 0E            [12] 1032 	mov	a,_unit
+      0001F4 45 0F            [12] 1033 	orl	a,(_unit + 1)
+      0001F6 60 08            [24] 1034 	jz	00107$
+                                   1035 ;	adc-example-leds-hmi.c:99: countUnits = 1;
+      0001F8 75 10 01         [24] 1036 	mov	_countUnits,#0x01
+      0001FB 75 11 00         [24] 1037 	mov	(_countUnits + 1),#0x00
+      0001FE 80 13            [24] 1038 	sjmp	00110$
+      000200                       1039 00107$:
+                                   1040 ;	adc-example-leds-hmi.c:100: } else if (tens > 0) {
+      000200 E5 0C            [12] 1041 	mov	a,_tens
+      000202 45 0D            [12] 1042 	orl	a,(_tens + 1)
+      000204 60 08            [24] 1043 	jz	00104$
+                                   1044 ;	adc-example-leds-hmi.c:101: countTens = 1;
+      000206 75 12 01         [24] 1045 	mov	_countTens,#0x01
+      000209 75 13 00         [24] 1046 	mov	(_countTens + 1),#0x00
+      00020C 80 05            [24] 1047 	sjmp	00110$
+      00020E                       1048 00104$:
+                                   1049 ;	adc-example-leds-hmi.c:103: blinkNowToggle = 0;
+                                   1050 ;	assignBit
+      00020E C2 01            [12] 1051 	clr	_blinkNowToggle
+                                   1052 ;	adc-example-leds-hmi.c:104: conversionFinished = 1;
+                                   1053 ;	assignBit
+      000210 D2 00            [12] 1054 	setb	_conversionFinished
+                                   1055 ;	adc-example-leds-hmi.c:105: return;
+      000212 22               [24] 1056 	ret
+      000213                       1057 00110$:
+                                   1058 ;	adc-example-leds-hmi.c:110: if (blinkCounter < 2500) return;
+      000213 C3               [12] 1059 	clr	c
+      000214 E5 0A            [12] 1060 	mov	a,_blinkCounter
+      000216 94 C4            [12] 1061 	subb	a,#0xc4
+      000218 E5 0B            [12] 1062 	mov	a,(_blinkCounter + 1)
+      00021A 94 09            [12] 1063 	subb	a,#0x09
+      00021C 50 01            [24] 1064 	jnc	00113$
+      00021E 22               [24] 1065 	ret
+      00021F                       1066 00113$:
+                                   1067 ;	adc-example-leds-hmi.c:111: blinkCounter = 0;
+      00021F E4               [12] 1068 	clr	a
+      000220 F5 0A            [12] 1069 	mov	_blinkCounter,a
+      000222 F5 0B            [12] 1070 	mov	(_blinkCounter + 1),a
+                                   1071 ;	adc-example-leds-hmi.c:114: if (countUnits == 1) {
+      000224 04               [12] 1072 	inc	a
+      000225 B5 10 06         [24] 1073 	cjne	a,_countUnits,00226$
+      000228 14               [12] 1074 	dec	a
+      000229 B5 11 02         [24] 1075 	cjne	a,(_countUnits + 1),00226$
+      00022C 80 02            [24] 1076 	sjmp	00227$
+      00022E                       1077 00226$:
+      00022E 80 4E            [24] 1078 	sjmp	00123$
+      000230                       1079 00227$:
+                                   1080 ;	adc-example-leds-hmi.c:115: if (unit > 0) {
+      000230 E5 0E            [12] 1081 	mov	a,_unit
+      000232 45 0F            [12] 1082 	orl	a,(_unit + 1)
+      000234 60 1F            [24] 1083 	jz	00120$
+                                   1084 ;	adc-example-leds-hmi.c:116: if (unitON == 0) {
+      000236 20 02 07         [24] 1085 	jb	_unitON,00115$
+                                   1086 ;	adc-example-leds-hmi.c:117: P3 |=  (1 << 5);   // LED ON
+      000239 43 B0 20         [24] 1087 	orl	_P3,#0x20
+                                   1088 ;	adc-example-leds-hmi.c:118: unitON = 1;
+                                   1089 ;	assignBit
+      00023C D2 02            [12] 1090 	setb	_unitON
+      00023E 80 3D            [24] 1091 	sjmp	00121$
+      000240                       1092 00115$:
+                                   1093 ;	adc-example-leds-hmi.c:120: P3 &= ~(1 << 5);   // LED OFF
+      000240 53 B0 DF         [24] 1094 	anl	_P3,#0xdf
+                                   1095 ;	adc-example-leds-hmi.c:121: unitON = 0;
+                                   1096 ;	assignBit
+      000243 C2 02            [12] 1097 	clr	_unitON
+                                   1098 ;	adc-example-leds-hmi.c:122: unit--;            // decrement only on OFF edge — one full blink per count
+      000245 AE 0E            [24] 1099 	mov	r6,_unit
+      000247 AF 0F            [24] 1100 	mov	r7,(_unit + 1)
+      000249 EE               [12] 1101 	mov	a,r6
+      00024A 24 FF            [12] 1102 	add	a,#0xff
+      00024C F5 0E            [12] 1103 	mov	_unit,a
+      00024E EF               [12] 1104 	mov	a,r7
+      00024F 34 FF            [12] 1105 	addc	a,#0xff
+      000251 F5 0F            [12] 1106 	mov	(_unit + 1),a
+      000253 80 28            [24] 1107 	sjmp	00121$
+      000255                       1108 00120$:
+                                   1109 ;	adc-example-leds-hmi.c:125: P3 &= ~(1 << 5);       // FIX: was (1<<4), must clear units LED (P3.5) before switching phase
+      000255 53 B0 DF         [24] 1110 	anl	_P3,#0xdf
+                                   1111 ;	adc-example-leds-hmi.c:126: unitON     = 0;
+                                   1112 ;	assignBit
+      000258 C2 02            [12] 1113 	clr	_unitON
+                                   1114 ;	adc-example-leds-hmi.c:127: countUnits = 0;
+      00025A E4               [12] 1115 	clr	a
+      00025B F5 10            [12] 1116 	mov	_countUnits,a
+      00025D F5 11            [12] 1117 	mov	(_countUnits + 1),a
+                                   1118 ;	adc-example-leds-hmi.c:128: countTens  = (tens > 0) ? 1 : 0;  // FIX: only enter tens phase if tens > 0
+      00025F E5 0C            [12] 1119 	mov	a,_tens
+      000261 45 0D            [12] 1120 	orl	a,(_tens + 1)
+      000263 60 06            [24] 1121 	jz	00134$
+      000265 7E 01            [12] 1122 	mov	r6,#0x01
+      000267 7F 00            [12] 1123 	mov	r7,#0x00
+      000269 80 04            [24] 1124 	sjmp	00135$
+      00026B                       1125 00134$:
+      00026B 7E 00            [12] 1126 	mov	r6,#0x00
+      00026D 7F 00            [12] 1127 	mov	r7,#0x00
+      00026F                       1128 00135$:
+      00026F 8E 12            [24] 1129 	mov	_countTens,r6
+      000271 8F 13            [24] 1130 	mov	(_countTens + 1),r7
+                                   1131 ;	adc-example-leds-hmi.c:129: if (countTens == 0) {
+      000273 E5 12            [12] 1132 	mov	a,_countTens
+      000275 45 13            [12] 1133 	orl	a,(_countTens + 1)
+      000277 70 04            [24] 1134 	jnz	00121$
+                                   1135 ;	adc-example-leds-hmi.c:130: blinkNowToggle = 0;
+                                   1136 ;	assignBit
+      000279 C2 01            [12] 1137 	clr	_blinkNowToggle
+                                   1138 ;	adc-example-leds-hmi.c:131: conversionFinished = 1;
+                                   1139 ;	assignBit
+      00027B D2 00            [12] 1140 	setb	_conversionFinished
+      00027D                       1141 00121$:
+                                   1142 ;	adc-example-leds-hmi.c:134: return;
+      00027D 22               [24] 1143 	ret
+      00027E                       1144 00123$:
+                                   1145 ;	adc-example-leds-hmi.c:138: if (countTens == 1) {
+      00027E 74 01            [12] 1146 	mov	a,#0x01
+      000280 B5 12 06         [24] 1147 	cjne	a,_countTens,00232$
+      000283 14               [12] 1148 	dec	a
+      000284 B5 13 02         [24] 1149 	cjne	a,(_countTens + 1),00232$
+      000287 80 01            [24] 1150 	sjmp	00233$
+      000289                       1151 00232$:
+      000289 22               [24] 1152 	ret
+      00028A                       1153 00233$:
+                                   1154 ;	adc-example-leds-hmi.c:139: if (tens > 0) {
+      00028A E5 0C            [12] 1155 	mov	a,_tens
+      00028C 45 0D            [12] 1156 	orl	a,(_tens + 1)
+      00028E 60 1D            [24] 1157 	jz	00128$
+                                   1158 ;	adc-example-leds-hmi.c:140: if (tensON == 0) {
+      000290 20 03 06         [24] 1159 	jb	_tensON,00125$
+                                   1160 ;	adc-example-leds-hmi.c:141: P3 |=  (1 << 4);   // LED ON
+      000293 43 B0 10         [24] 1161 	orl	_P3,#0x10
+                                   1162 ;	adc-example-leds-hmi.c:142: tensON = 1;
+                                   1163 ;	assignBit
+      000296 D2 03            [12] 1164 	setb	_tensON
+      000298 22               [24] 1165 	ret
+      000299                       1166 00125$:
+                                   1167 ;	adc-example-leds-hmi.c:144: P3 &= ~(1 << 4);   // LED OFF
+      000299 53 B0 EF         [24] 1168 	anl	_P3,#0xef
+                                   1169 ;	adc-example-leds-hmi.c:145: tensON = 0;
+                                   1170 ;	assignBit
+      00029C C2 03            [12] 1171 	clr	_tensON
+                                   1172 ;	adc-example-leds-hmi.c:146: tens--;            // decrement only on OFF edge — one full blink per count
+      00029E AE 0C            [24] 1173 	mov	r6,_tens
+      0002A0 AF 0D            [24] 1174 	mov	r7,(_tens + 1)
+      0002A2 EE               [12] 1175 	mov	a,r6
+      0002A3 24 FF            [12] 1176 	add	a,#0xff
+      0002A5 F5 0C            [12] 1177 	mov	_tens,a
+      0002A7 EF               [12] 1178 	mov	a,r7
+      0002A8 34 FF            [12] 1179 	addc	a,#0xff
+      0002AA F5 0D            [12] 1180 	mov	(_tens + 1),a
+      0002AC 22               [24] 1181 	ret
+      0002AD                       1182 00128$:
+                                   1183 ;	adc-example-leds-hmi.c:149: P3 &= ~(1 << 4);       // FIX: was (1<<5), must clear tens LED (P3.4) when done
+      0002AD 53 B0 EF         [24] 1184 	anl	_P3,#0xef
+                                   1185 ;	adc-example-leds-hmi.c:150: tensON         = 0;
+                                   1186 ;	assignBit
+      0002B0 C2 03            [12] 1187 	clr	_tensON
+                                   1188 ;	adc-example-leds-hmi.c:151: countTens      = 0;
+      0002B2 E4               [12] 1189 	clr	a
+      0002B3 F5 12            [12] 1190 	mov	_countTens,a
+      0002B5 F5 13            [12] 1191 	mov	(_countTens + 1),a
+                                   1192 ;	adc-example-leds-hmi.c:152: blinkNowToggle = 0;
+                                   1193 ;	assignBit
+      0002B7 C2 01            [12] 1194 	clr	_blinkNowToggle
+                                   1195 ;	adc-example-leds-hmi.c:153: conversionFinished = 1;
+                                   1196 ;	assignBit
+      0002B9 D2 00            [12] 1197 	setb	_conversionFinished
+                                   1198 ;	adc-example-leds-hmi.c:156: }
+      0002BB 22               [24] 1199 	ret
+                                   1200 ;------------------------------------------------------------
+                                   1201 ;Allocation info for local variables in function 'main'
+                                   1202 ;------------------------------------------------------------
+                                   1203 ;buttonNow     Allocated to registers r6 
+                                   1204 ;------------------------------------------------------------
+                                   1205 ;	adc-example-leds-hmi.c:158: void main(void) {
+                                   1206 ;	-----------------------------------------
+                                   1207 ;	 function main
+                                   1208 ;	-----------------------------------------
+      0002BC                       1209 _main:
+                                   1210 ;	adc-example-leds-hmi.c:159: clock_init();
+      0002BC 12 00 EB         [24] 1211 	lcall	_clock_init
+                                   1212 ;	adc-example-leds-hmi.c:160: timer0_init();
+      0002BF 12 01 33         [24] 1213 	lcall	_timer0_init
+                                   1214 ;	adc-example-leds-hmi.c:163: SAFE_MOD = 0x55;
+      0002C2 75 A1 55         [24] 1215 	mov	_SAFE_MOD,#0x55
+                                   1216 ;	adc-example-leds-hmi.c:164: SAFE_MOD = 0xAA;
+      0002C5 75 A1 AA         [24] 1217 	mov	_SAFE_MOD,#0xaa
+                                   1218 ;	adc-example-leds-hmi.c:165: GLOBAL_CFG &= ~bWDOG_EN;
+      0002C8 53 B1 FE         [24] 1219 	anl	_GLOBAL_CFG,#0xfe
+                                   1220 ;	adc-example-leds-hmi.c:166: SAFE_MOD = 0x00;
+      0002CB 75 A1 00         [24] 1221 	mov	_SAFE_MOD,#0x00
+                                   1222 ;	adc-example-leds-hmi.c:169: P3_MOD_OC &= ~(1 << 0);
+      0002CE 53 96 FE         [24] 1223 	anl	_P3_MOD_OC,#0xfe
+                                   1224 ;	adc-example-leds-hmi.c:170: P3_DIR_PU  |=  (1 << 0);
+      0002D1 43 97 01         [24] 1225 	orl	_P3_DIR_PU,#0x01
+                                   1226 ;	adc-example-leds-hmi.c:174: TMOD &= ~bT0_CT;                               // bT0_CT=0: timer, not counter on P3.4
+      0002D4 53 89 FB         [24] 1227 	anl	_TMOD,#0xfb
+                                   1228 ;	adc-example-leds-hmi.c:177: PIN_FUNC &= ~bUART1_PIN_X;
+      0002D7 53 C6 DF         [24] 1229 	anl	_PIN_FUNC,#0xdf
+                                   1230 ;	adc-example-leds-hmi.c:180: P3_MOD_OC &= ~((1 << 4) | (1 << 5));
+      0002DA 53 96 CF         [24] 1231 	anl	_P3_MOD_OC,#0xcf
+                                   1232 ;	adc-example-leds-hmi.c:181: P3_DIR_PU  |=  (1 << 4) | (1 << 5);
+      0002DD 43 97 30         [24] 1233 	orl	_P3_DIR_PU,#0x30
+                                   1234 ;	adc-example-leds-hmi.c:182: P3         &= ~((1 << 4) | (1 << 5));
+      0002E0 53 B0 CF         [24] 1235 	anl	_P3,#0xcf
+                                   1236 ;	adc-example-leds-hmi.c:186: P1_MOD_OC |=  (1 << 4);
+      0002E3 43 92 10         [24] 1237 	orl	_P1_MOD_OC,#0x10
+                                   1238 ;	adc-example-leds-hmi.c:187: P1_DIR_PU  |=  (1 << 4);
+      0002E6 43 93 10         [24] 1239 	orl	_P1_DIR_PU,#0x10
+                                   1240 ;	adc-example-leds-hmi.c:191: ADCInit(0);
+      0002E9 75 82 00         [24] 1241 	mov	dpl, #0x00
+      0002EC 12 03 53         [24] 1242 	lcall	_ADCInit
+                                   1243 ;	adc-example-leds-hmi.c:192: ADC_ChannelSelect(2);
+      0002EF 75 82 02         [24] 1244 	mov	dpl, #0x02
+      0002F2 12 03 60         [24] 1245 	lcall	_ADC_ChannelSelect
+                                   1246 ;	adc-example-leds-hmi.c:194: while (1) {
+      0002F5                       1247 00114$:
+                                   1248 ;	adc-example-leds-hmi.c:195: uint8_t buttonNow = !(P1 & (1 << 4));
+      0002F5 E5 90            [12] 1249 	mov	a,_P1
+      0002F7 C4               [12] 1250 	swap	a
+      0002F8 54 01            [12] 1251 	anl	a,#0x01
+      0002FA B4 01 00         [24] 1252 	cjne	a,#0x01,00166$
+      0002FD                       1253 00166$:
+      0002FD 92 08            [24] 1254 	mov  b0,c
+      0002FF E4               [12] 1255 	clr	a
+      000300 33               [12] 1256 	rlc	a
+                                   1257 ;	adc-example-leds-hmi.c:198: if (buttonNow && !buttonPrev) {
+      000301 FE               [12] 1258 	mov	r6,a
+      000302 60 0B            [24] 1259 	jz	00104$
+      000304 20 04 08         [24] 1260 	jb	_buttonPrev,00104$
+                                   1261 ;	adc-example-leds-hmi.c:199: ledBlinkEnabled = !ledBlinkEnabled;
+      000307 B2 05            [12] 1262 	cpl	_ledBlinkEnabled
+                                   1263 ;	adc-example-leds-hmi.c:200: if (!ledBlinkEnabled) P3 &= ~(1 << 0);  // turn off immediately
+      000309 20 05 03         [24] 1264 	jb	_ledBlinkEnabled,00104$
+      00030C 53 B0 FE         [24] 1265 	anl	_P3,#0xfe
+      00030F                       1266 00104$:
+                                   1267 ;	adc-example-leds-hmi.c:202: buttonPrev = buttonNow;
+                                   1268 ;	assignBit
+      00030F EE               [12] 1269 	mov	a,r6
+      000310 24 FF            [12] 1270 	add	a,#0xff
+      000312 92 04            [24] 1271 	mov	_buttonPrev,c
+                                   1272 ;	adc-example-leds-hmi.c:204: if (ledBlinkEnabled) {
+      000314 30 05 03         [24] 1273 	jnb	_ledBlinkEnabled,00107$
+                                   1274 ;	adc-example-leds-hmi.c:205: blink_led();
+      000317 12 01 46         [24] 1275 	lcall	_blink_led
+      00031A                       1276 00107$:
+                                   1277 ;	adc-example-leds-hmi.c:209: if (conversionFinished && !blinkNowToggle) {
+      00031A 30 00 31         [24] 1278 	jnb	_conversionFinished,00111$
+      00031D 20 01 2E         [24] 1279 	jb	_blinkNowToggle,00111$
+                                   1280 ;	adc-example-leds-hmi.c:210: mVanalog = rawToMillivolts(analogReading());
+      000320 12 00 E0         [24] 1281 	lcall	_analogReading
+      000323 12 01 6A         [24] 1282 	lcall	_rawToMillivolts
+                                   1283 ;	adc-example-leds-hmi.c:211: val = mVanalog / 50;
+      000326 85 82 15         [24] 1284 	mov	_mVanalog,dpl
+      000329 85 83 16         [24] 1285 	mov  (_mVanalog + 1),dph
+      00032C 74 32            [12] 1286 	mov	a,#0x32
+      00032E C0 E0            [24] 1287 	push	acc
+      000330 E4               [12] 1288 	clr	a
+      000331 C0 E0            [24] 1289 	push	acc
+      000333 12 08 BB         [24] 1290 	lcall	__divuint
+      000336 AE 82            [24] 1291 	mov	r6, dpl
+      000338 15 81            [12] 1292 	dec	sp
+      00033A 15 81            [12] 1293 	dec	sp
+                                   1294 ;	adc-example-leds-hmi.c:212: if (val > 99){
+      00033C EE               [12] 1295 	mov	a,r6
+      00033D F5 17            [12] 1296 	mov	_val,a
+      00033F 24 9C            [12] 1297 	add	a,#0xff - 0x63
+      000341 50 03            [24] 1298 	jnc	00109$
+                                   1299 ;	adc-example-leds-hmi.c:213: val = 99;
+      000343 75 17 63         [24] 1300 	mov	_val,#0x63
+      000346                       1301 00109$:
+                                   1302 ;	adc-example-leds-hmi.c:218: blinkTwoLEDs(val);
+      000346 85 17 82         [24] 1303 	mov	dpl, _val
+      000349 12 01 B4         [24] 1304 	lcall	_blinkTwoLEDs
+                                   1305 ;	adc-example-leds-hmi.c:219: conversionFinished = 0;
+                                   1306 ;	assignBit
+      00034C C2 00            [12] 1307 	clr	_conversionFinished
+      00034E                       1308 00111$:
+                                   1309 ;	adc-example-leds-hmi.c:222: blinkNow();
+      00034E 12 01 E2         [24] 1310 	lcall	_blinkNow
+                                   1311 ;	adc-example-leds-hmi.c:224: }
+      000351 80 A2            [24] 1312 	sjmp	00114$
+                                   1313 	.area CSEG    (CODE)
+                                   1314 	.area CONST   (CODE)
+                                   1315 	.area XINIT   (CODE)
+                                   1316 	.area CABS    (ABS,CODE)
