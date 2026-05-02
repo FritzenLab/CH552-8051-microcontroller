@@ -569,7 +569,7 @@
                                     569 ;	-----------------------------------------
                                     570 ;	 function SPIMasterModeSet
                                     571 ;	-----------------------------------------
-      0006F9                        572 _SPIMasterModeSet:
+      00074C                        572 _SPIMasterModeSet:
                            000007   573 	ar7 = 0x07
                            000006   574 	ar6 = 0x06
                            000005   575 	ar5 = 0x05
@@ -578,31 +578,31 @@
                            000002   578 	ar2 = 0x02
                            000001   579 	ar1 = 0x01
                            000000   580 	ar0 = 0x00
-      0006F9 AF 82            [24]  581 	mov	r7, dpl
+      00074C AF 82            [24]  581 	mov	r7, dpl
                                     582 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:26: SPI0_SETUP = 0;                                                           //Master模式,高位在前
-      0006FB 75 FC 00         [24]  583 	mov	_SPI0_SETUP,#0x00
+      00074E 75 FC 00         [24]  583 	mov	_SPI0_SETUP,#0x00
                                     584 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:27: if(mode == 0){
-      0006FE EF               [12]  585 	mov	a,r7
-      0006FF 70 05            [24]  586 	jnz	00104$
+      000751 EF               [12]  585 	mov	a,r7
+      000752 70 05            [24]  586 	jnz	00104$
                                     587 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:28: SPI0_CTRL = 0x60;                                                       //模式0
-      000701 75 FA 60         [24]  588 	mov	_SPI0_CTRL,#0x60
-      000704 80 06            [24]  589 	sjmp	00105$
-      000706                        590 00104$:
+      000754 75 FA 60         [24]  588 	mov	_SPI0_CTRL,#0x60
+      000757 80 06            [24]  589 	sjmp	00105$
+      000759                        590 00104$:
                                     591 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:30: else if(mode == 3){
-      000706 BF 03 03         [24]  592 	cjne	r7,#0x03,00105$
+      000759 BF 03 03         [24]  592 	cjne	r7,#0x03,00105$
                                     593 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:31: SPI0_CTRL = 0x68;                                                       //模式3
-      000709 75 FA 68         [24]  594 	mov	_SPI0_CTRL,#0x68
-      00070C                        595 00105$:
+      00075C 75 FA 68         [24]  594 	mov	_SPI0_CTRL,#0x68
+      00075F                        595 00105$:
                                     596 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:33: P1_MOD_OC &= 0x0F;
-      00070C 53 92 0F         [24]  597 	anl	_P1_MOD_OC,#0x0f
+      00075F 53 92 0F         [24]  597 	anl	_P1_MOD_OC,#0x0f
                                     598 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:34: P1_DIR_PU |= 0xB0;                                                        //SCS,MOSI,SCK设推挽输出
-      00070F 43 93 B0         [24]  599 	orl	_P1_DIR_PU,#0xb0
+      000762 43 93 B0         [24]  599 	orl	_P1_DIR_PU,#0xb0
                                     600 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:35: P1_DIR_PU &= 0xBF;                                                        //MISO禁用上拉电阻
-      000712 53 93 BF         [24]  601 	anl	_P1_DIR_PU,#0xbf
+      000765 53 93 BF         [24]  601 	anl	_P1_DIR_PU,#0xbf
                                     602 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:41: SPI0_CK_SE = 11;   // 1 MHz at Fsys = 24 MHz
-      000715 75 FB 0B         [24]  603 	mov	_SPI0_CK_SE,#0x0b
+      000768 75 FB 0B         [24]  603 	mov	_SPI0_CK_SE,#0x0b
                                     604 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:42: }
-      000718 22               [24]  605 	ret
+      00076B 22               [24]  605 	ret
                                     606 ;------------------------------------------------------------
                                     607 ;Allocation info for local variables in function 'CH554SPIInterruptInit'
                                     608 ;------------------------------------------------------------
@@ -610,16 +610,16 @@
                                     610 ;	-----------------------------------------
                                     611 ;	 function CH554SPIInterruptInit
                                     612 ;	-----------------------------------------
-      000719                        613 _CH554SPIInterruptInit:
+      00076C                        613 _CH554SPIInterruptInit:
                                     614 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:54: SPI0_SETUP |= bS0_IE_FIFO_OV | bS0_IE_BYTE;                                //使能接收1字节中断，使能FIFO溢出中断
-      000719 43 FC 50         [24]  615 	orl	_SPI0_SETUP,#0x50
+      00076C 43 FC 50         [24]  615 	orl	_SPI0_SETUP,#0x50
                                     616 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:55: SPI0_CTRL |= bS0_AUTO_IF;                                                  //自动清S0_IF_BYTE中断标志
-      00071C 43 FA 01         [24]  617 	orl	_SPI0_CTRL,#0x01
+      00076F 43 FA 01         [24]  617 	orl	_SPI0_CTRL,#0x01
                                     618 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:56: SPI0_STAT |= 0xff;                                                         //清空SPI0中断标志
-      00071F E5 F8            [12]  619 	mov	a,_SPI0_STAT
-      000721 75 F8 FF         [24]  620 	mov	_SPI0_STAT,#0xff
+      000772 E5 F8            [12]  619 	mov	a,_SPI0_STAT
+      000774 75 F8 FF         [24]  620 	mov	_SPI0_STAT,#0xff
                                     621 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:60: }
-      000724 22               [24]  622 	ret
+      000777 22               [24]  622 	ret
                                     623 ;------------------------------------------------------------
                                     624 ;Allocation info for local variables in function 'CH554SPIMasterWrite'
                                     625 ;------------------------------------------------------------
@@ -629,13 +629,13 @@
                                     629 ;	-----------------------------------------
                                     630 ;	 function CH554SPIMasterWrite
                                     631 ;	-----------------------------------------
-      000725                        632 _CH554SPIMasterWrite:
-      000725 85 82 F9         [24]  633 	mov	_SPI0_DATA,dpl
+      000778                        632 _CH554SPIMasterWrite:
+      000778 85 82 F9         [24]  633 	mov	_SPI0_DATA,dpl
                                     634 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:72: while(S0_FREE == 0);													   //等待传输完成
-      000728                        635 00101$:
-      000728 30 FB FD         [24]  636 	jnb	_S0_FREE,00101$
+      00077B                        635 00101$:
+      00077B 30 FB FD         [24]  636 	jnb	_S0_FREE,00101$
                                     637 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:74: }
-      00072B 22               [24]  638 	ret
+      00077E 22               [24]  638 	ret
                                     639 ;------------------------------------------------------------
                                     640 ;Allocation info for local variables in function 'CH554SPIMasterRead'
                                     641 ;------------------------------------------------------------
@@ -643,16 +643,16 @@
                                     643 ;	-----------------------------------------
                                     644 ;	 function CH554SPIMasterRead
                                     645 ;	-----------------------------------------
-      00072C                        646 _CH554SPIMasterRead:
+      00077F                        646 _CH554SPIMasterRead:
                                     647 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:85: SPI0_DATA = 0xff;
-      00072C 75 F9 FF         [24]  648 	mov	_SPI0_DATA,#0xff
+      00077F 75 F9 FF         [24]  648 	mov	_SPI0_DATA,#0xff
                                     649 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:86: while(S0_FREE == 0);
-      00072F                        650 00101$:
-      00072F 30 FB FD         [24]  651 	jnb	_S0_FREE,00101$
+      000782                        650 00101$:
+      000782 30 FB FD         [24]  651 	jnb	_S0_FREE,00101$
                                     652 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:87: return SPI0_DATA;
-      000732 85 F9 82         [24]  653 	mov	dpl, _SPI0_DATA
+      000785 85 F9 82         [24]  653 	mov	dpl, _SPI0_DATA
                                     654 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:88: }
-      000735 22               [24]  655 	ret
+      000788 22               [24]  655 	ret
                                     656 ;------------------------------------------------------------
                                     657 ;Allocation info for local variables in function 'SPISlvModeSet'
                                     658 ;------------------------------------------------------------
@@ -660,17 +660,17 @@
                                     660 ;	-----------------------------------------
                                     661 ;	 function SPISlvModeSet
                                     662 ;	-----------------------------------------
-      000736                        663 _SPISlvModeSet:
+      000789                        663 _SPISlvModeSet:
                                     664 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:99: SPI0_SETUP = 0x80;                                                        //Slv模式,高位在前
-      000736 75 FC 80         [24]  665 	mov	_SPI0_SETUP,#0x80
+      000789 75 FC 80         [24]  665 	mov	_SPI0_SETUP,#0x80
                                     666 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:100: SPI0_CTRL = 0x81;                                                         //读写FIFO,自动清S0_IF_BYTE标志
-      000739 75 FA 81         [24]  667 	mov	_SPI0_CTRL,#0x81
+      00078C 75 FA 81         [24]  667 	mov	_SPI0_CTRL,#0x81
                                     668 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:101: P1_MOD_OC &= 0x0F;
-      00073C 53 92 0F         [24]  669 	anl	_P1_MOD_OC,#0x0f
+      00078F 53 92 0F         [24]  669 	anl	_P1_MOD_OC,#0x0f
                                     670 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:102: P1_DIR_PU &= 0x0F;                                                        //SCS,MOSI,SCK,MISO全设置浮空输入
-      00073F 53 93 0F         [24]  671 	anl	_P1_DIR_PU,#0x0f
+      000792 53 93 0F         [24]  671 	anl	_P1_DIR_PU,#0x0f
                                     672 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:103: }
-      000742 22               [24]  673 	ret
+      000795 22               [24]  673 	ret
                                     674 ;------------------------------------------------------------
                                     675 ;Allocation info for local variables in function 'CH554SPISlvWrite'
                                     676 ;------------------------------------------------------------
@@ -680,17 +680,17 @@
                                     680 ;	-----------------------------------------
                                     681 ;	 function CH554SPISlvWrite
                                     682 ;	-----------------------------------------
-      000743                        683 _CH554SPISlvWrite:
-      000743 85 82 F9         [24]  684 	mov	_SPI0_DATA,dpl
+      000796                        683 _CH554SPISlvWrite:
+      000796 85 82 F9         [24]  684 	mov	_SPI0_DATA,dpl
                                     685 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:115: while(S0_IF_BYTE==0);
-      000746                        686 00101$:
+      000799                        686 00101$:
                                     687 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:116: S0_IF_BYTE = 0;
                                     688 ;	assignBit
-      000746 10 FC 02         [24]  689 	jbc	_S0_IF_BYTE,00118$
-      000749 80 FB            [24]  690 	sjmp	00101$
-      00074B                        691 00118$:
+      000799 10 FC 02         [24]  689 	jbc	_S0_IF_BYTE,00118$
+      00079C 80 FB            [24]  690 	sjmp	00101$
+      00079E                        691 00118$:
                                     692 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:117: }
-      00074B 22               [24]  693 	ret
+      00079E 22               [24]  693 	ret
                                     694 ;------------------------------------------------------------
                                     695 ;Allocation info for local variables in function 'CH554SPISlvRead'
                                     696 ;------------------------------------------------------------
@@ -698,18 +698,18 @@
                                     698 ;	-----------------------------------------
                                     699 ;	 function CH554SPISlvRead
                                     700 ;	-----------------------------------------
-      00074C                        701 _CH554SPISlvRead:
+      00079F                        701 _CH554SPISlvRead:
                                     702 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:128: while(S0_IF_BYTE==0);
-      00074C                        703 00101$:
+      00079F                        703 00101$:
                                     704 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:129: S0_IF_BYTE = 0;
                                     705 ;	assignBit
-      00074C 10 FC 02         [24]  706 	jbc	_S0_IF_BYTE,00118$
-      00074F 80 FB            [24]  707 	sjmp	00101$
-      000751                        708 00118$:
+      00079F 10 FC 02         [24]  706 	jbc	_S0_IF_BYTE,00118$
+      0007A2 80 FB            [24]  707 	sjmp	00101$
+      0007A4                        708 00118$:
                                     709 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:130: return SPI0_DATA;
-      000751 85 F9 82         [24]  710 	mov	dpl, _SPI0_DATA
+      0007A4 85 F9 82         [24]  710 	mov	dpl, _SPI0_DATA
                                     711 ;	C:\Users\Clovisf\Documents\ch552\spi\spi.c:131: }
-      000754 22               [24]  712 	ret
+      0007A7 22               [24]  712 	ret
                                     713 	.area CSEG    (CODE)
                                     714 	.area CONST   (CODE)
                                     715 	.area XINIT   (CODE)
