@@ -51,7 +51,7 @@ void timer0_ISR(void) __interrupt(INT_NO_TMR0) { // You can do __interrupt (1) i
     TF0 = 0;  // clear overflow flag (important for robustness)
     TH0 = 0xB1;
     TL0 = 0xE0;
-    if(tick_10ms < 51){
+    if(tick_10ms < 50){
         tick_10ms++; // this is the 10ms tick for LED blinking
     }else{
         tick_10ms= 0;
@@ -80,17 +80,20 @@ void timer0_init(void) {
     EA = 1;
 }
 
+// Replace blink_led() entirely:
 void blink_led(void) {
-    if(tick_10ms <= 25){
-        P3 |= (1 << 5);  // LED ON
-    } else if(tick_10ms <= 50){
-        P3 &= ~(1 << 5); // LED OFF
+    
+    if (tick_10ms <= 25) {
+        P3 |= (1 << 5);
+    } else {
+        P3 &= ~(1 << 5);
     }
 }
 
 void main(void) {
     clock_init();
     Serial_begin();
+    touchkey_init(); 
     timer0_init();
 
     // Disable watchdog (important on CH55x)
@@ -103,7 +106,7 @@ void main(void) {
     P3_MOD_OC &= ~(1 << 5);   // not open-drain
     P3_DIR_PU |=  (1 << 5);   // output, with pull-up
 
-    touchkey_init();   
+      
 
     while (1) {
         

@@ -1,0 +1,1707 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.0 #15242 (MINGW64)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module i2c_bit_bang_oled_0_49_analog_reading
+                                      6 	
+                                      7 	.optsdcc -mmcs51 --model-small
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _font5x7
+                                     12 	.globl _main
+                                     13 	.globl _rawToMillivolts
+                                     14 	.globl _analogReading
+                                     15 	.globl _clock_init
+                                     16 	.globl _timer0_init
+                                     17 	.globl _timer0_ISR
+                                     18 	.globl _oled_print_uint
+                                     19 	.globl _oled_draw_char
+                                     20 	.globl _oled_init
+                                     21 	.globl _oled_clear
+                                     22 	.globl _oled_write_data_stream
+                                     23 	.globl _oled_set_cursor
+                                     24 	.globl _oled_data
+                                     25 	.globl _oled_cmd
+                                     26 	.globl _i2c_write_byte
+                                     27 	.globl _i2c_stop
+                                     28 	.globl _i2c_start
+                                     29 	.globl _i2c_delay
+                                     30 	.globl _Serial_println_uint
+                                     31 	.globl _Serial_begin
+                                     32 	.globl _ADC_ChannelSelect
+                                     33 	.globl _ADCInit
+                                     34 	.globl _UIF_BUS_RST
+                                     35 	.globl _UIF_DETECT
+                                     36 	.globl _UIF_TRANSFER
+                                     37 	.globl _UIF_SUSPEND
+                                     38 	.globl _UIF_HST_SOF
+                                     39 	.globl _UIF_FIFO_OV
+                                     40 	.globl _U_SIE_FREE
+                                     41 	.globl _U_TOG_OK
+                                     42 	.globl _U_IS_NAK
+                                     43 	.globl _ADC_CHAN0
+                                     44 	.globl _ADC_CHAN1
+                                     45 	.globl _CMP_CHAN
+                                     46 	.globl _ADC_START
+                                     47 	.globl _ADC_IF
+                                     48 	.globl _CMP_IF
+                                     49 	.globl _CMPO
+                                     50 	.globl _U1RI
+                                     51 	.globl _U1TI
+                                     52 	.globl _U1RB8
+                                     53 	.globl _U1TB8
+                                     54 	.globl _U1REN
+                                     55 	.globl _U1SMOD
+                                     56 	.globl _U1SM0
+                                     57 	.globl _S0_R_FIFO
+                                     58 	.globl _S0_T_FIFO
+                                     59 	.globl _S0_FREE
+                                     60 	.globl _S0_IF_BYTE
+                                     61 	.globl _S0_IF_FIRST
+                                     62 	.globl _S0_IF_OV
+                                     63 	.globl _S0_FST_ACT
+                                     64 	.globl _CP_RL2
+                                     65 	.globl _C_T2
+                                     66 	.globl _TR2
+                                     67 	.globl _EXEN2
+                                     68 	.globl _TCLK
+                                     69 	.globl _RCLK
+                                     70 	.globl _EXF2
+                                     71 	.globl _CAP1F
+                                     72 	.globl _TF2
+                                     73 	.globl _RI
+                                     74 	.globl _TI
+                                     75 	.globl _RB8
+                                     76 	.globl _TB8
+                                     77 	.globl _REN
+                                     78 	.globl _SM2
+                                     79 	.globl _SM1
+                                     80 	.globl _SM0
+                                     81 	.globl _IT0
+                                     82 	.globl _IE0
+                                     83 	.globl _IT1
+                                     84 	.globl _IE1
+                                     85 	.globl _TR0
+                                     86 	.globl _TF0
+                                     87 	.globl _TR1
+                                     88 	.globl _TF1
+                                     89 	.globl _RXD
+                                     90 	.globl _PWM1_
+                                     91 	.globl _TXD
+                                     92 	.globl _PWM2_
+                                     93 	.globl _AIN3
+                                     94 	.globl _VBUS1
+                                     95 	.globl _INT0
+                                     96 	.globl _TXD1_
+                                     97 	.globl _INT1
+                                     98 	.globl _T0
+                                     99 	.globl _RXD1_
+                                    100 	.globl _PWM2
+                                    101 	.globl _T1
+                                    102 	.globl _UDP
+                                    103 	.globl _UDM
+                                    104 	.globl _TIN0
+                                    105 	.globl _CAP1
+                                    106 	.globl _T2
+                                    107 	.globl _AIN0
+                                    108 	.globl _VBUS2
+                                    109 	.globl _TIN1
+                                    110 	.globl _CAP2
+                                    111 	.globl _T2EX
+                                    112 	.globl _RXD_
+                                    113 	.globl _TXD_
+                                    114 	.globl _AIN1
+                                    115 	.globl _UCC1
+                                    116 	.globl _TIN2
+                                    117 	.globl _SCS
+                                    118 	.globl _CAP1_
+                                    119 	.globl _T2_
+                                    120 	.globl _AIN2
+                                    121 	.globl _UCC2
+                                    122 	.globl _TIN3
+                                    123 	.globl _PWM1
+                                    124 	.globl _MOSI
+                                    125 	.globl _TIN4
+                                    126 	.globl _RXD1
+                                    127 	.globl _MISO
+                                    128 	.globl _TIN5
+                                    129 	.globl _TXD1
+                                    130 	.globl _SCK
+                                    131 	.globl _IE_SPI0
+                                    132 	.globl _IE_TKEY
+                                    133 	.globl _IE_USB
+                                    134 	.globl _IE_ADC
+                                    135 	.globl _IE_UART1
+                                    136 	.globl _IE_PWMX
+                                    137 	.globl _IE_GPIO
+                                    138 	.globl _IE_WDOG
+                                    139 	.globl _PX0
+                                    140 	.globl _PT0
+                                    141 	.globl _PX1
+                                    142 	.globl _PT1
+                                    143 	.globl _PS
+                                    144 	.globl _PT2
+                                    145 	.globl _PL_FLAG
+                                    146 	.globl _PH_FLAG
+                                    147 	.globl _EX0
+                                    148 	.globl _ET0
+                                    149 	.globl _EX1
+                                    150 	.globl _ET1
+                                    151 	.globl _ES
+                                    152 	.globl _ET2
+                                    153 	.globl _E_DIS
+                                    154 	.globl _EA
+                                    155 	.globl _P
+                                    156 	.globl _F1
+                                    157 	.globl _OV
+                                    158 	.globl _RS0
+                                    159 	.globl _RS1
+                                    160 	.globl _F0
+                                    161 	.globl _AC
+                                    162 	.globl _CY
+                                    163 	.globl _UEP1_DMA_H
+                                    164 	.globl _UEP1_DMA_L
+                                    165 	.globl _UEP1_DMA
+                                    166 	.globl _UEP0_DMA_H
+                                    167 	.globl _UEP0_DMA_L
+                                    168 	.globl _UEP0_DMA
+                                    169 	.globl _UEP2_3_MOD
+                                    170 	.globl _UEP4_1_MOD
+                                    171 	.globl _UEP3_DMA_H
+                                    172 	.globl _UEP3_DMA_L
+                                    173 	.globl _UEP3_DMA
+                                    174 	.globl _UEP2_DMA_H
+                                    175 	.globl _UEP2_DMA_L
+                                    176 	.globl _UEP2_DMA
+                                    177 	.globl _USB_DEV_AD
+                                    178 	.globl _USB_CTRL
+                                    179 	.globl _USB_INT_EN
+                                    180 	.globl _UEP4_T_LEN
+                                    181 	.globl _UEP4_CTRL
+                                    182 	.globl _UEP0_T_LEN
+                                    183 	.globl _UEP0_CTRL
+                                    184 	.globl _USB_RX_LEN
+                                    185 	.globl _USB_MIS_ST
+                                    186 	.globl _USB_INT_ST
+                                    187 	.globl _USB_INT_FG
+                                    188 	.globl _UEP3_T_LEN
+                                    189 	.globl _UEP3_CTRL
+                                    190 	.globl _UEP2_T_LEN
+                                    191 	.globl _UEP2_CTRL
+                                    192 	.globl _UEP1_T_LEN
+                                    193 	.globl _UEP1_CTRL
+                                    194 	.globl _UDEV_CTRL
+                                    195 	.globl _USB_C_CTRL
+                                    196 	.globl _TKEY_DATH
+                                    197 	.globl _TKEY_DATL
+                                    198 	.globl _TKEY_DAT
+                                    199 	.globl _TKEY_CTRL
+                                    200 	.globl _ADC_DATA
+                                    201 	.globl _ADC_CFG
+                                    202 	.globl _ADC_CTRL
+                                    203 	.globl _SBAUD1
+                                    204 	.globl _SBUF1
+                                    205 	.globl _SCON1
+                                    206 	.globl _SPI0_SETUP
+                                    207 	.globl _SPI0_CK_SE
+                                    208 	.globl _SPI0_CTRL
+                                    209 	.globl _SPI0_DATA
+                                    210 	.globl _SPI0_STAT
+                                    211 	.globl _PWM_CK_SE
+                                    212 	.globl _PWM_CTRL
+                                    213 	.globl _PWM_DATA1
+                                    214 	.globl _PWM_DATA2
+                                    215 	.globl _T2CAP1H
+                                    216 	.globl _T2CAP1L
+                                    217 	.globl _T2CAP1
+                                    218 	.globl _TH2
+                                    219 	.globl _TL2
+                                    220 	.globl _T2COUNT
+                                    221 	.globl _RCAP2H
+                                    222 	.globl _RCAP2L
+                                    223 	.globl _RCAP2
+                                    224 	.globl _T2MOD
+                                    225 	.globl _T2CON
+                                    226 	.globl _SBUF
+                                    227 	.globl _SCON
+                                    228 	.globl _TH1
+                                    229 	.globl _TH0
+                                    230 	.globl _TL1
+                                    231 	.globl _TL0
+                                    232 	.globl _TMOD
+                                    233 	.globl _TCON
+                                    234 	.globl _XBUS_AUX
+                                    235 	.globl _PIN_FUNC
+                                    236 	.globl _P3_DIR_PU
+                                    237 	.globl _P3_MOD_OC
+                                    238 	.globl _P3
+                                    239 	.globl _P2
+                                    240 	.globl _P1_DIR_PU
+                                    241 	.globl _P1_MOD_OC
+                                    242 	.globl _P1
+                                    243 	.globl _ROM_CTRL
+                                    244 	.globl _ROM_DATA_H
+                                    245 	.globl _ROM_DATA_L
+                                    246 	.globl _ROM_DATA
+                                    247 	.globl _ROM_ADDR_H
+                                    248 	.globl _ROM_ADDR_L
+                                    249 	.globl _ROM_ADDR
+                                    250 	.globl _GPIO_IE
+                                    251 	.globl _IP_EX
+                                    252 	.globl _IE_EX
+                                    253 	.globl _IP
+                                    254 	.globl _IE
+                                    255 	.globl _WDOG_COUNT
+                                    256 	.globl _RESET_KEEP
+                                    257 	.globl _WAKE_CTRL
+                                    258 	.globl _CLOCK_CFG
+                                    259 	.globl _PCON
+                                    260 	.globl _GLOBAL_CFG
+                                    261 	.globl _SAFE_MOD
+                                    262 	.globl _DPH
+                                    263 	.globl _DPL
+                                    264 	.globl _SP
+                                    265 	.globl _B
+                                    266 	.globl _ACC
+                                    267 	.globl _PSW
+                                    268 	.globl _finalAnalog
+                                    269 	.globl _rawAnalog
+                                    270 	.globl _serialTime
+                                    271 	.globl _tick_10ms
+                                    272 ;--------------------------------------------------------
+                                    273 ; special function registers
+                                    274 ;--------------------------------------------------------
+                                    275 	.area RSEG    (ABS,DATA)
+      000000                        276 	.org 0x0000
+                           0000D0   277 _PSW	=	0x00d0
+                           0000E0   278 _ACC	=	0x00e0
+                           0000F0   279 _B	=	0x00f0
+                           000081   280 _SP	=	0x0081
+                           000082   281 _DPL	=	0x0082
+                           000083   282 _DPH	=	0x0083
+                           0000A1   283 _SAFE_MOD	=	0x00a1
+                           0000B1   284 _GLOBAL_CFG	=	0x00b1
+                           000087   285 _PCON	=	0x0087
+                           0000B9   286 _CLOCK_CFG	=	0x00b9
+                           0000A9   287 _WAKE_CTRL	=	0x00a9
+                           0000FE   288 _RESET_KEEP	=	0x00fe
+                           0000FF   289 _WDOG_COUNT	=	0x00ff
+                           0000A8   290 _IE	=	0x00a8
+                           0000B8   291 _IP	=	0x00b8
+                           0000E8   292 _IE_EX	=	0x00e8
+                           0000E9   293 _IP_EX	=	0x00e9
+                           0000C7   294 _GPIO_IE	=	0x00c7
+                           008584   295 _ROM_ADDR	=	0x8584
+                           000084   296 _ROM_ADDR_L	=	0x0084
+                           000085   297 _ROM_ADDR_H	=	0x0085
+                           008F8E   298 _ROM_DATA	=	0x8f8e
+                           00008E   299 _ROM_DATA_L	=	0x008e
+                           00008F   300 _ROM_DATA_H	=	0x008f
+                           000086   301 _ROM_CTRL	=	0x0086
+                           000090   302 _P1	=	0x0090
+                           000092   303 _P1_MOD_OC	=	0x0092
+                           000093   304 _P1_DIR_PU	=	0x0093
+                           0000A0   305 _P2	=	0x00a0
+                           0000B0   306 _P3	=	0x00b0
+                           000096   307 _P3_MOD_OC	=	0x0096
+                           000097   308 _P3_DIR_PU	=	0x0097
+                           0000C6   309 _PIN_FUNC	=	0x00c6
+                           0000A2   310 _XBUS_AUX	=	0x00a2
+                           000088   311 _TCON	=	0x0088
+                           000089   312 _TMOD	=	0x0089
+                           00008A   313 _TL0	=	0x008a
+                           00008B   314 _TL1	=	0x008b
+                           00008C   315 _TH0	=	0x008c
+                           00008D   316 _TH1	=	0x008d
+                           000098   317 _SCON	=	0x0098
+                           000099   318 _SBUF	=	0x0099
+                           0000C8   319 _T2CON	=	0x00c8
+                           0000C9   320 _T2MOD	=	0x00c9
+                           00CBCA   321 _RCAP2	=	0xcbca
+                           0000CA   322 _RCAP2L	=	0x00ca
+                           0000CB   323 _RCAP2H	=	0x00cb
+                           00CDCC   324 _T2COUNT	=	0xcdcc
+                           0000CC   325 _TL2	=	0x00cc
+                           0000CD   326 _TH2	=	0x00cd
+                           00CFCE   327 _T2CAP1	=	0xcfce
+                           0000CE   328 _T2CAP1L	=	0x00ce
+                           0000CF   329 _T2CAP1H	=	0x00cf
+                           00009B   330 _PWM_DATA2	=	0x009b
+                           00009C   331 _PWM_DATA1	=	0x009c
+                           00009D   332 _PWM_CTRL	=	0x009d
+                           00009E   333 _PWM_CK_SE	=	0x009e
+                           0000F8   334 _SPI0_STAT	=	0x00f8
+                           0000F9   335 _SPI0_DATA	=	0x00f9
+                           0000FA   336 _SPI0_CTRL	=	0x00fa
+                           0000FB   337 _SPI0_CK_SE	=	0x00fb
+                           0000FC   338 _SPI0_SETUP	=	0x00fc
+                           0000C0   339 _SCON1	=	0x00c0
+                           0000C1   340 _SBUF1	=	0x00c1
+                           0000C2   341 _SBAUD1	=	0x00c2
+                           000080   342 _ADC_CTRL	=	0x0080
+                           00009A   343 _ADC_CFG	=	0x009a
+                           00009F   344 _ADC_DATA	=	0x009f
+                           0000C3   345 _TKEY_CTRL	=	0x00c3
+                           00C5C4   346 _TKEY_DAT	=	0xc5c4
+                           0000C4   347 _TKEY_DATL	=	0x00c4
+                           0000C5   348 _TKEY_DATH	=	0x00c5
+                           000091   349 _USB_C_CTRL	=	0x0091
+                           0000D1   350 _UDEV_CTRL	=	0x00d1
+                           0000D2   351 _UEP1_CTRL	=	0x00d2
+                           0000D3   352 _UEP1_T_LEN	=	0x00d3
+                           0000D4   353 _UEP2_CTRL	=	0x00d4
+                           0000D5   354 _UEP2_T_LEN	=	0x00d5
+                           0000D6   355 _UEP3_CTRL	=	0x00d6
+                           0000D7   356 _UEP3_T_LEN	=	0x00d7
+                           0000D8   357 _USB_INT_FG	=	0x00d8
+                           0000D9   358 _USB_INT_ST	=	0x00d9
+                           0000DA   359 _USB_MIS_ST	=	0x00da
+                           0000DB   360 _USB_RX_LEN	=	0x00db
+                           0000DC   361 _UEP0_CTRL	=	0x00dc
+                           0000DD   362 _UEP0_T_LEN	=	0x00dd
+                           0000DE   363 _UEP4_CTRL	=	0x00de
+                           0000DF   364 _UEP4_T_LEN	=	0x00df
+                           0000E1   365 _USB_INT_EN	=	0x00e1
+                           0000E2   366 _USB_CTRL	=	0x00e2
+                           0000E3   367 _USB_DEV_AD	=	0x00e3
+                           00E5E4   368 _UEP2_DMA	=	0xe5e4
+                           0000E4   369 _UEP2_DMA_L	=	0x00e4
+                           0000E5   370 _UEP2_DMA_H	=	0x00e5
+                           00E7E6   371 _UEP3_DMA	=	0xe7e6
+                           0000E6   372 _UEP3_DMA_L	=	0x00e6
+                           0000E7   373 _UEP3_DMA_H	=	0x00e7
+                           0000EA   374 _UEP4_1_MOD	=	0x00ea
+                           0000EB   375 _UEP2_3_MOD	=	0x00eb
+                           00EDEC   376 _UEP0_DMA	=	0xedec
+                           0000EC   377 _UEP0_DMA_L	=	0x00ec
+                           0000ED   378 _UEP0_DMA_H	=	0x00ed
+                           00EFEE   379 _UEP1_DMA	=	0xefee
+                           0000EE   380 _UEP1_DMA_L	=	0x00ee
+                           0000EF   381 _UEP1_DMA_H	=	0x00ef
+                                    382 ;--------------------------------------------------------
+                                    383 ; special function bits
+                                    384 ;--------------------------------------------------------
+                                    385 	.area RSEG    (ABS,DATA)
+      000000                        386 	.org 0x0000
+                           0000D7   387 _CY	=	0x00d7
+                           0000D6   388 _AC	=	0x00d6
+                           0000D5   389 _F0	=	0x00d5
+                           0000D4   390 _RS1	=	0x00d4
+                           0000D3   391 _RS0	=	0x00d3
+                           0000D2   392 _OV	=	0x00d2
+                           0000D1   393 _F1	=	0x00d1
+                           0000D0   394 _P	=	0x00d0
+                           0000AF   395 _EA	=	0x00af
+                           0000AE   396 _E_DIS	=	0x00ae
+                           0000AD   397 _ET2	=	0x00ad
+                           0000AC   398 _ES	=	0x00ac
+                           0000AB   399 _ET1	=	0x00ab
+                           0000AA   400 _EX1	=	0x00aa
+                           0000A9   401 _ET0	=	0x00a9
+                           0000A8   402 _EX0	=	0x00a8
+                           0000BF   403 _PH_FLAG	=	0x00bf
+                           0000BE   404 _PL_FLAG	=	0x00be
+                           0000BD   405 _PT2	=	0x00bd
+                           0000BC   406 _PS	=	0x00bc
+                           0000BB   407 _PT1	=	0x00bb
+                           0000BA   408 _PX1	=	0x00ba
+                           0000B9   409 _PT0	=	0x00b9
+                           0000B8   410 _PX0	=	0x00b8
+                           0000EF   411 _IE_WDOG	=	0x00ef
+                           0000EE   412 _IE_GPIO	=	0x00ee
+                           0000ED   413 _IE_PWMX	=	0x00ed
+                           0000EC   414 _IE_UART1	=	0x00ec
+                           0000EB   415 _IE_ADC	=	0x00eb
+                           0000EA   416 _IE_USB	=	0x00ea
+                           0000E9   417 _IE_TKEY	=	0x00e9
+                           0000E8   418 _IE_SPI0	=	0x00e8
+                           000097   419 _SCK	=	0x0097
+                           000097   420 _TXD1	=	0x0097
+                           000097   421 _TIN5	=	0x0097
+                           000096   422 _MISO	=	0x0096
+                           000096   423 _RXD1	=	0x0096
+                           000096   424 _TIN4	=	0x0096
+                           000095   425 _MOSI	=	0x0095
+                           000095   426 _PWM1	=	0x0095
+                           000095   427 _TIN3	=	0x0095
+                           000095   428 _UCC2	=	0x0095
+                           000095   429 _AIN2	=	0x0095
+                           000094   430 _T2_	=	0x0094
+                           000094   431 _CAP1_	=	0x0094
+                           000094   432 _SCS	=	0x0094
+                           000094   433 _TIN2	=	0x0094
+                           000094   434 _UCC1	=	0x0094
+                           000094   435 _AIN1	=	0x0094
+                           000093   436 _TXD_	=	0x0093
+                           000092   437 _RXD_	=	0x0092
+                           000091   438 _T2EX	=	0x0091
+                           000091   439 _CAP2	=	0x0091
+                           000091   440 _TIN1	=	0x0091
+                           000091   441 _VBUS2	=	0x0091
+                           000091   442 _AIN0	=	0x0091
+                           000090   443 _T2	=	0x0090
+                           000090   444 _CAP1	=	0x0090
+                           000090   445 _TIN0	=	0x0090
+                           0000B7   446 _UDM	=	0x00b7
+                           0000B6   447 _UDP	=	0x00b6
+                           0000B5   448 _T1	=	0x00b5
+                           0000B4   449 _PWM2	=	0x00b4
+                           0000B4   450 _RXD1_	=	0x00b4
+                           0000B4   451 _T0	=	0x00b4
+                           0000B3   452 _INT1	=	0x00b3
+                           0000B2   453 _TXD1_	=	0x00b2
+                           0000B2   454 _INT0	=	0x00b2
+                           0000B2   455 _VBUS1	=	0x00b2
+                           0000B2   456 _AIN3	=	0x00b2
+                           0000B1   457 _PWM2_	=	0x00b1
+                           0000B1   458 _TXD	=	0x00b1
+                           0000B0   459 _PWM1_	=	0x00b0
+                           0000B0   460 _RXD	=	0x00b0
+                           00008F   461 _TF1	=	0x008f
+                           00008E   462 _TR1	=	0x008e
+                           00008D   463 _TF0	=	0x008d
+                           00008C   464 _TR0	=	0x008c
+                           00008B   465 _IE1	=	0x008b
+                           00008A   466 _IT1	=	0x008a
+                           000089   467 _IE0	=	0x0089
+                           000088   468 _IT0	=	0x0088
+                           00009F   469 _SM0	=	0x009f
+                           00009E   470 _SM1	=	0x009e
+                           00009D   471 _SM2	=	0x009d
+                           00009C   472 _REN	=	0x009c
+                           00009B   473 _TB8	=	0x009b
+                           00009A   474 _RB8	=	0x009a
+                           000099   475 _TI	=	0x0099
+                           000098   476 _RI	=	0x0098
+                           0000CF   477 _TF2	=	0x00cf
+                           0000CF   478 _CAP1F	=	0x00cf
+                           0000CE   479 _EXF2	=	0x00ce
+                           0000CD   480 _RCLK	=	0x00cd
+                           0000CC   481 _TCLK	=	0x00cc
+                           0000CB   482 _EXEN2	=	0x00cb
+                           0000CA   483 _TR2	=	0x00ca
+                           0000C9   484 _C_T2	=	0x00c9
+                           0000C8   485 _CP_RL2	=	0x00c8
+                           0000FF   486 _S0_FST_ACT	=	0x00ff
+                           0000FE   487 _S0_IF_OV	=	0x00fe
+                           0000FD   488 _S0_IF_FIRST	=	0x00fd
+                           0000FC   489 _S0_IF_BYTE	=	0x00fc
+                           0000FB   490 _S0_FREE	=	0x00fb
+                           0000FA   491 _S0_T_FIFO	=	0x00fa
+                           0000F8   492 _S0_R_FIFO	=	0x00f8
+                           0000C7   493 _U1SM0	=	0x00c7
+                           0000C5   494 _U1SMOD	=	0x00c5
+                           0000C4   495 _U1REN	=	0x00c4
+                           0000C3   496 _U1TB8	=	0x00c3
+                           0000C2   497 _U1RB8	=	0x00c2
+                           0000C1   498 _U1TI	=	0x00c1
+                           0000C0   499 _U1RI	=	0x00c0
+                           000087   500 _CMPO	=	0x0087
+                           000086   501 _CMP_IF	=	0x0086
+                           000085   502 _ADC_IF	=	0x0085
+                           000084   503 _ADC_START	=	0x0084
+                           000083   504 _CMP_CHAN	=	0x0083
+                           000081   505 _ADC_CHAN1	=	0x0081
+                           000080   506 _ADC_CHAN0	=	0x0080
+                           0000DF   507 _U_IS_NAK	=	0x00df
+                           0000DE   508 _U_TOG_OK	=	0x00de
+                           0000DD   509 _U_SIE_FREE	=	0x00dd
+                           0000DC   510 _UIF_FIFO_OV	=	0x00dc
+                           0000DB   511 _UIF_HST_SOF	=	0x00db
+                           0000DA   512 _UIF_SUSPEND	=	0x00da
+                           0000D9   513 _UIF_TRANSFER	=	0x00d9
+                           0000D8   514 _UIF_DETECT	=	0x00d8
+                           0000D8   515 _UIF_BUS_RST	=	0x00d8
+                                    516 ;--------------------------------------------------------
+                                    517 ; overlayable register banks
+                                    518 ;--------------------------------------------------------
+                                    519 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        520 	.ds 8
+                                    521 ;--------------------------------------------------------
+                                    522 ; internal ram data
+                                    523 ;--------------------------------------------------------
+                                    524 	.area DSEG    (DATA)
+      000000                        525 _tick_10ms::
+      000000                        526 	.ds 2
+      000002                        527 _serialTime::
+      000002                        528 	.ds 2
+      000004                        529 _rawAnalog::
+      000004                        530 	.ds 1
+      000005                        531 _finalAnalog::
+      000005                        532 	.ds 2
+                                    533 ;--------------------------------------------------------
+                                    534 ; overlayable items in internal ram
+                                    535 ;--------------------------------------------------------
+                                    536 ;--------------------------------------------------------
+                                    537 ; Stack segment in internal ram
+                                    538 ;--------------------------------------------------------
+                                    539 	.area SSEG
+      000000                        540 __start__stack:
+      000000                        541 	.ds	1
+                                    542 
+                                    543 ;--------------------------------------------------------
+                                    544 ; indirectly addressable internal ram data
+                                    545 ;--------------------------------------------------------
+                                    546 	.area ISEG    (DATA)
+                                    547 ;--------------------------------------------------------
+                                    548 ; absolute internal ram data
+                                    549 ;--------------------------------------------------------
+                                    550 	.area IABS    (ABS,DATA)
+                                    551 	.area IABS    (ABS,DATA)
+                                    552 ;--------------------------------------------------------
+                                    553 ; bit data
+                                    554 ;--------------------------------------------------------
+                                    555 	.area BSEG    (BIT)
+                                    556 ;--------------------------------------------------------
+                                    557 ; paged external ram data
+                                    558 ;--------------------------------------------------------
+                                    559 	.area PSEG    (PAG,XDATA)
+                                    560 ;--------------------------------------------------------
+                                    561 ; uninitialized external ram data
+                                    562 ;--------------------------------------------------------
+                                    563 	.area XSEG    (XDATA)
+                                    564 ;--------------------------------------------------------
+                                    565 ; absolute external ram data
+                                    566 ;--------------------------------------------------------
+                                    567 	.area XABS    (ABS,XDATA)
+                                    568 ;--------------------------------------------------------
+                                    569 ; initialized external ram data
+                                    570 ;--------------------------------------------------------
+                                    571 	.area XISEG   (XDATA)
+                                    572 	.area HOME    (CODE)
+                                    573 	.area GSINIT0 (CODE)
+                                    574 	.area GSINIT1 (CODE)
+                                    575 	.area GSINIT2 (CODE)
+                                    576 	.area GSINIT3 (CODE)
+                                    577 	.area GSINIT4 (CODE)
+                                    578 	.area GSINIT5 (CODE)
+                                    579 	.area GSINIT  (CODE)
+                                    580 	.area GSFINAL (CODE)
+                                    581 	.area CSEG    (CODE)
+                                    582 ;--------------------------------------------------------
+                                    583 ; interrupt vector
+                                    584 ;--------------------------------------------------------
+                                    585 	.area HOME    (CODE)
+      000000                        586 __interrupt_vect:
+      000000 02r00r00         [24]  587 	ljmp	__sdcc_gsinit_startup
+      000003 32               [24]  588 	reti
+      000004                        589 	.ds	7
+      00000B 02r03r6A         [24]  590 	ljmp	_timer0_ISR
+                                    591 ; restartable atomic support routines
+      00000E                        592 	.ds	2
+      000010                        593 sdcc_atomic_exchange_rollback_start::
+      000010 00               [12]  594 	nop
+      000011 00               [12]  595 	nop
+      000012                        596 sdcc_atomic_exchange_pdata_impl:
+      000012 E2               [24]  597 	movx	a, @r0
+      000013 FB               [12]  598 	mov	r3, a
+      000014 EA               [12]  599 	mov	a, r2
+      000015 F2               [24]  600 	movx	@r0, a
+      000016 80 2C            [24]  601 	sjmp	sdcc_atomic_exchange_exit
+      000018 00               [12]  602 	nop
+      000019 00               [12]  603 	nop
+      00001A                        604 sdcc_atomic_exchange_xdata_impl:
+      00001A E0               [24]  605 	movx	a, @dptr
+      00001B FB               [12]  606 	mov	r3, a
+      00001C EA               [12]  607 	mov	a, r2
+      00001D F0               [24]  608 	movx	@dptr, a
+      00001E 80 24            [24]  609 	sjmp	sdcc_atomic_exchange_exit
+      000020                        610 sdcc_atomic_compare_exchange_idata_impl:
+      000020 E6               [12]  611 	mov	a, @r0
+      000021 B5 02 02         [24]  612 	cjne	a, ar2, .+#5
+      000024 EB               [12]  613 	mov	a, r3
+      000025 F6               [12]  614 	mov	@r0, a
+      000026 22               [24]  615 	ret
+      000027 00               [12]  616 	nop
+      000028                        617 sdcc_atomic_compare_exchange_pdata_impl:
+      000028 E2               [24]  618 	movx	a, @r0
+      000029 B5 02 02         [24]  619 	cjne	a, ar2, .+#5
+      00002C EB               [12]  620 	mov	a, r3
+      00002D F2               [24]  621 	movx	@r0, a
+      00002E 22               [24]  622 	ret
+      00002F 00               [12]  623 	nop
+      000030                        624 sdcc_atomic_compare_exchange_xdata_impl:
+      000030 E0               [24]  625 	movx	a, @dptr
+      000031 B5 02 02         [24]  626 	cjne	a, ar2, .+#5
+      000034 EB               [12]  627 	mov	a, r3
+      000035 F0               [24]  628 	movx	@dptr, a
+      000036 22               [24]  629 	ret
+      000037                        630 sdcc_atomic_exchange_rollback_end::
+                                    631 
+      000037                        632 sdcc_atomic_exchange_gptr_impl::
+      000037 30 F6 E0         [24]  633 	jnb	b.6, sdcc_atomic_exchange_xdata_impl
+      00003A A8 82            [24]  634 	mov	r0, dpl
+      00003C 20 F5 D3         [24]  635 	jb	b.5, sdcc_atomic_exchange_pdata_impl
+      00003F                        636 sdcc_atomic_exchange_idata_impl:
+      00003F EA               [12]  637 	mov	a, r2
+      000040 C6               [12]  638 	xch	a, @r0
+      000041 F5 82            [12]  639 	mov	dpl, a
+      000043 22               [24]  640 	ret
+      000044                        641 sdcc_atomic_exchange_exit:
+      000044 8B 82            [24]  642 	mov	dpl, r3
+      000046 22               [24]  643 	ret
+      000047                        644 sdcc_atomic_compare_exchange_gptr_impl::
+      000047 30 F6 E6         [24]  645 	jnb	b.6, sdcc_atomic_compare_exchange_xdata_impl
+      00004A A8 82            [24]  646 	mov	r0, dpl
+      00004C 20 F5 D9         [24]  647 	jb	b.5, sdcc_atomic_compare_exchange_pdata_impl
+      00004F 80 CF            [24]  648 	sjmp	sdcc_atomic_compare_exchange_idata_impl
+                                    649 ;--------------------------------------------------------
+                                    650 ; global & static initialisations
+                                    651 ;--------------------------------------------------------
+                                    652 	.area HOME    (CODE)
+                                    653 	.area GSINIT  (CODE)
+                                    654 	.area GSFINAL (CODE)
+                                    655 	.area GSINIT  (CODE)
+                                    656 	.globl __sdcc_gsinit_startup
+                                    657 	.globl __sdcc_program_startup
+                                    658 	.globl __start__stack
+                                    659 	.globl __mcs51_genXINIT
+                                    660 	.globl __mcs51_genXRAMCLEAR
+                                    661 	.globl __mcs51_genRAMCLEAR
+                                    662 ;	i2c-bit-bang-oled-0.49-analog-reading.c:7: volatile unsigned int tick_10ms = 0;
+      000000 E4               [12]  663 	clr	a
+      000001 F5*00            [12]  664 	mov	_tick_10ms,a
+      000003 F5*01            [12]  665 	mov	(_tick_10ms + 1),a
+                                    666 ;	i2c-bit-bang-oled-0.49-analog-reading.c:8: unsigned int serialTime = 0;
+      000005 F5*02            [12]  667 	mov	_serialTime,a
+      000007 F5*03            [12]  668 	mov	(_serialTime + 1),a
+                                    669 ;	i2c-bit-bang-oled-0.49-analog-reading.c:10: uint8_t rawAnalog = 0;
+      000009 F5*04            [12]  670 	mov	_rawAnalog,a
+                                    671 ;	i2c-bit-bang-oled-0.49-analog-reading.c:11: uint16_t finalAnalog = 0;
+      00000B F5*05            [12]  672 	mov	_finalAnalog,a
+      00000D F5*06            [12]  673 	mov	(_finalAnalog + 1),a
+                                    674 	.area GSFINAL (CODE)
+      000000 02r00r51         [24]  675 	ljmp	__sdcc_program_startup
+                                    676 ;--------------------------------------------------------
+                                    677 ; Home
+                                    678 ;--------------------------------------------------------
+                                    679 	.area HOME    (CODE)
+                                    680 	.area HOME    (CODE)
+      000051                        681 __sdcc_program_startup:
+      000051 02r04r28         [24]  682 	ljmp	_main
+                                    683 ;	return from main will return to caller
+                                    684 ;--------------------------------------------------------
+                                    685 ; code
+                                    686 ;--------------------------------------------------------
+                                    687 	.area CSEG    (CODE)
+                                    688 ;------------------------------------------------------------
+                                    689 ;Allocation info for local variables in function 'i2c_delay'
+                                    690 ;------------------------------------------------------------
+                                    691 ;i             Allocated to stack - _bp +1 +1 
+                                    692 ;------------------------------------------------------------
+                                    693 ;	i2c-bit-bang-oled-0.49-analog-reading.c:23: void i2c_delay(void) {
+                                    694 ;	-----------------------------------------
+                                    695 ;	 function i2c_delay
+                                    696 ;	-----------------------------------------
+      000000                        697 _i2c_delay:
+                           000007   698 	ar7 = 0x07
+                           000006   699 	ar6 = 0x06
+                           000005   700 	ar5 = 0x05
+                           000004   701 	ar4 = 0x04
+                           000003   702 	ar3 = 0x03
+                           000002   703 	ar2 = 0x02
+                           000001   704 	ar1 = 0x01
+                           000000   705 	ar0 = 0x00
+      000000 C0*00            [24]  706 	push	_bp
+      000002 85 81*00         [24]  707 	mov	_bp,sp
+      000005 05 81            [12]  708 	inc	sp
+                                    709 ;	i2c-bit-bang-oled-0.49-analog-reading.c:24: for (volatile uint8_t i = 0; i < 40; i++);
+      000007 A8*00            [24]  710 	mov	r0,_bp
+      000009 08               [12]  711 	inc	r0
+      00000A 76 00            [12]  712 	mov	@r0,#0x00
+      00000C                        713 00103$:
+      00000C A8*00            [24]  714 	mov	r0,_bp
+      00000E 08               [12]  715 	inc	r0
+      00000F B6 28 00         [24]  716 	cjne	@r0,#0x28,00119$
+      000012                        717 00119$:
+      000012 50 0D            [24]  718 	jnc	00105$
+      000014 A8*00            [24]  719 	mov	r0,_bp
+      000016 08               [12]  720 	inc	r0
+      000017 86 07            [24]  721 	mov	ar7,@r0
+      000019 A8*00            [24]  722 	mov	r0,_bp
+      00001B 08               [12]  723 	inc	r0
+      00001C EF               [12]  724 	mov	a,r7
+      00001D 04               [12]  725 	inc	a
+      00001E F6               [12]  726 	mov	@r0,a
+      00001F 80 EB            [24]  727 	sjmp	00103$
+      000021                        728 00105$:
+                                    729 ;	i2c-bit-bang-oled-0.49-analog-reading.c:25: }
+      000021 15 81            [12]  730 	dec	sp
+      000023 D0*00            [24]  731 	pop	_bp
+      000025 22               [24]  732 	ret
+                                    733 ;------------------------------------------------------------
+                                    734 ;Allocation info for local variables in function 'i2c_start'
+                                    735 ;------------------------------------------------------------
+                                    736 ;	i2c-bit-bang-oled-0.49-analog-reading.c:27: void i2c_start(void) {
+                                    737 ;	-----------------------------------------
+                                    738 ;	 function i2c_start
+                                    739 ;	-----------------------------------------
+      000026                        740 _i2c_start:
+                                    741 ;	i2c-bit-bang-oled-0.49-analog-reading.c:28: SDA_RELEASE();
+      000026 43 90 01         [24]  742 	orl	_P1,#0x01
+                                    743 ;	i2c-bit-bang-oled-0.49-analog-reading.c:29: SCL_RELEASE();
+      000029 43 90 02         [24]  744 	orl	_P1,#0x02
+                                    745 ;	i2c-bit-bang-oled-0.49-analog-reading.c:30: i2c_delay();
+      00002C 12r00r00         [24]  746 	lcall	_i2c_delay
+                                    747 ;	i2c-bit-bang-oled-0.49-analog-reading.c:32: SDA_LOW();
+      00002F 53 90 FE         [24]  748 	anl	_P1,#0xfe
+                                    749 ;	i2c-bit-bang-oled-0.49-analog-reading.c:33: i2c_delay();
+      000032 12r00r00         [24]  750 	lcall	_i2c_delay
+                                    751 ;	i2c-bit-bang-oled-0.49-analog-reading.c:34: SCL_LOW();
+      000035 53 90 FD         [24]  752 	anl	_P1,#0xfd
+                                    753 ;	i2c-bit-bang-oled-0.49-analog-reading.c:35: }
+      000038 22               [24]  754 	ret
+                                    755 ;------------------------------------------------------------
+                                    756 ;Allocation info for local variables in function 'i2c_stop'
+                                    757 ;------------------------------------------------------------
+                                    758 ;	i2c-bit-bang-oled-0.49-analog-reading.c:37: void i2c_stop(void) {
+                                    759 ;	-----------------------------------------
+                                    760 ;	 function i2c_stop
+                                    761 ;	-----------------------------------------
+      000039                        762 _i2c_stop:
+                                    763 ;	i2c-bit-bang-oled-0.49-analog-reading.c:38: SDA_LOW();
+      000039 53 90 FE         [24]  764 	anl	_P1,#0xfe
+                                    765 ;	i2c-bit-bang-oled-0.49-analog-reading.c:39: SCL_RELEASE();
+      00003C 43 90 02         [24]  766 	orl	_P1,#0x02
+                                    767 ;	i2c-bit-bang-oled-0.49-analog-reading.c:40: i2c_delay();
+      00003F 12r00r00         [24]  768 	lcall	_i2c_delay
+                                    769 ;	i2c-bit-bang-oled-0.49-analog-reading.c:42: SDA_RELEASE();
+      000042 43 90 01         [24]  770 	orl	_P1,#0x01
+                                    771 ;	i2c-bit-bang-oled-0.49-analog-reading.c:43: i2c_delay();
+                                    772 ;	i2c-bit-bang-oled-0.49-analog-reading.c:44: }
+      000045 02r00r00         [24]  773 	ljmp	_i2c_delay
+                                    774 ;------------------------------------------------------------
+                                    775 ;Allocation info for local variables in function 'i2c_write_byte'
+                                    776 ;------------------------------------------------------------
+                                    777 ;data          Allocated to registers r7 
+                                    778 ;i             Allocated to registers r6 
+                                    779 ;------------------------------------------------------------
+                                    780 ;	i2c-bit-bang-oled-0.49-analog-reading.c:46: void i2c_write_byte(uint8_t data) {
+                                    781 ;	-----------------------------------------
+                                    782 ;	 function i2c_write_byte
+                                    783 ;	-----------------------------------------
+      000048                        784 _i2c_write_byte:
+      000048 AF 82            [24]  785 	mov	r7, dpl
+                                    786 ;	i2c-bit-bang-oled-0.49-analog-reading.c:47: for (uint8_t i = 0; i < 8; i++) {
+      00004A 7E 00            [12]  787 	mov	r6,#0x00
+      00004C                        788 00106$:
+      00004C BE 08 00         [24]  789 	cjne	r6,#0x08,00129$
+      00004F                        790 00129$:
+      00004F 50 26            [24]  791 	jnc	00104$
+                                    792 ;	i2c-bit-bang-oled-0.49-analog-reading.c:49: if (data & 0x80)
+      000051 EF               [12]  793 	mov	a,r7
+      000052 30 E7 05         [24]  794 	jnb	acc.7,00102$
+                                    795 ;	i2c-bit-bang-oled-0.49-analog-reading.c:50: SDA_RELEASE();   // HIGH = release
+      000055 43 90 01         [24]  796 	orl	_P1,#0x01
+      000058 80 03            [24]  797 	sjmp	00103$
+      00005A                        798 00102$:
+                                    799 ;	i2c-bit-bang-oled-0.49-analog-reading.c:52: SDA_LOW();       // LOW = drive
+      00005A 53 90 FE         [24]  800 	anl	_P1,#0xfe
+      00005D                        801 00103$:
+                                    802 ;	i2c-bit-bang-oled-0.49-analog-reading.c:54: SCL_RELEASE();
+      00005D 43 90 02         [24]  803 	orl	_P1,#0x02
+                                    804 ;	i2c-bit-bang-oled-0.49-analog-reading.c:55: i2c_delay();
+      000060 C0 07            [24]  805 	push	ar7
+      000062 C0 06            [24]  806 	push	ar6
+      000064 12r00r00         [24]  807 	lcall	_i2c_delay
+                                    808 ;	i2c-bit-bang-oled-0.49-analog-reading.c:56: SCL_LOW();
+      000067 53 90 FD         [24]  809 	anl	_P1,#0xfd
+                                    810 ;	i2c-bit-bang-oled-0.49-analog-reading.c:57: i2c_delay();
+      00006A 12r00r00         [24]  811 	lcall	_i2c_delay
+      00006D D0 06            [24]  812 	pop	ar6
+      00006F D0 07            [24]  813 	pop	ar7
+                                    814 ;	i2c-bit-bang-oled-0.49-analog-reading.c:59: data <<= 1;
+      000071 EF               [12]  815 	mov	a,r7
+      000072 2F               [12]  816 	add	a,r7
+      000073 FF               [12]  817 	mov	r7,a
+                                    818 ;	i2c-bit-bang-oled-0.49-analog-reading.c:47: for (uint8_t i = 0; i < 8; i++) {
+      000074 0E               [12]  819 	inc	r6
+      000075 80 D5            [24]  820 	sjmp	00106$
+      000077                        821 00104$:
+                                    822 ;	i2c-bit-bang-oled-0.49-analog-reading.c:63: SDA_RELEASE();      // release SDA so slave can pull it LOW
+      000077 43 90 01         [24]  823 	orl	_P1,#0x01
+                                    824 ;	i2c-bit-bang-oled-0.49-analog-reading.c:64: SCL_RELEASE();
+      00007A 43 90 02         [24]  825 	orl	_P1,#0x02
+                                    826 ;	i2c-bit-bang-oled-0.49-analog-reading.c:65: i2c_delay();
+      00007D 12r00r00         [24]  827 	lcall	_i2c_delay
+                                    828 ;	i2c-bit-bang-oled-0.49-analog-reading.c:66: SCL_LOW();
+      000080 53 90 FD         [24]  829 	anl	_P1,#0xfd
+                                    830 ;	i2c-bit-bang-oled-0.49-analog-reading.c:67: }
+      000083 22               [24]  831 	ret
+                                    832 ;------------------------------------------------------------
+                                    833 ;Allocation info for local variables in function 'oled_cmd'
+                                    834 ;------------------------------------------------------------
+                                    835 ;cmd           Allocated to registers r7 
+                                    836 ;------------------------------------------------------------
+                                    837 ;	i2c-bit-bang-oled-0.49-analog-reading.c:73: void oled_cmd(uint8_t cmd) {
+                                    838 ;	-----------------------------------------
+                                    839 ;	 function oled_cmd
+                                    840 ;	-----------------------------------------
+      000084                        841 _oled_cmd:
+      000084 AF 82            [24]  842 	mov	r7, dpl
+                                    843 ;	i2c-bit-bang-oled-0.49-analog-reading.c:74: i2c_start();
+      000086 C0 07            [24]  844 	push	ar7
+      000088 12r00r26         [24]  845 	lcall	_i2c_start
+                                    846 ;	i2c-bit-bang-oled-0.49-analog-reading.c:75: i2c_write_byte(OLED_ADDR);
+      00008B 75 82 78         [24]  847 	mov	dpl, #0x78
+      00008E 12r00r48         [24]  848 	lcall	_i2c_write_byte
+                                    849 ;	i2c-bit-bang-oled-0.49-analog-reading.c:76: i2c_write_byte(0x00);
+      000091 75 82 00         [24]  850 	mov	dpl, #0x00
+      000094 12r00r48         [24]  851 	lcall	_i2c_write_byte
+      000097 D0 07            [24]  852 	pop	ar7
+                                    853 ;	i2c-bit-bang-oled-0.49-analog-reading.c:77: i2c_write_byte(cmd);
+      000099 8F 82            [24]  854 	mov	dpl, r7
+      00009B 12r00r48         [24]  855 	lcall	_i2c_write_byte
+                                    856 ;	i2c-bit-bang-oled-0.49-analog-reading.c:78: i2c_stop();
+                                    857 ;	i2c-bit-bang-oled-0.49-analog-reading.c:79: }
+      00009E 02r00r39         [24]  858 	ljmp	_i2c_stop
+                                    859 ;------------------------------------------------------------
+                                    860 ;Allocation info for local variables in function 'oled_data'
+                                    861 ;------------------------------------------------------------
+                                    862 ;data          Allocated to registers r7 
+                                    863 ;------------------------------------------------------------
+                                    864 ;	i2c-bit-bang-oled-0.49-analog-reading.c:81: void oled_data(uint8_t data) {
+                                    865 ;	-----------------------------------------
+                                    866 ;	 function oled_data
+                                    867 ;	-----------------------------------------
+      0000A1                        868 _oled_data:
+      0000A1 AF 82            [24]  869 	mov	r7, dpl
+                                    870 ;	i2c-bit-bang-oled-0.49-analog-reading.c:82: i2c_start();
+      0000A3 C0 07            [24]  871 	push	ar7
+      0000A5 12r00r26         [24]  872 	lcall	_i2c_start
+                                    873 ;	i2c-bit-bang-oled-0.49-analog-reading.c:83: i2c_write_byte(OLED_ADDR);
+      0000A8 75 82 78         [24]  874 	mov	dpl, #0x78
+      0000AB 12r00r48         [24]  875 	lcall	_i2c_write_byte
+                                    876 ;	i2c-bit-bang-oled-0.49-analog-reading.c:84: i2c_write_byte(0x40);
+      0000AE 75 82 40         [24]  877 	mov	dpl, #0x40
+      0000B1 12r00r48         [24]  878 	lcall	_i2c_write_byte
+      0000B4 D0 07            [24]  879 	pop	ar7
+                                    880 ;	i2c-bit-bang-oled-0.49-analog-reading.c:85: i2c_write_byte(data);
+      0000B6 8F 82            [24]  881 	mov	dpl, r7
+      0000B8 12r00r48         [24]  882 	lcall	_i2c_write_byte
+                                    883 ;	i2c-bit-bang-oled-0.49-analog-reading.c:86: i2c_stop();
+                                    884 ;	i2c-bit-bang-oled-0.49-analog-reading.c:87: }
+      0000BB 02r00r39         [24]  885 	ljmp	_i2c_stop
+                                    886 ;------------------------------------------------------------
+                                    887 ;Allocation info for local variables in function 'oled_set_cursor'
+                                    888 ;------------------------------------------------------------
+                                    889 ;page          Allocated to stack - _bp -3 +1 
+                                    890 ;x             Allocated to registers r7 
+                                    891 ;------------------------------------------------------------
+                                    892 ;	i2c-bit-bang-oled-0.49-analog-reading.c:89: void oled_set_cursor(uint8_t x, uint8_t page) {
+                                    893 ;	-----------------------------------------
+                                    894 ;	 function oled_set_cursor
+                                    895 ;	-----------------------------------------
+      0000BE                        896 _oled_set_cursor:
+      0000BE C0*00            [24]  897 	push	_bp
+      0000C0 85 81*00         [24]  898 	mov	_bp,sp
+      0000C3 AF 82            [24]  899 	mov	r7, dpl
+                                    900 ;	i2c-bit-bang-oled-0.49-analog-reading.c:90: oled_cmd(0xB0 + page);
+      0000C5 E5*00            [12]  901 	mov	a,_bp
+      0000C7 24 FD            [12]  902 	add	a,#0xfd
+      0000C9 F8               [12]  903 	mov	r0,a
+      0000CA 86 06            [24]  904 	mov	ar6,@r0
+      0000CC 74 B0            [12]  905 	mov	a,#0xb0
+      0000CE 2E               [12]  906 	add	a, r6
+      0000CF F5 82            [12]  907 	mov	dpl,a
+      0000D1 C0 07            [24]  908 	push	ar7
+      0000D3 12r00r84         [24]  909 	lcall	_oled_cmd
+      0000D6 D0 07            [24]  910 	pop	ar7
+                                    911 ;	i2c-bit-bang-oled-0.49-analog-reading.c:91: oled_cmd(0x00 + (x & 0x0F));
+      0000D8 8F 06            [24]  912 	mov	ar6,r7
+      0000DA 74 0F            [12]  913 	mov	a,#0x0f
+      0000DC 5E               [12]  914 	anl	a,r6
+      0000DD F5 82            [12]  915 	mov	dpl,a
+      0000DF C0 07            [24]  916 	push	ar7
+      0000E1 12r00r84         [24]  917 	lcall	_oled_cmd
+      0000E4 D0 07            [24]  918 	pop	ar7
+                                    919 ;	i2c-bit-bang-oled-0.49-analog-reading.c:92: oled_cmd(0x10 + (x >> 4));
+      0000E6 EF               [12]  920 	mov	a,r7
+      0000E7 C4               [12]  921 	swap	a
+      0000E8 54 0F            [12]  922 	anl	a,#0x0f
+      0000EA 24 10            [12]  923 	add	a,#0x10
+      0000EC F5 82            [12]  924 	mov	dpl,a
+      0000EE 12r00r84         [24]  925 	lcall	_oled_cmd
+                                    926 ;	i2c-bit-bang-oled-0.49-analog-reading.c:93: }
+      0000F1 D0*00            [24]  927 	pop	_bp
+      0000F3 22               [24]  928 	ret
+                                    929 ;------------------------------------------------------------
+                                    930 ;Allocation info for local variables in function 'oled_write_data_stream'
+                                    931 ;------------------------------------------------------------
+                                    932 ;len           Allocated to stack - _bp -3 +1 
+                                    933 ;data          Allocated to stack - _bp +1 +3 
+                                    934 ;i             Allocated to registers r4 
+                                    935 ;------------------------------------------------------------
+                                    936 ;	i2c-bit-bang-oled-0.49-analog-reading.c:94: void oled_write_data_stream(uint8_t *data, uint8_t len) {
+                                    937 ;	-----------------------------------------
+                                    938 ;	 function oled_write_data_stream
+                                    939 ;	-----------------------------------------
+      0000F4                        940 _oled_write_data_stream:
+      0000F4 C0*00            [24]  941 	push	_bp
+      0000F6 85 81*00         [24]  942 	mov	_bp,sp
+      0000F9 C0 82            [24]  943 	push	dpl
+      0000FB C0 83            [24]  944 	push	dph
+      0000FD C0 F0            [24]  945 	push	b
+                                    946 ;	i2c-bit-bang-oled-0.49-analog-reading.c:95: i2c_start();
+      0000FF 12r00r26         [24]  947 	lcall	_i2c_start
+                                    948 ;	i2c-bit-bang-oled-0.49-analog-reading.c:96: i2c_write_byte(OLED_ADDR);
+      000102 75 82 78         [24]  949 	mov	dpl, #0x78
+      000105 12r00r48         [24]  950 	lcall	_i2c_write_byte
+                                    951 ;	i2c-bit-bang-oled-0.49-analog-reading.c:97: i2c_write_byte(0x40);
+      000108 75 82 40         [24]  952 	mov	dpl, #0x40
+      00010B 12r00r48         [24]  953 	lcall	_i2c_write_byte
+                                    954 ;	i2c-bit-bang-oled-0.49-analog-reading.c:99: for (uint8_t i = 0; i < len; i++) {
+      00010E 7C 00            [12]  955 	mov	r4,#0x00
+      000110                        956 00103$:
+      000110 E5*00            [12]  957 	mov	a,_bp
+      000112 24 FD            [12]  958 	add	a,#0xfd
+      000114 F8               [12]  959 	mov	r0,a
+      000115 C3               [12]  960 	clr	c
+      000116 EC               [12]  961 	mov	a,r4
+      000117 96               [12]  962 	subb	a,@r0
+      000118 50 22            [24]  963 	jnc	00101$
+                                    964 ;	i2c-bit-bang-oled-0.49-analog-reading.c:100: i2c_write_byte(data[i]);
+      00011A A8*00            [24]  965 	mov	r0,_bp
+      00011C 08               [12]  966 	inc	r0
+      00011D EC               [12]  967 	mov	a,r4
+      00011E 26               [12]  968 	add	a, @r0
+      00011F FA               [12]  969 	mov	r2,a
+      000120 E4               [12]  970 	clr	a
+      000121 08               [12]  971 	inc	r0
+      000122 36               [12]  972 	addc	a, @r0
+      000123 FB               [12]  973 	mov	r3,a
+      000124 08               [12]  974 	inc	r0
+      000125 86 07            [24]  975 	mov	ar7,@r0
+      000127 8A 82            [24]  976 	mov	dpl,r2
+      000129 8B 83            [24]  977 	mov	dph,r3
+      00012B 8F F0            [24]  978 	mov	b,r7
+      00012D 12r00r00         [24]  979 	lcall	__gptrget
+      000130 F5 82            [12]  980 	mov	dpl,a
+      000132 C0 04            [24]  981 	push	ar4
+      000134 12r00r48         [24]  982 	lcall	_i2c_write_byte
+      000137 D0 04            [24]  983 	pop	ar4
+                                    984 ;	i2c-bit-bang-oled-0.49-analog-reading.c:99: for (uint8_t i = 0; i < len; i++) {
+      000139 0C               [12]  985 	inc	r4
+      00013A 80 D4            [24]  986 	sjmp	00103$
+      00013C                        987 00101$:
+                                    988 ;	i2c-bit-bang-oled-0.49-analog-reading.c:103: i2c_stop();
+      00013C 12r00r39         [24]  989 	lcall	_i2c_stop
+                                    990 ;	i2c-bit-bang-oled-0.49-analog-reading.c:104: }
+      00013F 85*00 81         [24]  991 	mov	sp,_bp
+      000142 D0*00            [24]  992 	pop	_bp
+      000144 22               [24]  993 	ret
+                                    994 ;------------------------------------------------------------
+                                    995 ;Allocation info for local variables in function 'oled_clear'
+                                    996 ;------------------------------------------------------------
+                                    997 ;page          Allocated to registers r7 
+                                    998 ;i             Allocated to registers r6 
+                                    999 ;------------------------------------------------------------
+                                   1000 ;	i2c-bit-bang-oled-0.49-analog-reading.c:105: void oled_clear(void) {
+                                   1001 ;	-----------------------------------------
+                                   1002 ;	 function oled_clear
+                                   1003 ;	-----------------------------------------
+      000145                       1004 _oled_clear:
+                                   1005 ;	i2c-bit-bang-oled-0.49-analog-reading.c:106: for (uint8_t page = 0; page < 8; page++) {
+      000145 7F 00            [12] 1006 	mov	r7,#0x00
+      000147                       1007 00107$:
+      000147 BF 08 00         [24] 1008 	cjne	r7,#0x08,00137$
+      00014A                       1009 00137$:
+      00014A 50 4B            [24] 1010 	jnc	00109$
+                                   1011 ;	i2c-bit-bang-oled-0.49-analog-reading.c:108: oled_cmd(0xB0 + page);
+      00014C 8F 06            [24] 1012 	mov	ar6,r7
+      00014E 74 B0            [12] 1013 	mov	a,#0xb0
+      000150 2E               [12] 1014 	add	a, r6
+      000151 F5 82            [12] 1015 	mov	dpl,a
+      000153 C0 07            [24] 1016 	push	ar7
+      000155 12r00r84         [24] 1017 	lcall	_oled_cmd
+                                   1018 ;	i2c-bit-bang-oled-0.49-analog-reading.c:109: oled_cmd(0x00);
+      000158 75 82 00         [24] 1019 	mov	dpl, #0x00
+      00015B 12r00r84         [24] 1020 	lcall	_oled_cmd
+                                   1021 ;	i2c-bit-bang-oled-0.49-analog-reading.c:110: oled_cmd(0x10);
+      00015E 75 82 10         [24] 1022 	mov	dpl, #0x10
+      000161 12r00r84         [24] 1023 	lcall	_oled_cmd
+                                   1024 ;	i2c-bit-bang-oled-0.49-analog-reading.c:112: i2c_start();
+      000164 12r00r26         [24] 1025 	lcall	_i2c_start
+                                   1026 ;	i2c-bit-bang-oled-0.49-analog-reading.c:113: i2c_write_byte(OLED_ADDR);
+      000167 75 82 78         [24] 1027 	mov	dpl, #0x78
+      00016A 12r00r48         [24] 1028 	lcall	_i2c_write_byte
+                                   1029 ;	i2c-bit-bang-oled-0.49-analog-reading.c:114: i2c_write_byte(0x40);   // data stream
+      00016D 75 82 40         [24] 1030 	mov	dpl, #0x40
+      000170 12r00r48         [24] 1031 	lcall	_i2c_write_byte
+      000173 D0 07            [24] 1032 	pop	ar7
+                                   1033 ;	i2c-bit-bang-oled-0.49-analog-reading.c:116: for (uint8_t i = 0; i < 128; i++) {
+      000175 7E 00            [12] 1034 	mov	r6,#0x00
+      000177                       1035 00104$:
+      000177 BE 80 00         [24] 1036 	cjne	r6,#0x80,00139$
+      00017A                       1037 00139$:
+      00017A 50 11            [24] 1038 	jnc	00101$
+                                   1039 ;	i2c-bit-bang-oled-0.49-analog-reading.c:117: i2c_write_byte(0x00);
+      00017C 75 82 00         [24] 1040 	mov	dpl, #0x00
+      00017F C0 07            [24] 1041 	push	ar7
+      000181 C0 06            [24] 1042 	push	ar6
+      000183 12r00r48         [24] 1043 	lcall	_i2c_write_byte
+      000186 D0 06            [24] 1044 	pop	ar6
+      000188 D0 07            [24] 1045 	pop	ar7
+                                   1046 ;	i2c-bit-bang-oled-0.49-analog-reading.c:116: for (uint8_t i = 0; i < 128; i++) {
+      00018A 0E               [12] 1047 	inc	r6
+      00018B 80 EA            [24] 1048 	sjmp	00104$
+      00018D                       1049 00101$:
+                                   1050 ;	i2c-bit-bang-oled-0.49-analog-reading.c:120: i2c_stop();
+      00018D C0 07            [24] 1051 	push	ar7
+      00018F 12r00r39         [24] 1052 	lcall	_i2c_stop
+      000192 D0 07            [24] 1053 	pop	ar7
+                                   1054 ;	i2c-bit-bang-oled-0.49-analog-reading.c:106: for (uint8_t page = 0; page < 8; page++) {
+      000194 0F               [12] 1055 	inc	r7
+      000195 80 B0            [24] 1056 	sjmp	00107$
+      000197                       1057 00109$:
+                                   1058 ;	i2c-bit-bang-oled-0.49-analog-reading.c:122: }
+      000197 22               [24] 1059 	ret
+                                   1060 ;------------------------------------------------------------
+                                   1061 ;Allocation info for local variables in function 'oled_init'
+                                   1062 ;------------------------------------------------------------
+                                   1063 ;	i2c-bit-bang-oled-0.49-analog-reading.c:124: void oled_init(void) {
+                                   1064 ;	-----------------------------------------
+                                   1065 ;	 function oled_init
+                                   1066 ;	-----------------------------------------
+      000198                       1067 _oled_init:
+                                   1068 ;	i2c-bit-bang-oled-0.49-analog-reading.c:125: oled_cmd(0xAE);
+      000198 75 82 AE         [24] 1069 	mov	dpl, #0xae
+      00019B 12r00r84         [24] 1070 	lcall	_oled_cmd
+                                   1071 ;	i2c-bit-bang-oled-0.49-analog-reading.c:126: oled_cmd(0x20); oled_cmd(0x00);
+      00019E 75 82 20         [24] 1072 	mov	dpl, #0x20
+      0001A1 12r00r84         [24] 1073 	lcall	_oled_cmd
+      0001A4 75 82 00         [24] 1074 	mov	dpl, #0x00
+      0001A7 12r00r84         [24] 1075 	lcall	_oled_cmd
+                                   1076 ;	i2c-bit-bang-oled-0.49-analog-reading.c:127: oled_cmd(0xB0);
+      0001AA 75 82 B0         [24] 1077 	mov	dpl, #0xb0
+      0001AD 12r00r84         [24] 1078 	lcall	_oled_cmd
+                                   1079 ;	i2c-bit-bang-oled-0.49-analog-reading.c:128: oled_cmd(0xC8);
+      0001B0 75 82 C8         [24] 1080 	mov	dpl, #0xc8
+      0001B3 12r00r84         [24] 1081 	lcall	_oled_cmd
+                                   1082 ;	i2c-bit-bang-oled-0.49-analog-reading.c:129: oled_cmd(0x00);
+      0001B6 75 82 00         [24] 1083 	mov	dpl, #0x00
+      0001B9 12r00r84         [24] 1084 	lcall	_oled_cmd
+                                   1085 ;	i2c-bit-bang-oled-0.49-analog-reading.c:130: oled_cmd(0x10);
+      0001BC 75 82 10         [24] 1086 	mov	dpl, #0x10
+      0001BF 12r00r84         [24] 1087 	lcall	_oled_cmd
+                                   1088 ;	i2c-bit-bang-oled-0.49-analog-reading.c:131: oled_cmd(0x40);
+      0001C2 75 82 40         [24] 1089 	mov	dpl, #0x40
+      0001C5 12r00r84         [24] 1090 	lcall	_oled_cmd
+                                   1091 ;	i2c-bit-bang-oled-0.49-analog-reading.c:132: oled_cmd(0x81); oled_cmd(0x7F);
+      0001C8 75 82 81         [24] 1092 	mov	dpl, #0x81
+      0001CB 12r00r84         [24] 1093 	lcall	_oled_cmd
+      0001CE 75 82 7F         [24] 1094 	mov	dpl, #0x7f
+      0001D1 12r00r84         [24] 1095 	lcall	_oled_cmd
+                                   1096 ;	i2c-bit-bang-oled-0.49-analog-reading.c:133: oled_cmd(0xA1);
+      0001D4 75 82 A1         [24] 1097 	mov	dpl, #0xa1
+      0001D7 12r00r84         [24] 1098 	lcall	_oled_cmd
+                                   1099 ;	i2c-bit-bang-oled-0.49-analog-reading.c:134: oled_cmd(0xA6);
+      0001DA 75 82 A6         [24] 1100 	mov	dpl, #0xa6
+      0001DD 12r00r84         [24] 1101 	lcall	_oled_cmd
+                                   1102 ;	i2c-bit-bang-oled-0.49-analog-reading.c:135: oled_cmd(0xA8); oled_cmd(0x3F);
+      0001E0 75 82 A8         [24] 1103 	mov	dpl, #0xa8
+      0001E3 12r00r84         [24] 1104 	lcall	_oled_cmd
+      0001E6 75 82 3F         [24] 1105 	mov	dpl, #0x3f
+      0001E9 12r00r84         [24] 1106 	lcall	_oled_cmd
+                                   1107 ;	i2c-bit-bang-oled-0.49-analog-reading.c:136: oled_cmd(0xA4);
+      0001EC 75 82 A4         [24] 1108 	mov	dpl, #0xa4
+      0001EF 12r00r84         [24] 1109 	lcall	_oled_cmd
+                                   1110 ;	i2c-bit-bang-oled-0.49-analog-reading.c:137: oled_cmd(0xD3); oled_cmd(0x00);
+      0001F2 75 82 D3         [24] 1111 	mov	dpl, #0xd3
+      0001F5 12r00r84         [24] 1112 	lcall	_oled_cmd
+      0001F8 75 82 00         [24] 1113 	mov	dpl, #0x00
+      0001FB 12r00r84         [24] 1114 	lcall	_oled_cmd
+                                   1115 ;	i2c-bit-bang-oled-0.49-analog-reading.c:138: oled_cmd(0xD5); oled_cmd(0xF0);
+      0001FE 75 82 D5         [24] 1116 	mov	dpl, #0xd5
+      000201 12r00r84         [24] 1117 	lcall	_oled_cmd
+      000204 75 82 F0         [24] 1118 	mov	dpl, #0xf0
+      000207 12r00r84         [24] 1119 	lcall	_oled_cmd
+                                   1120 ;	i2c-bit-bang-oled-0.49-analog-reading.c:139: oled_cmd(0xD9); oled_cmd(0x22);
+      00020A 75 82 D9         [24] 1121 	mov	dpl, #0xd9
+      00020D 12r00r84         [24] 1122 	lcall	_oled_cmd
+      000210 75 82 22         [24] 1123 	mov	dpl, #0x22
+      000213 12r00r84         [24] 1124 	lcall	_oled_cmd
+                                   1125 ;	i2c-bit-bang-oled-0.49-analog-reading.c:140: oled_cmd(0xDA); oled_cmd(0x12);
+      000216 75 82 DA         [24] 1126 	mov	dpl, #0xda
+      000219 12r00r84         [24] 1127 	lcall	_oled_cmd
+      00021C 75 82 12         [24] 1128 	mov	dpl, #0x12
+      00021F 12r00r84         [24] 1129 	lcall	_oled_cmd
+                                   1130 ;	i2c-bit-bang-oled-0.49-analog-reading.c:141: oled_cmd(0xDB); oled_cmd(0x20);
+      000222 75 82 DB         [24] 1131 	mov	dpl, #0xdb
+      000225 12r00r84         [24] 1132 	lcall	_oled_cmd
+      000228 75 82 20         [24] 1133 	mov	dpl, #0x20
+      00022B 12r00r84         [24] 1134 	lcall	_oled_cmd
+                                   1135 ;	i2c-bit-bang-oled-0.49-analog-reading.c:142: oled_cmd(0x8D); oled_cmd(0x14);
+      00022E 75 82 8D         [24] 1136 	mov	dpl, #0x8d
+      000231 12r00r84         [24] 1137 	lcall	_oled_cmd
+      000234 75 82 14         [24] 1138 	mov	dpl, #0x14
+      000237 12r00r84         [24] 1139 	lcall	_oled_cmd
+                                   1140 ;	i2c-bit-bang-oled-0.49-analog-reading.c:143: oled_cmd(0xAF);
+      00023A 75 82 AF         [24] 1141 	mov	dpl, #0xaf
+      00023D 12r00r84         [24] 1142 	lcall	_oled_cmd
+                                   1143 ;	i2c-bit-bang-oled-0.49-analog-reading.c:145: oled_clear();
+                                   1144 ;	i2c-bit-bang-oled-0.49-analog-reading.c:146: }
+      000240 02r01r45         [24] 1145 	ljmp	_oled_clear
+                                   1146 ;------------------------------------------------------------
+                                   1147 ;Allocation info for local variables in function 'oled_draw_char'
+                                   1148 ;------------------------------------------------------------
+                                   1149 ;c             Allocated to registers r7 
+                                   1150 ;index         Allocated to registers r7 
+                                   1151 ;i             Allocated to registers r5 
+                                   1152 ;------------------------------------------------------------
+                                   1153 ;	i2c-bit-bang-oled-0.49-analog-reading.c:162: void oled_draw_char(char c) {
+                                   1154 ;	-----------------------------------------
+                                   1155 ;	 function oled_draw_char
+                                   1156 ;	-----------------------------------------
+      000243                       1157 _oled_draw_char:
+      000243 AF 82            [24] 1158 	mov	r7, dpl
+                                   1159 ;	i2c-bit-bang-oled-0.49-analog-reading.c:163: if (c < '0' || c > '9') return;
+      000245 BF 30 00         [24] 1160 	cjne	r7,#0x30,00129$
+      000248                       1161 00129$:
+      000248 40 05            [24] 1162 	jc	00101$
+      00024A EF               [12] 1163 	mov	a,r7
+      00024B 24 C6            [12] 1164 	add	a,#0xff - 0x39
+      00024D 50 01            [24] 1165 	jnc	00102$
+      00024F                       1166 00101$:
+      00024F 22               [24] 1167 	ret
+      000250                       1168 00102$:
+                                   1169 ;	i2c-bit-bang-oled-0.49-analog-reading.c:165: uint8_t index = c - '0';
+      000250 EF               [12] 1170 	mov	a,r7
+      000251 24 D0            [12] 1171 	add	a,#0xd0
+      000253 FF               [12] 1172 	mov	r7,a
+                                   1173 ;	i2c-bit-bang-oled-0.49-analog-reading.c:167: i2c_start();
+      000254 C0 07            [24] 1174 	push	ar7
+      000256 12r00r26         [24] 1175 	lcall	_i2c_start
+                                   1176 ;	i2c-bit-bang-oled-0.49-analog-reading.c:168: i2c_write_byte(OLED_ADDR);
+      000259 75 82 78         [24] 1177 	mov	dpl, #0x78
+      00025C 12r00r48         [24] 1178 	lcall	_i2c_write_byte
+                                   1179 ;	i2c-bit-bang-oled-0.49-analog-reading.c:169: i2c_write_byte(0x40);
+      00025F 75 82 40         [24] 1180 	mov	dpl, #0x40
+      000262 12r00r48         [24] 1181 	lcall	_i2c_write_byte
+      000265 D0 07            [24] 1182 	pop	ar7
+                                   1183 ;	i2c-bit-bang-oled-0.49-analog-reading.c:171: for (uint8_t i = 0; i < 5; i++) {
+      000267 EF               [12] 1184 	mov	a,r7
+      000268 75 F0 05         [24] 1185 	mov	b,#0x05
+      00026B A4               [48] 1186 	mul	ab
+      00026C 24r00            [12] 1187 	add	a, #_font5x7
+      00026E FE               [12] 1188 	mov	r6,a
+      00026F 74s00            [12] 1189 	mov	a,#(_font5x7 >> 8)
+      000271 35 F0            [12] 1190 	addc	a, b
+      000273 FF               [12] 1191 	mov	r7,a
+      000274 7D 00            [12] 1192 	mov	r5,#0x00
+      000276                       1193 00106$:
+      000276 BD 05 00         [24] 1194 	cjne	r5,#0x05,00132$
+      000279                       1195 00132$:
+      000279 50 1E            [24] 1196 	jnc	00104$
+                                   1197 ;	i2c-bit-bang-oled-0.49-analog-reading.c:172: i2c_write_byte(font5x7[index][i]);
+      00027B ED               [12] 1198 	mov	a,r5
+      00027C 2E               [12] 1199 	add	a, r6
+      00027D F5 82            [12] 1200 	mov	dpl,a
+      00027F E4               [12] 1201 	clr	a
+      000280 3F               [12] 1202 	addc	a, r7
+      000281 F5 83            [12] 1203 	mov	dph,a
+      000283 E4               [12] 1204 	clr	a
+      000284 93               [24] 1205 	movc	a,@a+dptr
+      000285 F5 82            [12] 1206 	mov	dpl,a
+      000287 C0 07            [24] 1207 	push	ar7
+      000289 C0 06            [24] 1208 	push	ar6
+      00028B C0 05            [24] 1209 	push	ar5
+      00028D 12r00r48         [24] 1210 	lcall	_i2c_write_byte
+      000290 D0 05            [24] 1211 	pop	ar5
+      000292 D0 06            [24] 1212 	pop	ar6
+      000294 D0 07            [24] 1213 	pop	ar7
+                                   1214 ;	i2c-bit-bang-oled-0.49-analog-reading.c:171: for (uint8_t i = 0; i < 5; i++) {
+      000296 0D               [12] 1215 	inc	r5
+      000297 80 DD            [24] 1216 	sjmp	00106$
+      000299                       1217 00104$:
+                                   1218 ;	i2c-bit-bang-oled-0.49-analog-reading.c:175: i2c_write_byte(0x00); // spacing
+      000299 75 82 00         [24] 1219 	mov	dpl, #0x00
+      00029C 12r00r48         [24] 1220 	lcall	_i2c_write_byte
+                                   1221 ;	i2c-bit-bang-oled-0.49-analog-reading.c:177: i2c_stop();
+                                   1222 ;	i2c-bit-bang-oled-0.49-analog-reading.c:178: }
+      00029F 02r00r39         [24] 1223 	ljmp	_i2c_stop
+                                   1224 ;------------------------------------------------------------
+                                   1225 ;Allocation info for local variables in function 'oled_print_uint'
+                                   1226 ;------------------------------------------------------------
+                                   1227 ;value         Allocated to registers r6 r7 
+                                   1228 ;buf           Allocated to stack - _bp +3 +6 
+                                   1229 ;i             Allocated to registers r5 
+                                   1230 ;temp          Allocated to registers r6 r7 
+                                   1231 ;rev           Allocated to stack - _bp +9 +6 
+                                   1232 ;j             Allocated to registers r5 
+                                   1233 ;k             Allocated to registers r6 
+                                   1234 ;sloc0         Allocated to stack - _bp +20 +1 
+                                   1235 ;sloc1         Allocated to stack - _bp +1 +2 
+                                   1236 ;------------------------------------------------------------
+                                   1237 ;	i2c-bit-bang-oled-0.49-analog-reading.c:180: void oled_print_uint(uint16_t value) {
+                                   1238 ;	-----------------------------------------
+                                   1239 ;	 function oled_print_uint
+                                   1240 ;	-----------------------------------------
+      0002A2                       1241 _oled_print_uint:
+      0002A2 C0*00            [24] 1242 	push	_bp
+      0002A4 E5 81            [12] 1243 	mov	a,sp
+      0002A6 F5*00            [12] 1244 	mov	_bp,a
+      0002A8 24 0E            [12] 1245 	add	a,#0x0e
+      0002AA F5 81            [12] 1246 	mov	sp,a
+      0002AC AE 82            [24] 1247 	mov	r6, dpl
+      0002AE AF 83            [24] 1248 	mov	r7, dph
+                                   1249 ;	i2c-bit-bang-oled-0.49-analog-reading.c:184: if (value == 0) {
+      0002B0 EE               [12] 1250 	mov	a,r6
+      0002B1 4F               [12] 1251 	orl	a,r7
+      0002B2 70 0C            [24] 1252 	jnz	00108$
+                                   1253 ;	i2c-bit-bang-oled-0.49-analog-reading.c:185: buf[i++] = '0';
+      0002B4 E5*00            [12] 1254 	mov	a,_bp
+      0002B6 24 03            [12] 1255 	add	a,#0x03
+      0002B8 F9               [12] 1256 	mov	r1,a
+      0002B9 7D 01            [12] 1257 	mov	r5,#0x01
+      0002BB 77 30            [12] 1258 	mov	@r1,#0x30
+      0002BD 02r03r3D         [24] 1259 	ljmp	00109$
+      0002C0                       1260 00108$:
+                                   1261 ;	i2c-bit-bang-oled-0.49-analog-reading.c:187: uint16_t temp = value;
+                                   1262 ;	i2c-bit-bang-oled-0.49-analog-reading.c:191: while (temp > 0) {
+      0002C0 E5*00            [12] 1263 	mov	a,_bp
+      0002C2 24 09            [12] 1264 	add	a,#0x09
+      0002C4 FC               [12] 1265 	mov	r4,a
+      0002C5 7D 00            [12] 1266 	mov	r5,#0x00
+      0002C7                       1267 00101$:
+      0002C7 EE               [12] 1268 	mov	a,r6
+      0002C8 4F               [12] 1269 	orl	a,r7
+      0002C9 60 54            [24] 1270 	jz	00120$
+                                   1271 ;	i2c-bit-bang-oled-0.49-analog-reading.c:192: rev[j++] = (temp % 10) + '0';
+      0002CB ED               [12] 1272 	mov	a,r5
+      0002CC 2C               [12] 1273 	add	a, r4
+      0002CD F9               [12] 1274 	mov	r1,a
+      0002CE 0D               [12] 1275 	inc	r5
+      0002CF C0 04            [24] 1276 	push	ar4
+      0002D1 A8*00            [24] 1277 	mov	r0,_bp
+      0002D3 08               [12] 1278 	inc	r0
+      0002D4 A6 06            [24] 1279 	mov	@r0,ar6
+      0002D6 08               [12] 1280 	inc	r0
+      0002D7 A6 07            [24] 1281 	mov	@r0,ar7
+      0002D9 C0 05            [24] 1282 	push	ar5
+      0002DB C0 01            [24] 1283 	push	ar1
+      0002DD 74 0A            [12] 1284 	mov	a,#0x0a
+      0002DF C0 E0            [24] 1285 	push	acc
+      0002E1 E4               [12] 1286 	clr	a
+      0002E2 C0 E0            [24] 1287 	push	acc
+      0002E4 A8*00            [24] 1288 	mov	r0,_bp
+      0002E6 08               [12] 1289 	inc	r0
+      0002E7 86 82            [24] 1290 	mov	dpl, @r0
+      0002E9 08               [12] 1291 	inc	r0
+      0002EA 86 83            [24] 1292 	mov	dph, @r0
+      0002EC 12r00r00         [24] 1293 	lcall	__moduint
+      0002EF AB 82            [24] 1294 	mov	r3, dpl
+      0002F1 15 81            [12] 1295 	dec	sp
+      0002F3 15 81            [12] 1296 	dec	sp
+      0002F5 D0 01            [24] 1297 	pop	ar1
+      0002F7 74 30            [12] 1298 	mov	a,#0x30
+      0002F9 2B               [12] 1299 	add	a, r3
+      0002FA F7               [12] 1300 	mov	@r1,a
+                                   1301 ;	i2c-bit-bang-oled-0.49-analog-reading.c:193: temp /= 10;
+      0002FB 74 0A            [12] 1302 	mov	a,#0x0a
+      0002FD C0 E0            [24] 1303 	push	acc
+      0002FF E4               [12] 1304 	clr	a
+      000300 C0 E0            [24] 1305 	push	acc
+      000302 A8*00            [24] 1306 	mov	r0,_bp
+      000304 08               [12] 1307 	inc	r0
+      000305 86 82            [24] 1308 	mov	dpl, @r0
+      000307 08               [12] 1309 	inc	r0
+      000308 86 83            [24] 1310 	mov	dph, @r0
+      00030A 12r00r00         [24] 1311 	lcall	__divuint
+      00030D AB 82            [24] 1312 	mov	r3, dpl
+      00030F AC 83            [24] 1313 	mov	r4, dph
+      000311 15 81            [12] 1314 	dec	sp
+      000313 15 81            [12] 1315 	dec	sp
+      000315 D0 05            [24] 1316 	pop	ar5
+      000317 8B 06            [24] 1317 	mov	ar6,r3
+      000319 8C 07            [24] 1318 	mov	ar7,r4
+      00031B D0 04            [24] 1319 	pop	ar4
+                                   1320 ;	i2c-bit-bang-oled-0.49-analog-reading.c:195: while (j > 0) buf[i++] = rev[--j];
+      00031D 80 A8            [24] 1321 	sjmp	00101$
+      00031F                       1322 00120$:
+      00031F E5*00            [12] 1323 	mov	a,_bp
+      000321 24 03            [12] 1324 	add	a,#0x03
+      000323 FF               [12] 1325 	mov	r7,a
+      000324 8C 06            [24] 1326 	mov	ar6,r4
+      000326 7C 00            [12] 1327 	mov	r4,#0x00
+      000328 8D 03            [24] 1328 	mov	ar3,r5
+      00032A                       1329 00104$:
+      00032A EB               [12] 1330 	mov	a,r3
+      00032B 60 0E            [24] 1331 	jz	00124$
+      00032D EC               [12] 1332 	mov	a,r4
+      00032E 2F               [12] 1333 	add	a, r7
+      00032F F9               [12] 1334 	mov	r1,a
+      000330 0C               [12] 1335 	inc	r4
+      000331 1B               [12] 1336 	dec	r3
+      000332 EB               [12] 1337 	mov	a,r3
+      000333 2E               [12] 1338 	add	a, r6
+      000334 F8               [12] 1339 	mov	r0,a
+      000335 86 02            [24] 1340 	mov	ar2,@r0
+      000337 A7 02            [24] 1341 	mov	@r1,ar2
+      000339 80 EF            [24] 1342 	sjmp	00104$
+      00033B                       1343 00124$:
+      00033B 8C 05            [24] 1344 	mov	ar5,r4
+      00033D                       1345 00109$:
+                                   1346 ;	i2c-bit-bang-oled-0.49-analog-reading.c:197: buf[i] = '\0';
+      00033D E5*00            [12] 1347 	mov	a,_bp
+      00033F 24 03            [12] 1348 	add	a,#0x03
+      000341 FF               [12] 1349 	mov	r7,a
+      000342 2D               [12] 1350 	add	a,r5
+      000343 F8               [12] 1351 	mov	r0,a
+      000344 76 00            [12] 1352 	mov	@r0,#0x00
+                                   1353 ;	i2c-bit-bang-oled-0.49-analog-reading.c:199: for (uint8_t k = 0; k < i; k++) {
+      000346 7E 00            [12] 1354 	mov	r6,#0x00
+      000348                       1355 00112$:
+      000348 C3               [12] 1356 	clr	c
+      000349 EE               [12] 1357 	mov	a,r6
+      00034A 9D               [12] 1358 	subb	a,r5
+      00034B 50 17            [24] 1359 	jnc	00114$
+                                   1360 ;	i2c-bit-bang-oled-0.49-analog-reading.c:200: oled_draw_char(buf[k]);
+      00034D EE               [12] 1361 	mov	a,r6
+      00034E 2F               [12] 1362 	add	a, r7
+      00034F F9               [12] 1363 	mov	r1,a
+      000350 87 82            [24] 1364 	mov	dpl,@r1
+      000352 C0 07            [24] 1365 	push	ar7
+      000354 C0 06            [24] 1366 	push	ar6
+      000356 C0 05            [24] 1367 	push	ar5
+      000358 12r02r43         [24] 1368 	lcall	_oled_draw_char
+      00035B D0 05            [24] 1369 	pop	ar5
+      00035D D0 06            [24] 1370 	pop	ar6
+      00035F D0 07            [24] 1371 	pop	ar7
+                                   1372 ;	i2c-bit-bang-oled-0.49-analog-reading.c:199: for (uint8_t k = 0; k < i; k++) {
+      000361 0E               [12] 1373 	inc	r6
+      000362 80 E4            [24] 1374 	sjmp	00112$
+      000364                       1375 00114$:
+                                   1376 ;	i2c-bit-bang-oled-0.49-analog-reading.c:202: }
+      000364 85*00 81         [24] 1377 	mov	sp,_bp
+      000367 D0*00            [24] 1378 	pop	_bp
+      000369 22               [24] 1379 	ret
+                                   1380 ;------------------------------------------------------------
+                                   1381 ;Allocation info for local variables in function 'timer0_ISR'
+                                   1382 ;------------------------------------------------------------
+                                   1383 ;	i2c-bit-bang-oled-0.49-analog-reading.c:205: void timer0_ISR(void) __interrupt(INT_NO_TMR0) {
+                                   1384 ;	-----------------------------------------
+                                   1385 ;	 function timer0_ISR
+                                   1386 ;	-----------------------------------------
+      00036A                       1387 _timer0_ISR:
+      00036A C0 E0            [24] 1388 	push	acc
+      00036C C0 07            [24] 1389 	push	ar7
+      00036E C0 06            [24] 1390 	push	ar6
+      000370 C0 D0            [24] 1391 	push	psw
+      000372 75 D0 00         [24] 1392 	mov	psw,#0x00
+                                   1393 ;	i2c-bit-bang-oled-0.49-analog-reading.c:206: TF0 = 0;
+                                   1394 ;	assignBit
+      000375 C2 8D            [12] 1395 	clr	_TF0
+                                   1396 ;	i2c-bit-bang-oled-0.49-analog-reading.c:207: TH0 = 0xB1;
+      000377 75 8C B1         [24] 1397 	mov	_TH0,#0xb1
+                                   1398 ;	i2c-bit-bang-oled-0.49-analog-reading.c:208: TL0 = 0xE0;
+      00037A 75 8A E0         [24] 1399 	mov	_TL0,#0xe0
+                                   1400 ;	i2c-bit-bang-oled-0.49-analog-reading.c:209: tick_10ms++;
+      00037D AE*00            [24] 1401 	mov	r6,_tick_10ms
+      00037F AF*01            [24] 1402 	mov	r7,(_tick_10ms + 1)
+      000381 74 01            [12] 1403 	mov	a,#0x01
+      000383 2E               [12] 1404 	add	a, r6
+      000384 F5*00            [12] 1405 	mov	_tick_10ms,a
+      000386 E4               [12] 1406 	clr	a
+      000387 3F               [12] 1407 	addc	a, r7
+      000388 F5*01            [12] 1408 	mov	(_tick_10ms + 1),a
+                                   1409 ;	i2c-bit-bang-oled-0.49-analog-reading.c:210: serialTime++;
+      00038A 05*02            [12] 1410 	inc	_serialTime
+      00038C E4               [12] 1411 	clr	a
+      00038D B5*02 02         [24] 1412 	cjne	a,_serialTime,00103$
+      000390 05*03            [12] 1413 	inc	(_serialTime + 1)
+      000392                       1414 00103$:
+                                   1415 ;	i2c-bit-bang-oled-0.49-analog-reading.c:211: }
+      000392 D0 D0            [24] 1416 	pop	psw
+      000394 D0 06            [24] 1417 	pop	ar6
+      000396 D0 07            [24] 1418 	pop	ar7
+      000398 D0 E0            [24] 1419 	pop	acc
+      00039A 32               [24] 1420 	reti
+                                   1421 ;	eliminated unneeded push/pop dpl
+                                   1422 ;	eliminated unneeded push/pop dph
+                                   1423 ;	eliminated unneeded push/pop b
+                                   1424 ;------------------------------------------------------------
+                                   1425 ;Allocation info for local variables in function 'timer0_init'
+                                   1426 ;------------------------------------------------------------
+                                   1427 ;	i2c-bit-bang-oled-0.49-analog-reading.c:213: void timer0_init(void) {
+                                   1428 ;	-----------------------------------------
+                                   1429 ;	 function timer0_init
+                                   1430 ;	-----------------------------------------
+      00039B                       1431 _timer0_init:
+                                   1432 ;	i2c-bit-bang-oled-0.49-analog-reading.c:214: TMOD &= ~0x03;
+      00039B 53 89 FC         [24] 1433 	anl	_TMOD,#0xfc
+                                   1434 ;	i2c-bit-bang-oled-0.49-analog-reading.c:215: TMOD |=  0x01;
+      00039E 43 89 01         [24] 1435 	orl	_TMOD,#0x01
+                                   1436 ;	i2c-bit-bang-oled-0.49-analog-reading.c:217: TH0 = 0xB1;
+      0003A1 75 8C B1         [24] 1437 	mov	_TH0,#0xb1
+                                   1438 ;	i2c-bit-bang-oled-0.49-analog-reading.c:218: TL0 = 0xE0;
+      0003A4 75 8A E0         [24] 1439 	mov	_TL0,#0xe0
+                                   1440 ;	i2c-bit-bang-oled-0.49-analog-reading.c:220: ET0 = 1;
+                                   1441 ;	assignBit
+      0003A7 D2 A9            [12] 1442 	setb	_ET0
+                                   1443 ;	i2c-bit-bang-oled-0.49-analog-reading.c:221: TR0 = 1;
+                                   1444 ;	assignBit
+      0003A9 D2 8C            [12] 1445 	setb	_TR0
+                                   1446 ;	i2c-bit-bang-oled-0.49-analog-reading.c:222: EA = 1;
+                                   1447 ;	assignBit
+      0003AB D2 AF            [12] 1448 	setb	_EA
+                                   1449 ;	i2c-bit-bang-oled-0.49-analog-reading.c:223: }
+      0003AD 22               [24] 1450 	ret
+                                   1451 ;------------------------------------------------------------
+                                   1452 ;Allocation info for local variables in function 'clock_init'
+                                   1453 ;------------------------------------------------------------
+                                   1454 ;	i2c-bit-bang-oled-0.49-analog-reading.c:226: void clock_init(void) {
+                                   1455 ;	-----------------------------------------
+                                   1456 ;	 function clock_init
+                                   1457 ;	-----------------------------------------
+      0003AE                       1458 _clock_init:
+                                   1459 ;	i2c-bit-bang-oled-0.49-analog-reading.c:227: SAFE_MOD = 0x55;
+      0003AE 75 A1 55         [24] 1460 	mov	_SAFE_MOD,#0x55
+                                   1461 ;	i2c-bit-bang-oled-0.49-analog-reading.c:228: SAFE_MOD = 0xAA;
+      0003B1 75 A1 AA         [24] 1462 	mov	_SAFE_MOD,#0xaa
+                                   1463 ;	i2c-bit-bang-oled-0.49-analog-reading.c:229: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
+      0003B4 74 F8            [12] 1464 	mov	a,#0xf8
+      0003B6 55 B9            [12] 1465 	anl	a,_CLOCK_CFG
+      0003B8 44 06            [12] 1466 	orl	a,#0x06
+      0003BA F5 B9            [12] 1467 	mov	_CLOCK_CFG,a
+                                   1468 ;	i2c-bit-bang-oled-0.49-analog-reading.c:230: SAFE_MOD = 0x00;
+      0003BC 75 A1 00         [24] 1469 	mov	_SAFE_MOD,#0x00
+                                   1470 ;	i2c-bit-bang-oled-0.49-analog-reading.c:231: }
+      0003BF 22               [24] 1471 	ret
+                                   1472 ;------------------------------------------------------------
+                                   1473 ;Allocation info for local variables in function 'analogReading'
+                                   1474 ;------------------------------------------------------------
+                                   1475 ;	i2c-bit-bang-oled-0.49-analog-reading.c:234: uint8_t analogReading(void) {
+                                   1476 ;	-----------------------------------------
+                                   1477 ;	 function analogReading
+                                   1478 ;	-----------------------------------------
+      0003C0                       1479 _analogReading:
+                                   1480 ;	i2c-bit-bang-oled-0.49-analog-reading.c:235: ADC_START = 1;
+                                   1481 ;	assignBit
+      0003C0 D2 84            [12] 1482 	setb	_ADC_START
+                                   1483 ;	i2c-bit-bang-oled-0.49-analog-reading.c:236: while (ADC_START);
+      0003C2                       1484 00101$:
+      0003C2 20 84 FD         [24] 1485 	jb	_ADC_START,00101$
+                                   1486 ;	i2c-bit-bang-oled-0.49-analog-reading.c:237: ADC_IF = 0;
+                                   1487 ;	assignBit
+      0003C5 C2 85            [12] 1488 	clr	_ADC_IF
+                                   1489 ;	i2c-bit-bang-oled-0.49-analog-reading.c:238: return ADC_DATA;
+      0003C7 85 9F 82         [24] 1490 	mov	dpl, _ADC_DATA
+                                   1491 ;	i2c-bit-bang-oled-0.49-analog-reading.c:239: }
+      0003CA 22               [24] 1492 	ret
+                                   1493 ;------------------------------------------------------------
+                                   1494 ;Allocation info for local variables in function 'rawToMillivolts'
+                                   1495 ;------------------------------------------------------------
+                                   1496 ;raw           Allocated to registers r7 
+                                   1497 ;------------------------------------------------------------
+                                   1498 ;	i2c-bit-bang-oled-0.49-analog-reading.c:241: uint16_t rawToMillivolts(uint8_t raw) {
+                                   1499 ;	-----------------------------------------
+                                   1500 ;	 function rawToMillivolts
+                                   1501 ;	-----------------------------------------
+      0003CB                       1502 _rawToMillivolts:
+      0003CB AF 82            [24] 1503 	mov	r7, dpl
+                                   1504 ;	i2c-bit-bang-oled-0.49-analog-reading.c:242: if (raw < 46) return 0;
+      0003CD BF 2E 00         [24] 1505 	cjne	r7,#0x2e,00111$
+      0003D0                       1506 00111$:
+      0003D0 50 04            [24] 1507 	jnc	00102$
+      0003D2 90 00 00         [24] 1508 	mov	dptr,#0x0000
+      0003D5 22               [24] 1509 	ret
+      0003D6                       1510 00102$:
+                                   1511 ;	i2c-bit-bang-oled-0.49-analog-reading.c:243: return 300 + ((uint32_t)(raw - 46) * 3000) / 117;
+      0003D6 EF               [12] 1512 	mov	a,r7
+      0003D7 24 D2            [12] 1513 	add	a,#0xd2
+      0003D9 FF               [12] 1514 	mov	r7,a
+      0003DA 7E 00            [12] 1515 	mov	r6,#0x00
+      0003DC 7D 00            [12] 1516 	mov	r5,#0x00
+      0003DE 7C 00            [12] 1517 	mov	r4,#0x00
+      0003E0 C0 07            [24] 1518 	push	ar7
+      0003E2 C0 06            [24] 1519 	push	ar6
+      0003E4 C0 05            [24] 1520 	push	ar5
+      0003E6 C0 04            [24] 1521 	push	ar4
+      0003E8 90 0B B8         [24] 1522 	mov	dptr,#0x0bb8
+      0003EB E4               [12] 1523 	clr	a
+      0003EC F5 F0            [12] 1524 	mov	b,a
+      0003EE 12r00r00         [24] 1525 	lcall	__mullong
+      0003F1 AC 82            [24] 1526 	mov	r4, dpl
+      0003F3 AD 83            [24] 1527 	mov	r5, dph
+      0003F5 AE F0            [24] 1528 	mov	r6, b
+      0003F7 FF               [12] 1529 	mov	r7, a
+      0003F8 E5 81            [12] 1530 	mov	a,sp
+      0003FA 24 FC            [12] 1531 	add	a,#0xfc
+      0003FC F5 81            [12] 1532 	mov	sp,a
+      0003FE 74 75            [12] 1533 	mov	a,#0x75
+      000400 C0 E0            [24] 1534 	push	acc
+      000402 E4               [12] 1535 	clr	a
+      000403 C0 E0            [24] 1536 	push	acc
+      000405 C0 E0            [24] 1537 	push	acc
+      000407 C0 E0            [24] 1538 	push	acc
+      000409 8C 82            [24] 1539 	mov	dpl, r4
+      00040B 8D 83            [24] 1540 	mov	dph, r5
+      00040D 8E F0            [24] 1541 	mov	b, r6
+      00040F EF               [12] 1542 	mov	a, r7
+      000410 12r00r00         [24] 1543 	lcall	__divulong
+      000413 AC 82            [24] 1544 	mov	r4, dpl
+      000415 AD 83            [24] 1545 	mov	r5, dph
+      000417 E5 81            [12] 1546 	mov	a,sp
+      000419 24 FC            [12] 1547 	add	a,#0xfc
+      00041B F5 81            [12] 1548 	mov	sp,a
+      00041D 74 2C            [12] 1549 	mov	a,#0x2c
+      00041F 2C               [12] 1550 	add	a, r4
+      000420 F5 82            [12] 1551 	mov	dpl,a
+      000422 74 01            [12] 1552 	mov	a,#0x01
+      000424 3D               [12] 1553 	addc	a, r5
+      000425 F5 83            [12] 1554 	mov	dph,a
+                                   1555 ;	i2c-bit-bang-oled-0.49-analog-reading.c:244: }
+      000427 22               [24] 1556 	ret
+                                   1557 ;------------------------------------------------------------
+                                   1558 ;Allocation info for local variables in function 'main'
+                                   1559 ;------------------------------------------------------------
+                                   1560 ;i             Allocated to registers r7 
+                                   1561 ;------------------------------------------------------------
+                                   1562 ;	i2c-bit-bang-oled-0.49-analog-reading.c:247: void main(void) {
+                                   1563 ;	-----------------------------------------
+                                   1564 ;	 function main
+                                   1565 ;	-----------------------------------------
+      000428                       1566 _main:
+                                   1567 ;	i2c-bit-bang-oled-0.49-analog-reading.c:248: clock_init();
+      000428 12r03rAE         [24] 1568 	lcall	_clock_init
+                                   1569 ;	i2c-bit-bang-oled-0.49-analog-reading.c:249: timer0_init();
+      00042B 12r03r9B         [24] 1570 	lcall	_timer0_init
+                                   1571 ;	i2c-bit-bang-oled-0.49-analog-reading.c:252: SAFE_MOD = 0x55;
+      00042E 75 A1 55         [24] 1572 	mov	_SAFE_MOD,#0x55
+                                   1573 ;	i2c-bit-bang-oled-0.49-analog-reading.c:253: SAFE_MOD = 0xAA;
+      000431 75 A1 AA         [24] 1574 	mov	_SAFE_MOD,#0xaa
+                                   1575 ;	i2c-bit-bang-oled-0.49-analog-reading.c:254: GLOBAL_CFG &= ~bWDOG_EN;
+      000434 53 B1 FE         [24] 1576 	anl	_GLOBAL_CFG,#0xfe
+                                   1577 ;	i2c-bit-bang-oled-0.49-analog-reading.c:255: SAFE_MOD = 0x00;
+      000437 75 A1 00         [24] 1578 	mov	_SAFE_MOD,#0x00
+                                   1579 ;	i2c-bit-bang-oled-0.49-analog-reading.c:258: P1_MOD_OC |= (1 << SDA_PIN) | (1 << SCL_PIN);
+      00043A 43 92 03         [24] 1580 	orl	_P1_MOD_OC,#0x03
+                                   1581 ;	i2c-bit-bang-oled-0.49-analog-reading.c:259: P1_DIR_PU |= (1 << SDA_PIN) | (1 << SCL_PIN);
+      00043D 43 93 03         [24] 1582 	orl	_P1_DIR_PU,#0x03
+                                   1583 ;	i2c-bit-bang-oled-0.49-analog-reading.c:261: SDA_RELEASE();
+      000440 43 90 01         [24] 1584 	orl	_P1,#0x01
+                                   1585 ;	i2c-bit-bang-oled-0.49-analog-reading.c:262: SCL_RELEASE();
+      000443 43 90 02         [24] 1586 	orl	_P1,#0x02
+                                   1587 ;	i2c-bit-bang-oled-0.49-analog-reading.c:265: ADCInit(0);
+      000446 75 82 00         [24] 1588 	mov	dpl, #0x00
+      000449 12r00r00         [24] 1589 	lcall	_ADCInit
+                                   1590 ;	i2c-bit-bang-oled-0.49-analog-reading.c:266: ADC_ChannelSelect(2);
+      00044C 75 82 02         [24] 1591 	mov	dpl, #0x02
+      00044F 12r00r00         [24] 1592 	lcall	_ADC_ChannelSelect
+                                   1593 ;	i2c-bit-bang-oled-0.49-analog-reading.c:268: Serial_begin();
+      000452 12r00r00         [24] 1594 	lcall	_Serial_begin
+                                   1595 ;	i2c-bit-bang-oled-0.49-analog-reading.c:270: oled_init();
+      000455 12r01r98         [24] 1596 	lcall	_oled_init
+                                   1597 ;	i2c-bit-bang-oled-0.49-analog-reading.c:271: oled_set_cursor(0, 0);
+      000458 E4               [12] 1598 	clr	a
+      000459 C0 E0            [24] 1599 	push	acc
+      00045B 75 82 00         [24] 1600 	mov	dpl, #0x00
+      00045E 12r00rBE         [24] 1601 	lcall	_oled_set_cursor
+      000461 15 81            [12] 1602 	dec	sp
+                                   1603 ;	i2c-bit-bang-oled-0.49-analog-reading.c:273: for (uint8_t i = 0; i < 128; i++) {
+      000463 7F 00            [12] 1604 	mov	r7,#0x00
+      000465                       1605 00108$:
+      000465 BF 80 00         [24] 1606 	cjne	r7,#0x80,00137$
+      000468                       1607 00137$:
+      000468 50 0D            [24] 1608 	jnc	00105$
+                                   1609 ;	i2c-bit-bang-oled-0.49-analog-reading.c:274: oled_data(0xFF);
+      00046A 75 82 FF         [24] 1610 	mov	dpl, #0xff
+      00046D C0 07            [24] 1611 	push	ar7
+      00046F 12r00rA1         [24] 1612 	lcall	_oled_data
+      000472 D0 07            [24] 1613 	pop	ar7
+                                   1614 ;	i2c-bit-bang-oled-0.49-analog-reading.c:273: for (uint8_t i = 0; i < 128; i++) {
+      000474 0F               [12] 1615 	inc	r7
+                                   1616 ;	i2c-bit-bang-oled-0.49-analog-reading.c:276: while (1) {
+      000475 80 EE            [24] 1617 	sjmp	00108$
+      000477                       1618 00105$:
+                                   1619 ;	i2c-bit-bang-oled-0.49-analog-reading.c:278: if(serialTime > 100) {   // every ~1 second
+      000477 C3               [12] 1620 	clr	c
+      000478 74 64            [12] 1621 	mov	a,#0x64
+      00047A 95*02            [12] 1622 	subb	a,_serialTime
+      00047C E4               [12] 1623 	clr	a
+      00047D 95*03            [12] 1624 	subb	a,(_serialTime + 1)
+      00047F 50 F6            [24] 1625 	jnc	00105$
+                                   1626 ;	i2c-bit-bang-oled-0.49-analog-reading.c:279: serialTime = 0;
+      000481 E4               [12] 1627 	clr	a
+      000482 F5*02            [12] 1628 	mov	_serialTime,a
+      000484 F5*03            [12] 1629 	mov	(_serialTime + 1),a
+                                   1630 ;	i2c-bit-bang-oled-0.49-analog-reading.c:281: rawAnalog = analogReading();
+      000486 12r03rC0         [24] 1631 	lcall	_analogReading
+                                   1632 ;	i2c-bit-bang-oled-0.49-analog-reading.c:282: finalAnalog = rawToMillivolts(rawAnalog);
+      000489 85 82*04         [24] 1633 	mov  _rawAnalog,dpl
+      00048C 12r03rCB         [24] 1634 	lcall	_rawToMillivolts
+                                   1635 ;	i2c-bit-bang-oled-0.49-analog-reading.c:284: Serial_println_uint(finalAnalog);
+      00048F 85 82*05         [24] 1636 	mov	_finalAnalog,dpl
+      000492 85 83*06         [24] 1637 	mov  (_finalAnalog + 1),dph
+      000495 12r00r00         [24] 1638 	lcall	_Serial_println_uint
+                                   1639 ;	i2c-bit-bang-oled-0.49-analog-reading.c:286: oled_set_cursor(0, 0);
+      000498 E4               [12] 1640 	clr	a
+      000499 C0 E0            [24] 1641 	push	acc
+      00049B 75 82 00         [24] 1642 	mov	dpl, #0x00
+      00049E 12r00rBE         [24] 1643 	lcall	_oled_set_cursor
+      0004A1 15 81            [12] 1644 	dec	sp
+                                   1645 ;	i2c-bit-bang-oled-0.49-analog-reading.c:287: oled_print_uint(finalAnalog);
+      0004A3 85*05 82         [24] 1646 	mov	dpl, _finalAnalog
+      0004A6 85*06 83         [24] 1647 	mov	dph, (_finalAnalog + 1)
+      0004A9 12r02rA2         [24] 1648 	lcall	_oled_print_uint
+                                   1649 ;	i2c-bit-bang-oled-0.49-analog-reading.c:290: }
+      0004AC 80 C9            [24] 1650 	sjmp	00105$
+                                   1651 	.area CSEG    (CODE)
+                                   1652 	.area CONST   (CODE)
+                                   1653 	.area CONST   (CODE)
+      000000                       1654 _font5x7:
+      000000 3E                    1655 	.db #0x3e	; 62
+      000001 51                    1656 	.db #0x51	; 81	'Q'
+      000002 49                    1657 	.db #0x49	; 73	'I'
+      000003 45                    1658 	.db #0x45	; 69	'E'
+      000004 3E                    1659 	.db #0x3e	; 62
+      000005 00                    1660 	.db #0x00	; 0
+      000006 42                    1661 	.db #0x42	; 66	'B'
+      000007 7F                    1662 	.db #0x7f	; 127
+      000008 40                    1663 	.db #0x40	; 64
+      000009 00                    1664 	.db #0x00	; 0
+      00000A 62                    1665 	.db #0x62	; 98	'b'
+      00000B 51                    1666 	.db #0x51	; 81	'Q'
+      00000C 49                    1667 	.db #0x49	; 73	'I'
+      00000D 49                    1668 	.db #0x49	; 73	'I'
+      00000E 46                    1669 	.db #0x46	; 70	'F'
+      00000F 22                    1670 	.db #0x22	; 34
+      000010 49                    1671 	.db #0x49	; 73	'I'
+      000011 49                    1672 	.db #0x49	; 73	'I'
+      000012 49                    1673 	.db #0x49	; 73	'I'
+      000013 36                    1674 	.db #0x36	; 54	'6'
+      000014 18                    1675 	.db #0x18	; 24
+      000015 14                    1676 	.db #0x14	; 20
+      000016 12                    1677 	.db #0x12	; 18
+      000017 7F                    1678 	.db #0x7f	; 127
+      000018 10                    1679 	.db #0x10	; 16
+      000019 2F                    1680 	.db #0x2f	; 47
+      00001A 49                    1681 	.db #0x49	; 73	'I'
+      00001B 49                    1682 	.db #0x49	; 73	'I'
+      00001C 49                    1683 	.db #0x49	; 73	'I'
+      00001D 31                    1684 	.db #0x31	; 49	'1'
+      00001E 3E                    1685 	.db #0x3e	; 62
+      00001F 49                    1686 	.db #0x49	; 73	'I'
+      000020 49                    1687 	.db #0x49	; 73	'I'
+      000021 49                    1688 	.db #0x49	; 73	'I'
+      000022 32                    1689 	.db #0x32	; 50	'2'
+      000023 01                    1690 	.db #0x01	; 1
+      000024 71                    1691 	.db #0x71	; 113	'q'
+      000025 09                    1692 	.db #0x09	; 9
+      000026 05                    1693 	.db #0x05	; 5
+      000027 03                    1694 	.db #0x03	; 3
+      000028 36                    1695 	.db #0x36	; 54	'6'
+      000029 49                    1696 	.db #0x49	; 73	'I'
+      00002A 49                    1697 	.db #0x49	; 73	'I'
+      00002B 49                    1698 	.db #0x49	; 73	'I'
+      00002C 36                    1699 	.db #0x36	; 54	'6'
+      00002D 26                    1700 	.db #0x26	; 38
+      00002E 49                    1701 	.db #0x49	; 73	'I'
+      00002F 49                    1702 	.db #0x49	; 73	'I'
+      000030 49                    1703 	.db #0x49	; 73	'I'
+      000031 3E                    1704 	.db #0x3e	; 62
+                                   1705 	.area CSEG    (CODE)
+                                   1706 	.area XINIT   (CODE)
+                                   1707 	.area CABS    (ABS,CODE)

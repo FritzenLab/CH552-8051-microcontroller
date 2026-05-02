@@ -8,6 +8,8 @@ CABS                                00000000    00000000 =           0. bytes (A
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
 C:   00000000  l_BIT_BANK                      
+C:   00000000  l_BSEG                          
+C:   00000000  l_BSEG_BYTES                    
 C:   00000000  l_CABS                          
 C:   00000000  l_GSINIT1                       
 C:   00000000  l_GSINIT5                       
@@ -37,26 +39,24 @@ C:   00000000  s_RSEG
 C:   00000000  s_RSEG0                         
 C:   00000000  s_RSEG1                         
 C:   00000000  s_XABS                          
-C:   00000001  l_BSEG_BYTES                    
 C:   00000001  s_PSEG                          
 C:   00000001  s_XISEG                         
 C:   00000001  s_XSEG                          
-C:   00000003  l_BSEG                          
 C:   00000003  l_GSFINAL                       
 C:   00000003  l_GSINIT0                       
 C:   00000008  l_REG_BANK_0                    
 C:   00000008  s_REG_BANK_1                    
 C:   0000000A  l_GSINIT2                       
 C:   00000010  s_REG_BANK_2                    
-C:   00000014  l_GSINIT                        
+C:   00000011  s_SSEG                          
+C:   00000012  l_GSINIT                        
 C:   00000018  s_BIT_BANK                      
 C:   00000018  s_OSEG                          
 C:   00000018  s_REG_BANK_3                    
-C:   0000001E  l_CONST                         
 C:   00000020  s_BSEG_BYTES                    
 C:   00000020  s__CODE                         
-C:   00000021  s_SSEG                          
 C:   00000022  l_GSINIT3                       
+C:   0000002A  l_GSINIT4                       
 ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
@@ -66,23 +66,23 @@ CABS                                00000000    00000000 =           0. bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   0000002A  l_GSINIT4                       
+C:   00000032  l_CONST                         
 C:   00000054  l_HOME                          
 C:   00000054  s_GSINIT0                       
 C:   00000057  s_GSINIT1                       
 C:   00000057  s_GSINIT2                       
 C:   00000061  s_GSINIT3                       
-C:   0000006F  l_DSEG                          
+C:   00000080  l_DSEG                          
 C:   00000083  s_GSINIT4                       
 C:   000000AD  s_GSINIT                        
 C:   000000AD  s_GSINIT5                       
-C:   000000C1  s_GSFINAL                       
-C:   000000C4  s_CSEG                          
-C:   000000DF  l_SSEG                          
+C:   000000BF  s_GSFINAL                       
+C:   000000C2  s_CSEG                          
+C:   000000EF  l_SSEG                          
 C:   00000100  l_IRAM                          
-C:   00000805  l_CSEG                          
-C:   000008C9  s_CONST                         
-C:   000008E7  s_XINIT                         
+C:   00000C1E  l_CSEG                          
+C:   00000CE0  s_CONST                         
+C:   00000D12  s_XINIT                         
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -374,7 +374,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-BSEG_BYTES                          00000020    00000001 =           1. bytes (REL,CON)
+REG_BANK_0                          00000000    00000008 =           8. bytes (REL,OVR)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -383,36 +383,28 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-REG_BANK_0                          00000000    00000008 =           8. bytes (REL,OVR)
+DSEG                                00000000    00000080 =         128. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
+     00000008  _tick_10ms                         i2c_bit_bang_oled_0_49_analo
+     0000000A  _serialTime                        i2c_bit_bang_oled_0_49_analo
+     0000000C  _rawAnalog                         i2c_bit_bang_oled_0_49_analo
+     0000000D  _finalAnalog                       i2c_bit_bang_oled_0_49_analo
+     00000010  _bp                                _bp
+
 ASxxxx Linker V03.00/V05.40 + sdld,  page 10.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-DSEG                                00000000    0000006F =         111. bytes (REL,CON)
+SSEG                                00000011    000000EF =         239. bytes (REL,OVR)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000008  _tick_10ms                         toque_capacitivo_teste
-     0000000A  _debounceTimer                     toque_capacitivo_teste
-     0000000C  _touch_baseline                    toque_capacitivo_teste
-     0000000E  _bp                                _bp
+     00000011  __start__stack                     i2c_bit_bang_oled_0_49_analo
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 11.
-Hexadecimal  [32-Bits]
-
-Area                                    Addr        Size        Decimal Bytes (Attributes)
---------------------------------        ----        ----        ------- ----- ------------
-SSEG                                00000021    000000DF =         223. bytes (REL,OVR)
-
-      Value  Global                              Global Defined In Module
-      -----  --------------------------------   ------------------------
-     00000021  __start__stack                     toque_capacitivo_teste
-
-ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
@@ -421,13 +413,13 @@ HOME                                00000000    00000054 =          84. bytes (R
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   00000010  sdcc_atomic_exchange_rollback_st   toque_capacitivo_teste
-C:   00000037  sdcc_atomic_exchange_gptr_impl     toque_capacitivo_teste
-C:   00000037  sdcc_atomic_exchange_rollback_en   toque_capacitivo_teste
-C:   00000047  sdcc_atomic_compare_exchange_gpt   toque_capacitivo_teste
-C:   00000051  __sdcc_program_startup             toque_capacitivo_teste
+C:   00000010  sdcc_atomic_exchange_rollback_st   i2c_bit_bang_oled_0_49_analo
+C:   00000037  sdcc_atomic_exchange_gptr_impl     i2c_bit_bang_oled_0_49_analo
+C:   00000037  sdcc_atomic_exchange_rollback_en   i2c_bit_bang_oled_0_49_analo
+C:   00000047  sdcc_atomic_compare_exchange_gpt   i2c_bit_bang_oled_0_49_analo
+C:   00000051  __sdcc_program_startup             i2c_bit_bang_oled_0_49_analo
 
-ASxxxx Linker V03.00/V05.40 + sdld,  page 13.
+ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
@@ -438,7 +430,7 @@ GSINIT0                             00000054    00000003 =           3. bytes (R
       -----  --------------------------------   ------------------------
 C:   00000054  __sdcc_gsinit_startup              
 
-ASxxxx Linker V03.00/V05.40 + sdld,  page 14.
+ASxxxx Linker V03.00/V05.40 + sdld,  page 13.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
@@ -447,7 +439,7 @@ GSINIT2                             00000057    0000000A =          10. bytes (R
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-ASxxxx Linker V03.00/V05.40 + sdld,  page 15.
+ASxxxx Linker V03.00/V05.40 + sdld,  page 14.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
@@ -458,7 +450,7 @@ GSINIT3                             00000061    00000022 =          34. bytes (R
       -----  --------------------------------   ------------------------
 C:   00000061  __mcs51_genXINIT                   
 
-ASxxxx Linker V03.00/V05.40 + sdld,  page 16.
+ASxxxx Linker V03.00/V05.40 + sdld,  page 15.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
@@ -470,12 +462,21 @@ GSINIT4                             00000083    0000002A =          42. bytes (R
 C:   00000083  __mcs51_genRAMCLEAR                
 C:   00000089  __mcs51_genXRAMCLEAR               
 
+ASxxxx Linker V03.00/V05.40 + sdld,  page 16.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+GSINIT                              000000AD    00000012 =          18. bytes (REL,CON,CODE)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
 ASxxxx Linker V03.00/V05.40 + sdld,  page 17.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSINIT                              000000AD    00000014 =          20. bytes (REL,CON,CODE)
+GSFINAL                             000000BF    00000003 =           3. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -484,69 +485,87 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSFINAL                             000000C1    00000003 =           3. bytes (REL,CON,CODE)
+CSEG                                000000C2    00000C1E =        3102. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
+C:   000000C2  _i2c_delay                         i2c_bit_bang_oled_0_49_analo
+C:   000000E8  _i2c_start                         i2c_bit_bang_oled_0_49_analo
+C:   000000FB  _i2c_stop                          i2c_bit_bang_oled_0_49_analo
+C:   0000010A  _i2c_write_byte                    i2c_bit_bang_oled_0_49_analo
+C:   00000146  _oled_cmd                          i2c_bit_bang_oled_0_49_analo
+C:   00000163  _oled_data                         i2c_bit_bang_oled_0_49_analo
+C:   00000180  _oled_set_cursor                   i2c_bit_bang_oled_0_49_analo
+C:   000001B6  _oled_write_data_stream            i2c_bit_bang_oled_0_49_analo
+C:   00000207  _oled_clear                        i2c_bit_bang_oled_0_49_analo
+C:   0000025A  _oled_init                         i2c_bit_bang_oled_0_49_analo
+C:   00000305  _oled_draw_char                    i2c_bit_bang_oled_0_49_analo
+C:   00000364  _oled_print_uint                   i2c_bit_bang_oled_0_49_analo
+C:   0000042C  _timer0_ISR                        i2c_bit_bang_oled_0_49_analo
+C:   0000045D  _timer0_init                       i2c_bit_bang_oled_0_49_analo
+C:   00000470  _clock_init                        i2c_bit_bang_oled_0_49_analo
+C:   00000482  _analogReading                     i2c_bit_bang_oled_0_49_analo
+C:   0000048D  _rawToMillivolts                   i2c_bit_bang_oled_0_49_analo
+C:   000004EA  _main                              i2c_bit_bang_oled_0_49_analo
+C:   00000570  _ADCInit                           adc
+C:   0000057D  _ADC_ChannelSelect                 adc
+C:   000005B7  _VoltageCMPModeInit                adc
+C:   0000065A  _MPU9250_init                      mpu9250
+C:   00000675  _MPU9250_whoami                    mpu9250
+C:   00000679  _MPU9250_readAccelGyro             mpu9250
+C:   0000081E  _Serial_begin                      serial
+C:   00000848  _Serial_write                      serial
+C:   00000852  _Serial_print                      serial
+C:   0000087D  _Serial_print_uint                 serial
+C:   0000097D  _Serial_println                    serial
+C:   0000098C  _Serial_println_int                serial
+C:   00000A6D  _Serial_println_uint               serial
+C:   00000A7C  _SPIMasterModeSet                  spi
+C:   00000A9C  _CH554SPIInterruptInit             spi
+C:   00000AA8  _CH554SPIMasterWrite               spi
+C:   00000AAF  _CH554SPIMasterRead                spi
+C:   00000AB9  _SPISlvModeSet                     spi
+C:   00000AC6  _CH554SPISlvWrite                  spi
+C:   00000ACF  _CH554SPISlvRead                   spi
+C:   00000AD8  __divuint                          _divuint
+C:   00000AE2  __divint                           _divuint
+C:   00000B09  __gptrput                          _gptrput
+C:   00000B24  __divulong                         _divulong
+C:   00000B2A  __divlong                          _divulong
+C:   00000B91  __gptrget                          _gptrget
+C:   00000BAD  __modsint                          _modsint
+C:   00000BEA  __mullong                          _mullong
+C:   00000BEA  __mullong_dummy                    _mullong
+C:   00000C5A  __moduint                          _moduint
+C:   00000C64  __modint                           _moduint
+C:   00000C9F  __divsint                          _divsint
 ASxxxx Linker V03.00/V05.40 + sdld,  page 19.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000C4    00000805 =        2053. bytes (REL,CON,CODE)
+CSEG                                000000C2    00000C1E =        3102. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   000000C4  _clock_init                        toque_capacitivo_teste
-C:   000000D6  _touchkey_init                     toque_capacitivo_teste
-C:   00000144  _timer0_ISR                        toque_capacitivo_teste
-C:   000001A1  _timer0_init                       toque_capacitivo_teste
-C:   000001B4  _blink_led                         toque_capacitivo_teste
-C:   000001C6  _main                              toque_capacitivo_teste
-C:   00000236  _ADCInit                           adc
-C:   00000243  _ADC_ChannelSelect                 adc
-C:   0000027D  _VoltageCMPModeInit                adc
-C:   00000320  _MPU9250_init                      mpu9250
-C:   0000033B  _MPU9250_whoami                    mpu9250
-C:   0000033F  _MPU9250_readAccelGyro             mpu9250
-C:   000004E4  _Serial_begin                      serial
-C:   0000050E  _Serial_write                      serial
-C:   00000518  _Serial_print                      serial
-C:   00000543  _Serial_print_uint                 serial
-C:   00000643  _Serial_println                    serial
-C:   00000652  _Serial_println_int                serial
-C:   00000733  _Serial_println_uint               serial
-C:   00000742  _SPIMasterModeSet                  spi
-C:   00000762  _CH554SPIInterruptInit             spi
-C:   0000076E  _CH554SPIMasterWrite               spi
-C:   00000775  _CH554SPIMasterRead                spi
-C:   0000077F  _SPISlvModeSet                     spi
-C:   0000078C  _CH554SPISlvWrite                  spi
-C:   00000795  _CH554SPISlvRead                   spi
-C:   0000079E  __divuint                          _divuint
-C:   000007A8  __divint                           _divuint
-C:   000007CF  __gptrput                          _gptrput
-C:   000007EA  __gptrget                          _gptrget
-C:   00000806  __modsint                          _modsint
-C:   00000843  __moduint                          _moduint
-C:   0000084D  __modint                           _moduint
-C:   00000888  __divsint                          _divsint
-C:   000008C5  ___sdcc_external_startup           _startup
-
+C:   00000CDC  ___sdcc_external_startup           _startup
 ASxxxx Linker V03.00/V05.40 + sdld,  page 20.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CONST                               000008C9    0000001E =          30. bytes (REL,CON,CODE)
+CONST                               00000CE0    00000032 =          50. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
+C:   00000CE0  _font5x7                           i2c_bit_bang_oled_0_49_analo
+
 ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
 
 Files Linked                              [ module(s) ]
 
-toque-capacitivo-teste.rel                [  ]
+i2c-bit-bang-oled-0.49-analog-reading.rel
+                                          [  ]
 adc.rel                                   [  ]
 mpu9250.rel                               [  ]
 serial.rel                                [  ]
@@ -565,6 +584,8 @@ C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
                                           [ _gptrput.rel ]
 C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtxclear.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/liblong.lib
+                                          [ _divulong.rel ]
 C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
                                           [ _bp.rel ]
 C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
@@ -575,6 +596,8 @@ C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
                                           [ _gptrget.rel ]
 C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib
                                           [ _modsint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/liblong.lib
+                                          [ _mullong.rel ]
 C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib
                                           [ _moduint.rel ]
 C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib

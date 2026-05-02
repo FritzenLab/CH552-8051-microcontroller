@@ -677,7 +677,7 @@
                                     677 	.area HOME    (CODE)
                                     678 	.area HOME    (CODE)
       000051                        679 __sdcc_program_startup:
-      000051 02 01 D0         [24]  680 	ljmp	_main
+      000051 02 01 C6         [24]  680 	ljmp	_main
                                     681 ;	return from main will return to caller
                                     682 ;--------------------------------------------------------
                                     683 ; code
@@ -726,20 +726,20 @@
       0000D6 C0 0E            [24]  726 	push	_bp
       0000D8 85 81 0E         [24]  727 	mov	_bp,sp
       0000DB 05 81            [12]  728 	inc	sp
-                                    729 ;	toque-capacitivo-teste.c:29: P1_MOD_OC &= ~(1 << 7);
+                                    729 ;	toque-capacitivo-teste.c:29: P1_MOD_OC &= ~(1 << 7); // set bit 7 to "0", disables open drain, enters push-pull mode
       0000DD 53 92 7F         [24]  730 	anl	_P1_MOD_OC,#0x7f
-                                    731 ;	toque-capacitivo-teste.c:30: P1_DIR_PU  &= ~(1 << 7);
+                                    731 ;	toque-capacitivo-teste.c:30: P1_DIR_PU  &= ~(1 << 7); // sets bit 7 to "0", configure as input
       0000E0 53 93 7F         [24]  732 	anl	_P1_DIR_PU,#0x7f
-                                    733 ;	toque-capacitivo-teste.c:32: TKEY_CTRL = 0x06; // TIN5 (P1.7), channel 110
+                                    733 ;	toque-capacitivo-teste.c:32: TKEY_CTRL = 0x06; // TIN5 (P1.7), value 0b00000110 of TKEY_CTRL
       0000E3 75 C3 06         [24]  734 	mov	_TKEY_CTRL,#0x06
-                                    735 ;	toque-capacitivo-teste.c:36: while (!(TKEY_CTRL & bTKC_IF));
+                                    735 ;	toque-capacitivo-teste.c:38: while (!(TKEY_CTRL & bTKC_IF));
       0000E6                        736 00101$:
       0000E6 E5 C3            [12]  737 	mov	a,_TKEY_CTRL
       0000E8 30 E7 FB         [24]  738 	jnb	acc.7,00101$
-                                    739 ;	toque-capacitivo-teste.c:37: uint16_t sum = 0;
+                                    739 ;	toque-capacitivo-teste.c:39: uint16_t sum = 0;
       0000EB 7E 00            [12]  740 	mov	r6,#0x00
       0000ED 7F 00            [12]  741 	mov	r7,#0x00
-                                    742 ;	toque-capacitivo-teste.c:38: for (uint8_t i = 0; i < 16; i++) {
+                                    742 ;	toque-capacitivo-teste.c:40: for (uint8_t i = 0; i < 16; i++) {
       0000EF A8 0E            [24]  743 	mov	r0,_bp
       0000F1 08               [12]  744 	inc	r0
       0000F2 76 00            [12]  745 	mov	@r0,#0x00
@@ -749,11 +749,11 @@
       0000F7 B6 10 00         [24]  749 	cjne	@r0,#0x10,00145$
       0000FA                        750 00145$:
       0000FA 50 20            [24]  751 	jnc	00107$
-                                    752 ;	toque-capacitivo-teste.c:39: while (!(TKEY_CTRL & bTKC_IF));
+                                    752 ;	toque-capacitivo-teste.c:41: while (!(TKEY_CTRL & bTKC_IF));
       0000FC                        753 00104$:
       0000FC E5 C3            [12]  754 	mov	a,_TKEY_CTRL
       0000FE 30 E7 FB         [24]  755 	jnb	acc.7,00104$
-                                    756 ;	toque-capacitivo-teste.c:40: sum += TKEY_DATL;
+                                    756 ;	toque-capacitivo-teste.c:42: sum += TKEY_DATL;
       000101 AC C4            [24]  757 	mov	r4,_TKEY_DATL
       000103 8E 02            [24]  758 	mov	ar2,r6
       000105 8F 03            [24]  759 	mov	ar3,r7
@@ -766,15 +766,15 @@
       00010E FB               [12]  766 	mov	r3,a
       00010F 8A 06            [24]  767 	mov	ar6,r2
       000111 8B 07            [24]  768 	mov	ar7,r3
-                                    769 ;	toque-capacitivo-teste.c:41: TKEY_CTRL = 0x06;
+                                    769 ;	toque-capacitivo-teste.c:43: TKEY_CTRL = 0x06;
       000113 75 C3 06         [24]  770 	mov	_TKEY_CTRL,#0x06
-                                    771 ;	toque-capacitivo-teste.c:38: for (uint8_t i = 0; i < 16; i++) {
+                                    771 ;	toque-capacitivo-teste.c:40: for (uint8_t i = 0; i < 16; i++) {
       000116 A8 0E            [24]  772 	mov	r0,_bp
       000118 08               [12]  773 	inc	r0
       000119 06               [12]  774 	inc	@r0
       00011A 80 D8            [24]  775 	sjmp	00109$
       00011C                        776 00107$:
-                                    777 ;	toque-capacitivo-teste.c:43: touch_baseline = sum / 16;
+                                    777 ;	toque-capacitivo-teste.c:45: touch_baseline = sum / 16;
       00011C EF               [12]  778 	mov	a,r7
       00011D C4               [12]  779 	swap	a
       00011E CE               [12]  780 	xch	a,r6
@@ -787,24 +787,24 @@
       000127 6E               [12]  787 	xrl	a,r6
       000128 CE               [12]  788 	xch	a,r6
       000129 8E 0C            [24]  789 	mov	_touch_baseline,r6
-                                    790 ;	toque-capacitivo-teste.c:45: Serial_print("Baseline: ");
-      00012B 90 08 D3         [24]  791 	mov	dptr,#___str_0
+                                    790 ;	toque-capacitivo-teste.c:47: Serial_print("Baseline: ");
+      00012B 90 08 C9         [24]  791 	mov	dptr,#___str_0
       00012E 75 F0 80         [24]  792 	mov	b, #0x80
-      000131 12 05 22         [24]  793 	lcall	_Serial_print
-                                    794 ;	toque-capacitivo-teste.c:46: Serial_println_uint(touch_baseline); // lets you see what value you're working with
+      000131 12 05 18         [24]  793 	lcall	_Serial_print
+                                    794 ;	toque-capacitivo-teste.c:48: Serial_println_uint(touch_baseline); // lets you see what value you're working with
       000134 AE 0C            [24]  795 	mov	r6,_touch_baseline
       000136 7F 00            [12]  796 	mov	r7,#0x00
       000138 8E 82            [24]  797 	mov	dpl, r6
       00013A 8F 83            [24]  798 	mov	dph, r7
-      00013C 12 07 3D         [24]  799 	lcall	_Serial_println_uint
-                                    800 ;	toque-capacitivo-teste.c:47: }
+      00013C 12 07 33         [24]  799 	lcall	_Serial_println_uint
+                                    800 ;	toque-capacitivo-teste.c:49: }
       00013F 15 81            [12]  801 	dec	sp
       000141 D0 0E            [24]  802 	pop	_bp
       000143 22               [24]  803 	ret
                                     804 ;------------------------------------------------------------
                                     805 ;Allocation info for local variables in function 'timer0_ISR'
                                     806 ;------------------------------------------------------------
-                                    807 ;	toque-capacitivo-teste.c:48: void timer0_ISR(void) __interrupt(INT_NO_TMR0) { // You can do __interrupt (1) if you prefer
+                                    807 ;	toque-capacitivo-teste.c:50: void timer0_ISR(void) __interrupt(INT_NO_TMR0) { // You can do __interrupt (1) if you prefer
                                     808 ;	-----------------------------------------
                                     809 ;	 function timer0_ISR
                                     810 ;	-----------------------------------------
@@ -814,21 +814,21 @@
       000148 C0 06            [24]  814 	push	ar6
       00014A C0 D0            [24]  815 	push	psw
       00014C 75 D0 00         [24]  816 	mov	psw,#0x00
-                                    817 ;	toque-capacitivo-teste.c:49: TF0 = 0;  // clear overflow flag (important for robustness)
+                                    817 ;	toque-capacitivo-teste.c:51: TF0 = 0;  // clear overflow flag (important for robustness)
                                     818 ;	assignBit
       00014F C2 8D            [12]  819 	clr	_TF0
-                                    820 ;	toque-capacitivo-teste.c:50: TH0 = 0xB1;
+                                    820 ;	toque-capacitivo-teste.c:52: TH0 = 0xB1;
       000151 75 8C B1         [24]  821 	mov	_TH0,#0xb1
-                                    822 ;	toque-capacitivo-teste.c:51: TL0 = 0xE0;
+                                    822 ;	toque-capacitivo-teste.c:53: TL0 = 0xE0;
       000154 75 8A E0         [24]  823 	mov	_TL0,#0xe0
-                                    824 ;	toque-capacitivo-teste.c:52: if(tick_10ms < 51){
+                                    824 ;	toque-capacitivo-teste.c:54: if(tick_10ms < 50){
       000157 C3               [12]  825 	clr	c
       000158 E5 08            [12]  826 	mov	a,_tick_10ms
-      00015A 94 33            [12]  827 	subb	a,#0x33
+      00015A 94 32            [12]  827 	subb	a,#0x32
       00015C E5 09            [12]  828 	mov	a,(_tick_10ms + 1)
       00015E 94 00            [12]  829 	subb	a,#0x00
       000160 50 0F            [24]  830 	jnc	00102$
-                                    831 ;	toque-capacitivo-teste.c:53: tick_10ms++; // this is the 10ms tick for LED blinking
+                                    831 ;	toque-capacitivo-teste.c:55: tick_10ms++; // this is the 10ms tick for LED blinking
       000162 AE 08            [24]  832 	mov	r6,_tick_10ms
       000164 AF 09            [24]  833 	mov	r7,(_tick_10ms + 1)
       000166 74 01            [12]  834 	mov	a,#0x01
@@ -839,14 +839,14 @@
       00016D F5 09            [12]  839 	mov	(_tick_10ms + 1),a
       00016F 80 05            [24]  840 	sjmp	00103$
       000171                        841 00102$:
-                                    842 ;	toque-capacitivo-teste.c:55: tick_10ms= 0;
+                                    842 ;	toque-capacitivo-teste.c:57: tick_10ms= 0;
       000171 E4               [12]  843 	clr	a
       000172 F5 08            [12]  844 	mov	_tick_10ms,a
       000174 F5 09            [12]  845 	mov	(_tick_10ms + 1),a
       000176                        846 00103$:
-                                    847 ;	toque-capacitivo-teste.c:58: if(debounce){ // if external interrupt happened, activate debounce timer
+                                    847 ;	toque-capacitivo-teste.c:60: if(debounce){ // if external interrupt happened, activate debounce timer
       000176 30 01 1F         [24]  848 	jnb	_debounce,00108$
-                                    849 ;	toque-capacitivo-teste.c:59: debounceTimer++;
+                                    849 ;	toque-capacitivo-teste.c:61: debounceTimer++;
       000179 AE 0A            [24]  850 	mov	r6,_debounceTimer
       00017B AF 0B            [24]  851 	mov	r7,(_debounceTimer + 1)
       00017D 74 01            [12]  852 	mov	a,#0x01
@@ -855,22 +855,22 @@
       000182 E4               [12]  855 	clr	a
       000183 3F               [12]  856 	addc	a, r7
       000184 F5 0B            [12]  857 	mov	(_debounceTimer + 1),a
-                                    858 ;	toque-capacitivo-teste.c:60: if(debounceTimer >= 60){ // after 400ms of not detecting the touch key
+                                    858 ;	toque-capacitivo-teste.c:62: if(debounceTimer >= 60){ // after 400ms of not detecting the touch key
       000186 C3               [12]  859 	clr	c
       000187 E5 0A            [12]  860 	mov	a,_debounceTimer
       000189 94 3C            [12]  861 	subb	a,#0x3c
       00018B E5 0B            [12]  862 	mov	a,(_debounceTimer + 1)
       00018D 94 00            [12]  863 	subb	a,#0x00
       00018F 40 07            [24]  864 	jc	00108$
-                                    865 ;	toque-capacitivo-teste.c:61: debounce= 0; // turn debounce delay OFF
+                                    865 ;	toque-capacitivo-teste.c:63: debounce= 0; // turn debounce delay OFF
                                     866 ;	assignBit
       000191 C2 01            [12]  867 	clr	_debounce
-                                    868 ;	toque-capacitivo-teste.c:62: debounceTimer= 0; // and clear timer/counter for next time
+                                    868 ;	toque-capacitivo-teste.c:64: debounceTimer= 0; // and clear timer/counter for next time
       000193 E4               [12]  869 	clr	a
       000194 F5 0A            [12]  870 	mov	_debounceTimer,a
       000196 F5 0B            [12]  871 	mov	(_debounceTimer + 1),a
       000198                        872 00108$:
-                                    873 ;	toque-capacitivo-teste.c:65: }
+                                    873 ;	toque-capacitivo-teste.c:67: }
       000198 D0 D0            [24]  874 	pop	psw
       00019A D0 06            [24]  875 	pop	ar6
       00019C D0 07            [24]  876 	pop	ar7
@@ -882,163 +882,155 @@
                                     882 ;------------------------------------------------------------
                                     883 ;Allocation info for local variables in function 'timer0_init'
                                     884 ;------------------------------------------------------------
-                                    885 ;	toque-capacitivo-teste.c:67: void timer0_init(void) {
+                                    885 ;	toque-capacitivo-teste.c:69: void timer0_init(void) {
                                     886 ;	-----------------------------------------
                                     887 ;	 function timer0_init
                                     888 ;	-----------------------------------------
       0001A1                        889 _timer0_init:
-                                    890 ;	toque-capacitivo-teste.c:68: TMOD &= ~0x03;  // clear Timer0 mode bits
+                                    890 ;	toque-capacitivo-teste.c:70: TMOD &= ~0x03;  // clear Timer0 mode bits
       0001A1 53 89 FC         [24]  891 	anl	_TMOD,#0xfc
-                                    892 ;	toque-capacitivo-teste.c:69: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
+                                    892 ;	toque-capacitivo-teste.c:71: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
       0001A4 43 89 01         [24]  893 	orl	_TMOD,#0x01
-                                    894 ;	toque-capacitivo-teste.c:73: TH0 = 0xB1;
+                                    894 ;	toque-capacitivo-teste.c:75: TH0 = 0xB1;
       0001A7 75 8C B1         [24]  895 	mov	_TH0,#0xb1
-                                    896 ;	toque-capacitivo-teste.c:74: TL0 = 0xE0;
+                                    896 ;	toque-capacitivo-teste.c:76: TL0 = 0xE0;
       0001AA 75 8A E0         [24]  897 	mov	_TL0,#0xe0
-                                    898 ;	toque-capacitivo-teste.c:76: ET0 = 1;   // enable Timer0 interrupt
+                                    898 ;	toque-capacitivo-teste.c:78: ET0 = 1;   // enable Timer0 interrupt
                                     899 ;	assignBit
       0001AD D2 A9            [12]  900 	setb	_ET0
-                                    901 ;	toque-capacitivo-teste.c:77: TR0 = 1;   // start Timer0
+                                    901 ;	toque-capacitivo-teste.c:79: TR0 = 1;   // start Timer0
                                     902 ;	assignBit
       0001AF D2 8C            [12]  903 	setb	_TR0
-                                    904 ;	toque-capacitivo-teste.c:78: EA = 1;
+                                    904 ;	toque-capacitivo-teste.c:80: EA = 1;
                                     905 ;	assignBit
       0001B1 D2 AF            [12]  906 	setb	_EA
-                                    907 ;	toque-capacitivo-teste.c:79: }
+                                    907 ;	toque-capacitivo-teste.c:81: }
       0001B3 22               [24]  908 	ret
                                     909 ;------------------------------------------------------------
                                     910 ;Allocation info for local variables in function 'blink_led'
                                     911 ;------------------------------------------------------------
-                                    912 ;	toque-capacitivo-teste.c:81: void blink_led(void) {
+                                    912 ;	toque-capacitivo-teste.c:84: void blink_led(void) {
                                     913 ;	-----------------------------------------
                                     914 ;	 function blink_led
                                     915 ;	-----------------------------------------
       0001B4                        916 _blink_led:
-                                    917 ;	toque-capacitivo-teste.c:82: if(tick_10ms <= 25){
+                                    917 ;	toque-capacitivo-teste.c:86: if (tick_10ms <= 25) {
       0001B4 C3               [12]  918 	clr	c
       0001B5 74 19            [12]  919 	mov	a,#0x19
       0001B7 95 08            [12]  920 	subb	a,_tick_10ms
       0001B9 E4               [12]  921 	clr	a
       0001BA 95 09            [12]  922 	subb	a,(_tick_10ms + 1)
-      0001BC 40 04            [24]  923 	jc	00104$
-                                    924 ;	toque-capacitivo-teste.c:83: P3 |= (1 << 5);  // LED ON
+      0001BC 40 04            [24]  923 	jc	00102$
+                                    924 ;	toque-capacitivo-teste.c:87: P3 |= (1 << 5);
       0001BE 43 B0 20         [24]  925 	orl	_P3,#0x20
       0001C1 22               [24]  926 	ret
-      0001C2                        927 00104$:
-                                    928 ;	toque-capacitivo-teste.c:84: } else if(tick_10ms <= 50){
-      0001C2 C3               [12]  929 	clr	c
-      0001C3 74 32            [12]  930 	mov	a,#0x32
-      0001C5 95 08            [12]  931 	subb	a,_tick_10ms
-      0001C7 E4               [12]  932 	clr	a
-      0001C8 95 09            [12]  933 	subb	a,(_tick_10ms + 1)
-      0001CA 40 03            [24]  934 	jc	00106$
-                                    935 ;	toque-capacitivo-teste.c:85: P3 &= ~(1 << 5); // LED OFF
-      0001CC 53 B0 DF         [24]  936 	anl	_P3,#0xdf
-      0001CF                        937 00106$:
-                                    938 ;	toque-capacitivo-teste.c:87: }
-      0001CF 22               [24]  939 	ret
-                                    940 ;------------------------------------------------------------
-                                    941 ;Allocation info for local variables in function 'main'
-                                    942 ;------------------------------------------------------------
-                                    943 ;touchValue    Allocated to registers r7 
-                                    944 ;------------------------------------------------------------
-                                    945 ;	toque-capacitivo-teste.c:89: void main(void) {
-                                    946 ;	-----------------------------------------
-                                    947 ;	 function main
-                                    948 ;	-----------------------------------------
-      0001D0                        949 _main:
-                                    950 ;	toque-capacitivo-teste.c:90: clock_init();
-      0001D0 12 00 C4         [24]  951 	lcall	_clock_init
-                                    952 ;	toque-capacitivo-teste.c:91: Serial_begin();
-      0001D3 12 04 EE         [24]  953 	lcall	_Serial_begin
-                                    954 ;	toque-capacitivo-teste.c:92: timer0_init();
-      0001D6 12 01 A1         [24]  955 	lcall	_timer0_init
-                                    956 ;	toque-capacitivo-teste.c:95: SAFE_MOD = 0x55;
-      0001D9 75 A1 55         [24]  957 	mov	_SAFE_MOD,#0x55
-                                    958 ;	toque-capacitivo-teste.c:96: SAFE_MOD = 0xAA;
-      0001DC 75 A1 AA         [24]  959 	mov	_SAFE_MOD,#0xaa
-                                    960 ;	toque-capacitivo-teste.c:97: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
-      0001DF 53 B1 FE         [24]  961 	anl	_GLOBAL_CFG,#0xfe
-                                    962 ;	toque-capacitivo-teste.c:98: SAFE_MOD = 0x00;
-      0001E2 75 A1 00         [24]  963 	mov	_SAFE_MOD,#0x00
-                                    964 ;	toque-capacitivo-teste.c:101: P3_MOD_OC &= ~(1 << 5);   // not open-drain
-      0001E5 53 96 DF         [24]  965 	anl	_P3_MOD_OC,#0xdf
-                                    966 ;	toque-capacitivo-teste.c:102: P3_DIR_PU |=  (1 << 5);   // output, with pull-up
-      0001E8 43 97 20         [24]  967 	orl	_P3_DIR_PU,#0x20
-                                    968 ;	toque-capacitivo-teste.c:104: touchkey_init();   
-      0001EB 12 00 D6         [24]  969 	lcall	_touchkey_init
-                                    970 ;	toque-capacitivo-teste.c:106: while (1) {
-      0001EE                        971 00110$:
-                                    972 ;	toque-capacitivo-teste.c:110: if (TKEY_CTRL & bTKC_IF) { // this is a bitwise operation, verifying whether 
-      0001EE E5 C3            [12]  973 	mov	a,_TKEY_CTRL
-      0001F0 30 E7 40         [24]  974 	jnb	acc.7,00105$
-                                    975 ;	toque-capacitivo-teste.c:112: uint8_t touchValue = TKEY_DATL; // reading the timing of the capacitive touch sensor
-      0001F3 AF C4            [24]  976 	mov	r7,_TKEY_DATL
-                                    977 ;	toque-capacitivo-teste.c:116: if (!debounce && ((touchValue - touch_baseline) > 10)) { 
-      0001F5 20 01 38         [24]  978 	jb	_debounce,00102$
-      0001F8 8F 05            [24]  979 	mov	ar5,r7
-      0001FA 7E 00            [12]  980 	mov	r6,#0x00
-      0001FC AB 0C            [24]  981 	mov	r3,_touch_baseline
-      0001FE 7C 00            [12]  982 	mov	r4,#0x00
-      000200 ED               [12]  983 	mov	a,r5
-      000201 C3               [12]  984 	clr	c
-      000202 9B               [12]  985 	subb	a,r3
-      000203 FD               [12]  986 	mov	r5,a
-      000204 EE               [12]  987 	mov	a,r6
-      000205 9C               [12]  988 	subb	a,r4
-      000206 FE               [12]  989 	mov	r6,a
-      000207 C3               [12]  990 	clr	c
-      000208 74 0A            [12]  991 	mov	a,#0x0a
-      00020A 9D               [12]  992 	subb	a,r5
-      00020B 74 80            [12]  993 	mov	a,#(0x00 ^ 0x80)
-      00020D 8E F0            [24]  994 	mov	b,r6
-      00020F 63 F0 80         [24]  995 	xrl	b,#0x80
-      000212 95 F0            [12]  996 	subb	a,b
-      000214 50 1A            [24]  997 	jnc	00102$
-                                    998 ;	toque-capacitivo-teste.c:117: debounce = 1;
-                                    999 ;	assignBit
-      000216 D2 01            [12] 1000 	setb	_debounce
-                                   1001 ;	toque-capacitivo-teste.c:118: ledON = !ledON;
-      000218 B2 02            [12] 1002 	cpl	_ledON
-                                   1003 ;	toque-capacitivo-teste.c:119: Serial_print("Touch! touchValue=");
-      00021A 90 08 DE         [24] 1004 	mov	dptr,#___str_1
-      00021D 75 F0 80         [24] 1005 	mov	b, #0x80
-      000220 C0 07            [24] 1006 	push	ar7
-      000222 12 05 22         [24] 1007 	lcall	_Serial_print
-      000225 D0 07            [24] 1008 	pop	ar7
-                                   1009 ;	toque-capacitivo-teste.c:120: Serial_println_uint(touchValue);
-      000227 7E 00            [12] 1010 	mov	r6,#0x00
-      000229 8F 82            [24] 1011 	mov	dpl, r7
-      00022B 8E 83            [24] 1012 	mov	dph, r6
-      00022D 12 07 3D         [24] 1013 	lcall	_Serial_println_uint
-      000230                       1014 00102$:
-                                   1015 ;	toque-capacitivo-teste.c:124: TKEY_CTRL = 0x06;
-      000230 75 C3 06         [24] 1016 	mov	_TKEY_CTRL,#0x06
-      000233                       1017 00105$:
-                                   1018 ;	toque-capacitivo-teste.c:126: if(ledON){
-      000233 30 02 05         [24] 1019 	jnb	_ledON,00107$
-                                   1020 ;	toque-capacitivo-teste.c:127: blink_led();
-      000236 12 01 B4         [24] 1021 	lcall	_blink_led
-      000239 80 B3            [24] 1022 	sjmp	00110$
-      00023B                       1023 00107$:
-                                   1024 ;	toque-capacitivo-teste.c:129: P3 &= ~(1 << 5);   // LED OFF           
-      00023B 53 B0 DF         [24] 1025 	anl	_P3,#0xdf
-                                   1026 ;	toque-capacitivo-teste.c:133: }
-      00023E 80 AE            [24] 1027 	sjmp	00110$
-                                   1028 	.area CSEG    (CODE)
-                                   1029 	.area CONST   (CODE)
-                                   1030 	.area CONST   (CODE)
-      0008D3                       1031 ___str_0:
-      0008D3 42 61 73 65 6C 69 6E  1032 	.ascii "Baseline: "
+      0001C2                        927 00102$:
+                                    928 ;	toque-capacitivo-teste.c:89: P3 &= ~(1 << 5);
+      0001C2 53 B0 DF         [24]  929 	anl	_P3,#0xdf
+                                    930 ;	toque-capacitivo-teste.c:91: }
+      0001C5 22               [24]  931 	ret
+                                    932 ;------------------------------------------------------------
+                                    933 ;Allocation info for local variables in function 'main'
+                                    934 ;------------------------------------------------------------
+                                    935 ;touchValue    Allocated to registers r7 
+                                    936 ;------------------------------------------------------------
+                                    937 ;	toque-capacitivo-teste.c:93: void main(void) {
+                                    938 ;	-----------------------------------------
+                                    939 ;	 function main
+                                    940 ;	-----------------------------------------
+      0001C6                        941 _main:
+                                    942 ;	toque-capacitivo-teste.c:94: clock_init();
+      0001C6 12 00 C4         [24]  943 	lcall	_clock_init
+                                    944 ;	toque-capacitivo-teste.c:95: Serial_begin();
+      0001C9 12 04 E4         [24]  945 	lcall	_Serial_begin
+                                    946 ;	toque-capacitivo-teste.c:96: touchkey_init(); 
+      0001CC 12 00 D6         [24]  947 	lcall	_touchkey_init
+                                    948 ;	toque-capacitivo-teste.c:97: timer0_init();
+      0001CF 12 01 A1         [24]  949 	lcall	_timer0_init
+                                    950 ;	toque-capacitivo-teste.c:100: SAFE_MOD = 0x55;
+      0001D2 75 A1 55         [24]  951 	mov	_SAFE_MOD,#0x55
+                                    952 ;	toque-capacitivo-teste.c:101: SAFE_MOD = 0xAA;
+      0001D5 75 A1 AA         [24]  953 	mov	_SAFE_MOD,#0xaa
+                                    954 ;	toque-capacitivo-teste.c:102: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
+      0001D8 53 B1 FE         [24]  955 	anl	_GLOBAL_CFG,#0xfe
+                                    956 ;	toque-capacitivo-teste.c:103: SAFE_MOD = 0x00;
+      0001DB 75 A1 00         [24]  957 	mov	_SAFE_MOD,#0x00
+                                    958 ;	toque-capacitivo-teste.c:106: P3_MOD_OC &= ~(1 << 5);   // not open-drain
+      0001DE 53 96 DF         [24]  959 	anl	_P3_MOD_OC,#0xdf
+                                    960 ;	toque-capacitivo-teste.c:107: P3_DIR_PU |=  (1 << 5);   // output, with pull-up
+      0001E1 43 97 20         [24]  961 	orl	_P3_DIR_PU,#0x20
+                                    962 ;	toque-capacitivo-teste.c:111: while (1) {
+      0001E4                        963 00110$:
+                                    964 ;	toque-capacitivo-teste.c:115: if (TKEY_CTRL & bTKC_IF) { // this is a bitwise operation, verifying whether 
+      0001E4 E5 C3            [12]  965 	mov	a,_TKEY_CTRL
+      0001E6 30 E7 40         [24]  966 	jnb	acc.7,00105$
+                                    967 ;	toque-capacitivo-teste.c:117: uint8_t touchValue = TKEY_DATL; // reading the timing of the capacitive touch sensor
+      0001E9 AF C4            [24]  968 	mov	r7,_TKEY_DATL
+                                    969 ;	toque-capacitivo-teste.c:121: if (!debounce && ((touchValue - touch_baseline) > 10)) { 
+      0001EB 20 01 38         [24]  970 	jb	_debounce,00102$
+      0001EE 8F 05            [24]  971 	mov	ar5,r7
+      0001F0 7E 00            [12]  972 	mov	r6,#0x00
+      0001F2 AB 0C            [24]  973 	mov	r3,_touch_baseline
+      0001F4 7C 00            [12]  974 	mov	r4,#0x00
+      0001F6 ED               [12]  975 	mov	a,r5
+      0001F7 C3               [12]  976 	clr	c
+      0001F8 9B               [12]  977 	subb	a,r3
+      0001F9 FD               [12]  978 	mov	r5,a
+      0001FA EE               [12]  979 	mov	a,r6
+      0001FB 9C               [12]  980 	subb	a,r4
+      0001FC FE               [12]  981 	mov	r6,a
+      0001FD C3               [12]  982 	clr	c
+      0001FE 74 0A            [12]  983 	mov	a,#0x0a
+      000200 9D               [12]  984 	subb	a,r5
+      000201 74 80            [12]  985 	mov	a,#(0x00 ^ 0x80)
+      000203 8E F0            [24]  986 	mov	b,r6
+      000205 63 F0 80         [24]  987 	xrl	b,#0x80
+      000208 95 F0            [12]  988 	subb	a,b
+      00020A 50 1A            [24]  989 	jnc	00102$
+                                    990 ;	toque-capacitivo-teste.c:122: debounce = 1;
+                                    991 ;	assignBit
+      00020C D2 01            [12]  992 	setb	_debounce
+                                    993 ;	toque-capacitivo-teste.c:123: ledON = !ledON;
+      00020E B2 02            [12]  994 	cpl	_ledON
+                                    995 ;	toque-capacitivo-teste.c:124: Serial_print("Touch! touchValue=");
+      000210 90 08 D4         [24]  996 	mov	dptr,#___str_1
+      000213 75 F0 80         [24]  997 	mov	b, #0x80
+      000216 C0 07            [24]  998 	push	ar7
+      000218 12 05 18         [24]  999 	lcall	_Serial_print
+      00021B D0 07            [24] 1000 	pop	ar7
+                                   1001 ;	toque-capacitivo-teste.c:125: Serial_println_uint(touchValue);
+      00021D 7E 00            [12] 1002 	mov	r6,#0x00
+      00021F 8F 82            [24] 1003 	mov	dpl, r7
+      000221 8E 83            [24] 1004 	mov	dph, r6
+      000223 12 07 33         [24] 1005 	lcall	_Serial_println_uint
+      000226                       1006 00102$:
+                                   1007 ;	toque-capacitivo-teste.c:129: TKEY_CTRL = 0x06;
+      000226 75 C3 06         [24] 1008 	mov	_TKEY_CTRL,#0x06
+      000229                       1009 00105$:
+                                   1010 ;	toque-capacitivo-teste.c:131: if(ledON){
+      000229 30 02 05         [24] 1011 	jnb	_ledON,00107$
+                                   1012 ;	toque-capacitivo-teste.c:132: blink_led();
+      00022C 12 01 B4         [24] 1013 	lcall	_blink_led
+      00022F 80 B3            [24] 1014 	sjmp	00110$
+      000231                       1015 00107$:
+                                   1016 ;	toque-capacitivo-teste.c:134: P3 &= ~(1 << 5);   // LED OFF           
+      000231 53 B0 DF         [24] 1017 	anl	_P3,#0xdf
+                                   1018 ;	toque-capacitivo-teste.c:138: }
+      000234 80 AE            [24] 1019 	sjmp	00110$
+                                   1020 	.area CSEG    (CODE)
+                                   1021 	.area CONST   (CODE)
+                                   1022 	.area CONST   (CODE)
+      0008C9                       1023 ___str_0:
+      0008C9 42 61 73 65 6C 69 6E  1024 	.ascii "Baseline: "
              65 3A 20
-      0008DD 00                    1033 	.db 0x00
-                                   1034 	.area CSEG    (CODE)
-                                   1035 	.area CONST   (CODE)
-      0008DE                       1036 ___str_1:
-      0008DE 54 6F 75 63 68 21 20  1037 	.ascii "Touch! touchValue="
+      0008D3 00                    1025 	.db 0x00
+                                   1026 	.area CSEG    (CODE)
+                                   1027 	.area CONST   (CODE)
+      0008D4                       1028 ___str_1:
+      0008D4 54 6F 75 63 68 21 20  1029 	.ascii "Touch! touchValue="
              74 6F 75 63 68 56 61
              6C 75 65 3D
-      0008F0 00                    1038 	.db 0x00
-                                   1039 	.area CSEG    (CODE)
-                                   1040 	.area XINIT   (CODE)
-                                   1041 	.area CABS    (ABS,CODE)
+      0008E6 00                    1030 	.db 0x00
+                                   1031 	.area CSEG    (CODE)
+                                   1032 	.area XINIT   (CODE)
+                                   1033 	.area CABS    (ABS,CODE)
