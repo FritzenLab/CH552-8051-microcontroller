@@ -24,8 +24,14 @@ void clock_init(void) {
 }
 void INT1_ISR(void) __interrupt (INT_NO_INT1) // You can do __interrupt (2) if you prefer 
 {
-    if (!(P3 & (1 << 3))) {   // only accept if pin is LOW. This prevents
-        button_irq = 1;       // the bouncing that can happen on the rising edge
+    // only accepts/enters function if pin is LOW. This prevents
+    // input bouncing.
+    // External interrupts on CH552 happen on the falling edge only,
+    // so this IF statement is making sure the button is still pressed when
+    // the interrupt enters here.
+
+    if (!(P3 & (1 << 3))) {   
+        button_irq = 1;       
         debounce= 1; // enter debounce time (300ms)
     }
 }
@@ -61,10 +67,10 @@ void timer0_init(void) {
 }
 
 void blink_led(void) {
-    if(tick_10ms % 60 < 30){
-        P3 |= (1 << 0);  // LED ON
+    if(tick_10ms % 50 < 25){
+        P3 |= (1 << 5);  // LED ON
     } else {
-        P3 &= ~(1 << 0); // LED OFF
+        P3 &= ~(1 << 5); // LED OFF
     }
 }
 
@@ -78,10 +84,9 @@ void main(void) {
     GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
     SAFE_MOD = 0x00;
 
-    // Configure P3.0 (LED) as push-pull output
-    // P3.0 bit = 0x01
-    P3_MOD_OC &= ~0x01;   // not open-drain
-    P3_DIR_PU |= 0x01;    // output, with pull-up
+    // Configure P3.5 (LED) as push-pull output
+    P3_MOD_OC &= ~(1 << 5);   // not open-drain
+    P3_DIR_PU |=  (1 << 5);   // output, with pull-up
 
     // Configure P3.3 as input pull-up for interrupt
     P3_MOD_OC |=  (1 << 3);   // open-drain
@@ -104,7 +109,7 @@ void main(void) {
         if(ledON){
             blink_led();
         }else {
-            P3 &= ~0x01;   // LED OFF            
+            P3 &= ~(1 << 5);   // LED OFF           
         }
         if(serialTime > 100){ // 100 x 10ms= 1 second
             serialTime= 0;

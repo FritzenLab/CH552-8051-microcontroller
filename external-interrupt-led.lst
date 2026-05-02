@@ -686,7 +686,7 @@
                                     686 	.area HOME    (CODE)
                                     687 	.area HOME    (CODE)
       000059                        688 __sdcc_program_startup:
-      000059 02r00rAC         [24]  689 	ljmp	_main
+      000059 02r00rB1         [24]  689 	ljmp	_main
                                     690 ;	return from main will return to caller
                                     691 ;--------------------------------------------------------
                                     692 ; code
@@ -724,23 +724,23 @@
                                     724 ;------------------------------------------------------------
                                     725 ;Allocation info for local variables in function 'INT1_ISR'
                                     726 ;------------------------------------------------------------
-                                    727 ;	external-interrupt-led.c:25: void INT1_ISR(void) __interrupt (INT_NO_INT1) // interrupt number 2 
+                                    727 ;	external-interrupt-led.c:25: void INT1_ISR(void) __interrupt (INT_NO_INT1) // You can do __interrupt (2) if you prefer 
                                     728 ;	-----------------------------------------
                                     729 ;	 function INT1_ISR
                                     730 ;	-----------------------------------------
       000012                        731 _INT1_ISR:
       000012 C0 E0            [24]  732 	push	acc
-                                    733 ;	external-interrupt-led.c:27: if (!(P3 & (1 << 3))) {   // only accept if pin is LOW
+                                    733 ;	external-interrupt-led.c:33: if (!(P3 & (1 << 3))) {   
       000014 E5 B0            [12]  734 	mov	a,_P3
       000016 20 E3 04         [24]  735 	jb	acc.3,00103$
-                                    736 ;	external-interrupt-led.c:28: button_irq = 1;
+                                    736 ;	external-interrupt-led.c:34: button_irq = 1;       
                                     737 ;	assignBit
       000019 D2*00            [12]  738 	setb	_button_irq
-                                    739 ;	external-interrupt-led.c:29: debounce= 1; // enter debounce time (300ms)
+                                    739 ;	external-interrupt-led.c:35: debounce= 1; // enter debounce time (300ms)
                                     740 ;	assignBit
       00001B D2*01            [12]  741 	setb	_debounce
       00001D                        742 00103$:
-                                    743 ;	external-interrupt-led.c:31: }
+                                    743 ;	external-interrupt-led.c:37: }
       00001D D0 E0            [24]  744 	pop	acc
       00001F 32               [24]  745 	reti
                                     746 ;	eliminated unneeded mov psw,# (no regs used in bank)
@@ -751,7 +751,7 @@
                                     751 ;------------------------------------------------------------
                                     752 ;Allocation info for local variables in function 'timer0_ISR'
                                     753 ;------------------------------------------------------------
-                                    754 ;	external-interrupt-led.c:32: void timer0_ISR(void) __interrupt(INT_NO_TMR0) {
+                                    754 ;	external-interrupt-led.c:38: void timer0_ISR(void) __interrupt(INT_NO_TMR0) { // You can do __interrupt (1) if you prefer
                                     755 ;	-----------------------------------------
                                     756 ;	 function timer0_ISR
                                     757 ;	-----------------------------------------
@@ -761,14 +761,14 @@
       000024 C0 06            [24]  761 	push	ar6
       000026 C0 D0            [24]  762 	push	psw
       000028 75 D0 00         [24]  763 	mov	psw,#0x00
-                                    764 ;	external-interrupt-led.c:33: TF0 = 0;  // clear overflow flag (important for robustness)
+                                    764 ;	external-interrupt-led.c:39: TF0 = 0;  // clear overflow flag (important for robustness)
                                     765 ;	assignBit
       00002B C2 8D            [12]  766 	clr	_TF0
-                                    767 ;	external-interrupt-led.c:34: TH0 = 0xB1;
+                                    767 ;	external-interrupt-led.c:40: TH0 = 0xB1;
       00002D 75 8C B1         [24]  768 	mov	_TH0,#0xb1
-                                    769 ;	external-interrupt-led.c:35: TL0 = 0xE0;
+                                    769 ;	external-interrupt-led.c:41: TL0 = 0xE0;
       000030 75 8A E0         [24]  770 	mov	_TL0,#0xe0
-                                    771 ;	external-interrupt-led.c:36: tick_10ms++; // this is the 10ms tick for LED blinking
+                                    771 ;	external-interrupt-led.c:42: tick_10ms++; // this is the 10ms tick for LED blinking
       000033 AE*00            [24]  772 	mov	r6,_tick_10ms
       000035 AF*01            [24]  773 	mov	r7,(_tick_10ms + 1)
       000037 74 01            [12]  774 	mov	a,#0x01
@@ -777,15 +777,15 @@
       00003C E4               [12]  777 	clr	a
       00003D 3F               [12]  778 	addc	a, r7
       00003E F5*01            [12]  779 	mov	(_tick_10ms + 1),a
-                                    780 ;	external-interrupt-led.c:37: serialTime++; // this is the timer for Serial_println transmissions
+                                    780 ;	external-interrupt-led.c:43: serialTime++; // this is the timer for Serial_println transmissions
       000040 05*04            [12]  781 	inc	_serialTime
       000042 E4               [12]  782 	clr	a
       000043 B5*04 02         [24]  783 	cjne	a,_serialTime,00119$
       000046 05*05            [12]  784 	inc	(_serialTime + 1)
       000048                        785 00119$:
-                                    786 ;	external-interrupt-led.c:38: if(debounce){ // if external interrupt happened, activate debounce timer
+                                    786 ;	external-interrupt-led.c:44: if(debounce){ // if external interrupt happened, activate debounce timer
       000048 30*01 1F         [24]  787 	jnb	_debounce,00105$
-                                    788 ;	external-interrupt-led.c:39: debounceTimer++;
+                                    788 ;	external-interrupt-led.c:45: debounceTimer++;
       00004B AE*02            [24]  789 	mov	r6,_debounceTimer
       00004D AF*03            [24]  790 	mov	r7,(_debounceTimer + 1)
       00004F 74 01            [12]  791 	mov	a,#0x01
@@ -794,22 +794,22 @@
       000054 E4               [12]  794 	clr	a
       000055 3F               [12]  795 	addc	a, r7
       000056 F5*03            [12]  796 	mov	(_debounceTimer + 1),a
-                                    797 ;	external-interrupt-led.c:40: if(debounceTimer >= 60){ // after 600ms of not detecting the push-button
+                                    797 ;	external-interrupt-led.c:46: if(debounceTimer >= 60){ // after 600ms of not detecting the push-button
       000058 C3               [12]  798 	clr	c
       000059 E5*02            [12]  799 	mov	a,_debounceTimer
       00005B 94 3C            [12]  800 	subb	a,#0x3c
       00005D E5*03            [12]  801 	mov	a,(_debounceTimer + 1)
       00005F 94 00            [12]  802 	subb	a,#0x00
       000061 40 07            [24]  803 	jc	00105$
-                                    804 ;	external-interrupt-led.c:41: debounce= 0; // turn debounce delay OFF
+                                    804 ;	external-interrupt-led.c:47: debounce= 0; // turn debounce delay OFF
                                     805 ;	assignBit
       000063 C2*01            [12]  806 	clr	_debounce
-                                    807 ;	external-interrupt-led.c:42: debounceTimer= 0; // and clear timer/counter for next time
+                                    807 ;	external-interrupt-led.c:48: debounceTimer= 0; // and clear timer/counter for next time
       000065 E4               [12]  808 	clr	a
       000066 F5*02            [12]  809 	mov	_debounceTimer,a
       000068 F5*03            [12]  810 	mov	(_debounceTimer + 1),a
       00006A                        811 00105$:
-                                    812 ;	external-interrupt-led.c:45: }
+                                    812 ;	external-interrupt-led.c:51: }
       00006A D0 D0            [24]  813 	pop	psw
       00006C D0 06            [24]  814 	pop	ar6
       00006E D0 07            [24]  815 	pop	ar7
@@ -821,157 +821,161 @@
                                     821 ;------------------------------------------------------------
                                     822 ;Allocation info for local variables in function 'timer0_init'
                                     823 ;------------------------------------------------------------
-                                    824 ;	external-interrupt-led.c:47: void timer0_init(void) {
+                                    824 ;	external-interrupt-led.c:53: void timer0_init(void) {
                                     825 ;	-----------------------------------------
                                     826 ;	 function timer0_init
                                     827 ;	-----------------------------------------
       000073                        828 _timer0_init:
-                                    829 ;	external-interrupt-led.c:48: TMOD &= ~0x03;  // clear Timer0 mode bits
+                                    829 ;	external-interrupt-led.c:54: TMOD &= ~0x03;  // clear Timer0 mode bits
       000073 53 89 FC         [24]  830 	anl	_TMOD,#0xfc
-                                    831 ;	external-interrupt-led.c:49: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
+                                    831 ;	external-interrupt-led.c:55: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
       000076 43 89 01         [24]  832 	orl	_TMOD,#0x01
-                                    833 ;	external-interrupt-led.c:53: TH0 = 0xB1;
+                                    833 ;	external-interrupt-led.c:59: TH0 = 0xB1;
       000079 75 8C B1         [24]  834 	mov	_TH0,#0xb1
-                                    835 ;	external-interrupt-led.c:54: TL0 = 0xE0;
+                                    835 ;	external-interrupt-led.c:60: TL0 = 0xE0;
       00007C 75 8A E0         [24]  836 	mov	_TL0,#0xe0
-                                    837 ;	external-interrupt-led.c:56: ET0 = 1;   // enable Timer0 interrupt
+                                    837 ;	external-interrupt-led.c:62: ET0 = 1;   // enable Timer0 interrupt
                                     838 ;	assignBit
       00007F D2 A9            [12]  839 	setb	_ET0
-                                    840 ;	external-interrupt-led.c:57: TR0 = 1;   // start Timer0
+                                    840 ;	external-interrupt-led.c:63: TR0 = 1;   // start Timer0
                                     841 ;	assignBit
       000081 D2 8C            [12]  842 	setb	_TR0
-                                    843 ;	external-interrupt-led.c:58: EX1 = 1; // enable external interrupt 1
+                                    843 ;	external-interrupt-led.c:64: EX1 = 1; // enable external interrupt 1. This does not need to be here
                                     844 ;	assignBit
       000083 D2 AA            [12]  845 	setb	_EX1
-                                    846 ;	external-interrupt-led.c:59: EA = 1;
+                                    846 ;	external-interrupt-led.c:66: EA = 1;
                                     847 ;	assignBit
       000085 D2 AF            [12]  848 	setb	_EA
-                                    849 ;	external-interrupt-led.c:60: }
+                                    849 ;	external-interrupt-led.c:67: }
       000087 22               [24]  850 	ret
                                     851 ;------------------------------------------------------------
                                     852 ;Allocation info for local variables in function 'blink_led'
                                     853 ;------------------------------------------------------------
-                                    854 ;	external-interrupt-led.c:62: void blink_led(void) {
+                                    854 ;	external-interrupt-led.c:69: void blink_led(void) {
                                     855 ;	-----------------------------------------
                                     856 ;	 function blink_led
                                     857 ;	-----------------------------------------
       000088                        858 _blink_led:
-                                    859 ;	external-interrupt-led.c:63: if(tick_10ms % 60 < 30){
-      000088 75*00 3C         [24]  860 	mov	__moduint_PARM_2,#0x3c
-      00008B 75*01 00         [24]  861 	mov	(__moduint_PARM_2 + 1),#0x00
-      00008E 85*00 82         [24]  862 	mov	dpl, _tick_10ms
-      000091 85*01 83         [24]  863 	mov	dph, (_tick_10ms + 1)
-      000094 12r00r00         [24]  864 	lcall	__moduint
-      000097 AE 82            [24]  865 	mov	r6, dpl
-      000099 AF 83            [24]  866 	mov	r7, dph
-      00009B C3               [12]  867 	clr	c
-      00009C EE               [12]  868 	mov	a,r6
-      00009D 94 1E            [12]  869 	subb	a,#0x1e
-      00009F EF               [12]  870 	mov	a,r7
-      0000A0 94 00            [12]  871 	subb	a,#0x00
-      0000A2 50 04            [24]  872 	jnc	00102$
-                                    873 ;	external-interrupt-led.c:64: P3 |= (1 << 0);  // LED ON
-      0000A4 43 B0 01         [24]  874 	orl	_P3,#0x01
-      0000A7 22               [24]  875 	ret
-      0000A8                        876 00102$:
-                                    877 ;	external-interrupt-led.c:66: P3 &= ~(1 << 0); // LED OFF
-      0000A8 53 B0 FE         [24]  878 	anl	_P3,#0xfe
-                                    879 ;	external-interrupt-led.c:68: }
-      0000AB 22               [24]  880 	ret
-                                    881 ;------------------------------------------------------------
-                                    882 ;Allocation info for local variables in function 'main'
-                                    883 ;------------------------------------------------------------
-                                    884 ;	external-interrupt-led.c:70: void main(void) {
-                                    885 ;	-----------------------------------------
-                                    886 ;	 function main
-                                    887 ;	-----------------------------------------
-      0000AC                        888 _main:
-                                    889 ;	external-interrupt-led.c:71: clock_init();
-      0000AC 12r00r00         [24]  890 	lcall	_clock_init
-                                    891 ;	external-interrupt-led.c:72: timer0_init();
-      0000AF 12r00r73         [24]  892 	lcall	_timer0_init
-                                    893 ;	external-interrupt-led.c:75: SAFE_MOD = 0x55;
-      0000B2 75 A1 55         [24]  894 	mov	_SAFE_MOD,#0x55
-                                    895 ;	external-interrupt-led.c:76: SAFE_MOD = 0xAA;
-      0000B5 75 A1 AA         [24]  896 	mov	_SAFE_MOD,#0xaa
-                                    897 ;	external-interrupt-led.c:77: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
-      0000B8 53 B1 FE         [24]  898 	anl	_GLOBAL_CFG,#0xfe
-                                    899 ;	external-interrupt-led.c:78: SAFE_MOD = 0x00;
-      0000BB 75 A1 00         [24]  900 	mov	_SAFE_MOD,#0x00
-                                    901 ;	external-interrupt-led.c:82: P3_MOD_OC &= ~0x01;   // not open-drain
-      0000BE 53 96 FE         [24]  902 	anl	_P3_MOD_OC,#0xfe
-                                    903 ;	external-interrupt-led.c:83: P3_DIR_PU |= 0x01;    // output, with pull-up
-      0000C1 43 97 01         [24]  904 	orl	_P3_DIR_PU,#0x01
-                                    905 ;	external-interrupt-led.c:86: P3_MOD_OC |=  (1 << 3);   // open-drain
-      0000C4 43 96 08         [24]  906 	orl	_P3_MOD_OC,#0x08
-                                    907 ;	external-interrupt-led.c:87: P3_DIR_PU |=  (1 << 3);   // enable pull-up (yes, |=, not &=)
-      0000C7 43 97 08         [24]  908 	orl	_P3_DIR_PU,#0x08
-                                    909 ;	external-interrupt-led.c:88: P3 |= (1 << 3);           // pull-up
-      0000CA 43 B0 08         [24]  910 	orl	_P3,#0x08
-                                    911 ;	external-interrupt-led.c:90: Serial_begin();
-      0000CD 12r00r00         [24]  912 	lcall	_Serial_begin
-                                    913 ;	external-interrupt-led.c:92: while (1) {
-      0000D0                        914 00113$:
-                                    915 ;	external-interrupt-led.c:94: if(button_irq && !debounce) { // if push button was pressed and debounce has finished
-      0000D0 30*00 17         [24]  916 	jnb	_button_irq,00105$
-      0000D3 20*01 14         [24]  917 	jb	_debounce,00105$
-                                    918 ;	external-interrupt-led.c:95: button_irq = 0; // clear the external interrupt 1 bit            
-                                    919 ;	assignBit
-      0000D6 C2*00            [12]  920 	clr	_button_irq
-                                    921 ;	external-interrupt-led.c:96: if(ledON == 0){ // every time we enter here the LED status changes
-      0000D8 20*02 04         [24]  922 	jb	_ledON,00102$
-                                    923 ;	external-interrupt-led.c:97: ledON= 1;
-                                    924 ;	assignBit
-      0000DB D2*02            [12]  925 	setb	_ledON
-      0000DD 80 02            [24]  926 	sjmp	00103$
-      0000DF                        927 00102$:
-                                    928 ;	external-interrupt-led.c:99: ledON= 0;
-                                    929 ;	assignBit
-      0000DF C2*02            [12]  930 	clr	_ledON
-      0000E1                        931 00103$:
-                                    932 ;	external-interrupt-led.c:101: Serial_println("INT1 detected!");
-      0000E1 90r00r00         [24]  933 	mov	dptr,#___str_0
-      0000E4 75 F0 80         [24]  934 	mov	b, #0x80
-      0000E7 12r00r00         [24]  935 	lcall	_Serial_println
-      0000EA                        936 00105$:
-                                    937 ;	external-interrupt-led.c:103: if(ledON){
-      0000EA 30*02 05         [24]  938 	jnb	_ledON,00108$
-                                    939 ;	external-interrupt-led.c:104: blink_led();
-      0000ED 12r00r88         [24]  940 	lcall	_blink_led
-      0000F0 80 03            [24]  941 	sjmp	00109$
-      0000F2                        942 00108$:
-                                    943 ;	external-interrupt-led.c:106: P3 &= ~0x01;   // LED OFF            
-      0000F2 53 B0 FE         [24]  944 	anl	_P3,#0xfe
-      0000F5                        945 00109$:
-                                    946 ;	external-interrupt-led.c:108: if(serialTime > 100){
-      0000F5 C3               [12]  947 	clr	c
-      0000F6 74 64            [12]  948 	mov	a,#0x64
-      0000F8 95*04            [12]  949 	subb	a,_serialTime
-      0000FA E4               [12]  950 	clr	a
-      0000FB 95*05            [12]  951 	subb	a,(_serialTime + 1)
-      0000FD 50 D1            [24]  952 	jnc	00113$
-                                    953 ;	external-interrupt-led.c:109: serialTime= 0;
+                                    859 ;	external-interrupt-led.c:70: if(tick_10ms % 50 < 25){
+      000088 74 32            [12]  860 	mov	a,#0x32
+      00008A C0 E0            [24]  861 	push	acc
+      00008C E4               [12]  862 	clr	a
+      00008D C0 E0            [24]  863 	push	acc
+      00008F 85*00 82         [24]  864 	mov	dpl, _tick_10ms
+      000092 85*01 83         [24]  865 	mov	dph, (_tick_10ms + 1)
+      000095 12r00r00         [24]  866 	lcall	__moduint
+      000098 AE 82            [24]  867 	mov	r6, dpl
+      00009A AF 83            [24]  868 	mov	r7, dph
+      00009C 15 81            [12]  869 	dec	sp
+      00009E 15 81            [12]  870 	dec	sp
+      0000A0 C3               [12]  871 	clr	c
+      0000A1 EE               [12]  872 	mov	a,r6
+      0000A2 94 19            [12]  873 	subb	a,#0x19
+      0000A4 EF               [12]  874 	mov	a,r7
+      0000A5 94 00            [12]  875 	subb	a,#0x00
+      0000A7 50 04            [24]  876 	jnc	00102$
+                                    877 ;	external-interrupt-led.c:71: P3 |= (1 << 5);  // LED ON
+      0000A9 43 B0 20         [24]  878 	orl	_P3,#0x20
+      0000AC 22               [24]  879 	ret
+      0000AD                        880 00102$:
+                                    881 ;	external-interrupt-led.c:73: P3 &= ~(1 << 5); // LED OFF
+      0000AD 53 B0 DF         [24]  882 	anl	_P3,#0xdf
+                                    883 ;	external-interrupt-led.c:75: }
+      0000B0 22               [24]  884 	ret
+                                    885 ;------------------------------------------------------------
+                                    886 ;Allocation info for local variables in function 'main'
+                                    887 ;------------------------------------------------------------
+                                    888 ;	external-interrupt-led.c:77: void main(void) {
+                                    889 ;	-----------------------------------------
+                                    890 ;	 function main
+                                    891 ;	-----------------------------------------
+      0000B1                        892 _main:
+                                    893 ;	external-interrupt-led.c:78: clock_init();
+      0000B1 12r00r00         [24]  894 	lcall	_clock_init
+                                    895 ;	external-interrupt-led.c:79: timer0_init();
+      0000B4 12r00r73         [24]  896 	lcall	_timer0_init
+                                    897 ;	external-interrupt-led.c:82: SAFE_MOD = 0x55;
+      0000B7 75 A1 55         [24]  898 	mov	_SAFE_MOD,#0x55
+                                    899 ;	external-interrupt-led.c:83: SAFE_MOD = 0xAA;
+      0000BA 75 A1 AA         [24]  900 	mov	_SAFE_MOD,#0xaa
+                                    901 ;	external-interrupt-led.c:84: GLOBAL_CFG &= ~bWDOG_EN;   // turn off watchdog
+      0000BD 53 B1 FE         [24]  902 	anl	_GLOBAL_CFG,#0xfe
+                                    903 ;	external-interrupt-led.c:85: SAFE_MOD = 0x00;
+      0000C0 75 A1 00         [24]  904 	mov	_SAFE_MOD,#0x00
+                                    905 ;	external-interrupt-led.c:88: P3_MOD_OC &= ~(1 << 5);   // not open-drain
+      0000C3 53 96 DF         [24]  906 	anl	_P3_MOD_OC,#0xdf
+                                    907 ;	external-interrupt-led.c:89: P3_DIR_PU |=  (1 << 5);   // output, with pull-up
+      0000C6 43 97 20         [24]  908 	orl	_P3_DIR_PU,#0x20
+                                    909 ;	external-interrupt-led.c:92: P3_MOD_OC |=  (1 << 3);   // open-drain
+      0000C9 43 96 08         [24]  910 	orl	_P3_MOD_OC,#0x08
+                                    911 ;	external-interrupt-led.c:93: P3_DIR_PU |=  (1 << 3);   // enable pull-up (yes, |=, not &=)
+      0000CC 43 97 08         [24]  912 	orl	_P3_DIR_PU,#0x08
+                                    913 ;	external-interrupt-led.c:94: P3 |= (1 << 3);           // pull-up
+      0000CF 43 B0 08         [24]  914 	orl	_P3,#0x08
+                                    915 ;	external-interrupt-led.c:96: Serial_begin();
+      0000D2 12r00r00         [24]  916 	lcall	_Serial_begin
+                                    917 ;	external-interrupt-led.c:98: while (1) {
+      0000D5                        918 00113$:
+                                    919 ;	external-interrupt-led.c:100: if(button_irq && !debounce) { // if push button was pressed and debounce has finished
+      0000D5 30*00 17         [24]  920 	jnb	_button_irq,00105$
+      0000D8 20*01 14         [24]  921 	jb	_debounce,00105$
+                                    922 ;	external-interrupt-led.c:101: button_irq = 0; // clear the external interrupt 1 bit            
+                                    923 ;	assignBit
+      0000DB C2*00            [12]  924 	clr	_button_irq
+                                    925 ;	external-interrupt-led.c:102: if(ledON == 0){ // every time we enter here the LED status changes
+      0000DD 20*02 04         [24]  926 	jb	_ledON,00102$
+                                    927 ;	external-interrupt-led.c:103: ledON= 1;   // from "blinking" to "not blinking" and vice versa
+                                    928 ;	assignBit
+      0000E0 D2*02            [12]  929 	setb	_ledON
+      0000E2 80 02            [24]  930 	sjmp	00103$
+      0000E4                        931 00102$:
+                                    932 ;	external-interrupt-led.c:105: ledON= 0;
+                                    933 ;	assignBit
+      0000E4 C2*02            [12]  934 	clr	_ledON
+      0000E6                        935 00103$:
+                                    936 ;	external-interrupt-led.c:107: Serial_println("INT1 detected!");
+      0000E6 90r00r00         [24]  937 	mov	dptr,#___str_0
+      0000E9 75 F0 80         [24]  938 	mov	b, #0x80
+      0000EC 12r00r00         [24]  939 	lcall	_Serial_println
+      0000EF                        940 00105$:
+                                    941 ;	external-interrupt-led.c:109: if(ledON){
+      0000EF 30*02 05         [24]  942 	jnb	_ledON,00108$
+                                    943 ;	external-interrupt-led.c:110: blink_led();
+      0000F2 12r00r88         [24]  944 	lcall	_blink_led
+      0000F5 80 03            [24]  945 	sjmp	00109$
+      0000F7                        946 00108$:
+                                    947 ;	external-interrupt-led.c:112: P3 &= ~(1 << 5);   // LED OFF           
+      0000F7 53 B0 DF         [24]  948 	anl	_P3,#0xdf
+      0000FA                        949 00109$:
+                                    950 ;	external-interrupt-led.c:114: if(serialTime > 100){ // 100 x 10ms= 1 second
+      0000FA C3               [12]  951 	clr	c
+      0000FB 74 64            [12]  952 	mov	a,#0x64
+      0000FD 95*04            [12]  953 	subb	a,_serialTime
       0000FF E4               [12]  954 	clr	a
-      000100 F5*04            [12]  955 	mov	_serialTime,a
-      000102 F5*05            [12]  956 	mov	(_serialTime + 1),a
-                                    957 ;	external-interrupt-led.c:110: counter++;
-      000104 05*06            [12]  958 	inc	_counter
-      000106 B5*06 02         [24]  959 	cjne	a,_counter,00158$
-      000109 05*07            [12]  960 	inc	(_counter + 1)
-      00010B                        961 00158$:
-                                    962 ;	external-interrupt-led.c:112: Serial_println_uint(counter);
-      00010B 85*06 82         [24]  963 	mov	dpl, _counter
-      00010E 85*07 83         [24]  964 	mov	dph, (_counter + 1)
-      000111 12r00r00         [24]  965 	lcall	_Serial_println_uint
-                                    966 ;	external-interrupt-led.c:116: }
-      000114 80 BA            [24]  967 	sjmp	00113$
-                                    968 	.area CSEG    (CODE)
-                                    969 	.area CONST   (CODE)
-                                    970 	.area CONST   (CODE)
-      000000                        971 ___str_0:
-      000000 49 4E 54 31 20 64 65   972 	.ascii "INT1 detected!"
+      000100 95*05            [12]  955 	subb	a,(_serialTime + 1)
+      000102 50 D1            [24]  956 	jnc	00113$
+                                    957 ;	external-interrupt-led.c:115: serialTime= 0;
+      000104 E4               [12]  958 	clr	a
+      000105 F5*04            [12]  959 	mov	_serialTime,a
+      000107 F5*05            [12]  960 	mov	(_serialTime + 1),a
+                                    961 ;	external-interrupt-led.c:116: counter++;
+      000109 05*06            [12]  962 	inc	_counter
+      00010B B5*06 02         [24]  963 	cjne	a,_counter,00158$
+      00010E 05*07            [12]  964 	inc	(_counter + 1)
+      000110                        965 00158$:
+                                    966 ;	external-interrupt-led.c:118: Serial_println_uint(counter);
+      000110 85*06 82         [24]  967 	mov	dpl, _counter
+      000113 85*07 83         [24]  968 	mov	dph, (_counter + 1)
+      000116 12r00r00         [24]  969 	lcall	_Serial_println_uint
+                                    970 ;	external-interrupt-led.c:122: }
+      000119 80 BA            [24]  971 	sjmp	00113$
+                                    972 	.area CSEG    (CODE)
+                                    973 	.area CONST   (CODE)
+                                    974 	.area CONST   (CODE)
+      000000                        975 ___str_0:
+      000000 49 4E 54 31 20 64 65   976 	.ascii "INT1 detected!"
              74 65 63 74 65 64 21
-      00000E 00                     973 	.db 0x00
-                                    974 	.area CSEG    (CODE)
-                                    975 	.area XINIT   (CODE)
-                                    976 	.area CABS    (ABS,CODE)
+      00000E 00                     977 	.db 0x00
+                                    978 	.area CSEG    (CODE)
+                                    979 	.area XINIT   (CODE)
+                                    980 	.area CABS    (ABS,CODE)
