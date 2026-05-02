@@ -565,7 +565,7 @@
                                     565 ;	-----------------------------------------
                                     566 ;	 function ADCInit
                                     567 ;	-----------------------------------------
-      000570                        568 _ADCInit:
+      000718                        568 _ADCInit:
                            000007   569 	ar7 = 0x07
                            000006   570 	ar6 = 0x06
                            000005   571 	ar5 = 0x05
@@ -574,16 +574,16 @@
                            000002   574 	ar2 = 0x02
                            000001   575 	ar1 = 0x01
                            000000   576 	ar0 = 0x00
-      000570 AF 82            [24]  577 	mov	r7, dpl
+      000718 AF 82            [24]  577 	mov	r7, dpl
                                     578 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:29: ADC_CFG = (ADC_CFG & ~bADC_CLK) | speed;
-      000572 74 FE            [12]  579 	mov	a,#0xfe
-      000574 55 9A            [12]  580 	anl	a,_ADC_CFG
-      000576 4F               [12]  581 	orl	a,r7
-      000577 F5 9A            [12]  582 	mov	_ADC_CFG,a
+      00071A 74 FE            [12]  579 	mov	a,#0xfe
+      00071C 55 9A            [12]  580 	anl	a,_ADC_CFG
+      00071E 4F               [12]  581 	orl	a,r7
+      00071F F5 9A            [12]  582 	mov	_ADC_CFG,a
                                     583 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:30: ADC_CFG |= bADC_EN;                                                        //ADC power enable
-      000579 43 9A 08         [24]  584 	orl	_ADC_CFG,#0x08
+      000721 43 9A 08         [24]  584 	orl	_ADC_CFG,#0x08
                                     585 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:35: }
-      00057C 22               [24]  586 	ret
+      000724 22               [24]  586 	ret
                                     587 ;------------------------------------------------------------
                                     588 ;Allocation info for local variables in function 'ADC_ChannelSelect'
                                     589 ;------------------------------------------------------------
@@ -593,53 +593,53 @@
                                     593 ;	-----------------------------------------
                                     594 ;	 function ADC_ChannelSelect
                                     595 ;	-----------------------------------------
-      00057D                        596 _ADC_ChannelSelect:
+      000725                        596 _ADC_ChannelSelect:
                                     597 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:47: if(ch == 0){ADC_CHAN1 =0;ADC_CHAN0=0;P1_DIR_PU &= ~bAIN0;}                 //AIN0
-      00057D E5 82            [12]  598 	mov	a,dpl
-      00057F FF               [12]  599 	mov	r7,a
-      000580 70 09            [24]  600 	jnz	00111$
+      000725 E5 82            [12]  598 	mov	a,dpl
+      000727 FF               [12]  599 	mov	r7,a
+      000728 70 09            [24]  600 	jnz	00111$
                                     601 ;	assignBit
-      000582 C2 81            [12]  602 	clr	_ADC_CHAN1
+      00072A C2 81            [12]  602 	clr	_ADC_CHAN1
                                     603 ;	assignBit
-      000584 C2 80            [12]  604 	clr	_ADC_CHAN0
-      000586 53 93 FD         [24]  605 	anl	_P1_DIR_PU,#0xfd
-      000589 80 28            [24]  606 	sjmp	00112$
-      00058B                        607 00111$:
+      00072C C2 80            [12]  604 	clr	_ADC_CHAN0
+      00072E 53 93 FD         [24]  605 	anl	_P1_DIR_PU,#0xfd
+      000731 80 28            [24]  606 	sjmp	00112$
+      000733                        607 00111$:
                                     608 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:48: else if(ch == 1){ADC_CHAN1 =0;ADC_CHAN0=1;P1_DIR_PU &= ~bAIN1;}            //AIN1
-      00058B BF 01 09         [24]  609 	cjne	r7,#0x01,00108$
+      000733 BF 01 09         [24]  609 	cjne	r7,#0x01,00108$
                                     610 ;	assignBit
-      00058E C2 81            [12]  611 	clr	_ADC_CHAN1
+      000736 C2 81            [12]  611 	clr	_ADC_CHAN1
                                     612 ;	assignBit
-      000590 D2 80            [12]  613 	setb	_ADC_CHAN0
-      000592 53 93 EF         [24]  614 	anl	_P1_DIR_PU,#0xef
-      000595 80 1C            [24]  615 	sjmp	00112$
-      000597                        616 00108$:
+      000738 D2 80            [12]  613 	setb	_ADC_CHAN0
+      00073A 53 93 EF         [24]  614 	anl	_P1_DIR_PU,#0xef
+      00073D 80 1C            [24]  615 	sjmp	00112$
+      00073F                        616 00108$:
                                     617 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:49: else if(ch == 2){ADC_CHAN1 =1;ADC_CHAN0=0;P1_DIR_PU &= ~bAIN2;}            //AIN2
-      000597 BF 02 09         [24]  618 	cjne	r7,#0x02,00105$
+      00073F BF 02 09         [24]  618 	cjne	r7,#0x02,00105$
                                     619 ;	assignBit
-      00059A D2 81            [12]  620 	setb	_ADC_CHAN1
+      000742 D2 81            [12]  620 	setb	_ADC_CHAN1
                                     621 ;	assignBit
-      00059C C2 80            [12]  622 	clr	_ADC_CHAN0
-      00059E 53 93 DF         [24]  623 	anl	_P1_DIR_PU,#0xdf
-      0005A1 80 10            [24]  624 	sjmp	00112$
-      0005A3                        625 00105$:
+      000744 C2 80            [12]  622 	clr	_ADC_CHAN0
+      000746 53 93 DF         [24]  623 	anl	_P1_DIR_PU,#0xdf
+      000749 80 10            [24]  624 	sjmp	00112$
+      00074B                        625 00105$:
                                     626 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:50: else if(ch == 3){ADC_CHAN1 =1;ADC_CHAN0=1;P3_DIR_PU &= ~bAIN3;}            //AIN3
-      0005A3 BF 03 09         [24]  627 	cjne	r7,#0x03,00102$
+      00074B BF 03 09         [24]  627 	cjne	r7,#0x03,00102$
                                     628 ;	assignBit
-      0005A6 D2 81            [12]  629 	setb	_ADC_CHAN1
+      00074E D2 81            [12]  629 	setb	_ADC_CHAN1
                                     630 ;	assignBit
-      0005A8 D2 80            [12]  631 	setb	_ADC_CHAN0
-      0005AA 53 97 FB         [24]  632 	anl	_P3_DIR_PU,#0xfb
-      0005AD 80 04            [24]  633 	sjmp	00112$
-      0005AF                        634 00102$:
+      000750 D2 80            [12]  631 	setb	_ADC_CHAN0
+      000752 53 97 FB         [24]  632 	anl	_P3_DIR_PU,#0xfb
+      000755 80 04            [24]  633 	sjmp	00112$
+      000757                        634 00102$:
                                     635 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:51: else return FAIL;
-      0005AF 75 82 FF         [24]  636 	mov	dpl, #0xff
-      0005B2 22               [24]  637 	ret
-      0005B3                        638 00112$:
+      000757 75 82 FF         [24]  636 	mov	dpl, #0xff
+      00075A 22               [24]  637 	ret
+      00075B                        638 00112$:
                                     639 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:52: return SUCCESS;
-      0005B3 75 82 01         [24]  640 	mov	dpl, #0x01
+      00075B 75 82 01         [24]  640 	mov	dpl, #0x01
                                     641 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:53: }
-      0005B6 22               [24]  642 	ret
+      00075E 22               [24]  642 	ret
                                     643 ;------------------------------------------------------------
                                     644 ;Allocation info for local variables in function 'VoltageCMPModeInit'
                                     645 ;------------------------------------------------------------
@@ -650,102 +650,102 @@
                                     650 ;	-----------------------------------------
                                     651 ;	 function VoltageCMPModeInit
                                     652 ;	-----------------------------------------
-      0005B7                        653 _VoltageCMPModeInit:
-      0005B7 C0 10            [24]  654 	push	_bp
-      0005B9 85 81 10         [24]  655 	mov	_bp,sp
-      0005BC AF 82            [24]  656 	mov	r7, dpl
+      00075F                        653 _VoltageCMPModeInit:
+      00075F C0 10            [24]  654 	push	_bp
+      000761 85 81 10         [24]  655 	mov	_bp,sp
+      000764 AF 82            [24]  656 	mov	r7, dpl
                                     657 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:66: ADC_CFG |= bCMP_EN;                                                        // level comparison power enable
-      0005BE 43 9A 04         [24]  658 	orl	_ADC_CFG,#0x04
+      000766 43 9A 04         [24]  658 	orl	_ADC_CFG,#0x04
                                     659 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:67: if(re == 1){
-      0005C1 E5 10            [12]  660 	mov	a,_bp
-      0005C3 24 FD            [12]  661 	add	a,#0xfd
-      0005C5 F8               [12]  662 	mov	r0,a
-      0005C6 B6 01 26         [24]  663 	cjne	@r0,#0x01,00123$
+      000769 E5 10            [12]  660 	mov	a,_bp
+      00076B 24 FD            [12]  661 	add	a,#0xfd
+      00076D F8               [12]  662 	mov	r0,a
+      00076E B6 01 26         [24]  663 	cjne	@r0,#0x01,00123$
                                     664 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:68: if(fo == 0) {ADC_CHAN1 =0;ADC_CHAN0=0;CMP_CHAN =0;}                      // AIN0 and AIN1
-      0005C9 EF               [12]  665 	mov	a,r7
-      0005CA 70 08            [24]  666 	jnz	00108$
+      000771 EF               [12]  665 	mov	a,r7
+      000772 70 08            [24]  666 	jnz	00108$
                                     667 ;	assignBit
-      0005CC C2 81            [12]  668 	clr	_ADC_CHAN1
+      000774 C2 81            [12]  668 	clr	_ADC_CHAN1
                                     669 ;	assignBit
-      0005CE C2 80            [12]  670 	clr	_ADC_CHAN0
+      000776 C2 80            [12]  670 	clr	_ADC_CHAN0
                                     671 ;	assignBit
-      0005D0 C2 83            [12]  672 	clr	_CMP_CHAN
-      0005D2 80 4E            [24]  673 	sjmp	00124$
-      0005D4                        674 00108$:
+      000778 C2 83            [12]  672 	clr	_CMP_CHAN
+      00077A 80 4E            [24]  673 	sjmp	00124$
+      00077C                        674 00108$:
                                     675 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:69: else if(fo == 2) {ADC_CHAN1 =1;ADC_CHAN0=0;CMP_CHAN =0;}                 //AIN2 and AIN1
-      0005D4 BF 02 08         [24]  676 	cjne	r7,#0x02,00105$
+      00077C BF 02 08         [24]  676 	cjne	r7,#0x02,00105$
                                     677 ;	assignBit
-      0005D7 D2 81            [12]  678 	setb	_ADC_CHAN1
+      00077F D2 81            [12]  678 	setb	_ADC_CHAN1
                                     679 ;	assignBit
-      0005D9 C2 80            [12]  680 	clr	_ADC_CHAN0
+      000781 C2 80            [12]  680 	clr	_ADC_CHAN0
                                     681 ;	assignBit
-      0005DB C2 83            [12]  682 	clr	_CMP_CHAN
-      0005DD 80 43            [24]  683 	sjmp	00124$
-      0005DF                        684 00105$:
+      000783 C2 83            [12]  682 	clr	_CMP_CHAN
+      000785 80 43            [24]  683 	sjmp	00124$
+      000787                        684 00105$:
                                     685 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:70: else if(fo == 3) {ADC_CHAN1 =1;ADC_CHAN0=1;CMP_CHAN =0; }                //AIN3 and AIN1			
-      0005DF BF 03 08         [24]  686 	cjne	r7,#0x03,00102$
+      000787 BF 03 08         [24]  686 	cjne	r7,#0x03,00102$
                                     687 ;	assignBit
-      0005E2 D2 81            [12]  688 	setb	_ADC_CHAN1
+      00078A D2 81            [12]  688 	setb	_ADC_CHAN1
                                     689 ;	assignBit
-      0005E4 D2 80            [12]  690 	setb	_ADC_CHAN0
+      00078C D2 80            [12]  690 	setb	_ADC_CHAN0
                                     691 ;	assignBit
-      0005E6 C2 83            [12]  692 	clr	_CMP_CHAN
-      0005E8 80 38            [24]  693 	sjmp	00124$
-      0005EA                        694 00102$:
+      00078E C2 83            [12]  692 	clr	_CMP_CHAN
+      000790 80 38            [24]  693 	sjmp	00124$
+      000792                        694 00102$:
                                     695 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:71: else return FAIL;
-      0005EA 75 82 FF         [24]  696 	mov	dpl, #0xff
-      0005ED 80 36            [24]  697 	sjmp	00125$
-      0005EF                        698 00123$:
+      000792 75 82 FF         [24]  696 	mov	dpl, #0xff
+      000795 80 36            [24]  697 	sjmp	00125$
+      000797                        698 00123$:
                                     699 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:73: else if(re == 3){
-      0005EF E5 10            [12]  700 	mov	a,_bp
-      0005F1 24 FD            [12]  701 	add	a,#0xfd
-      0005F3 F8               [12]  702 	mov	r0,a
-      0005F4 B6 03 26         [24]  703 	cjne	@r0,#0x03,00120$
+      000797 E5 10            [12]  700 	mov	a,_bp
+      000799 24 FD            [12]  701 	add	a,#0xfd
+      00079B F8               [12]  702 	mov	r0,a
+      00079C B6 03 26         [24]  703 	cjne	@r0,#0x03,00120$
                                     704 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:74: if(fo == 0) {ADC_CHAN1 =0;ADC_CHAN0=0;CMP_CHAN =0;}                      //AIN0 and AIN1
-      0005F7 EF               [12]  705 	mov	a,r7
-      0005F8 70 08            [24]  706 	jnz	00117$
+      00079F EF               [12]  705 	mov	a,r7
+      0007A0 70 08            [24]  706 	jnz	00117$
                                     707 ;	assignBit
-      0005FA C2 81            [12]  708 	clr	_ADC_CHAN1
+      0007A2 C2 81            [12]  708 	clr	_ADC_CHAN1
                                     709 ;	assignBit
-      0005FC C2 80            [12]  710 	clr	_ADC_CHAN0
+      0007A4 C2 80            [12]  710 	clr	_ADC_CHAN0
                                     711 ;	assignBit
-      0005FE C2 83            [12]  712 	clr	_CMP_CHAN
-      000600 80 20            [24]  713 	sjmp	00124$
-      000602                        714 00117$:
+      0007A6 C2 83            [12]  712 	clr	_CMP_CHAN
+      0007A8 80 20            [24]  713 	sjmp	00124$
+      0007AA                        714 00117$:
                                     715 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:75: else if(fo == 1) {ADC_CHAN1 =0;ADC_CHAN0=1;CMP_CHAN =0;}                 //AIN1 and AIN1
-      000602 BF 01 08         [24]  716 	cjne	r7,#0x01,00114$
+      0007AA BF 01 08         [24]  716 	cjne	r7,#0x01,00114$
                                     717 ;	assignBit
-      000605 C2 81            [12]  718 	clr	_ADC_CHAN1
+      0007AD C2 81            [12]  718 	clr	_ADC_CHAN1
                                     719 ;	assignBit
-      000607 D2 80            [12]  720 	setb	_ADC_CHAN0
+      0007AF D2 80            [12]  720 	setb	_ADC_CHAN0
                                     721 ;	assignBit
-      000609 C2 83            [12]  722 	clr	_CMP_CHAN
-      00060B 80 15            [24]  723 	sjmp	00124$
-      00060D                        724 00114$:
+      0007B1 C2 83            [12]  722 	clr	_CMP_CHAN
+      0007B3 80 15            [24]  723 	sjmp	00124$
+      0007B5                        724 00114$:
                                     725 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:76: else if(fo == 2) {ADC_CHAN1 =1;ADC_CHAN0=0;CMP_CHAN =0;}                 //AIN2 and AIN1		
-      00060D BF 02 08         [24]  726 	cjne	r7,#0x02,00111$
+      0007B5 BF 02 08         [24]  726 	cjne	r7,#0x02,00111$
                                     727 ;	assignBit
-      000610 D2 81            [12]  728 	setb	_ADC_CHAN1
+      0007B8 D2 81            [12]  728 	setb	_ADC_CHAN1
                                     729 ;	assignBit
-      000612 C2 80            [12]  730 	clr	_ADC_CHAN0
+      0007BA C2 80            [12]  730 	clr	_ADC_CHAN0
                                     731 ;	assignBit
-      000614 C2 83            [12]  732 	clr	_CMP_CHAN
-      000616 80 0A            [24]  733 	sjmp	00124$
-      000618                        734 00111$:
+      0007BC C2 83            [12]  732 	clr	_CMP_CHAN
+      0007BE 80 0A            [24]  733 	sjmp	00124$
+      0007C0                        734 00111$:
                                     735 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:77: else return FAIL;
-      000618 75 82 FF         [24]  736 	mov	dpl, #0xff
-      00061B 80 08            [24]  737 	sjmp	00125$
-      00061D                        738 00120$:
+      0007C0 75 82 FF         [24]  736 	mov	dpl, #0xff
+      0007C3 80 08            [24]  737 	sjmp	00125$
+      0007C5                        738 00120$:
                                     739 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:79: else return FAIL;
-      00061D 75 82 FF         [24]  740 	mov	dpl, #0xff
-      000620 80 03            [24]  741 	sjmp	00125$
-      000622                        742 00124$:
+      0007C5 75 82 FF         [24]  740 	mov	dpl, #0xff
+      0007C8 80 03            [24]  741 	sjmp	00125$
+      0007CA                        742 00124$:
                                     743 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:85: return SUCCESS;
-      000622 75 82 01         [24]  744 	mov	dpl, #0x01
-      000625                        745 00125$:
+      0007CA 75 82 01         [24]  744 	mov	dpl, #0x01
+      0007CD                        745 00125$:
                                     746 ;	C:\Users\Clovisf\Documents\ch552\adc\adc.c:86: }
-      000625 D0 10            [24]  747 	pop	_bp
-      000627 22               [24]  748 	ret
+      0007CD D0 10            [24]  747 	pop	_bp
+      0007CF 22               [24]  748 	ret
                                     749 	.area CSEG    (CODE)
                                     750 	.area CONST   (CODE)
                                     751 	.area XINIT   (CODE)

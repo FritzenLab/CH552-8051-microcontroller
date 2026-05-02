@@ -8,6 +8,8 @@
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
+	.globl _font_V
+	.globl _font_m
 	.globl _font5x7
 	.globl _main
 	.globl _rawToMillivolts
@@ -16,6 +18,7 @@
 	.globl _timer0_init
 	.globl _timer0_ISR
 	.globl _oled_print_uint
+	.globl _get_text_width
 	.globl _oled_draw_char
 	.globl _oled_init
 	.globl _oled_clear
@@ -663,7 +666,7 @@ sdcc_atomic_compare_exchange_gptr_impl::
 	clr	a
 	mov	_tick_10ms,a
 	mov	(_tick_10ms + 1),a
-;	i2c-bit-bang-oled-0.49-analog-reading.c:8: unsigned int serialTime = 0;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:8: volatile unsigned int serialTime = 0;
 	mov	_serialTime,a
 	mov	(_serialTime + 1),a
 ;	i2c-bit-bang-oled-0.49-analog-reading.c:10: uint8_t rawAnalog = 0;
@@ -688,8 +691,6 @@ __sdcc_program_startup:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'i2c_delay'
 ;------------------------------------------------------------
-;i             Allocated to stack - _bp +1 +1 
-;------------------------------------------------------------
 ;	i2c-bit-bang-oled-0.49-analog-reading.c:23: void i2c_delay(void) {
 ;	-----------------------------------------
 ;	 function i2c_delay
@@ -703,193 +704,184 @@ _i2c_delay:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-	push	_bp
-	mov	_bp,sp
-	inc	sp
-;	i2c-bit-bang-oled-0.49-analog-reading.c:24: for (volatile uint8_t i = 0; i < 40; i++);
-	mov	r0,_bp
-	inc	r0
-	mov	@r0,#0x00
-00103$:
-	mov	r0,_bp
-	inc	r0
-	cjne	@r0,#0x28,00119$
-00119$:
-	jnc	00105$
-	mov	r0,_bp
-	inc	r0
-	mov	ar7,@r0
-	mov	r0,_bp
-	inc	r0
-	mov	a,r7
-	inc	a
-	mov	@r0,a
-	sjmp	00103$
-00105$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:25: }
-	dec	sp
-	pop	_bp
+;	i2c-bit-bang-oled-0.49-analog-reading.c:24: __asm nop __endasm;
+	nop	
+;	i2c-bit-bang-oled-0.49-analog-reading.c:25: __asm nop __endasm;
+	nop	
+;	i2c-bit-bang-oled-0.49-analog-reading.c:26: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'i2c_start'
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:27: void i2c_start(void) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:28: void i2c_start(void) {
 ;	-----------------------------------------
 ;	 function i2c_start
 ;	-----------------------------------------
 _i2c_start:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:28: SDA_RELEASE();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:29: SDA_RELEASE();
 	orl	_P1,#0x01
-;	i2c-bit-bang-oled-0.49-analog-reading.c:29: SCL_RELEASE();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:30: SCL_RELEASE();
 	orl	_P1,#0x02
-;	i2c-bit-bang-oled-0.49-analog-reading.c:30: i2c_delay();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:31: i2c_delay();
 	lcall	_i2c_delay
-;	i2c-bit-bang-oled-0.49-analog-reading.c:32: SDA_LOW();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:33: SDA_LOW();
 	anl	_P1,#0xfe
-;	i2c-bit-bang-oled-0.49-analog-reading.c:33: i2c_delay();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:34: i2c_delay();
 	lcall	_i2c_delay
-;	i2c-bit-bang-oled-0.49-analog-reading.c:34: SCL_LOW();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:35: SCL_LOW();
 	anl	_P1,#0xfd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:35: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:36: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'i2c_stop'
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:37: void i2c_stop(void) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:38: void i2c_stop(void) {
 ;	-----------------------------------------
 ;	 function i2c_stop
 ;	-----------------------------------------
 _i2c_stop:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:38: SDA_LOW();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:39: SDA_LOW();
 	anl	_P1,#0xfe
-;	i2c-bit-bang-oled-0.49-analog-reading.c:39: SCL_RELEASE();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:40: SCL_RELEASE();
 	orl	_P1,#0x02
-;	i2c-bit-bang-oled-0.49-analog-reading.c:40: i2c_delay();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:41: i2c_delay();
 	lcall	_i2c_delay
-;	i2c-bit-bang-oled-0.49-analog-reading.c:42: SDA_RELEASE();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:43: SDA_RELEASE();
 	orl	_P1,#0x01
-;	i2c-bit-bang-oled-0.49-analog-reading.c:43: i2c_delay();
-;	i2c-bit-bang-oled-0.49-analog-reading.c:44: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:44: i2c_delay();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:45: }
 	ljmp	_i2c_delay
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'i2c_write_byte'
 ;------------------------------------------------------------
 ;data          Allocated to registers r7 
 ;i             Allocated to registers r6 
+;ack           Allocated to registers 
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:46: void i2c_write_byte(uint8_t data) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:49: uint8_t i2c_write_byte(uint8_t data) {
 ;	-----------------------------------------
 ;	 function i2c_write_byte
 ;	-----------------------------------------
 _i2c_write_byte:
 	mov	r7, dpl
-;	i2c-bit-bang-oled-0.49-analog-reading.c:47: for (uint8_t i = 0; i < 8; i++) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:50: for (uint8_t i = 0; i < 8; i++) {
 	mov	r6,#0x00
 00106$:
-	cjne	r6,#0x08,00129$
-00129$:
+	cjne	r6,#0x08,00137$
+00137$:
 	jnc	00104$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:49: if (data & 0x80)
+;	i2c-bit-bang-oled-0.49-analog-reading.c:51: if (data & 0x80)
 	mov	a,r7
 	jnb	acc.7,00102$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:50: SDA_RELEASE();   // HIGH = release
+;	i2c-bit-bang-oled-0.49-analog-reading.c:52: SDA_RELEASE();
 	orl	_P1,#0x01
 	sjmp	00103$
 00102$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:52: SDA_LOW();       // LOW = drive
+;	i2c-bit-bang-oled-0.49-analog-reading.c:54: SDA_LOW();
 	anl	_P1,#0xfe
 00103$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:54: SCL_RELEASE();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:56: SCL_RELEASE();
 	orl	_P1,#0x02
-;	i2c-bit-bang-oled-0.49-analog-reading.c:55: i2c_delay();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:57: i2c_delay();
 	push	ar7
 	push	ar6
 	lcall	_i2c_delay
-;	i2c-bit-bang-oled-0.49-analog-reading.c:56: SCL_LOW();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:58: SCL_LOW();
 	anl	_P1,#0xfd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:57: i2c_delay();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:59: i2c_delay();
 	lcall	_i2c_delay
 	pop	ar6
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:59: data <<= 1;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:60: data <<= 1;
 	mov	a,r7
 	add	a,r7
 	mov	r7,a
-;	i2c-bit-bang-oled-0.49-analog-reading.c:47: for (uint8_t i = 0; i < 8; i++) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:50: for (uint8_t i = 0; i < 8; i++) {
 	inc	r6
 	sjmp	00106$
 00104$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:63: SDA_RELEASE();      // release SDA so slave can pull it LOW
+;	i2c-bit-bang-oled-0.49-analog-reading.c:64: SDA_RELEASE();
 	orl	_P1,#0x01
-;	i2c-bit-bang-oled-0.49-analog-reading.c:64: SCL_RELEASE();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:65: SCL_RELEASE();
 	orl	_P1,#0x02
-;	i2c-bit-bang-oled-0.49-analog-reading.c:65: i2c_delay();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:66: i2c_delay();
 	lcall	_i2c_delay
-;	i2c-bit-bang-oled-0.49-analog-reading.c:66: SCL_LOW();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:68: uint8_t ack = (P1 & (1 << SDA_PIN)) ? 1 : 0;
+	mov	a,_P1
+	jnb	acc.0,00110$
+	mov	r7,#0x01
+	sjmp	00111$
+00110$:
+	mov	r7,#0x00
+00111$:
+	mov	dpl,r7
+;	i2c-bit-bang-oled-0.49-analog-reading.c:69: SCL_LOW();
 	anl	_P1,#0xfd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:67: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:70: return ack; // 0 = ACK, 1 = NACK
+;	i2c-bit-bang-oled-0.49-analog-reading.c:71: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'oled_cmd'
 ;------------------------------------------------------------
 ;cmd           Allocated to registers r7 
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:73: void oled_cmd(uint8_t cmd) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:76: void oled_cmd(uint8_t cmd) {
 ;	-----------------------------------------
 ;	 function oled_cmd
 ;	-----------------------------------------
 _oled_cmd:
 	mov	r7, dpl
-;	i2c-bit-bang-oled-0.49-analog-reading.c:74: i2c_start();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:77: i2c_start();
 	push	ar7
 	lcall	_i2c_start
-;	i2c-bit-bang-oled-0.49-analog-reading.c:75: i2c_write_byte(OLED_ADDR);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:78: i2c_write_byte(OLED_ADDR);
 	mov	dpl, #0x78
 	lcall	_i2c_write_byte
-;	i2c-bit-bang-oled-0.49-analog-reading.c:76: i2c_write_byte(0x00);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:79: i2c_write_byte(0x00);
 	mov	dpl, #0x00
 	lcall	_i2c_write_byte
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:77: i2c_write_byte(cmd);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:80: i2c_write_byte(cmd);
 	mov	dpl, r7
 	lcall	_i2c_write_byte
-;	i2c-bit-bang-oled-0.49-analog-reading.c:78: i2c_stop();
-;	i2c-bit-bang-oled-0.49-analog-reading.c:79: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:81: i2c_stop();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:82: }
 	ljmp	_i2c_stop
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'oled_data'
 ;------------------------------------------------------------
 ;data          Allocated to registers r7 
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:81: void oled_data(uint8_t data) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:84: void oled_data(uint8_t data) {
 ;	-----------------------------------------
 ;	 function oled_data
 ;	-----------------------------------------
 _oled_data:
 	mov	r7, dpl
-;	i2c-bit-bang-oled-0.49-analog-reading.c:82: i2c_start();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:85: i2c_start();
 	push	ar7
 	lcall	_i2c_start
-;	i2c-bit-bang-oled-0.49-analog-reading.c:83: i2c_write_byte(OLED_ADDR);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:86: i2c_write_byte(OLED_ADDR);
 	mov	dpl, #0x78
 	lcall	_i2c_write_byte
-;	i2c-bit-bang-oled-0.49-analog-reading.c:84: i2c_write_byte(0x40);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:87: i2c_write_byte(0x40);
 	mov	dpl, #0x40
 	lcall	_i2c_write_byte
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:85: i2c_write_byte(data);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:88: i2c_write_byte(data);
 	mov	dpl, r7
 	lcall	_i2c_write_byte
-;	i2c-bit-bang-oled-0.49-analog-reading.c:86: i2c_stop();
-;	i2c-bit-bang-oled-0.49-analog-reading.c:87: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:89: i2c_stop();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:90: }
 	ljmp	_i2c_stop
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'oled_set_cursor'
 ;------------------------------------------------------------
 ;page          Allocated to stack - _bp -3 +1 
 ;x             Allocated to registers r7 
+;col           Allocated to registers r7 
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:89: void oled_set_cursor(uint8_t x, uint8_t page) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:92: void oled_set_cursor(uint8_t x, uint8_t page) {
 ;	-----------------------------------------
 ;	 function oled_set_cursor
 ;	-----------------------------------------
@@ -897,7 +889,11 @@ _oled_set_cursor:
 	push	_bp
 	mov	_bp,sp
 	mov	r7, dpl
-;	i2c-bit-bang-oled-0.49-analog-reading.c:90: oled_cmd(0xB0 + page);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:94: uint8_t col = x + 32;
+	mov	a,#0x20
+	add	a, r7
+	mov	r7,a
+;	i2c-bit-bang-oled-0.49-analog-reading.c:95: oled_cmd(0xB0 + page);
 	mov	a,_bp
 	add	a,#0xfd
 	mov	r0,a
@@ -908,22 +904,23 @@ _oled_set_cursor:
 	push	ar7
 	lcall	_oled_cmd
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:91: oled_cmd(0x00 + (x & 0x0F));
-	mov	ar6,r7
+;	i2c-bit-bang-oled-0.49-analog-reading.c:96: oled_cmd(0x00 | (col & 0x0F));   // low nibble
 	mov	a,#0x0f
-	anl	a,r6
+	anl	a,r7
 	mov	dpl,a
 	push	ar7
 	lcall	_oled_cmd
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:92: oled_cmd(0x10 + (x >> 4));
+;	i2c-bit-bang-oled-0.49-analog-reading.c:97: oled_cmd(0x10 | (col >> 4));     // high nibble
 	mov	a,r7
 	swap	a
 	anl	a,#0x0f
-	add	a,#0x10
+	mov	r7,a
+	mov	a,#0x10
+	orl	a,r7
 	mov	dpl,a
 	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:93: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:98: }
 	pop	_bp
 	ret
 ;------------------------------------------------------------
@@ -933,7 +930,7 @@ _oled_set_cursor:
 ;data          Allocated to stack - _bp +1 +3 
 ;i             Allocated to registers r4 
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:94: void oled_write_data_stream(uint8_t *data, uint8_t len) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:99: void oled_write_data_stream(uint8_t *data, uint8_t len) {
 ;	-----------------------------------------
 ;	 function oled_write_data_stream
 ;	-----------------------------------------
@@ -943,15 +940,15 @@ _oled_write_data_stream:
 	push	dpl
 	push	dph
 	push	b
-;	i2c-bit-bang-oled-0.49-analog-reading.c:95: i2c_start();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:100: i2c_start();
 	lcall	_i2c_start
-;	i2c-bit-bang-oled-0.49-analog-reading.c:96: i2c_write_byte(OLED_ADDR);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:101: i2c_write_byte(OLED_ADDR);
 	mov	dpl, #0x78
 	lcall	_i2c_write_byte
-;	i2c-bit-bang-oled-0.49-analog-reading.c:97: i2c_write_byte(0x40);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:102: i2c_write_byte(0x40);
 	mov	dpl, #0x40
 	lcall	_i2c_write_byte
-;	i2c-bit-bang-oled-0.49-analog-reading.c:99: for (uint8_t i = 0; i < len; i++) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:104: for (uint8_t i = 0; i < len; i++) {
 	mov	r4,#0x00
 00103$:
 	mov	a,_bp
@@ -961,7 +958,7 @@ _oled_write_data_stream:
 	mov	a,r4
 	subb	a,@r0
 	jnc	00101$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:100: i2c_write_byte(data[i]);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:105: i2c_write_byte(data[i]);
 	mov	r0,_bp
 	inc	r0
 	mov	a,r4
@@ -981,13 +978,13 @@ _oled_write_data_stream:
 	push	ar4
 	lcall	_i2c_write_byte
 	pop	ar4
-;	i2c-bit-bang-oled-0.49-analog-reading.c:99: for (uint8_t i = 0; i < len; i++) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:104: for (uint8_t i = 0; i < len; i++) {
 	inc	r4
 	sjmp	00103$
 00101$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:103: i2c_stop();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:108: i2c_stop();
 	lcall	_i2c_stop
-;	i2c-bit-bang-oled-0.49-analog-reading.c:104: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:109: }
 	mov	sp,_bp
 	pop	_bp
 	ret
@@ -997,53 +994,51 @@ _oled_write_data_stream:
 ;page          Allocated to registers r7 
 ;i             Allocated to registers r6 
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:105: void oled_clear(void) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:110: void oled_clear(void) {
 ;	-----------------------------------------
 ;	 function oled_clear
 ;	-----------------------------------------
 _oled_clear:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:106: for (uint8_t page = 0; page < 8; page++) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:112: for (uint8_t page = 0; page < 4; page++) {
 	mov	r7,#0x00
 00107$:
-	cjne	r7,#0x08,00137$
+	cjne	r7,#0x04,00137$
 00137$:
 	jnc	00109$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:108: oled_cmd(0xB0 + page);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:113: oled_cmd(0xB0 + page);
 	mov	ar6,r7
 	mov	a,#0xb0
 	add	a, r6
 	mov	dpl,a
 	push	ar7
 	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:109: oled_cmd(0x00);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:114: oled_cmd(0x00);  // col low  = 0x00 → actual col = 32 after remap
 	mov	dpl, #0x00
 	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:110: oled_cmd(0x10);
-	mov	dpl, #0x10
+;	i2c-bit-bang-oled-0.49-analog-reading.c:115: oled_cmd(0x12);  // col high = 0x10 | 0x02 = col 32
+	mov	dpl, #0x12
 	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:112: i2c_start();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:116: i2c_start();
 	lcall	_i2c_start
-;	i2c-bit-bang-oled-0.49-analog-reading.c:113: i2c_write_byte(OLED_ADDR);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:117: i2c_write_byte(OLED_ADDR);
 	mov	dpl, #0x78
 	lcall	_i2c_write_byte
-;	i2c-bit-bang-oled-0.49-analog-reading.c:114: i2c_write_byte(0x40);   // data stream
+;	i2c-bit-bang-oled-0.49-analog-reading.c:118: i2c_write_byte(0x40);
 	mov	dpl, #0x40
 	lcall	_i2c_write_byte
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:116: for (uint8_t i = 0; i < 128; i++) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:119: for (uint8_t i = 0; i < 64; i++) i2c_write_byte(0x00);
 	mov	r6,#0x00
 00104$:
-	cjne	r6,#0x80,00139$
+	cjne	r6,#0x40,00139$
 00139$:
 	jnc	00101$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:117: i2c_write_byte(0x00);
 	mov	dpl, #0x00
 	push	ar7
 	push	ar6
 	lcall	_i2c_write_byte
 	pop	ar6
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:116: for (uint8_t i = 0; i < 128; i++) {
 	inc	r6
 	sjmp	00104$
 00101$:
@@ -1051,7 +1046,7 @@ _oled_clear:
 	push	ar7
 	lcall	_i2c_stop
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:106: for (uint8_t page = 0; page < 8; page++) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:112: for (uint8_t page = 0; page < 4; page++) {
 	inc	r7
 	sjmp	00107$
 00109$:
@@ -1065,83 +1060,74 @@ _oled_clear:
 ;	 function oled_init
 ;	-----------------------------------------
 _oled_init:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:125: oled_cmd(0xAE);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:125: oled_cmd(0xAE);           // display off
 	mov	dpl, #0xae
 	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:126: oled_cmd(0x20); oled_cmd(0x00);
-	mov	dpl, #0x20
+;	i2c-bit-bang-oled-0.49-analog-reading.c:126: oled_cmd(0xD5); oled_cmd(0x80); // clock divide ratio / osc freq
+	mov	dpl, #0xd5
 	lcall	_oled_cmd
-	mov	dpl, #0x00
+	mov	dpl, #0x80
 	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:127: oled_cmd(0xB0);
-	mov	dpl, #0xb0
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:128: oled_cmd(0xC8);
-	mov	dpl, #0xc8
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:129: oled_cmd(0x00);
-	mov	dpl, #0x00
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:130: oled_cmd(0x10);
-	mov	dpl, #0x10
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:131: oled_cmd(0x40);
-	mov	dpl, #0x40
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:132: oled_cmd(0x81); oled_cmd(0x7F);
-	mov	dpl, #0x81
-	lcall	_oled_cmd
-	mov	dpl, #0x7f
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:133: oled_cmd(0xA1);
-	mov	dpl, #0xa1
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:134: oled_cmd(0xA6);
-	mov	dpl, #0xa6
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:135: oled_cmd(0xA8); oled_cmd(0x3F);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:127: oled_cmd(0xA8); oled_cmd(0x1F); // multiplex ratio = 31 (32 rows)
 	mov	dpl, #0xa8
 	lcall	_oled_cmd
-	mov	dpl, #0x3f
+	mov	dpl, #0x1f
 	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:136: oled_cmd(0xA4);
-	mov	dpl, #0xa4
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:137: oled_cmd(0xD3); oled_cmd(0x00);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:128: oled_cmd(0xD3); oled_cmd(0x00); // display offset = 0
 	mov	dpl, #0xd3
 	lcall	_oled_cmd
 	mov	dpl, #0x00
 	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:138: oled_cmd(0xD5); oled_cmd(0xF0);
-	mov	dpl, #0xd5
+;	i2c-bit-bang-oled-0.49-analog-reading.c:129: oled_cmd(0x40);                 // display start line = 0
+	mov	dpl, #0x40
 	lcall	_oled_cmd
-	mov	dpl, #0xf0
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:139: oled_cmd(0xD9); oled_cmd(0x22);
-	mov	dpl, #0xd9
-	lcall	_oled_cmd
-	mov	dpl, #0x22
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:140: oled_cmd(0xDA); oled_cmd(0x12);
-	mov	dpl, #0xda
-	lcall	_oled_cmd
-	mov	dpl, #0x12
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:141: oled_cmd(0xDB); oled_cmd(0x20);
-	mov	dpl, #0xdb
-	lcall	_oled_cmd
-	mov	dpl, #0x20
-	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:142: oled_cmd(0x8D); oled_cmd(0x14);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:130: oled_cmd(0x8D); oled_cmd(0x14); // charge pump enable
 	mov	dpl, #0x8d
 	lcall	_oled_cmd
 	mov	dpl, #0x14
 	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:143: oled_cmd(0xAF);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:131: oled_cmd(0x20); oled_cmd(0x02); // page addressing mode
+	mov	dpl, #0x20
+	lcall	_oled_cmd
+	mov	dpl, #0x02
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:132: oled_cmd(0xA1);                 // segment remap (col 127 = SEG0)
+	mov	dpl, #0xa1
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:133: oled_cmd(0xC8);                 // COM scan remapped
+	mov	dpl, #0xc8
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:134: oled_cmd(0xDA); oled_cmd(0x12); // COM pins: alt config, no remap
+	mov	dpl, #0xda
+	lcall	_oled_cmd
+	mov	dpl, #0x12
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:135: oled_cmd(0x81); oled_cmd(0xCF); // contrast
+	mov	dpl, #0x81
+	lcall	_oled_cmd
+	mov	dpl, #0xcf
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:136: oled_cmd(0xD9); oled_cmd(0x22); // pre-charge period
+	mov	dpl, #0xd9
+	lcall	_oled_cmd
+	mov	dpl, #0x22
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:137: oled_cmd(0xDB); oled_cmd(0x00); // VCOMH deselect = 0
+	mov	dpl, #0xdb
+	lcall	_oled_cmd
+	mov	dpl, #0x00
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:138: oled_cmd(0xA4);                 // output follows RAM
+	mov	dpl, #0xa4
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:139: oled_cmd(0xA6);                 // normal display
+	mov	dpl, #0xa6
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:140: oled_cmd(0xAF);                 // display on
 	mov	dpl, #0xaf
 	lcall	_oled_cmd
-;	i2c-bit-bang-oled-0.49-analog-reading.c:145: oled_clear();
-;	i2c-bit-bang-oled-0.49-analog-reading.c:146: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:142: oled_clear();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:143: }
 	ljmp	_oled_clear
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'oled_draw_char'
@@ -1150,13 +1136,13 @@ _oled_init:
 ;index         Allocated to registers r7 
 ;i             Allocated to registers r5 
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:162: void oled_draw_char(char c) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:161: void oled_draw_char(char c) {
 ;	-----------------------------------------
 ;	 function oled_draw_char
 ;	-----------------------------------------
 _oled_draw_char:
 	mov	r7, dpl
-;	i2c-bit-bang-oled-0.49-analog-reading.c:163: if (c < '0' || c > '9') return;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:162: if (c < '0' || c > '9') return;
 	cjne	r7,#0x30,00129$
 00129$:
 	jc	00101$
@@ -1166,21 +1152,21 @@ _oled_draw_char:
 00101$:
 	ret
 00102$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:165: uint8_t index = c - '0';
+;	i2c-bit-bang-oled-0.49-analog-reading.c:164: uint8_t index = c - '0';
 	mov	a,r7
 	add	a,#0xd0
 	mov	r7,a
-;	i2c-bit-bang-oled-0.49-analog-reading.c:167: i2c_start();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:166: i2c_start();
 	push	ar7
 	lcall	_i2c_start
-;	i2c-bit-bang-oled-0.49-analog-reading.c:168: i2c_write_byte(OLED_ADDR);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:167: i2c_write_byte(OLED_ADDR);
 	mov	dpl, #0x78
 	lcall	_i2c_write_byte
-;	i2c-bit-bang-oled-0.49-analog-reading.c:169: i2c_write_byte(0x40);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:168: i2c_write_byte(0x40);
 	mov	dpl, #0x40
 	lcall	_i2c_write_byte
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:171: for (uint8_t i = 0; i < 5; i++) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:170: for (uint8_t i = 0; i < 5; i++) {
 	mov	a,r7
 	mov	b,#0x05
 	mul	ab
@@ -1194,7 +1180,7 @@ _oled_draw_char:
 	cjne	r5,#0x05,00132$
 00132$:
 	jnc	00104$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:172: i2c_write_byte(font5x7[index][i]);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:171: i2c_write_byte(font5x7[index][i]);
 	mov	a,r5
 	add	a, r6
 	mov	dpl,a
@@ -1211,103 +1197,52 @@ _oled_draw_char:
 	pop	ar5
 	pop	ar6
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:171: for (uint8_t i = 0; i < 5; i++) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:170: for (uint8_t i = 0; i < 5; i++) {
 	inc	r5
 	sjmp	00106$
 00104$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:175: i2c_write_byte(0x00); // spacing
+;	i2c-bit-bang-oled-0.49-analog-reading.c:174: i2c_write_byte(0x00); // spacing
 	mov	dpl, #0x00
 	lcall	_i2c_write_byte
-;	i2c-bit-bang-oled-0.49-analog-reading.c:177: i2c_stop();
-;	i2c-bit-bang-oled-0.49-analog-reading.c:178: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:176: i2c_stop();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:177: }
 	ljmp	_i2c_stop
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'oled_print_uint'
+;Allocation info for local variables in function 'get_text_width'
 ;------------------------------------------------------------
 ;value         Allocated to registers r6 r7 
-;buf           Allocated to stack - _bp +3 +6 
-;i             Allocated to registers r5 
-;temp          Allocated to registers r6 r7 
-;rev           Allocated to stack - _bp +9 +6 
-;j             Allocated to registers r5 
-;k             Allocated to registers r6 
-;sloc0         Allocated to stack - _bp +20 +1 
-;sloc1         Allocated to stack - _bp +1 +2 
+;digits        Allocated to registers r5 
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:180: void oled_print_uint(uint16_t value) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:178: uint8_t get_text_width(uint16_t value) {
 ;	-----------------------------------------
-;	 function oled_print_uint
+;	 function get_text_width
 ;	-----------------------------------------
-_oled_print_uint:
-	push	_bp
-	mov	a,sp
-	mov	_bp,a
-	add	a,#0x0e
-	mov	sp,a
+_get_text_width:
 	mov	r6, dpl
 	mov	r7, dph
-;	i2c-bit-bang-oled-0.49-analog-reading.c:184: if (value == 0) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:181: if (value == 0) return 6;
 	mov	a,r6
 	orl	a,r7
-	jnz	00108$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:185: buf[i++] = '0';
-	mov	a,_bp
-	add	a,#0x03
-	mov	r1,a
-	mov	r5,#0x01
-	mov	@r1,#0x30
-	ljmp	00109$
-00108$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:187: uint16_t temp = value;
-;	i2c-bit-bang-oled-0.49-analog-reading.c:191: while (temp > 0) {
-	mov	a,_bp
-	add	a,#0x09
-	mov	r4,a
+	jnz	00110$
+	mov	dpl, #0x06
+;	i2c-bit-bang-oled-0.49-analog-reading.c:183: while (value > 0) {
+	ret
+00110$:
 	mov	r5,#0x00
-00101$:
+00103$:
 	mov	a,r6
 	orl	a,r7
-	jz	00120$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:192: rev[j++] = (temp % 10) + '0';
-	mov	a,r5
-	add	a, r4
-	mov	r1,a
+	jz	00105$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:184: digits++;
 	inc	r5
-	push	ar4
-	mov	r0,_bp
-	inc	r0
-	mov	@r0,ar6
-	inc	r0
-	mov	@r0,ar7
+;	i2c-bit-bang-oled-0.49-analog-reading.c:185: value /= 10;
+	mov	dpl,r6
+	mov	dph,r7
 	push	ar5
-	push	ar1
 	mov	a,#0x0a
 	push	acc
 	clr	a
 	push	acc
-	mov	r0,_bp
-	inc	r0
-	mov	dpl, @r0
-	inc	r0
-	mov	dph, @r0
-	lcall	__moduint
-	mov	r3, dpl
-	dec	sp
-	dec	sp
-	pop	ar1
-	mov	a,#0x30
-	add	a, r3
-	mov	@r1,a
-;	i2c-bit-bang-oled-0.49-analog-reading.c:193: temp /= 10;
-	mov	a,#0x0a
-	push	acc
-	clr	a
-	push	acc
-	mov	r0,_bp
-	inc	r0
-	mov	dpl, @r0
-	inc	r0
-	mov	dph, @r0
 	lcall	__divuint
 	mov	r3, dpl
 	mov	r4, dph
@@ -1316,71 +1251,370 @@ _oled_print_uint:
 	pop	ar5
 	mov	ar6,r3
 	mov	ar7,r4
-	pop	ar4
-;	i2c-bit-bang-oled-0.49-analog-reading.c:195: while (j > 0) buf[i++] = rev[--j];
+	sjmp	00103$
+00105$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:188: return (digits * 6) + (1 + 6 + 6);  
+	mov	a,r5
+	mov	b,#0x06
+	mul	ab
+	add	a, #0x0d
+	mov	dpl,a
+;	i2c-bit-bang-oled-0.49-analog-reading.c:190: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'oled_print_uint'
+;------------------------------------------------------------
+;value         Allocated to registers r6 r7 
+;buffer        Allocated to stack - _bp +4 +64 
+;idx           Allocated to registers 
+;buf           Allocated to stack - _bp +68 +6 
+;i             Allocated to registers r4 
+;temp          Allocated to registers r4 r2 
+;rev           Allocated to stack - _bp +74 +6 
+;j             Allocated to stack - _bp +80 +1 
+;k             Allocated to registers r2 
+;index         Allocated to registers 
+;col           Allocated to registers r5 
+;i             Allocated to registers r4 
+;col           Allocated to registers r4 
+;col           Allocated to registers r6 
+;n             Allocated to registers r5 
+;sloc0         Allocated to stack - _bp +1 +2 
+;sloc1         Allocated to stack - _bp +3 +1 
+;------------------------------------------------------------
+;	i2c-bit-bang-oled-0.49-analog-reading.c:191: void oled_print_uint(uint16_t value) {
+;	-----------------------------------------
+;	 function oled_print_uint
+;	-----------------------------------------
+_oled_print_uint:
+	push	_bp
+	mov	a,sp
+	mov	_bp,a
+	add	a,#0x50
+	mov	sp,a
+	mov	r6, dpl
+	mov	r7, dph
+;	i2c-bit-bang-oled-0.49-analog-reading.c:193: uint8_t idx = 0;
+	mov	r5,#0x00
+;	i2c-bit-bang-oled-0.49-analog-reading.c:199: if (value == 0) {
+	mov	a,r6
+	orl	a,r7
+	jnz	00108$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:200: buf[i++] = '0';
+	mov	a,_bp
+	add	a,#0x44
+	mov	r1,a
+	mov	r4,#0x01
+	mov	@r1,#0x30
+	ljmp	00109$
+00108$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:202: uint16_t temp = value;
+	mov	ar4,r6
+	mov	ar2,r7
+;	i2c-bit-bang-oled-0.49-analog-reading.c:206: while (temp > 0) {
+	mov	a,_bp
+	add	a,#0x4a
+	mov	r3,a
+	mov	a,_bp
+	add	a,#0x50
+	mov	r0,a
+	mov	@r0,#0x00
+00101$:
+	mov	a,r4
+	orl	a,r2
+	jz	00140$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:207: rev[j++] = (temp % 10) + '0';
+	push	ar5
+	mov	a,_bp
+	add	a,#0x50
+	mov	r0,a
+	mov	a,@r0
+	add	a, r3
+	mov	r1,a
+	mov	a,_bp
+	add	a,#0x50
+	mov	r0,a
+	inc	@r0
+	mov	ar5,r4
+	mov	ar7,r2
+	push	ar7
+	push	ar5
+	push	ar3
+	push	ar1
+	mov	a,#0x0a
+	push	acc
+	clr	a
+	push	acc
+	mov	dpl, r5
+	mov	dph, r7
+	lcall	__moduint
+	mov	r2, dpl
+	dec	sp
+	dec	sp
+	pop	ar1
+	pop	ar3
+	pop	ar5
+	pop	ar7
+	mov	a,#0x30
+	add	a, r2
+	mov	@r1,a
+;	i2c-bit-bang-oled-0.49-analog-reading.c:208: temp /= 10;
+	push	ar5
+	push	ar3
+	mov	a,#0x0a
+	push	acc
+	clr	a
+	push	acc
+	mov	dpl, r5
+	mov	dph, r7
+	lcall	__divuint
+	mov	r6, dpl
+	mov	r7, dph
+	dec	sp
+	dec	sp
+	pop	ar3
+	pop	ar5
+	mov	ar4,r6
+	mov	ar2,r7
+	pop	ar5
+;	i2c-bit-bang-oled-0.49-analog-reading.c:210: while (j > 0) buf[i++] = rev[--j];
 	sjmp	00101$
+00140$:
+	mov	a,_bp
+	add	a,#0x44
+	mov	r7,a
+	mov	ar6,r3
+	mov	r3,#0x00
+	mov	a,_bp
+	add	a,#0x50
+	mov	r0,a
+	mov	ar2,@r0
+00104$:
+	mov	a,r2
+	jz	00154$
+	push	ar5
+	mov	a,r3
+	add	a, r7
+	mov	r1,a
+	inc	r3
+	dec	r2
+	mov	a,r2
+	add	a, r6
+	mov	r0,a
+	mov	ar5,@r0
+	mov	@r1,ar5
+	pop	ar5
+	sjmp	00104$
+00154$:
+	mov	ar4,r3
+00109$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:212: buf[i] = '\0';
+	mov	a,_bp
+	add	a,#0x44
+	mov	r7,a
+	add	a,r4
+	mov	r0,a
+	mov	@r0,#0x00
+;	i2c-bit-bang-oled-0.49-analog-reading.c:214: for (uint8_t k = 0; k < i; k++) {
+	mov	a,_bp
+	add	a,#0x04
+	mov	r6,a
+	mov	r3,a
+	mov	r2,#0x00
 00120$:
+	clr	c
+	mov	a,r2
+	subb	a,r4
+	jnc	00111$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:215: uint8_t index = buf[k] - '0';
+	mov	a,r2
+	add	a, r7
+	mov	r1,a
+	mov	a,@r1
+	add	a,#0xd0
+;	i2c-bit-bang-oled-0.49-analog-reading.c:217: for (uint8_t col = 0; col < 5; col++) {
+	mov	b,#0x05
+	mul	ab
+	mov	r0,_bp
+	inc	r0
+	add	a, #_font5x7
+	mov	@r0,a
+	mov	a,#(_font5x7 >> 8)
+	addc	a, b
+	inc	r0
+	mov	@r0,a
 	mov	a,_bp
 	add	a,#0x03
-	mov	r7,a
-	mov	ar6,r4
+	mov	r0,a
+	mov	@r0,ar5
+	mov	r5,#0x00
+;	i2c-bit-bang-oled-0.49-analog-reading.c:245: for (uint8_t n = 0; n < idx; n++) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:217: for (uint8_t col = 0; col < 5; col++) {
+00117$:
+	cjne	r5,#0x05,00267$
+00267$:
+	jnc	00110$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:218: buffer[idx++] = font5x7[index][col];
+	mov	a,_bp
+	add	a,#0x03
+	mov	r0,a
+	mov	a,@r0
+	add	a, r6
+	mov	r1,a
+	mov	a,_bp
+	add	a,#0x03
+	mov	r0,a
+	inc	@r0
+	mov	r0,_bp
+	inc	r0
+	mov	a,r5
+	add	a, @r0
+	mov	dpl,a
+	clr	a
+	inc	r0
+	addc	a, @r0
+	mov	dph,a
+	clr	a
+	movc	a,@a+dptr
+	mov	@r1,a
+;	i2c-bit-bang-oled-0.49-analog-reading.c:217: for (uint8_t col = 0; col < 5; col++) {
+	inc	r5
+	sjmp	00117$
+00110$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:221: buffer[idx++] = 0x00; // spacing
+	mov	a,_bp
+	add	a,#0x03
+	mov	r0,a
+	mov	a,@r0
+	inc	a
+	mov	r5,a
+	mov	a,_bp
+	add	a,#0x03
+	mov	r0,a
+	mov	a,@r0
+	add	a, r3
+	mov	r0,a
+	mov	@r0,#0x00
+;	i2c-bit-bang-oled-0.49-analog-reading.c:214: for (uint8_t k = 0; k < i; k++) {
+	inc	r2
+	sjmp	00120$
+00111$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:226: for (uint8_t i = 0; i < 6; i++) buffer[idx++] = 0x00;
+	mov	ar7,r6
 	mov	r4,#0x00
-	mov	ar3,r5
-00104$:
-	mov	a,r3
-	jz	00124$
+00123$:
+	cjne	r4,#0x06,00269$
+00269$:
+	jnc	00112$
+	mov	a,r5
+	add	a, r7
+	mov	r1,a
+	inc	r5
+	mov	@r1,#0x00
+	inc	r4
+	sjmp	00123$
+00112$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:229: for (uint8_t col = 0; col < 5; col++) {
+	mov	ar7,r6
+	mov	r4,#0x00
+00126$:
+	cjne	r4,#0x05,00271$
+00271$:
+	jnc	00113$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:230: buffer[idx++] = font_m[col];
+	mov	a,r5
+	add	a, r7
+	mov	r1,a
+	inc	r5
+	mov	a,r4
+	mov	dptr,#_font_m
+	movc	a,@a+dptr
+	mov	@r1,a
+;	i2c-bit-bang-oled-0.49-analog-reading.c:229: for (uint8_t col = 0; col < 5; col++) {
+	inc	r4
+	sjmp	00126$
+00113$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:232: buffer[idx++] = 0x00;
+	mov	ar7,r6
+	mov	a,r5
+	inc	a
+	mov	r4,a
+	mov	a,r5
+	add	a, r6
+	mov	r0,a
+	mov	@r0,#0x00
+;	i2c-bit-bang-oled-0.49-analog-reading.c:235: for (uint8_t col = 0; col < 5; col++) {
+	mov	r6,#0x00
+00129$:
+	cjne	r6,#0x05,00273$
+00273$:
+	jnc	00114$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:236: buffer[idx++] = font_V[col];
 	mov	a,r4
 	add	a, r7
 	mov	r1,a
 	inc	r4
-	dec	r3
-	mov	a,r3
-	add	a, r6
-	mov	r0,a
-	mov	ar2,@r0
-	mov	@r1,ar2
-	sjmp	00104$
-00124$:
-	mov	ar5,r4
-00109$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:197: buf[i] = '\0';
-	mov	a,_bp
-	add	a,#0x03
-	mov	r7,a
-	add	a,r5
+	mov	a,r6
+	mov	dptr,#_font_V
+	movc	a,@a+dptr
+	mov	@r1,a
+;	i2c-bit-bang-oled-0.49-analog-reading.c:235: for (uint8_t col = 0; col < 5; col++) {
+	inc	r6
+	sjmp	00129$
+00114$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:238: buffer[idx++] = 0x00;
+	mov	a,r4
+	inc	a
+	mov	r6,a
+	mov	a,r4
+	add	a, r7
 	mov	r0,a
 	mov	@r0,#0x00
-;	i2c-bit-bang-oled-0.49-analog-reading.c:199: for (uint8_t k = 0; k < i; k++) {
-	mov	r6,#0x00
-00112$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:241: i2c_start();
+	push	ar7
+	push	ar6
+	lcall	_i2c_start
+;	i2c-bit-bang-oled-0.49-analog-reading.c:242: i2c_write_byte(OLED_ADDR);
+	mov	dpl, #0x78
+	lcall	_i2c_write_byte
+;	i2c-bit-bang-oled-0.49-analog-reading.c:243: i2c_write_byte(0x40);
+	mov	dpl, #0x40
+	lcall	_i2c_write_byte
+	pop	ar6
+	pop	ar7
+;	i2c-bit-bang-oled-0.49-analog-reading.c:245: for (uint8_t n = 0; n < idx; n++) {
+	mov	r5,#0x00
+00132$:
 	clr	c
-	mov	a,r6
-	subb	a,r5
-	jnc	00114$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:200: oled_draw_char(buf[k]);
-	mov	a,r6
+	mov	a,r5
+	subb	a,r6
+	jnc	00115$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:246: i2c_write_byte(buffer[n]);
+	mov	a,r5
 	add	a, r7
 	mov	r1,a
 	mov	dpl,@r1
 	push	ar7
 	push	ar6
 	push	ar5
-	lcall	_oled_draw_char
+	lcall	_i2c_write_byte
 	pop	ar5
 	pop	ar6
 	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:199: for (uint8_t k = 0; k < i; k++) {
-	inc	r6
-	sjmp	00112$
-00114$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:202: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:245: for (uint8_t n = 0; n < idx; n++) {
+	inc	r5
+	sjmp	00132$
+00115$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:249: i2c_stop();
+	lcall	_i2c_stop
+;	i2c-bit-bang-oled-0.49-analog-reading.c:250: }
 	mov	sp,_bp
 	pop	_bp
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_ISR'
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:205: void timer0_ISR(void) __interrupt(INT_NO_TMR0) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:252: void timer0_ISR(void) __interrupt(INT_NO_TMR0) {
 ;	-----------------------------------------
 ;	 function timer0_ISR
 ;	-----------------------------------------
@@ -1390,14 +1624,14 @@ _timer0_ISR:
 	push	ar6
 	push	psw
 	mov	psw,#0x00
-;	i2c-bit-bang-oled-0.49-analog-reading.c:206: TF0 = 0;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:253: TF0 = 0;
 ;	assignBit
 	clr	_TF0
-;	i2c-bit-bang-oled-0.49-analog-reading.c:207: TH0 = 0xB1;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:254: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	i2c-bit-bang-oled-0.49-analog-reading.c:208: TL0 = 0xE0;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:255: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	i2c-bit-bang-oled-0.49-analog-reading.c:209: tick_10ms++;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:256: tick_10ms++;
 	mov	r6,_tick_10ms
 	mov	r7,(_tick_10ms + 1)
 	mov	a,#0x01
@@ -1406,13 +1640,16 @@ _timer0_ISR:
 	clr	a
 	addc	a, r7
 	mov	(_tick_10ms + 1),a
-;	i2c-bit-bang-oled-0.49-analog-reading.c:210: serialTime++;
-	inc	_serialTime
+;	i2c-bit-bang-oled-0.49-analog-reading.c:257: serialTime++;
+	mov	r6,_serialTime
+	mov	r7,(_serialTime + 1)
+	mov	a,#0x01
+	add	a, r6
+	mov	_serialTime,a
 	clr	a
-	cjne	a,_serialTime,00103$
-	inc	(_serialTime + 1)
-00103$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:211: }
+	addc	a, r7
+	mov	(_serialTime + 1),a
+;	i2c-bit-bang-oled-0.49-analog-reading.c:258: }
 	pop	psw
 	pop	ar6
 	pop	ar7
@@ -1424,94 +1661,90 @@ _timer0_ISR:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_init'
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:213: void timer0_init(void) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:260: void timer0_init(void) {
 ;	-----------------------------------------
 ;	 function timer0_init
 ;	-----------------------------------------
 _timer0_init:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:214: TMOD &= ~0x03;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:261: TMOD &= ~0x03;
 	anl	_TMOD,#0xfc
-;	i2c-bit-bang-oled-0.49-analog-reading.c:215: TMOD |=  0x01;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:262: TMOD |=  0x01;
 	orl	_TMOD,#0x01
-;	i2c-bit-bang-oled-0.49-analog-reading.c:217: TH0 = 0xB1;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:264: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	i2c-bit-bang-oled-0.49-analog-reading.c:218: TL0 = 0xE0;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:265: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	i2c-bit-bang-oled-0.49-analog-reading.c:220: ET0 = 1;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:267: ET0 = 1;
 ;	assignBit
 	setb	_ET0
-;	i2c-bit-bang-oled-0.49-analog-reading.c:221: TR0 = 1;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:268: TR0 = 1;
 ;	assignBit
 	setb	_TR0
-;	i2c-bit-bang-oled-0.49-analog-reading.c:222: EA = 1;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:269: EA = 1;
 ;	assignBit
 	setb	_EA
-;	i2c-bit-bang-oled-0.49-analog-reading.c:223: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:270: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'clock_init'
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:226: void clock_init(void) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:273: void clock_init(void) {
 ;	-----------------------------------------
 ;	 function clock_init
 ;	-----------------------------------------
 _clock_init:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:227: SAFE_MOD = 0x55;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:274: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	i2c-bit-bang-oled-0.49-analog-reading.c:228: SAFE_MOD = 0xAA;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:275: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	i2c-bit-bang-oled-0.49-analog-reading.c:229: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:276: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
 	mov	a,#0xf8
 	anl	a,_CLOCK_CFG
 	orl	a,#0x06
 	mov	_CLOCK_CFG,a
-;	i2c-bit-bang-oled-0.49-analog-reading.c:230: SAFE_MOD = 0x00;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:277: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	i2c-bit-bang-oled-0.49-analog-reading.c:231: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:278: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'analogReading'
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:234: uint8_t analogReading(void) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:281: uint8_t analogReading(void) {
 ;	-----------------------------------------
 ;	 function analogReading
 ;	-----------------------------------------
 _analogReading:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:235: ADC_START = 1;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:282: ADC_START = 1;
 ;	assignBit
 	setb	_ADC_START
-;	i2c-bit-bang-oled-0.49-analog-reading.c:236: while (ADC_START);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:283: while (ADC_START);   // throw away first sample
 00101$:
 	jb	_ADC_START,00101$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:237: ADC_IF = 0;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:285: ADC_START = 1;
+;	assignBit
+	setb	_ADC_START
+;	i2c-bit-bang-oled-0.49-analog-reading.c:286: while (ADC_START);
+00104$:
+	jb	_ADC_START,00104$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:288: ADC_IF = 0;
 ;	assignBit
 	clr	_ADC_IF
-;	i2c-bit-bang-oled-0.49-analog-reading.c:238: return ADC_DATA;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:289: return ADC_DATA;
 	mov	dpl, _ADC_DATA
-;	i2c-bit-bang-oled-0.49-analog-reading.c:239: }
+;	i2c-bit-bang-oled-0.49-analog-reading.c:290: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'rawToMillivolts'
 ;------------------------------------------------------------
 ;raw           Allocated to registers r7 
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:241: uint16_t rawToMillivolts(uint8_t raw) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:292: uint16_t rawToMillivolts(uint8_t raw) {
 ;	-----------------------------------------
 ;	 function rawToMillivolts
 ;	-----------------------------------------
 _rawToMillivolts:
 	mov	r7, dpl
-;	i2c-bit-bang-oled-0.49-analog-reading.c:242: if (raw < 46) return 0;
-	cjne	r7,#0x2e,00111$
-00111$:
-	jnc	00102$
-	mov	dptr,#0x0000
-	ret
-00102$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:243: return 300 + ((uint32_t)(raw - 46) * 3000) / 117;
-	mov	a,r7
-	add	a,#0xd2
-	mov	r7,a
+;	i2c-bit-bang-oled-0.49-analog-reading.c:294: return ((uint32_t)raw * 5000) / 255;
 	mov	r6,#0x00
 	mov	r5,#0x00
 	mov	r4,#0x00
@@ -1519,7 +1752,7 @@ _rawToMillivolts:
 	push	ar6
 	push	ar5
 	push	ar4
-	mov	dptr,#0x0bb8
+	mov	dptr,#0x1388
 	clr	a
 	mov	b,a
 	lcall	__mullong
@@ -1530,7 +1763,7 @@ _rawToMillivolts:
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-	mov	a,#0x75
+	mov	a,#0xff
 	push	acc
 	clr	a
 	push	acc
@@ -1546,108 +1779,216 @@ _rawToMillivolts:
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-	mov	a,#0x2c
-	add	a, r4
-	mov	dpl,a
-	mov	a,#0x01
-	addc	a, r5
-	mov	dph,a
-;	i2c-bit-bang-oled-0.49-analog-reading.c:244: }
+	mov	dpl,r4
+	mov	dph,r5
+;	i2c-bit-bang-oled-0.49-analog-reading.c:295: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;i             Allocated to registers r7 
+;m             Allocated to stack - _bp +1 +2 
+;page          Allocated to registers r7 
+;i             Allocated to registers r6 
+;text_width    Allocated to registers 
+;x             Allocated to registers r6 
+;page          Allocated to registers 
 ;------------------------------------------------------------
-;	i2c-bit-bang-oled-0.49-analog-reading.c:247: void main(void) {
+;	i2c-bit-bang-oled-0.49-analog-reading.c:298: void main(void) {
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:248: clock_init();
-	lcall	_clock_init
-;	i2c-bit-bang-oled-0.49-analog-reading.c:249: timer0_init();
-	lcall	_timer0_init
-;	i2c-bit-bang-oled-0.49-analog-reading.c:252: SAFE_MOD = 0x55;
+	push	_bp
+	mov	_bp,sp
+	inc	sp
+	inc	sp
+;	i2c-bit-bang-oled-0.49-analog-reading.c:300: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	i2c-bit-bang-oled-0.49-analog-reading.c:253: SAFE_MOD = 0xAA;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:301: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	i2c-bit-bang-oled-0.49-analog-reading.c:254: GLOBAL_CFG &= ~bWDOG_EN;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:302: GLOBAL_CFG &= ~bWDOG_EN;
 	anl	_GLOBAL_CFG,#0xfe
-;	i2c-bit-bang-oled-0.49-analog-reading.c:255: SAFE_MOD = 0x00;
+;	i2c-bit-bang-oled-0.49-analog-reading.c:303: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	i2c-bit-bang-oled-0.49-analog-reading.c:258: P1_MOD_OC |= (1 << SDA_PIN) | (1 << SCL_PIN);
-	orl	_P1_MOD_OC,#0x03
-;	i2c-bit-bang-oled-0.49-analog-reading.c:259: P1_DIR_PU |= (1 << SDA_PIN) | (1 << SCL_PIN);
-	orl	_P1_DIR_PU,#0x03
-;	i2c-bit-bang-oled-0.49-analog-reading.c:261: SDA_RELEASE();
-	orl	_P1,#0x01
-;	i2c-bit-bang-oled-0.49-analog-reading.c:262: SCL_RELEASE();
-	orl	_P1,#0x02
-;	i2c-bit-bang-oled-0.49-analog-reading.c:265: ADCInit(0);
-	mov	dpl, #0x00
-	lcall	_ADCInit
-;	i2c-bit-bang-oled-0.49-analog-reading.c:266: ADC_ChannelSelect(2);
-	mov	dpl, #0x02
-	lcall	_ADC_ChannelSelect
-;	i2c-bit-bang-oled-0.49-analog-reading.c:268: Serial_begin();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:304: clock_init();       // clock MUST be first — everything depends on Fsys=24MHz
+	lcall	_clock_init
+;	i2c-bit-bang-oled-0.49-analog-reading.c:305: timer0_init();      // timer second — needed for the tick_10ms delay below
+	lcall	_timer0_init
+;	i2c-bit-bang-oled-0.49-analog-reading.c:308: Serial_begin();         // after clock, so baud rate is correct
 	lcall	_Serial_begin
-;	i2c-bit-bang-oled-0.49-analog-reading.c:270: oled_init();
-	lcall	_oled_init
-;	i2c-bit-bang-oled-0.49-analog-reading.c:271: oled_set_cursor(0, 0);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:309: ADCInit(2);
+	mov	dpl, #0x02
+	lcall	_ADCInit
+;	i2c-bit-bang-oled-0.49-analog-reading.c:310: ADC_ChannelSelect(1); // Option 1, P1.4 as analog input -> else if(ch == 1){ADC_CHAN1 =0;ADC_CHAN0=1;P1_DIR_PU &= ~bAIN1;}            //AIN1
+	mov	dpl, #0x01
+	lcall	_ADC_ChannelSelect
+;	i2c-bit-bang-oled-0.49-analog-reading.c:311: for (volatile uint16_t m = 0; m < 1000; m++); // settle
+	mov	r0,_bp
+	inc	r0
 	clr	a
-	push	acc
-	mov	dpl, #0x00
-	lcall	_oled_set_cursor
-	dec	sp
-;	i2c-bit-bang-oled-0.49-analog-reading.c:273: for (uint8_t i = 0; i < 128; i++) {
-	mov	r7,#0x00
-00108$:
-	cjne	r7,#0x80,00137$
-00137$:
-	jnc	00105$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:274: oled_data(0xFF);
-	mov	dpl, #0xff
-	push	ar7
-	lcall	_oled_data
-	pop	ar7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:273: for (uint8_t i = 0; i < 128; i++) {
-	inc	r7
-;	i2c-bit-bang-oled-0.49-analog-reading.c:276: while (1) {
-	sjmp	00108$
-00105$:
-;	i2c-bit-bang-oled-0.49-analog-reading.c:278: if(serialTime > 100) {   // every ~1 second
+	mov	@r0,a
+	inc	r0
+	mov	@r0,a
+00113$:
+	mov	r0,_bp
+	inc	r0
+	mov	ar6,@r0
+	inc	r0
+	mov	ar7,@r0
+	clr	c
+	mov	a,r6
+	subb	a,#0xe8
+	mov	a,r7
+	subb	a,#0x03
+	jnc	00101$
+	mov	r0,_bp
+	inc	r0
+	mov	ar6,@r0
+	inc	r0
+	mov	ar7,@r0
+	mov	r0,_bp
+	inc	r0
+	mov	a,#0x01
+	add	a, r6
+	mov	@r0,a
+	clr	a
+	addc	a, r7
+	inc	r0
+	mov	@r0,a
+	sjmp	00113$
+00101$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:315: P1_MOD_OC &= ~(1 << 4);  // not open-drain
+	anl	_P1_MOD_OC,#0xef
+;	i2c-bit-bang-oled-0.49-analog-reading.c:316: P1_DIR_PU  &= ~(1 << 4); // disable pull-up, set as input
+	anl	_P1_DIR_PU,#0xef
+;	i2c-bit-bang-oled-0.49-analog-reading.c:319: P1_MOD_OC |= (1 << SDA_PIN) | (1 << SCL_PIN);  // open-drain
+	orl	_P1_MOD_OC,#0x03
+;	i2c-bit-bang-oled-0.49-analog-reading.c:320: P1_DIR_PU  &= ~((1 << SDA_PIN) | (1 << SCL_PIN)); // disable internal pull-up
+	anl	_P1_DIR_PU,#0xfc
+;	i2c-bit-bang-oled-0.49-analog-reading.c:321: SDA_RELEASE();
+	orl	_P1,#0x01
+;	i2c-bit-bang-oled-0.49-analog-reading.c:322: SCL_RELEASE();
+	orl	_P1,#0x02
+;	i2c-bit-bang-oled-0.49-analog-reading.c:324: while (tick_10ms < 15); // 150ms power-on delay — timer is running now so this works
+00102$:
+	clr	c
+	mov	a,_tick_10ms
+	subb	a,#0x0f
+	mov	a,(_tick_10ms + 1)
+	subb	a,#0x00
+	jc	00102$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:325: oled_init();
+	lcall	_oled_init
+;	i2c-bit-bang-oled-0.49-analog-reading.c:328: while (1) {
+00110$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:330: if(serialTime > 100) {   // every ~1 second
 	clr	c
 	mov	a,#0x64
 	subb	a,_serialTime
 	clr	a
 	subb	a,(_serialTime + 1)
-	jnc	00105$
-;	i2c-bit-bang-oled-0.49-analog-reading.c:279: serialTime = 0;
+	jnc	00110$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:331: serialTime = 0;
 	clr	a
 	mov	_serialTime,a
 	mov	(_serialTime + 1),a
-;	i2c-bit-bang-oled-0.49-analog-reading.c:281: rawAnalog = analogReading();
+;	i2c-bit-bang-oled-0.49-analog-reading.c:334: rawAnalog = analogReading();
 	lcall	_analogReading
-;	i2c-bit-bang-oled-0.49-analog-reading.c:282: finalAnalog = rawToMillivolts(rawAnalog);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:335: finalAnalog = rawToMillivolts(rawAnalog);
 	mov  _rawAnalog,dpl
 	lcall	_rawToMillivolts
-;	i2c-bit-bang-oled-0.49-analog-reading.c:284: Serial_println_uint(finalAnalog);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:336: Serial_println_uint(finalAnalog);
 	mov	_finalAnalog,dpl
 	mov  (_finalAnalog + 1),dph
 	lcall	_Serial_println_uint
-;	i2c-bit-bang-oled-0.49-analog-reading.c:286: oled_set_cursor(0, 0);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:339: for (uint8_t page = 0; page < 4; page++) {
+	mov	r7,#0x00
+00119$:
+	cjne	r7,#0x04,00188$
+00188$:
+	jnc	00106$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:340: oled_cmd(0xB0 + page);
+	mov	ar6,r7
+	mov	a,#0xb0
+	add	a, r6
+	mov	dpl,a
+	push	ar7
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:341: oled_cmd(0x00 | (32 & 0x0F));
+	mov	dpl, #0x00
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:342: oled_cmd(0x10 | (32 >> 4));
+	mov	dpl, #0x12
+	lcall	_oled_cmd
+;	i2c-bit-bang-oled-0.49-analog-reading.c:344: i2c_start();
+	lcall	_i2c_start
+;	i2c-bit-bang-oled-0.49-analog-reading.c:345: i2c_write_byte(OLED_ADDR);
+	mov	dpl, #0x78
+	lcall	_i2c_write_byte
+;	i2c-bit-bang-oled-0.49-analog-reading.c:346: i2c_write_byte(0x40);
+	mov	dpl, #0x40
+	lcall	_i2c_write_byte
+	pop	ar7
+;	i2c-bit-bang-oled-0.49-analog-reading.c:347: for (uint8_t i = 0; i < 64; i++) i2c_write_byte(0x00);
+	mov	r6,#0x00
+00116$:
+	cjne	r6,#0x40,00190$
+00190$:
+	jnc	00105$
+	mov	dpl, #0x00
+	push	ar7
+	push	ar6
+	lcall	_i2c_write_byte
+	pop	ar6
+	pop	ar7
+	inc	r6
+	sjmp	00116$
+00105$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:348: i2c_stop();
+	push	ar7
+	lcall	_i2c_stop
+	pop	ar7
+;	i2c-bit-bang-oled-0.49-analog-reading.c:339: for (uint8_t page = 0; page < 4; page++) {
+	inc	r7
+	sjmp	00119$
+00106$:
+;	i2c-bit-bang-oled-0.49-analog-reading.c:351: uint8_t text_width = get_text_width(finalAnalog);
+	mov	dpl, _finalAnalog
+	mov	dph, (_finalAnalog + 1)
+	lcall	_get_text_width
+	mov	r7, dpl
+;	i2c-bit-bang-oled-0.49-analog-reading.c:352: uint8_t x = (64 - text_width) / 2;   // center horizontally
+	mov	r6,#0x00
+	mov	a,#0x40
+	clr	c
+	subb	a,r7
+	mov	dpl,a
+	clr	a
+	subb	a,r6
+	mov	dph,a
+	mov	a,#0x02
+	push	acc
 	clr	a
 	push	acc
-	mov	dpl, #0x00
+	lcall	__divsint
+	mov	r6, dpl
+	dec	sp
+	dec	sp
+;	i2c-bit-bang-oled-0.49-analog-reading.c:355: oled_set_cursor(x, page);
+	mov	a,#0x01
+	push	acc
+	mov	dpl, r6
 	lcall	_oled_set_cursor
 	dec	sp
-;	i2c-bit-bang-oled-0.49-analog-reading.c:287: oled_print_uint(finalAnalog);
+;	i2c-bit-bang-oled-0.49-analog-reading.c:356: oled_print_uint(finalAnalog);
 	mov	dpl, _finalAnalog
 	mov	dph, (_finalAnalog + 1)
 	lcall	_oled_print_uint
-;	i2c-bit-bang-oled-0.49-analog-reading.c:290: }
-	sjmp	00105$
+	ljmp	00110$
+;	i2c-bit-bang-oled-0.49-analog-reading.c:361: }
+	mov	sp,_bp
+	pop	_bp
+	ret
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area CONST   (CODE)
@@ -1702,6 +2043,22 @@ _font5x7:
 	.db #0x49	; 73	'I'
 	.db #0x49	; 73	'I'
 	.db #0x3e	; 62
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+_font_m:
+	.db #0x7c	; 124
+	.db #0x04	; 4
+	.db #0x18	; 24
+	.db #0x04	; 4
+	.db #0x78	; 120	'x'
+	.area CSEG    (CODE)
+	.area CONST   (CODE)
+_font_V:
+	.db #0x1f	; 31
+	.db #0x20	; 32
+	.db #0x40	; 64
+	.db #0x20	; 32
+	.db #0x1f	; 31
 	.area CSEG    (CODE)
 	.area XINIT   (CODE)
 	.area CABS    (ABS,CODE)

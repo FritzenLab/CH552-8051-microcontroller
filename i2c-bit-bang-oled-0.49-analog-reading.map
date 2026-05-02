@@ -66,7 +66,7 @@ CABS                                00000000    00000000 =           0. bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   00000032  l_CONST                         
+C:   0000003C  l_CONST                         
 C:   00000054  l_HOME                          
 C:   00000054  s_GSINIT0                       
 C:   00000057  s_GSINIT1                       
@@ -80,9 +80,9 @@ C:   000000BF  s_GSFINAL
 C:   000000C2  s_CSEG                          
 C:   000000EF  l_SSEG                          
 C:   00000100  l_IRAM                          
-C:   00000C1E  l_CSEG                          
-C:   00000CE0  s_CONST                         
-C:   00000D12  s_XINIT                         
+C:   00000DC6  l_CSEG                          
+C:   00000E88  s_CONST                         
+C:   00000EC4  s_XINIT                         
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -485,81 +485,84 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000C2    00000C1E =        3102. bytes (REL,CON,CODE)
+CSEG                                000000C2    00000DC6 =        3526. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
 C:   000000C2  _i2c_delay                         i2c_bit_bang_oled_0_49_analo
-C:   000000E8  _i2c_start                         i2c_bit_bang_oled_0_49_analo
-C:   000000FB  _i2c_stop                          i2c_bit_bang_oled_0_49_analo
-C:   0000010A  _i2c_write_byte                    i2c_bit_bang_oled_0_49_analo
-C:   00000146  _oled_cmd                          i2c_bit_bang_oled_0_49_analo
-C:   00000163  _oled_data                         i2c_bit_bang_oled_0_49_analo
-C:   00000180  _oled_set_cursor                   i2c_bit_bang_oled_0_49_analo
-C:   000001B6  _oled_write_data_stream            i2c_bit_bang_oled_0_49_analo
-C:   00000207  _oled_clear                        i2c_bit_bang_oled_0_49_analo
-C:   0000025A  _oled_init                         i2c_bit_bang_oled_0_49_analo
-C:   00000305  _oled_draw_char                    i2c_bit_bang_oled_0_49_analo
-C:   00000364  _oled_print_uint                   i2c_bit_bang_oled_0_49_analo
-C:   0000042C  _timer0_ISR                        i2c_bit_bang_oled_0_49_analo
-C:   0000045D  _timer0_init                       i2c_bit_bang_oled_0_49_analo
-C:   00000470  _clock_init                        i2c_bit_bang_oled_0_49_analo
-C:   00000482  _analogReading                     i2c_bit_bang_oled_0_49_analo
-C:   0000048D  _rawToMillivolts                   i2c_bit_bang_oled_0_49_analo
-C:   000004EA  _main                              i2c_bit_bang_oled_0_49_analo
-C:   00000570  _ADCInit                           adc
-C:   0000057D  _ADC_ChannelSelect                 adc
-C:   000005B7  _VoltageCMPModeInit                adc
-C:   0000065A  _MPU9250_init                      mpu9250
-C:   00000675  _MPU9250_whoami                    mpu9250
-C:   00000679  _MPU9250_readAccelGyro             mpu9250
-C:   0000081E  _Serial_begin                      serial
-C:   00000848  _Serial_write                      serial
-C:   00000852  _Serial_print                      serial
-C:   0000087D  _Serial_print_uint                 serial
-C:   0000097D  _Serial_println                    serial
-C:   0000098C  _Serial_println_int                serial
-C:   00000A6D  _Serial_println_uint               serial
-C:   00000A7C  _SPIMasterModeSet                  spi
-C:   00000A9C  _CH554SPIInterruptInit             spi
-C:   00000AA8  _CH554SPIMasterWrite               spi
-C:   00000AAF  _CH554SPIMasterRead                spi
-C:   00000AB9  _SPISlvModeSet                     spi
-C:   00000AC6  _CH554SPISlvWrite                  spi
-C:   00000ACF  _CH554SPISlvRead                   spi
-C:   00000AD8  __divuint                          _divuint
-C:   00000AE2  __divint                           _divuint
-C:   00000B09  __gptrput                          _gptrput
-C:   00000B24  __divulong                         _divulong
-C:   00000B2A  __divlong                          _divulong
-C:   00000B91  __gptrget                          _gptrget
-C:   00000BAD  __modsint                          _modsint
-C:   00000BEA  __mullong                          _mullong
-C:   00000BEA  __mullong_dummy                    _mullong
-C:   00000C5A  __moduint                          _moduint
-C:   00000C64  __modint                           _moduint
-C:   00000C9F  __divsint                          _divsint
+C:   000000C5  _i2c_start                         i2c_bit_bang_oled_0_49_analo
+C:   000000D8  _i2c_stop                          i2c_bit_bang_oled_0_49_analo
+C:   000000E7  _i2c_write_byte                    i2c_bit_bang_oled_0_49_analo
+C:   00000130  _oled_cmd                          i2c_bit_bang_oled_0_49_analo
+C:   0000014D  _oled_data                         i2c_bit_bang_oled_0_49_analo
+C:   0000016A  _oled_set_cursor                   i2c_bit_bang_oled_0_49_analo
+C:   000001A4  _oled_write_data_stream            i2c_bit_bang_oled_0_49_analo
+C:   000001F5  _oled_clear                        i2c_bit_bang_oled_0_49_analo
+C:   00000248  _oled_init                         i2c_bit_bang_oled_0_49_analo
+C:   000002E1  _oled_draw_char                    i2c_bit_bang_oled_0_49_analo
+C:   00000340  _get_text_width                    i2c_bit_bang_oled_0_49_analo
+C:   0000037D  _oled_print_uint                   i2c_bit_bang_oled_0_49_analo
+C:   00000535  _timer0_ISR                        i2c_bit_bang_oled_0_49_analo
+C:   0000056B  _timer0_init                       i2c_bit_bang_oled_0_49_analo
+C:   0000057E  _clock_init                        i2c_bit_bang_oled_0_49_analo
+C:   00000590  _analogReading                     i2c_bit_bang_oled_0_49_analo
+C:   000005A0  _rawToMillivolts                   i2c_bit_bang_oled_0_49_analo
+C:   000005EA  _main                              i2c_bit_bang_oled_0_49_analo
+C:   00000718  _ADCInit                           adc
+C:   00000725  _ADC_ChannelSelect                 adc
+C:   0000075F  _VoltageCMPModeInit                adc
+C:   00000802  _MPU9250_init                      mpu9250
+C:   0000081D  _MPU9250_whoami                    mpu9250
+C:   00000821  _MPU9250_readAccelGyro             mpu9250
+C:   000009C6  _Serial_begin                      serial
+C:   000009F0  _Serial_write                      serial
+C:   000009FA  _Serial_print                      serial
+C:   00000A25  _Serial_print_uint                 serial
+C:   00000B25  _Serial_println                    serial
+C:   00000B34  _Serial_println_int                serial
+C:   00000C15  _Serial_println_uint               serial
+C:   00000C24  _SPIMasterModeSet                  spi
+C:   00000C44  _CH554SPIInterruptInit             spi
+C:   00000C50  _CH554SPIMasterWrite               spi
+C:   00000C57  _CH554SPIMasterRead                spi
+C:   00000C61  _SPISlvModeSet                     spi
+C:   00000C6E  _CH554SPISlvWrite                  spi
+C:   00000C77  _CH554SPISlvRead                   spi
+C:   00000C80  __divuint                          _divuint
+C:   00000C8A  __divint                           _divuint
+C:   00000CB1  __gptrput                          _gptrput
+C:   00000CCC  __divulong                         _divulong
+C:   00000CD2  __divlong                          _divulong
+C:   00000D39  __gptrget                          _gptrget
+C:   00000D55  __modsint                          _modsint
+C:   00000D92  __mullong                          _mullong
+C:   00000D92  __mullong_dummy                    _mullong
+C:   00000E02  __moduint                          _moduint
+C:   00000E0C  __modint                           _moduint
 ASxxxx Linker V03.00/V05.40 + sdld,  page 19.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000C2    00000C1E =        3102. bytes (REL,CON,CODE)
+CSEG                                000000C2    00000DC6 =        3526. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   00000CDC  ___sdcc_external_startup           _startup
+C:   00000E47  __divsint                          _divsint
+C:   00000E84  ___sdcc_external_startup           _startup
+
 ASxxxx Linker V03.00/V05.40 + sdld,  page 20.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CONST                               00000CE0    00000032 =          50. bytes (REL,CON,CODE)
+CONST                               00000E88    0000003C =          60. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   00000CE0  _font5x7                           i2c_bit_bang_oled_0_49_analo
-
+C:   00000E88  _font5x7                           i2c_bit_bang_oled_0_49_analo
+C:   00000EBA  _font_m                            i2c_bit_bang_oled_0_49_analo
+C:   00000EBF  _font_V                            i2c_bit_bang_oled_0_49_analo
 ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
 
 Files Linked                              [ module(s) ]
