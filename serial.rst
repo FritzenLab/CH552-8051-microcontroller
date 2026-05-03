@@ -567,7 +567,7 @@
                                     567 ;	-----------------------------------------
                                     568 ;	 function Serial_begin
                                     569 ;	-----------------------------------------
-      0009C6                        570 _Serial_begin:
+      000CDE                        570 _Serial_begin:
                            000007   571 	ar7 = 0x07
                            000006   572 	ar6 = 0x06
                            000005   573 	ar5 = 0x05
@@ -577,41 +577,41 @@
                            000001   577 	ar1 = 0x01
                            000000   578 	ar0 = 0x00
                                     579 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:6: SAFE_MOD = 0x55;
-      0009C6 75 A1 55         [24]  580 	mov	_SAFE_MOD,#0x55
+      000CDE 75 A1 55         [24]  580 	mov	_SAFE_MOD,#0x55
                                     581 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:7: SAFE_MOD = 0xAA;
-      0009C9 75 A1 AA         [24]  582 	mov	_SAFE_MOD,#0xaa
+      000CE1 75 A1 AA         [24]  582 	mov	_SAFE_MOD,#0xaa
                                     583 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:8: PIN_FUNC |= bUART1_PIN_X;   // UART1 on P3.2/P3.4
-      0009CC 43 C6 20         [24]  584 	orl	_PIN_FUNC,#0x20
+      000CE4 43 C6 20         [24]  584 	orl	_PIN_FUNC,#0x20
                                     585 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:9: SAFE_MOD = 0x00;
-      0009CF 75 A1 00         [24]  586 	mov	_SAFE_MOD,#0x00
+      000CE7 75 A1 00         [24]  586 	mov	_SAFE_MOD,#0x00
                                     587 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:12: T2MOD = 0;
-      0009D2 75 C9 00         [24]  588 	mov	_T2MOD,#0x00
+      000CEA 75 C9 00         [24]  588 	mov	_T2MOD,#0x00
                                     589 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:13: T2CON = 0;
-      0009D5 75 C8 00         [24]  590 	mov	_T2CON,#0x00
+      000CED 75 C8 00         [24]  590 	mov	_T2CON,#0x00
                                     591 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:16: P3_MOD_OC &= ~(1 << 2);
-      0009D8 53 96 FB         [24]  592 	anl	_P3_MOD_OC,#0xfb
+      000CF0 53 96 FB         [24]  592 	anl	_P3_MOD_OC,#0xfb
                                     593 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:17: P3_DIR_PU  |=  (1 << 2);
-      0009DB 43 97 04         [24]  594 	orl	_P3_DIR_PU,#0x04
+      000CF3 43 97 04         [24]  594 	orl	_P3_DIR_PU,#0x04
                                     595 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:20: P3_MOD_OC &= ~(1 << 4);
-      0009DE 53 96 EF         [24]  596 	anl	_P3_MOD_OC,#0xef
+      000CF6 53 96 EF         [24]  596 	anl	_P3_MOD_OC,#0xef
                                     597 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:21: P3_DIR_PU  &= ~(1 << 4);
-      0009E1 53 97 EF         [24]  598 	anl	_P3_DIR_PU,#0xef
+      000CF9 53 97 EF         [24]  598 	anl	_P3_DIR_PU,#0xef
                                     599 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:24: U1SM0  = 0;      // 8-bit
                                     600 ;	assignBit
-      0009E4 C2 C7            [12]  601 	clr	_U1SM0
+      000CFC C2 C7            [12]  601 	clr	_U1SM0
                                     602 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:25: U1SMOD = 1;      // baud x2
                                     603 ;	assignBit
-      0009E6 D2 C5            [12]  604 	setb	_U1SMOD
+      000CFE D2 C5            [12]  604 	setb	_U1SMOD
                                     605 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:26: SBAUD1 = 0x64;   // 9600 baud @ 24 MHz
-      0009E8 75 C2 64         [24]  606 	mov	_SBAUD1,#0x64
+      000D00 75 C2 64         [24]  606 	mov	_SBAUD1,#0x64
                                     607 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:28: U1REN  = 1;      // enable RX
                                     608 ;	assignBit
-      0009EB D2 C4            [12]  609 	setb	_U1REN
+      000D03 D2 C4            [12]  609 	setb	_U1REN
                                     610 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:29: U1TI   = 1;      // mark TX ready
                                     611 ;	assignBit
-      0009ED D2 C1            [12]  612 	setb	_U1TI
+      000D05 D2 C1            [12]  612 	setb	_U1TI
                                     613 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:30: }
-      0009EF 22               [24]  614 	ret
+      000D07 22               [24]  614 	ret
                                     615 ;------------------------------------------------------------
                                     616 ;Allocation info for local variables in function 'Serial_write'
                                     617 ;------------------------------------------------------------
@@ -621,19 +621,19 @@
                                     621 ;	-----------------------------------------
                                     622 ;	 function Serial_write
                                     623 ;	-----------------------------------------
-      0009F0                        624 _Serial_write:
-      0009F0 AF 82            [24]  625 	mov	r7, dpl
+      000D08                        624 _Serial_write:
+      000D08 AF 82            [24]  625 	mov	r7, dpl
                                     626 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:34: while (!U1TI);   // wait for TX ready
-      0009F2                        627 00101$:
+      000D0A                        627 00101$:
                                     628 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:35: U1TI = 0;        // clear flag
                                     629 ;	assignBit
-      0009F2 10 C1 02         [24]  630 	jbc	_U1TI,00118$
-      0009F5 80 FB            [24]  631 	sjmp	00101$
-      0009F7                        632 00118$:
+      000D0A 10 C1 02         [24]  630 	jbc	_U1TI,00118$
+      000D0D 80 FB            [24]  631 	sjmp	00101$
+      000D0F                        632 00118$:
                                     633 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:36: SBUF1 = c;       // send
-      0009F7 8F C1            [24]  634 	mov	_SBUF1,r7
+      000D0F 8F C1            [24]  634 	mov	_SBUF1,r7
                                     635 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:37: }
-      0009F9 22               [24]  636 	ret
+      000D11 22               [24]  636 	ret
                                     637 ;------------------------------------------------------------
                                     638 ;Allocation info for local variables in function 'Serial_print'
                                     639 ;------------------------------------------------------------
@@ -643,34 +643,34 @@
                                     643 ;	-----------------------------------------
                                     644 ;	 function Serial_print
                                     645 ;	-----------------------------------------
-      0009FA                        646 _Serial_print:
-      0009FA AD 82            [24]  647 	mov	r5, dpl
-      0009FC AE 83            [24]  648 	mov	r6, dph
-      0009FE AF F0            [24]  649 	mov	r7, b
+      000D12                        646 _Serial_print:
+      000D12 AD 82            [24]  647 	mov	r5, dpl
+      000D14 AE 83            [24]  648 	mov	r6, dph
+      000D16 AF F0            [24]  649 	mov	r7, b
                                     650 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:41: while (*s) Serial_write(*s++);
-      000A00                        651 00101$:
-      000A00 8D 82            [24]  652 	mov	dpl,r5
-      000A02 8E 83            [24]  653 	mov	dph,r6
-      000A04 8F F0            [24]  654 	mov	b,r7
-      000A06 12 0D 39         [24]  655 	lcall	__gptrget
-      000A09 FC               [12]  656 	mov	r4,a
-      000A0A 60 18            [24]  657 	jz	00104$
-      000A0C 0D               [12]  658 	inc	r5
-      000A0D BD 00 01         [24]  659 	cjne	r5,#0x00,00120$
-      000A10 0E               [12]  660 	inc	r6
-      000A11                        661 00120$:
-      000A11 8C 82            [24]  662 	mov	dpl, r4
-      000A13 C0 07            [24]  663 	push	ar7
-      000A15 C0 06            [24]  664 	push	ar6
-      000A17 C0 05            [24]  665 	push	ar5
-      000A19 12 09 F0         [24]  666 	lcall	_Serial_write
-      000A1C D0 05            [24]  667 	pop	ar5
-      000A1E D0 06            [24]  668 	pop	ar6
-      000A20 D0 07            [24]  669 	pop	ar7
-      000A22 80 DC            [24]  670 	sjmp	00101$
-      000A24                        671 00104$:
+      000D18                        651 00101$:
+      000D18 8D 82            [24]  652 	mov	dpl,r5
+      000D1A 8E 83            [24]  653 	mov	dph,r6
+      000D1C 8F F0            [24]  654 	mov	b,r7
+      000D1E 12 10 73         [24]  655 	lcall	__gptrget
+      000D21 FC               [12]  656 	mov	r4,a
+      000D22 60 18            [24]  657 	jz	00104$
+      000D24 0D               [12]  658 	inc	r5
+      000D25 BD 00 01         [24]  659 	cjne	r5,#0x00,00120$
+      000D28 0E               [12]  660 	inc	r6
+      000D29                        661 00120$:
+      000D29 8C 82            [24]  662 	mov	dpl, r4
+      000D2B C0 07            [24]  663 	push	ar7
+      000D2D C0 06            [24]  664 	push	ar6
+      000D2F C0 05            [24]  665 	push	ar5
+      000D31 12 0D 08         [24]  666 	lcall	_Serial_write
+      000D34 D0 05            [24]  667 	pop	ar5
+      000D36 D0 06            [24]  668 	pop	ar6
+      000D38 D0 07            [24]  669 	pop	ar7
+      000D3A 80 DC            [24]  670 	sjmp	00101$
+      000D3C                        671 00104$:
                                     672 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:42: }
-      000A24 22               [24]  673 	ret
+      000D3C 22               [24]  673 	ret
                                     674 ;------------------------------------------------------------
                                     675 ;Allocation info for local variables in function 'Serial_print_uint'
                                     676 ;------------------------------------------------------------
@@ -680,151 +680,151 @@
                                     680 ;	-----------------------------------------
                                     681 ;	 function Serial_print_uint
                                     682 ;	-----------------------------------------
-      000A25                        683 _Serial_print_uint:
-      000A25 AE 82            [24]  684 	mov	r6, dpl
-      000A27 AF 83            [24]  685 	mov	r7, dph
+      000D3D                        683 _Serial_print_uint:
+      000D3D AE 82            [24]  684 	mov	r6, dpl
+      000D3F AF 83            [24]  685 	mov	r7, dph
                                     686 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:46: if (v >= 10000) Serial_write('0' + (v / 10000) % 10);
-      000A29 C3               [12]  687 	clr	c
-      000A2A EE               [12]  688 	mov	a,r6
-      000A2B 94 10            [12]  689 	subb	a,#0x10
-      000A2D EF               [12]  690 	mov	a,r7
-      000A2E 94 27            [12]  691 	subb	a,#0x27
-      000A30 40 2C            [24]  692 	jc	00102$
-      000A32 C0 07            [24]  693 	push	ar7
-      000A34 C0 06            [24]  694 	push	ar6
-      000A36 74 10            [12]  695 	mov	a,#0x10
-      000A38 C0 E0            [24]  696 	push	acc
-      000A3A 74 27            [12]  697 	mov	a,#0x27
-      000A3C C0 E0            [24]  698 	push	acc
-      000A3E 8E 82            [24]  699 	mov	dpl, r6
-      000A40 8F 83            [24]  700 	mov	dph, r7
-      000A42 12 0C 80         [24]  701 	lcall	__divuint
-      000A45 AC 82            [24]  702 	mov	r4, dpl
-      000A47 15 81            [12]  703 	dec	sp
-      000A49 15 81            [12]  704 	dec	sp
-      000A4B 75 F0 0A         [24]  705 	mov	b,#0x0a
-      000A4E EC               [12]  706 	mov	a,r4
-      000A4F 84               [48]  707 	div	ab
-      000A50 AC F0            [24]  708 	mov	r4,b
-      000A52 74 30            [12]  709 	mov	a,#0x30
-      000A54 2C               [12]  710 	add	a, r4
-      000A55 F5 82            [12]  711 	mov	dpl,a
-      000A57 12 09 F0         [24]  712 	lcall	_Serial_write
-      000A5A D0 06            [24]  713 	pop	ar6
-      000A5C D0 07            [24]  714 	pop	ar7
-      000A5E                        715 00102$:
+      000D41 C3               [12]  687 	clr	c
+      000D42 EE               [12]  688 	mov	a,r6
+      000D43 94 10            [12]  689 	subb	a,#0x10
+      000D45 EF               [12]  690 	mov	a,r7
+      000D46 94 27            [12]  691 	subb	a,#0x27
+      000D48 40 2C            [24]  692 	jc	00102$
+      000D4A C0 07            [24]  693 	push	ar7
+      000D4C C0 06            [24]  694 	push	ar6
+      000D4E 74 10            [12]  695 	mov	a,#0x10
+      000D50 C0 E0            [24]  696 	push	acc
+      000D52 74 27            [12]  697 	mov	a,#0x27
+      000D54 C0 E0            [24]  698 	push	acc
+      000D56 8E 82            [24]  699 	mov	dpl, r6
+      000D58 8F 83            [24]  700 	mov	dph, r7
+      000D5A 12 0F 98         [24]  701 	lcall	__divuint
+      000D5D AC 82            [24]  702 	mov	r4, dpl
+      000D5F 15 81            [12]  703 	dec	sp
+      000D61 15 81            [12]  704 	dec	sp
+      000D63 75 F0 0A         [24]  705 	mov	b,#0x0a
+      000D66 EC               [12]  706 	mov	a,r4
+      000D67 84               [48]  707 	div	ab
+      000D68 AC F0            [24]  708 	mov	r4,b
+      000D6A 74 30            [12]  709 	mov	a,#0x30
+      000D6C 2C               [12]  710 	add	a, r4
+      000D6D F5 82            [12]  711 	mov	dpl,a
+      000D6F 12 0D 08         [24]  712 	lcall	_Serial_write
+      000D72 D0 06            [24]  713 	pop	ar6
+      000D74 D0 07            [24]  714 	pop	ar7
+      000D76                        715 00102$:
                                     716 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:47: if (v >= 1000)  Serial_write('0' + (v / 1000)  % 10);
-      000A5E C3               [12]  717 	clr	c
-      000A5F EE               [12]  718 	mov	a,r6
-      000A60 94 E8            [12]  719 	subb	a,#0xe8
-      000A62 EF               [12]  720 	mov	a,r7
-      000A63 94 03            [12]  721 	subb	a,#0x03
-      000A65 40 2C            [24]  722 	jc	00104$
-      000A67 C0 07            [24]  723 	push	ar7
-      000A69 C0 06            [24]  724 	push	ar6
-      000A6B 74 E8            [12]  725 	mov	a,#0xe8
-      000A6D C0 E0            [24]  726 	push	acc
-      000A6F 74 03            [12]  727 	mov	a,#0x03
-      000A71 C0 E0            [24]  728 	push	acc
-      000A73 8E 82            [24]  729 	mov	dpl, r6
-      000A75 8F 83            [24]  730 	mov	dph, r7
-      000A77 12 0C 80         [24]  731 	lcall	__divuint
-      000A7A AC 82            [24]  732 	mov	r4, dpl
-      000A7C 15 81            [12]  733 	dec	sp
-      000A7E 15 81            [12]  734 	dec	sp
-      000A80 75 F0 0A         [24]  735 	mov	b,#0x0a
-      000A83 EC               [12]  736 	mov	a,r4
-      000A84 84               [48]  737 	div	ab
-      000A85 AC F0            [24]  738 	mov	r4,b
-      000A87 74 30            [12]  739 	mov	a,#0x30
-      000A89 2C               [12]  740 	add	a, r4
-      000A8A F5 82            [12]  741 	mov	dpl,a
-      000A8C 12 09 F0         [24]  742 	lcall	_Serial_write
-      000A8F D0 06            [24]  743 	pop	ar6
-      000A91 D0 07            [24]  744 	pop	ar7
-      000A93                        745 00104$:
+      000D76 C3               [12]  717 	clr	c
+      000D77 EE               [12]  718 	mov	a,r6
+      000D78 94 E8            [12]  719 	subb	a,#0xe8
+      000D7A EF               [12]  720 	mov	a,r7
+      000D7B 94 03            [12]  721 	subb	a,#0x03
+      000D7D 40 2C            [24]  722 	jc	00104$
+      000D7F C0 07            [24]  723 	push	ar7
+      000D81 C0 06            [24]  724 	push	ar6
+      000D83 74 E8            [12]  725 	mov	a,#0xe8
+      000D85 C0 E0            [24]  726 	push	acc
+      000D87 74 03            [12]  727 	mov	a,#0x03
+      000D89 C0 E0            [24]  728 	push	acc
+      000D8B 8E 82            [24]  729 	mov	dpl, r6
+      000D8D 8F 83            [24]  730 	mov	dph, r7
+      000D8F 12 0F 98         [24]  731 	lcall	__divuint
+      000D92 AC 82            [24]  732 	mov	r4, dpl
+      000D94 15 81            [12]  733 	dec	sp
+      000D96 15 81            [12]  734 	dec	sp
+      000D98 75 F0 0A         [24]  735 	mov	b,#0x0a
+      000D9B EC               [12]  736 	mov	a,r4
+      000D9C 84               [48]  737 	div	ab
+      000D9D AC F0            [24]  738 	mov	r4,b
+      000D9F 74 30            [12]  739 	mov	a,#0x30
+      000DA1 2C               [12]  740 	add	a, r4
+      000DA2 F5 82            [12]  741 	mov	dpl,a
+      000DA4 12 0D 08         [24]  742 	lcall	_Serial_write
+      000DA7 D0 06            [24]  743 	pop	ar6
+      000DA9 D0 07            [24]  744 	pop	ar7
+      000DAB                        745 00104$:
                                     746 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:48: if (v >= 100)   Serial_write('0' + (v / 100)   % 10);
-      000A93 C3               [12]  747 	clr	c
-      000A94 EE               [12]  748 	mov	a,r6
-      000A95 94 64            [12]  749 	subb	a,#0x64
-      000A97 EF               [12]  750 	mov	a,r7
-      000A98 94 00            [12]  751 	subb	a,#0x00
-      000A9A 40 32            [24]  752 	jc	00106$
-      000A9C C0 07            [24]  753 	push	ar7
-      000A9E C0 06            [24]  754 	push	ar6
-      000AA0 74 64            [12]  755 	mov	a,#0x64
-      000AA2 C0 E0            [24]  756 	push	acc
-      000AA4 E4               [12]  757 	clr	a
-      000AA5 C0 E0            [24]  758 	push	acc
-      000AA7 8E 82            [24]  759 	mov	dpl, r6
-      000AA9 8F 83            [24]  760 	mov	dph, r7
-      000AAB 12 0C 80         [24]  761 	lcall	__divuint
-      000AAE 15 81            [12]  762 	dec	sp
-      000AB0 15 81            [12]  763 	dec	sp
-      000AB2 74 0A            [12]  764 	mov	a,#0x0a
-      000AB4 C0 E0            [24]  765 	push	acc
-      000AB6 E4               [12]  766 	clr	a
-      000AB7 C0 E0            [24]  767 	push	acc
-      000AB9 12 0E 02         [24]  768 	lcall	__moduint
-      000ABC AC 82            [24]  769 	mov	r4, dpl
-      000ABE 15 81            [12]  770 	dec	sp
-      000AC0 15 81            [12]  771 	dec	sp
-      000AC2 74 30            [12]  772 	mov	a,#0x30
-      000AC4 2C               [12]  773 	add	a, r4
-      000AC5 F5 82            [12]  774 	mov	dpl,a
-      000AC7 12 09 F0         [24]  775 	lcall	_Serial_write
-      000ACA D0 06            [24]  776 	pop	ar6
-      000ACC D0 07            [24]  777 	pop	ar7
-      000ACE                        778 00106$:
+      000DAB C3               [12]  747 	clr	c
+      000DAC EE               [12]  748 	mov	a,r6
+      000DAD 94 64            [12]  749 	subb	a,#0x64
+      000DAF EF               [12]  750 	mov	a,r7
+      000DB0 94 00            [12]  751 	subb	a,#0x00
+      000DB2 40 32            [24]  752 	jc	00106$
+      000DB4 C0 07            [24]  753 	push	ar7
+      000DB6 C0 06            [24]  754 	push	ar6
+      000DB8 74 64            [12]  755 	mov	a,#0x64
+      000DBA C0 E0            [24]  756 	push	acc
+      000DBC E4               [12]  757 	clr	a
+      000DBD C0 E0            [24]  758 	push	acc
+      000DBF 8E 82            [24]  759 	mov	dpl, r6
+      000DC1 8F 83            [24]  760 	mov	dph, r7
+      000DC3 12 0F 98         [24]  761 	lcall	__divuint
+      000DC6 15 81            [12]  762 	dec	sp
+      000DC8 15 81            [12]  763 	dec	sp
+      000DCA 74 0A            [12]  764 	mov	a,#0x0a
+      000DCC C0 E0            [24]  765 	push	acc
+      000DCE E4               [12]  766 	clr	a
+      000DCF C0 E0            [24]  767 	push	acc
+      000DD1 12 11 3C         [24]  768 	lcall	__moduint
+      000DD4 AC 82            [24]  769 	mov	r4, dpl
+      000DD6 15 81            [12]  770 	dec	sp
+      000DD8 15 81            [12]  771 	dec	sp
+      000DDA 74 30            [12]  772 	mov	a,#0x30
+      000DDC 2C               [12]  773 	add	a, r4
+      000DDD F5 82            [12]  774 	mov	dpl,a
+      000DDF 12 0D 08         [24]  775 	lcall	_Serial_write
+      000DE2 D0 06            [24]  776 	pop	ar6
+      000DE4 D0 07            [24]  777 	pop	ar7
+      000DE6                        778 00106$:
                                     779 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:49: if (v >= 10)    Serial_write('0' + (v / 10)    % 10);
-      000ACE C3               [12]  780 	clr	c
-      000ACF EE               [12]  781 	mov	a,r6
-      000AD0 94 0A            [12]  782 	subb	a,#0x0a
-      000AD2 EF               [12]  783 	mov	a,r7
-      000AD3 94 00            [12]  784 	subb	a,#0x00
-      000AD5 40 32            [24]  785 	jc	00108$
-      000AD7 C0 07            [24]  786 	push	ar7
-      000AD9 C0 06            [24]  787 	push	ar6
-      000ADB 74 0A            [12]  788 	mov	a,#0x0a
-      000ADD C0 E0            [24]  789 	push	acc
-      000ADF E4               [12]  790 	clr	a
-      000AE0 C0 E0            [24]  791 	push	acc
-      000AE2 8E 82            [24]  792 	mov	dpl, r6
-      000AE4 8F 83            [24]  793 	mov	dph, r7
-      000AE6 12 0C 80         [24]  794 	lcall	__divuint
-      000AE9 15 81            [12]  795 	dec	sp
-      000AEB 15 81            [12]  796 	dec	sp
-      000AED 74 0A            [12]  797 	mov	a,#0x0a
-      000AEF C0 E0            [24]  798 	push	acc
-      000AF1 E4               [12]  799 	clr	a
-      000AF2 C0 E0            [24]  800 	push	acc
-      000AF4 12 0E 02         [24]  801 	lcall	__moduint
-      000AF7 AC 82            [24]  802 	mov	r4, dpl
-      000AF9 15 81            [12]  803 	dec	sp
-      000AFB 15 81            [12]  804 	dec	sp
-      000AFD 74 30            [12]  805 	mov	a,#0x30
-      000AFF 2C               [12]  806 	add	a, r4
-      000B00 F5 82            [12]  807 	mov	dpl,a
-      000B02 12 09 F0         [24]  808 	lcall	_Serial_write
-      000B05 D0 06            [24]  809 	pop	ar6
-      000B07 D0 07            [24]  810 	pop	ar7
-      000B09                        811 00108$:
+      000DE6 C3               [12]  780 	clr	c
+      000DE7 EE               [12]  781 	mov	a,r6
+      000DE8 94 0A            [12]  782 	subb	a,#0x0a
+      000DEA EF               [12]  783 	mov	a,r7
+      000DEB 94 00            [12]  784 	subb	a,#0x00
+      000DED 40 32            [24]  785 	jc	00108$
+      000DEF C0 07            [24]  786 	push	ar7
+      000DF1 C0 06            [24]  787 	push	ar6
+      000DF3 74 0A            [12]  788 	mov	a,#0x0a
+      000DF5 C0 E0            [24]  789 	push	acc
+      000DF7 E4               [12]  790 	clr	a
+      000DF8 C0 E0            [24]  791 	push	acc
+      000DFA 8E 82            [24]  792 	mov	dpl, r6
+      000DFC 8F 83            [24]  793 	mov	dph, r7
+      000DFE 12 0F 98         [24]  794 	lcall	__divuint
+      000E01 15 81            [12]  795 	dec	sp
+      000E03 15 81            [12]  796 	dec	sp
+      000E05 74 0A            [12]  797 	mov	a,#0x0a
+      000E07 C0 E0            [24]  798 	push	acc
+      000E09 E4               [12]  799 	clr	a
+      000E0A C0 E0            [24]  800 	push	acc
+      000E0C 12 11 3C         [24]  801 	lcall	__moduint
+      000E0F AC 82            [24]  802 	mov	r4, dpl
+      000E11 15 81            [12]  803 	dec	sp
+      000E13 15 81            [12]  804 	dec	sp
+      000E15 74 30            [12]  805 	mov	a,#0x30
+      000E17 2C               [12]  806 	add	a, r4
+      000E18 F5 82            [12]  807 	mov	dpl,a
+      000E1A 12 0D 08         [24]  808 	lcall	_Serial_write
+      000E1D D0 06            [24]  809 	pop	ar6
+      000E1F D0 07            [24]  810 	pop	ar7
+      000E21                        811 00108$:
                                     812 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:50: Serial_write('0' + (v % 10));
-      000B09 74 0A            [12]  813 	mov	a,#0x0a
-      000B0B C0 E0            [24]  814 	push	acc
-      000B0D E4               [12]  815 	clr	a
-      000B0E C0 E0            [24]  816 	push	acc
-      000B10 8E 82            [24]  817 	mov	dpl, r6
-      000B12 8F 83            [24]  818 	mov	dph, r7
-      000B14 12 0E 02         [24]  819 	lcall	__moduint
-      000B17 AE 82            [24]  820 	mov	r6, dpl
-      000B19 15 81            [12]  821 	dec	sp
-      000B1B 15 81            [12]  822 	dec	sp
-      000B1D 74 30            [12]  823 	mov	a,#0x30
-      000B1F 2E               [12]  824 	add	a, r6
-      000B20 F5 82            [12]  825 	mov	dpl,a
+      000E21 74 0A            [12]  813 	mov	a,#0x0a
+      000E23 C0 E0            [24]  814 	push	acc
+      000E25 E4               [12]  815 	clr	a
+      000E26 C0 E0            [24]  816 	push	acc
+      000E28 8E 82            [24]  817 	mov	dpl, r6
+      000E2A 8F 83            [24]  818 	mov	dph, r7
+      000E2C 12 11 3C         [24]  819 	lcall	__moduint
+      000E2F AE 82            [24]  820 	mov	r6, dpl
+      000E31 15 81            [12]  821 	dec	sp
+      000E33 15 81            [12]  822 	dec	sp
+      000E35 74 30            [12]  823 	mov	a,#0x30
+      000E37 2E               [12]  824 	add	a, r6
+      000E38 F5 82            [12]  825 	mov	dpl,a
                                     826 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:51: }
-      000B22 02 09 F0         [24]  827 	ljmp	_Serial_write
+      000E3A 02 0D 08         [24]  827 	ljmp	_Serial_write
                                     828 ;------------------------------------------------------------
                                     829 ;Allocation info for local variables in function 'Serial_println'
                                     830 ;------------------------------------------------------------
@@ -834,16 +834,16 @@
                                     834 ;	-----------------------------------------
                                     835 ;	 function Serial_println
                                     836 ;	-----------------------------------------
-      000B25                        837 _Serial_println:
+      000E3D                        837 _Serial_println:
                                     838 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:55: Serial_print(s);
-      000B25 12 09 FA         [24]  839 	lcall	_Serial_print
+      000E3D 12 0D 12         [24]  839 	lcall	_Serial_print
                                     840 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:56: Serial_write('\r');
-      000B28 75 82 0D         [24]  841 	mov	dpl, #0x0d
-      000B2B 12 09 F0         [24]  842 	lcall	_Serial_write
+      000E40 75 82 0D         [24]  841 	mov	dpl, #0x0d
+      000E43 12 0D 08         [24]  842 	lcall	_Serial_write
                                     843 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:57: Serial_write('\n');
-      000B2E 75 82 0A         [24]  844 	mov	dpl, #0x0a
+      000E46 75 82 0A         [24]  844 	mov	dpl, #0x0a
                                     845 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:58: }
-      000B31 02 09 F0         [24]  846 	ljmp	_Serial_write
+      000E49 02 0D 08         [24]  846 	ljmp	_Serial_write
                                     847 ;------------------------------------------------------------
                                     848 ;Allocation info for local variables in function 'Serial_println_int'
                                     849 ;------------------------------------------------------------
@@ -855,150 +855,150 @@
                                     855 ;	-----------------------------------------
                                     856 ;	 function Serial_println_int
                                     857 ;	-----------------------------------------
-      000B34                        858 _Serial_println_int:
-      000B34 C0 10            [24]  859 	push	_bp
-      000B36 E5 81            [12]  860 	mov	a,sp
-      000B38 F5 10            [12]  861 	mov	_bp,a
-      000B3A 24 0A            [12]  862 	add	a,#0x0a
-      000B3C F5 81            [12]  863 	mov	sp,a
-      000B3E AE 82            [24]  864 	mov	r6, dpl
-      000B40 AF 83            [24]  865 	mov	r7, dph
+      000E4C                        858 _Serial_println_int:
+      000E4C C0 13            [24]  859 	push	_bp
+      000E4E E5 81            [12]  860 	mov	a,sp
+      000E50 F5 13            [12]  861 	mov	_bp,a
+      000E52 24 0A            [12]  862 	add	a,#0x0a
+      000E54 F5 81            [12]  863 	mov	sp,a
+      000E56 AE 82            [24]  864 	mov	r6, dpl
+      000E58 AF 83            [24]  865 	mov	r7, dph
                                     866 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:65: if(v < 0) {
-      000B42 8E 04            [24]  867 	mov	ar4,r6
-      000B44 8F 05            [24]  868 	mov	ar5,r7
-      000B46 ED               [12]  869 	mov	a,r5
-      000B47 30 E7 15         [24]  870 	jnb	acc.7,00112$
+      000E5A 8E 04            [24]  867 	mov	ar4,r6
+      000E5C 8F 05            [24]  868 	mov	ar5,r7
+      000E5E ED               [12]  869 	mov	a,r5
+      000E5F 30 E7 15         [24]  870 	jnb	acc.7,00112$
                                     871 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:66: Serial_write('-');
-      000B4A 75 82 2D         [24]  872 	mov	dpl, #0x2d
-      000B4D C0 07            [24]  873 	push	ar7
-      000B4F C0 06            [24]  874 	push	ar6
-      000B51 12 09 F0         [24]  875 	lcall	_Serial_write
-      000B54 D0 06            [24]  876 	pop	ar6
-      000B56 D0 07            [24]  877 	pop	ar7
+      000E62 75 82 2D         [24]  872 	mov	dpl, #0x2d
+      000E65 C0 07            [24]  873 	push	ar7
+      000E67 C0 06            [24]  874 	push	ar6
+      000E69 12 0D 08         [24]  875 	lcall	_Serial_write
+      000E6C D0 06            [24]  876 	pop	ar6
+      000E6E D0 07            [24]  877 	pop	ar7
                                     878 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:67: v = -v;
-      000B58 C3               [12]  879 	clr	c
-      000B59 E4               [12]  880 	clr	a
-      000B5A 9E               [12]  881 	subb	a,r6
-      000B5B FE               [12]  882 	mov	r6,a
-      000B5C E4               [12]  883 	clr	a
-      000B5D 9F               [12]  884 	subb	a,r7
-      000B5E FF               [12]  885 	mov	r7,a
+      000E70 C3               [12]  879 	clr	c
+      000E71 E4               [12]  880 	clr	a
+      000E72 9E               [12]  881 	subb	a,r6
+      000E73 FE               [12]  882 	mov	r6,a
+      000E74 E4               [12]  883 	clr	a
+      000E75 9F               [12]  884 	subb	a,r7
+      000E76 FF               [12]  885 	mov	r7,a
                                     886 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:71: do {
-      000B5F                        887 00112$:
-      000B5F AD 10            [24]  888 	mov	r5,_bp
-      000B61 0D               [12]  889 	inc	r5
-      000B62 E5 10            [12]  890 	mov	a,_bp
-      000B64 24 09            [12]  891 	add	a,#0x09
-      000B66 F8               [12]  892 	mov	r0,a
-      000B67 E4               [12]  893 	clr	a
-      000B68 F6               [12]  894 	mov	@r0,a
-      000B69 08               [12]  895 	inc	r0
-      000B6A F6               [12]  896 	mov	@r0,a
-      000B6B                        897 00103$:
+      000E77                        887 00112$:
+      000E77 AD 13            [24]  888 	mov	r5,_bp
+      000E79 0D               [12]  889 	inc	r5
+      000E7A E5 13            [12]  890 	mov	a,_bp
+      000E7C 24 09            [12]  891 	add	a,#0x09
+      000E7E F8               [12]  892 	mov	r0,a
+      000E7F E4               [12]  893 	clr	a
+      000E80 F6               [12]  894 	mov	@r0,a
+      000E81 08               [12]  895 	inc	r0
+      000E82 F6               [12]  896 	mov	@r0,a
+      000E83                        897 00103$:
                                     898 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:72: buf[i++] = '0' + (v % 10);
-      000B6B E5 10            [12]  899 	mov	a,_bp
-      000B6D 24 09            [12]  900 	add	a,#0x09
-      000B6F F8               [12]  901 	mov	r0,a
-      000B70 E6               [12]  902 	mov	a,@r0
-      000B71 2D               [12]  903 	add	a, r5
-      000B72 F9               [12]  904 	mov	r1,a
-      000B73 E5 10            [12]  905 	mov	a,_bp
-      000B75 24 09            [12]  906 	add	a,#0x09
-      000B77 F8               [12]  907 	mov	r0,a
-      000B78 06               [12]  908 	inc	@r0
-      000B79 B6 00 02         [24]  909 	cjne	@r0,#0x00,00143$
-      000B7C 08               [12]  910 	inc	r0
-      000B7D 06               [12]  911 	inc	@r0
-      000B7E                        912 00143$:
-      000B7E C0 05            [24]  913 	push	ar5
-      000B80 8E 02            [24]  914 	mov	ar2,r6
-      000B82 8F 05            [24]  915 	mov	ar5,r7
-      000B84 C0 05            [24]  916 	push	ar5
-      000B86 C0 02            [24]  917 	push	ar2
-      000B88 C0 01            [24]  918 	push	ar1
-      000B8A 74 0A            [12]  919 	mov	a,#0x0a
-      000B8C C0 E0            [24]  920 	push	acc
-      000B8E E4               [12]  921 	clr	a
-      000B8F C0 E0            [24]  922 	push	acc
-      000B91 8A 82            [24]  923 	mov	dpl, r2
-      000B93 8D 83            [24]  924 	mov	dph, r5
-      000B95 12 0D 55         [24]  925 	lcall	__modsint
-      000B98 AB 82            [24]  926 	mov	r3, dpl
-      000B9A 15 81            [12]  927 	dec	sp
-      000B9C 15 81            [12]  928 	dec	sp
-      000B9E D0 01            [24]  929 	pop	ar1
-      000BA0 D0 02            [24]  930 	pop	ar2
-      000BA2 D0 05            [24]  931 	pop	ar5
-      000BA4 74 30            [12]  932 	mov	a,#0x30
-      000BA6 2B               [12]  933 	add	a, r3
-      000BA7 F7               [12]  934 	mov	@r1,a
+      000E83 E5 13            [12]  899 	mov	a,_bp
+      000E85 24 09            [12]  900 	add	a,#0x09
+      000E87 F8               [12]  901 	mov	r0,a
+      000E88 E6               [12]  902 	mov	a,@r0
+      000E89 2D               [12]  903 	add	a, r5
+      000E8A F9               [12]  904 	mov	r1,a
+      000E8B E5 13            [12]  905 	mov	a,_bp
+      000E8D 24 09            [12]  906 	add	a,#0x09
+      000E8F F8               [12]  907 	mov	r0,a
+      000E90 06               [12]  908 	inc	@r0
+      000E91 B6 00 02         [24]  909 	cjne	@r0,#0x00,00143$
+      000E94 08               [12]  910 	inc	r0
+      000E95 06               [12]  911 	inc	@r0
+      000E96                        912 00143$:
+      000E96 C0 05            [24]  913 	push	ar5
+      000E98 8E 02            [24]  914 	mov	ar2,r6
+      000E9A 8F 05            [24]  915 	mov	ar5,r7
+      000E9C C0 05            [24]  916 	push	ar5
+      000E9E C0 02            [24]  917 	push	ar2
+      000EA0 C0 01            [24]  918 	push	ar1
+      000EA2 74 0A            [12]  919 	mov	a,#0x0a
+      000EA4 C0 E0            [24]  920 	push	acc
+      000EA6 E4               [12]  921 	clr	a
+      000EA7 C0 E0            [24]  922 	push	acc
+      000EA9 8A 82            [24]  923 	mov	dpl, r2
+      000EAB 8D 83            [24]  924 	mov	dph, r5
+      000EAD 12 10 FF         [24]  925 	lcall	__modsint
+      000EB0 AB 82            [24]  926 	mov	r3, dpl
+      000EB2 15 81            [12]  927 	dec	sp
+      000EB4 15 81            [12]  928 	dec	sp
+      000EB6 D0 01            [24]  929 	pop	ar1
+      000EB8 D0 02            [24]  930 	pop	ar2
+      000EBA D0 05            [24]  931 	pop	ar5
+      000EBC 74 30            [12]  932 	mov	a,#0x30
+      000EBE 2B               [12]  933 	add	a, r3
+      000EBF F7               [12]  934 	mov	@r1,a
                                     935 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:73: v /= 10;
-      000BA8 74 0A            [12]  936 	mov	a,#0x0a
-      000BAA C0 E0            [24]  937 	push	acc
-      000BAC E4               [12]  938 	clr	a
-      000BAD C0 E0            [24]  939 	push	acc
-      000BAF 8A 82            [24]  940 	mov	dpl, r2
-      000BB1 8D 83            [24]  941 	mov	dph, r5
-      000BB3 12 0E 47         [24]  942 	lcall	__divsint
-      000BB6 AC 82            [24]  943 	mov	r4, dpl
-      000BB8 AD 83            [24]  944 	mov	r5, dph
-      000BBA 15 81            [12]  945 	dec	sp
-      000BBC 15 81            [12]  946 	dec	sp
-      000BBE 8C 06            [24]  947 	mov	ar6,r4
-      000BC0 8D 07            [24]  948 	mov	ar7,r5
+      000EC0 74 0A            [12]  936 	mov	a,#0x0a
+      000EC2 C0 E0            [24]  937 	push	acc
+      000EC4 E4               [12]  938 	clr	a
+      000EC5 C0 E0            [24]  939 	push	acc
+      000EC7 8A 82            [24]  940 	mov	dpl, r2
+      000EC9 8D 83            [24]  941 	mov	dph, r5
+      000ECB 12 11 81         [24]  942 	lcall	__divsint
+      000ECE AC 82            [24]  943 	mov	r4, dpl
+      000ED0 AD 83            [24]  944 	mov	r5, dph
+      000ED2 15 81            [12]  945 	dec	sp
+      000ED4 15 81            [12]  946 	dec	sp
+      000ED6 8C 06            [24]  947 	mov	ar6,r4
+      000ED8 8D 07            [24]  948 	mov	ar7,r5
                                     949 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:74: } while(v > 0);
-      000BC2 8E 04            [24]  950 	mov	ar4,r6
-      000BC4 8F 05            [24]  951 	mov	ar5,r7
-      000BC6 C3               [12]  952 	clr	c
-      000BC7 E4               [12]  953 	clr	a
-      000BC8 9C               [12]  954 	subb	a,r4
-      000BC9 74 80            [12]  955 	mov	a,#(0x00 ^ 0x80)
-      000BCB 8D F0            [24]  956 	mov	b,r5
-      000BCD 63 F0 80         [24]  957 	xrl	b,#0x80
-      000BD0 95 F0            [12]  958 	subb	a,b
-      000BD2 D0 05            [24]  959 	pop	ar5
-      000BD4 40 95            [24]  960 	jc	00103$
+      000EDA 8E 04            [24]  950 	mov	ar4,r6
+      000EDC 8F 05            [24]  951 	mov	ar5,r7
+      000EDE C3               [12]  952 	clr	c
+      000EDF E4               [12]  953 	clr	a
+      000EE0 9C               [12]  954 	subb	a,r4
+      000EE1 74 80            [12]  955 	mov	a,#(0x00 ^ 0x80)
+      000EE3 8D F0            [24]  956 	mov	b,r5
+      000EE5 63 F0 80         [24]  957 	xrl	b,#0x80
+      000EE8 95 F0            [12]  958 	subb	a,b
+      000EEA D0 05            [24]  959 	pop	ar5
+      000EEC 40 95            [24]  960 	jc	00103$
                                     961 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:77: while(i--)
-      000BD6 E5 10            [12]  962 	mov	a,_bp
-      000BD8 24 09            [12]  963 	add	a,#0x09
-      000BDA F8               [12]  964 	mov	r0,a
-      000BDB 86 06            [24]  965 	mov	ar6,@r0
-      000BDD 08               [12]  966 	inc	r0
-      000BDE 86 07            [24]  967 	mov	ar7,@r0
-      000BE0                        968 00106$:
-      000BE0 8E 03            [24]  969 	mov	ar3,r6
-      000BE2 8F 04            [24]  970 	mov	ar4,r7
-      000BE4 1E               [12]  971 	dec	r6
-      000BE5 BE FF 01         [24]  972 	cjne	r6,#0xff,00145$
-      000BE8 1F               [12]  973 	dec	r7
-      000BE9                        974 00145$:
-      000BE9 EB               [12]  975 	mov	a,r3
-      000BEA 4C               [12]  976 	orl	a,r4
-      000BEB 60 16            [24]  977 	jz	00108$
+      000EEE E5 13            [12]  962 	mov	a,_bp
+      000EF0 24 09            [12]  963 	add	a,#0x09
+      000EF2 F8               [12]  964 	mov	r0,a
+      000EF3 86 06            [24]  965 	mov	ar6,@r0
+      000EF5 08               [12]  966 	inc	r0
+      000EF6 86 07            [24]  967 	mov	ar7,@r0
+      000EF8                        968 00106$:
+      000EF8 8E 03            [24]  969 	mov	ar3,r6
+      000EFA 8F 04            [24]  970 	mov	ar4,r7
+      000EFC 1E               [12]  971 	dec	r6
+      000EFD BE FF 01         [24]  972 	cjne	r6,#0xff,00145$
+      000F00 1F               [12]  973 	dec	r7
+      000F01                        974 00145$:
+      000F01 EB               [12]  975 	mov	a,r3
+      000F02 4C               [12]  976 	orl	a,r4
+      000F03 60 16            [24]  977 	jz	00108$
                                     978 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:78: Serial_write(buf[i]);
-      000BED EE               [12]  979 	mov	a,r6
-      000BEE 2D               [12]  980 	add	a, r5
-      000BEF F9               [12]  981 	mov	r1,a
-      000BF0 87 82            [24]  982 	mov	dpl,@r1
-      000BF2 C0 07            [24]  983 	push	ar7
-      000BF4 C0 06            [24]  984 	push	ar6
-      000BF6 C0 05            [24]  985 	push	ar5
-      000BF8 12 09 F0         [24]  986 	lcall	_Serial_write
-      000BFB D0 05            [24]  987 	pop	ar5
-      000BFD D0 06            [24]  988 	pop	ar6
-      000BFF D0 07            [24]  989 	pop	ar7
-      000C01 80 DD            [24]  990 	sjmp	00106$
-      000C03                        991 00108$:
+      000F05 EE               [12]  979 	mov	a,r6
+      000F06 2D               [12]  980 	add	a, r5
+      000F07 F9               [12]  981 	mov	r1,a
+      000F08 87 82            [24]  982 	mov	dpl,@r1
+      000F0A C0 07            [24]  983 	push	ar7
+      000F0C C0 06            [24]  984 	push	ar6
+      000F0E C0 05            [24]  985 	push	ar5
+      000F10 12 0D 08         [24]  986 	lcall	_Serial_write
+      000F13 D0 05            [24]  987 	pop	ar5
+      000F15 D0 06            [24]  988 	pop	ar6
+      000F17 D0 07            [24]  989 	pop	ar7
+      000F19 80 DD            [24]  990 	sjmp	00106$
+      000F1B                        991 00108$:
                                     992 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:79: Serial_write('\r');
-      000C03 75 82 0D         [24]  993 	mov	dpl, #0x0d
-      000C06 12 09 F0         [24]  994 	lcall	_Serial_write
+      000F1B 75 82 0D         [24]  993 	mov	dpl, #0x0d
+      000F1E 12 0D 08         [24]  994 	lcall	_Serial_write
                                     995 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:80: Serial_write('\n');
-      000C09 75 82 0A         [24]  996 	mov	dpl, #0x0a
-      000C0C 12 09 F0         [24]  997 	lcall	_Serial_write
+      000F21 75 82 0A         [24]  996 	mov	dpl, #0x0a
+      000F24 12 0D 08         [24]  997 	lcall	_Serial_write
                                     998 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:81: }
-      000C0F 85 10 81         [24]  999 	mov	sp,_bp
-      000C12 D0 10            [24] 1000 	pop	_bp
-      000C14 22               [24] 1001 	ret
+      000F27 85 13 81         [24]  999 	mov	sp,_bp
+      000F2A D0 13            [24] 1000 	pop	_bp
+      000F2C 22               [24] 1001 	ret
                                    1002 ;------------------------------------------------------------
                                    1003 ;Allocation info for local variables in function 'Serial_println_uint'
                                    1004 ;------------------------------------------------------------
@@ -1008,16 +1008,16 @@
                                    1008 ;	-----------------------------------------
                                    1009 ;	 function Serial_println_uint
                                    1010 ;	-----------------------------------------
-      000C15                       1011 _Serial_println_uint:
+      000F2D                       1011 _Serial_println_uint:
                                    1012 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:85: Serial_print_uint(v);
-      000C15 12 0A 25         [24] 1013 	lcall	_Serial_print_uint
+      000F2D 12 0D 3D         [24] 1013 	lcall	_Serial_print_uint
                                    1014 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:86: Serial_write('\r');
-      000C18 75 82 0D         [24] 1015 	mov	dpl, #0x0d
-      000C1B 12 09 F0         [24] 1016 	lcall	_Serial_write
+      000F30 75 82 0D         [24] 1015 	mov	dpl, #0x0d
+      000F33 12 0D 08         [24] 1016 	lcall	_Serial_write
                                    1017 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:87: Serial_write('\n');
-      000C1E 75 82 0A         [24] 1018 	mov	dpl, #0x0a
+      000F36 75 82 0A         [24] 1018 	mov	dpl, #0x0a
                                    1019 ;	C:\Users\Clovisf\Documents\ch552\serial_print\serial.c:88: }
-      000C21 02 09 F0         [24] 1020 	ljmp	_Serial_write
+      000F39 02 0D 08         [24] 1020 	ljmp	_Serial_write
                                    1021 	.area CSEG    (CODE)
                                    1022 	.area CONST   (CODE)
                                    1023 	.area XINIT   (CODE)

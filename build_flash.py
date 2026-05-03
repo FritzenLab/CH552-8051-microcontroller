@@ -69,6 +69,56 @@ def compile_file(src: str, extra_includes: list[str] = []) -> str:
         sys.exit(1)
     return rel_out  # relative path, always in cwd
 
+def print_memory_report(main_file: str):
+    """
+    Parse the SDCC .map file and report CODE and RAM usage
+    for a CH552: 14336 bytes flash, 256 bytes IRAM.
+    """
+    map_file = main_file.replace(".c", ".map")
+    if not os.path.exists(map_file):
+        print("  WARNING: .map file not found, skipping memory report.")
+        return
+
+    FLASH_TOTAL = 14336
+    IRAM_TOTAL  = 256
+
+    code_size = 0
+    iram_size = 0
+
+    with open(map_file, "r") as f:
+        for line in f:
+            # SDCC map format: look for the segment summary lines
+            # e.g. "CSEG      0000H   0B2AH" or "DSEG    0008H   0042H"
+            parts = line.split()
+            if len(parts) >= 3:
+                seg = parts[0].upper()
+                try:
+                    size = int(parts[2].rstrip("H"), 16)
+                except ValueError:
+                    continue
+
+                # CODE segments (flash)
+                if seg in ("CSEG", "CONST", "GSINIT", "GSFINAL", "HOME"):
+                    code_size += size
+                # IRAM segments
+                elif seg in ("DSEG", "OSEG", "BSEG", "ISEG"):
+                    iram_size += size
+
+    code_pct = (code_size / FLASH_TOTAL) * 100
+    iram_pct = (iram_size / IRAM_TOTAL)  * 100
+
+    print("\n" + "=" * 54)
+    print("  MEMORY USAGE REPORT")
+    print("=" * 54)
+    print(f"  Flash (CODE) : {code_size:>5} / {FLASH_TOTAL} bytes  ({code_pct:.1f}% used,  {FLASH_TOTAL - code_size} free)")
+    print(f"  IRAM  (DATA) : {iram_size:>5} / {IRAM_TOTAL}  bytes  ({iram_pct:.1f}% used,  {IRAM_TOTAL  - iram_size} free)")
+    print("=" * 54)
+
+    # Warn if getting tight
+    if code_pct > 80:
+        print("  ⚠  WARNING: Flash usage above 80%!")
+    if iram_pct > 80:
+        print("  ⚠  WARNING: IRAM usage above 80%!")
 
 # ─────────────────────────────────────────────
 # MAIN
@@ -115,6 +165,9 @@ def main():
         print("  ERROR: linking failed.")
         sys.exit(1)
 
+    # ── Memory report ─────────────────────────────────────────────────
+    print_memory_report(main_file)
+    
     # ── Convert .ihx → .bin ──────────────────────────────────────────
     ihx_file = main_file.replace(".c", ".ihx")
     bin_file  = main_file.replace(".c", ".bin")

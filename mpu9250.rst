@@ -501,8 +501,8 @@
                                     501 ; internal ram data
                                     502 ;--------------------------------------------------------
                                     503 	.area DSEG    (DATA)
-      00000F                        504 _whoami_cache:
-      00000F                        505 	.ds 1
+      000012                        504 _whoami_cache:
+      000012                        505 	.ds 1
                                     506 ;--------------------------------------------------------
                                     507 ; overlayable items in internal ram
                                     508 ;--------------------------------------------------------
@@ -553,7 +553,7 @@
                                     553 	.area GSFINAL (CODE)
                                     554 	.area GSINIT  (CODE)
                                     555 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:9: static uint8_t whoami_cache = 0;
-      0000BC 75 0F 00         [24]  556 	mov	_whoami_cache,#0x00
+      0000C2 75 12 00         [24]  556 	mov	_whoami_cache,#0x00
                                     557 ;--------------------------------------------------------
                                     558 ; Home
                                     559 ;--------------------------------------------------------
@@ -573,7 +573,7 @@
                                     573 ;	-----------------------------------------
                                     574 ;	 function mpu_read_reg
                                     575 ;	-----------------------------------------
-      0007D0                        576 _mpu_read_reg:
+      000AE8                        576 _mpu_read_reg:
                            000007   577 	ar7 = 0x07
                            000006   578 	ar6 = 0x06
                            000005   579 	ar5 = 0x05
@@ -582,23 +582,23 @@
                            000002   582 	ar2 = 0x02
                            000001   583 	ar1 = 0x01
                            000000   584 	ar0 = 0x00
-      0007D0 AF 82            [24]  585 	mov	r7, dpl
+      000AE8 AF 82            [24]  585 	mov	r7, dpl
                                     586 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:15: SPIMasterAssertCS();
                                     587 ;	assignBit
-      0007D2 C2 94            [12]  588 	clr	_SCS
+      000AEA C2 94            [12]  588 	clr	_SCS
                                     589 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:16: CH554SPIMasterWrite(reg | 0x80);   // read bit
-      0007D4 74 80            [12]  590 	mov	a,#0x80
-      0007D6 4F               [12]  591 	orl	a,r7
-      0007D7 F5 82            [12]  592 	mov	dpl,a
-      0007D9 12 0C 50         [24]  593 	lcall	_CH554SPIMasterWrite
+      000AEC 74 80            [12]  590 	mov	a,#0x80
+      000AEE 4F               [12]  591 	orl	a,r7
+      000AEF F5 82            [12]  592 	mov	dpl,a
+      000AF1 12 0F 68         [24]  593 	lcall	_CH554SPIMasterWrite
                                     594 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:17: ret = CH554SPIMasterRead();
-      0007DC 12 0C 57         [24]  595 	lcall	_CH554SPIMasterRead
+      000AF4 12 0F 6F         [24]  595 	lcall	_CH554SPIMasterRead
                                     596 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:18: SPIMasterDeassertCS();
                                     597 ;	assignBit
-      0007DF D2 94            [12]  598 	setb	_SCS
+      000AF7 D2 94            [12]  598 	setb	_SCS
                                     599 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:20: return ret;
                                     600 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:21: }
-      0007E1 22               [24]  601 	ret
+      000AF9 22               [24]  601 	ret
                                     602 ;------------------------------------------------------------
                                     603 ;Allocation info for local variables in function 'mpu_write_reg'
                                     604 ;------------------------------------------------------------
@@ -609,30 +609,30 @@
                                     609 ;	-----------------------------------------
                                     610 ;	 function mpu_write_reg
                                     611 ;	-----------------------------------------
-      0007E2                        612 _mpu_write_reg:
-      0007E2 C0 10            [24]  613 	push	_bp
-      0007E4 85 81 10         [24]  614 	mov	_bp,sp
-      0007E7 AF 82            [24]  615 	mov	r7, dpl
+      000AFA                        612 _mpu_write_reg:
+      000AFA C0 13            [24]  613 	push	_bp
+      000AFC 85 81 13         [24]  614 	mov	_bp,sp
+      000AFF AF 82            [24]  615 	mov	r7, dpl
                                     616 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:25: SPIMasterAssertCS();
                                     617 ;	assignBit
-      0007E9 C2 94            [12]  618 	clr	_SCS
+      000B01 C2 94            [12]  618 	clr	_SCS
                                     619 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:26: CH554SPIMasterWrite(reg & 0x7F);   // write
-      0007EB 74 7F            [12]  620 	mov	a,#0x7f
-      0007ED 5F               [12]  621 	anl	a,r7
-      0007EE F5 82            [12]  622 	mov	dpl,a
-      0007F0 12 0C 50         [24]  623 	lcall	_CH554SPIMasterWrite
+      000B03 74 7F            [12]  620 	mov	a,#0x7f
+      000B05 5F               [12]  621 	anl	a,r7
+      000B06 F5 82            [12]  622 	mov	dpl,a
+      000B08 12 0F 68         [24]  623 	lcall	_CH554SPIMasterWrite
                                     624 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:27: CH554SPIMasterWrite(val);
-      0007F3 E5 10            [12]  625 	mov	a,_bp
-      0007F5 24 FD            [12]  626 	add	a,#0xfd
-      0007F7 F8               [12]  627 	mov	r0,a
-      0007F8 86 82            [24]  628 	mov	dpl, @r0
-      0007FA 12 0C 50         [24]  629 	lcall	_CH554SPIMasterWrite
+      000B0B E5 13            [12]  625 	mov	a,_bp
+      000B0D 24 FD            [12]  626 	add	a,#0xfd
+      000B0F F8               [12]  627 	mov	r0,a
+      000B10 86 82            [24]  628 	mov	dpl, @r0
+      000B12 12 0F 68         [24]  629 	lcall	_CH554SPIMasterWrite
                                     630 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:28: SPIMasterDeassertCS();
                                     631 ;	assignBit
-      0007FD D2 94            [12]  632 	setb	_SCS
+      000B15 D2 94            [12]  632 	setb	_SCS
                                     633 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:29: }
-      0007FF D0 10            [24]  634 	pop	_bp
-      000801 22               [24]  635 	ret
+      000B17 D0 13            [24]  634 	pop	_bp
+      000B19 22               [24]  635 	ret
                                     636 ;------------------------------------------------------------
                                     637 ;Allocation info for local variables in function 'MPU9250_init'
                                     638 ;------------------------------------------------------------
@@ -640,22 +640,22 @@
                                     640 ;	-----------------------------------------
                                     641 ;	 function MPU9250_init
                                     642 ;	-----------------------------------------
-      000802                        643 _MPU9250_init:
+      000B1A                        643 _MPU9250_init:
                                     644 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:34: SPIMasterModeSet(0);
-      000802 75 82 00         [24]  645 	mov	dpl, #0x00
-      000805 12 0C 24         [24]  646 	lcall	_SPIMasterModeSet
+      000B1A 75 82 00         [24]  645 	mov	dpl, #0x00
+      000B1D 12 0F 3C         [24]  646 	lcall	_SPIMasterModeSet
                                     647 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:37: mpu_write_reg(REG_PWR_MGMT_1, 0x00);
-      000808 E4               [12]  648 	clr	a
-      000809 C0 E0            [24]  649 	push	acc
-      00080B 75 82 6B         [24]  650 	mov	dpl, #0x6b
-      00080E 12 07 E2         [24]  651 	lcall	_mpu_write_reg
-      000811 15 81            [12]  652 	dec	sp
+      000B20 E4               [12]  648 	clr	a
+      000B21 C0 E0            [24]  649 	push	acc
+      000B23 75 82 6B         [24]  650 	mov	dpl, #0x6b
+      000B26 12 0A FA         [24]  651 	lcall	_mpu_write_reg
+      000B29 15 81            [12]  652 	dec	sp
                                     653 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:40: whoami_cache = mpu_read_reg(REG_WHO_AM_I);
-      000813 75 82 75         [24]  654 	mov	dpl, #0x75
-      000816 12 07 D0         [24]  655 	lcall	_mpu_read_reg
-      000819 85 82 0F         [24]  656 	mov	_whoami_cache,dpl
+      000B2B 75 82 75         [24]  654 	mov	dpl, #0x75
+      000B2E 12 0A E8         [24]  655 	lcall	_mpu_read_reg
+      000B31 85 82 12         [24]  656 	mov	_whoami_cache,dpl
                                     657 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:41: }
-      00081C 22               [24]  658 	ret
+      000B34 22               [24]  658 	ret
                                     659 ;------------------------------------------------------------
                                     660 ;Allocation info for local variables in function 'MPU9250_whoami'
                                     661 ;------------------------------------------------------------
@@ -663,11 +663,11 @@
                                     663 ;	-----------------------------------------
                                     664 ;	 function MPU9250_whoami
                                     665 ;	-----------------------------------------
-      00081D                        666 _MPU9250_whoami:
+      000B35                        666 _MPU9250_whoami:
                                     667 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:45: return whoami_cache;
-      00081D 85 0F 82         [24]  668 	mov	dpl, _whoami_cache
+      000B35 85 12 82         [24]  668 	mov	dpl, _whoami_cache
                                     669 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:46: }
-      000820 22               [24]  670 	ret
+      000B38 22               [24]  670 	ret
                                     671 ;------------------------------------------------------------
                                     672 ;Allocation info for local variables in function 'MPU9250_readAccelGyro'
                                     673 ;------------------------------------------------------------
@@ -685,276 +685,276 @@
                                     685 ;	-----------------------------------------
                                     686 ;	 function MPU9250_readAccelGyro
                                     687 ;	-----------------------------------------
-      000821                        688 _MPU9250_readAccelGyro:
-      000821 C0 10            [24]  689 	push	_bp
-      000823 85 81 10         [24]  690 	mov	_bp,sp
-      000826 C0 82            [24]  691 	push	dpl
-      000828 C0 83            [24]  692 	push	dph
-      00082A C0 F0            [24]  693 	push	b
-      00082C E5 81            [12]  694 	mov	a,sp
-      00082E 24 10            [12]  695 	add	a,#0x10
-      000830 F5 81            [12]  696 	mov	sp,a
+      000B39                        688 _MPU9250_readAccelGyro:
+      000B39 C0 13            [24]  689 	push	_bp
+      000B3B 85 81 13         [24]  690 	mov	_bp,sp
+      000B3E C0 82            [24]  691 	push	dpl
+      000B40 C0 83            [24]  692 	push	dph
+      000B42 C0 F0            [24]  693 	push	b
+      000B44 E5 81            [12]  694 	mov	a,sp
+      000B46 24 10            [12]  695 	add	a,#0x10
+      000B48 F5 81            [12]  696 	mov	sp,a
                                     697 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:54: SPIMasterAssertCS();
                                     698 ;	assignBit
-      000832 C2 94            [12]  699 	clr	_SCS
+      000B4A C2 94            [12]  699 	clr	_SCS
                                     700 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:55: CH554SPIMasterWrite(REG_ACCEL_XOUT_H | 0x80);
-      000834 75 82 BB         [24]  701 	mov	dpl, #0xbb
-      000837 12 0C 50         [24]  702 	lcall	_CH554SPIMasterWrite
+      000B4C 75 82 BB         [24]  701 	mov	dpl, #0xbb
+      000B4F 12 0F 68         [24]  702 	lcall	_CH554SPIMasterWrite
                                     703 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:57: for(uint8_t i=0; i<14; i++)
-      00083A E5 10            [12]  704 	mov	a,_bp
-      00083C 24 06            [12]  705 	add	a,#0x06
-      00083E F9               [12]  706 	mov	r1,a
-      00083F 7C 00            [12]  707 	mov	r4,#0x00
-      000841                        708 00103$:
-      000841 BC 0E 00         [24]  709 	cjne	r4,#0x0e,00120$
-      000844                        710 00120$:
-      000844 50 18            [24]  711 	jnc	00101$
+      000B52 E5 13            [12]  704 	mov	a,_bp
+      000B54 24 06            [12]  705 	add	a,#0x06
+      000B56 F9               [12]  706 	mov	r1,a
+      000B57 7C 00            [12]  707 	mov	r4,#0x00
+      000B59                        708 00103$:
+      000B59 BC 0E 00         [24]  709 	cjne	r4,#0x0e,00120$
+      000B5C                        710 00120$:
+      000B5C 50 18            [24]  711 	jnc	00101$
                                     712 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:58: buf[i] = CH554SPIMasterRead();
-      000846 EC               [12]  713 	mov	a,r4
-      000847 29               [12]  714 	add	a, r1
-      000848 F8               [12]  715 	mov	r0,a
-      000849 C0 04            [24]  716 	push	ar4
-      00084B C0 01            [24]  717 	push	ar1
-      00084D C0 00            [24]  718 	push	ar0
-      00084F 12 0C 57         [24]  719 	lcall	_CH554SPIMasterRead
-      000852 E5 82            [12]  720 	mov	a, dpl
-      000854 D0 00            [24]  721 	pop	ar0
-      000856 D0 01            [24]  722 	pop	ar1
-      000858 D0 04            [24]  723 	pop	ar4
-      00085A F6               [12]  724 	mov	@r0,a
+      000B5E EC               [12]  713 	mov	a,r4
+      000B5F 29               [12]  714 	add	a, r1
+      000B60 F8               [12]  715 	mov	r0,a
+      000B61 C0 04            [24]  716 	push	ar4
+      000B63 C0 01            [24]  717 	push	ar1
+      000B65 C0 00            [24]  718 	push	ar0
+      000B67 12 0F 6F         [24]  719 	lcall	_CH554SPIMasterRead
+      000B6A E5 82            [12]  720 	mov	a, dpl
+      000B6C D0 00            [24]  721 	pop	ar0
+      000B6E D0 01            [24]  722 	pop	ar1
+      000B70 D0 04            [24]  723 	pop	ar4
+      000B72 F6               [12]  724 	mov	@r0,a
                                     725 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:57: for(uint8_t i=0; i<14; i++)
-      00085B 0C               [12]  726 	inc	r4
-      00085C 80 E3            [24]  727 	sjmp	00103$
-      00085E                        728 00101$:
+      000B73 0C               [12]  726 	inc	r4
+      000B74 80 E3            [24]  727 	sjmp	00103$
+      000B76                        728 00101$:
                                     729 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:60: SPIMasterDeassertCS();
                                     730 ;	assignBit
-      00085E D2 94            [12]  731 	setb	_SCS
+      000B76 D2 94            [12]  731 	setb	_SCS
                                     732 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:62: *ax = ((int16_t)buf[0] << 8) | buf[1];
-      000860 87 04            [24]  733 	mov	ar4,@r1
-      000862 8C 03            [24]  734 	mov	ar3,r4
-      000864 7C 00            [12]  735 	mov	r4,#0x00
-      000866 E9               [12]  736 	mov	a,r1
-      000867 04               [12]  737 	inc	a
-      000868 F8               [12]  738 	mov	r0,a
-      000869 86 02            [24]  739 	mov	ar2,@r0
-      00086B 7F 00            [12]  740 	mov	r7,#0x00
-      00086D EA               [12]  741 	mov	a,r2
-      00086E 42 04            [12]  742 	orl	ar4,a
-      000870 EF               [12]  743 	mov	a,r7
-      000871 42 03            [12]  744 	orl	ar3,a
-      000873 A8 10            [24]  745 	mov	r0,_bp
-      000875 08               [12]  746 	inc	r0
-      000876 86 82            [24]  747 	mov	dpl,@r0
-      000878 08               [12]  748 	inc	r0
-      000879 86 83            [24]  749 	mov	dph,@r0
-      00087B 08               [12]  750 	inc	r0
-      00087C 86 F0            [24]  751 	mov	b,@r0
-      00087E EC               [12]  752 	mov	a,r4
-      00087F 12 0C B1         [24]  753 	lcall	__gptrput
-      000882 A3               [24]  754 	inc	dptr
-      000883 EB               [12]  755 	mov	a,r3
-      000884 12 0C B1         [24]  756 	lcall	__gptrput
+      000B78 87 04            [24]  733 	mov	ar4,@r1
+      000B7A 8C 03            [24]  734 	mov	ar3,r4
+      000B7C 7C 00            [12]  735 	mov	r4,#0x00
+      000B7E E9               [12]  736 	mov	a,r1
+      000B7F 04               [12]  737 	inc	a
+      000B80 F8               [12]  738 	mov	r0,a
+      000B81 86 02            [24]  739 	mov	ar2,@r0
+      000B83 7F 00            [12]  740 	mov	r7,#0x00
+      000B85 EA               [12]  741 	mov	a,r2
+      000B86 42 04            [12]  742 	orl	ar4,a
+      000B88 EF               [12]  743 	mov	a,r7
+      000B89 42 03            [12]  744 	orl	ar3,a
+      000B8B A8 13            [24]  745 	mov	r0,_bp
+      000B8D 08               [12]  746 	inc	r0
+      000B8E 86 82            [24]  747 	mov	dpl,@r0
+      000B90 08               [12]  748 	inc	r0
+      000B91 86 83            [24]  749 	mov	dph,@r0
+      000B93 08               [12]  750 	inc	r0
+      000B94 86 F0            [24]  751 	mov	b,@r0
+      000B96 EC               [12]  752 	mov	a,r4
+      000B97 12 0F C9         [24]  753 	lcall	__gptrput
+      000B9A A3               [24]  754 	inc	dptr
+      000B9B EB               [12]  755 	mov	a,r3
+      000B9C 12 0F C9         [24]  756 	lcall	__gptrput
                                     757 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:63: *ay = ((int16_t)buf[2] << 8) | buf[3];
-      000887 E5 10            [12]  758 	mov	a,_bp
-      000889 24 FB            [12]  759 	add	a,#0xfb
-      00088B F8               [12]  760 	mov	r0,a
-      00088C 86 05            [24]  761 	mov	ar5,@r0
-      00088E 08               [12]  762 	inc	r0
-      00088F 86 06            [24]  763 	mov	ar6,@r0
-      000891 08               [12]  764 	inc	r0
-      000892 86 07            [24]  765 	mov	ar7,@r0
-      000894 74 02            [12]  766 	mov	a,#0x02
-      000896 29               [12]  767 	add	a, r1
-      000897 F8               [12]  768 	mov	r0,a
-      000898 86 04            [24]  769 	mov	ar4,@r0
-      00089A E5 10            [12]  770 	mov	a,_bp
-      00089C 24 04            [12]  771 	add	a,#0x04
-      00089E F8               [12]  772 	mov	r0,a
-      00089F 08               [12]  773 	inc	r0
-      0008A0 A6 04            [24]  774 	mov	@r0,ar4
-      0008A2 18               [12]  775 	dec	r0
-      0008A3 76 00            [12]  776 	mov	@r0,#0x00
-      0008A5 74 03            [12]  777 	mov	a,#0x03
-      0008A7 29               [12]  778 	add	a, r1
-      0008A8 F8               [12]  779 	mov	r0,a
-      0008A9 86 02            [24]  780 	mov	ar2,@r0
-      0008AB 7C 00            [12]  781 	mov	r4,#0x00
-      0008AD E5 10            [12]  782 	mov	a,_bp
-      0008AF 24 04            [12]  783 	add	a,#0x04
-      0008B1 F8               [12]  784 	mov	r0,a
-      0008B2 08               [12]  785 	inc	r0
-      0008B3 E6               [12]  786 	mov	a,@r0
-      0008B4 42 04            [12]  787 	orl	ar4,a
-      0008B6 8D 82            [24]  788 	mov	dpl,r5
-      0008B8 8E 83            [24]  789 	mov	dph,r6
-      0008BA 8F F0            [24]  790 	mov	b,r7
-      0008BC EA               [12]  791 	mov	a,r2
-      0008BD 12 0C B1         [24]  792 	lcall	__gptrput
-      0008C0 A3               [24]  793 	inc	dptr
-      0008C1 EC               [12]  794 	mov	a,r4
-      0008C2 12 0C B1         [24]  795 	lcall	__gptrput
+      000B9F E5 13            [12]  758 	mov	a,_bp
+      000BA1 24 FB            [12]  759 	add	a,#0xfb
+      000BA3 F8               [12]  760 	mov	r0,a
+      000BA4 86 05            [24]  761 	mov	ar5,@r0
+      000BA6 08               [12]  762 	inc	r0
+      000BA7 86 06            [24]  763 	mov	ar6,@r0
+      000BA9 08               [12]  764 	inc	r0
+      000BAA 86 07            [24]  765 	mov	ar7,@r0
+      000BAC 74 02            [12]  766 	mov	a,#0x02
+      000BAE 29               [12]  767 	add	a, r1
+      000BAF F8               [12]  768 	mov	r0,a
+      000BB0 86 04            [24]  769 	mov	ar4,@r0
+      000BB2 E5 13            [12]  770 	mov	a,_bp
+      000BB4 24 04            [12]  771 	add	a,#0x04
+      000BB6 F8               [12]  772 	mov	r0,a
+      000BB7 08               [12]  773 	inc	r0
+      000BB8 A6 04            [24]  774 	mov	@r0,ar4
+      000BBA 18               [12]  775 	dec	r0
+      000BBB 76 00            [12]  776 	mov	@r0,#0x00
+      000BBD 74 03            [12]  777 	mov	a,#0x03
+      000BBF 29               [12]  778 	add	a, r1
+      000BC0 F8               [12]  779 	mov	r0,a
+      000BC1 86 02            [24]  780 	mov	ar2,@r0
+      000BC3 7C 00            [12]  781 	mov	r4,#0x00
+      000BC5 E5 13            [12]  782 	mov	a,_bp
+      000BC7 24 04            [12]  783 	add	a,#0x04
+      000BC9 F8               [12]  784 	mov	r0,a
+      000BCA 08               [12]  785 	inc	r0
+      000BCB E6               [12]  786 	mov	a,@r0
+      000BCC 42 04            [12]  787 	orl	ar4,a
+      000BCE 8D 82            [24]  788 	mov	dpl,r5
+      000BD0 8E 83            [24]  789 	mov	dph,r6
+      000BD2 8F F0            [24]  790 	mov	b,r7
+      000BD4 EA               [12]  791 	mov	a,r2
+      000BD5 12 0F C9         [24]  792 	lcall	__gptrput
+      000BD8 A3               [24]  793 	inc	dptr
+      000BD9 EC               [12]  794 	mov	a,r4
+      000BDA 12 0F C9         [24]  795 	lcall	__gptrput
                                     796 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:64: *az = ((int16_t)buf[4] << 8) | buf[5];
-      0008C5 E5 10            [12]  797 	mov	a,_bp
-      0008C7 24 F8            [12]  798 	add	a,#0xf8
-      0008C9 F8               [12]  799 	mov	r0,a
-      0008CA 86 05            [24]  800 	mov	ar5,@r0
-      0008CC 08               [12]  801 	inc	r0
-      0008CD 86 06            [24]  802 	mov	ar6,@r0
-      0008CF 08               [12]  803 	inc	r0
-      0008D0 86 07            [24]  804 	mov	ar7,@r0
-      0008D2 74 04            [12]  805 	mov	a,#0x04
-      0008D4 29               [12]  806 	add	a, r1
-      0008D5 F8               [12]  807 	mov	r0,a
-      0008D6 86 04            [24]  808 	mov	ar4,@r0
-      0008D8 E5 10            [12]  809 	mov	a,_bp
-      0008DA 24 04            [12]  810 	add	a,#0x04
-      0008DC F8               [12]  811 	mov	r0,a
-      0008DD 08               [12]  812 	inc	r0
-      0008DE A6 04            [24]  813 	mov	@r0,ar4
-      0008E0 18               [12]  814 	dec	r0
-      0008E1 76 00            [12]  815 	mov	@r0,#0x00
-      0008E3 74 05            [12]  816 	mov	a,#0x05
-      0008E5 29               [12]  817 	add	a, r1
-      0008E6 F8               [12]  818 	mov	r0,a
-      0008E7 86 02            [24]  819 	mov	ar2,@r0
-      0008E9 7C 00            [12]  820 	mov	r4,#0x00
-      0008EB E5 10            [12]  821 	mov	a,_bp
-      0008ED 24 04            [12]  822 	add	a,#0x04
-      0008EF F8               [12]  823 	mov	r0,a
-      0008F0 08               [12]  824 	inc	r0
-      0008F1 E6               [12]  825 	mov	a,@r0
-      0008F2 42 04            [12]  826 	orl	ar4,a
-      0008F4 8D 82            [24]  827 	mov	dpl,r5
-      0008F6 8E 83            [24]  828 	mov	dph,r6
-      0008F8 8F F0            [24]  829 	mov	b,r7
-      0008FA EA               [12]  830 	mov	a,r2
-      0008FB 12 0C B1         [24]  831 	lcall	__gptrput
-      0008FE A3               [24]  832 	inc	dptr
-      0008FF EC               [12]  833 	mov	a,r4
-      000900 12 0C B1         [24]  834 	lcall	__gptrput
+      000BDD E5 13            [12]  797 	mov	a,_bp
+      000BDF 24 F8            [12]  798 	add	a,#0xf8
+      000BE1 F8               [12]  799 	mov	r0,a
+      000BE2 86 05            [24]  800 	mov	ar5,@r0
+      000BE4 08               [12]  801 	inc	r0
+      000BE5 86 06            [24]  802 	mov	ar6,@r0
+      000BE7 08               [12]  803 	inc	r0
+      000BE8 86 07            [24]  804 	mov	ar7,@r0
+      000BEA 74 04            [12]  805 	mov	a,#0x04
+      000BEC 29               [12]  806 	add	a, r1
+      000BED F8               [12]  807 	mov	r0,a
+      000BEE 86 04            [24]  808 	mov	ar4,@r0
+      000BF0 E5 13            [12]  809 	mov	a,_bp
+      000BF2 24 04            [12]  810 	add	a,#0x04
+      000BF4 F8               [12]  811 	mov	r0,a
+      000BF5 08               [12]  812 	inc	r0
+      000BF6 A6 04            [24]  813 	mov	@r0,ar4
+      000BF8 18               [12]  814 	dec	r0
+      000BF9 76 00            [12]  815 	mov	@r0,#0x00
+      000BFB 74 05            [12]  816 	mov	a,#0x05
+      000BFD 29               [12]  817 	add	a, r1
+      000BFE F8               [12]  818 	mov	r0,a
+      000BFF 86 02            [24]  819 	mov	ar2,@r0
+      000C01 7C 00            [12]  820 	mov	r4,#0x00
+      000C03 E5 13            [12]  821 	mov	a,_bp
+      000C05 24 04            [12]  822 	add	a,#0x04
+      000C07 F8               [12]  823 	mov	r0,a
+      000C08 08               [12]  824 	inc	r0
+      000C09 E6               [12]  825 	mov	a,@r0
+      000C0A 42 04            [12]  826 	orl	ar4,a
+      000C0C 8D 82            [24]  827 	mov	dpl,r5
+      000C0E 8E 83            [24]  828 	mov	dph,r6
+      000C10 8F F0            [24]  829 	mov	b,r7
+      000C12 EA               [12]  830 	mov	a,r2
+      000C13 12 0F C9         [24]  831 	lcall	__gptrput
+      000C16 A3               [24]  832 	inc	dptr
+      000C17 EC               [12]  833 	mov	a,r4
+      000C18 12 0F C9         [24]  834 	lcall	__gptrput
                                     835 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:66: *gx = ((int16_t)buf[8]  << 8) | buf[9];
-      000903 E5 10            [12]  836 	mov	a,_bp
-      000905 24 F5            [12]  837 	add	a,#0xf5
-      000907 F8               [12]  838 	mov	r0,a
-      000908 86 05            [24]  839 	mov	ar5,@r0
-      00090A 08               [12]  840 	inc	r0
-      00090B 86 06            [24]  841 	mov	ar6,@r0
-      00090D 08               [12]  842 	inc	r0
-      00090E 86 07            [24]  843 	mov	ar7,@r0
-      000910 74 08            [12]  844 	mov	a,#0x08
-      000912 29               [12]  845 	add	a, r1
-      000913 F8               [12]  846 	mov	r0,a
-      000914 86 04            [24]  847 	mov	ar4,@r0
-      000916 E5 10            [12]  848 	mov	a,_bp
-      000918 24 04            [12]  849 	add	a,#0x04
-      00091A F8               [12]  850 	mov	r0,a
-      00091B 08               [12]  851 	inc	r0
-      00091C A6 04            [24]  852 	mov	@r0,ar4
-      00091E 18               [12]  853 	dec	r0
-      00091F 76 00            [12]  854 	mov	@r0,#0x00
-      000921 74 09            [12]  855 	mov	a,#0x09
-      000923 29               [12]  856 	add	a, r1
-      000924 F8               [12]  857 	mov	r0,a
-      000925 86 02            [24]  858 	mov	ar2,@r0
-      000927 7C 00            [12]  859 	mov	r4,#0x00
-      000929 E5 10            [12]  860 	mov	a,_bp
-      00092B 24 04            [12]  861 	add	a,#0x04
-      00092D F8               [12]  862 	mov	r0,a
-      00092E 08               [12]  863 	inc	r0
-      00092F E6               [12]  864 	mov	a,@r0
-      000930 42 04            [12]  865 	orl	ar4,a
-      000932 8D 82            [24]  866 	mov	dpl,r5
-      000934 8E 83            [24]  867 	mov	dph,r6
-      000936 8F F0            [24]  868 	mov	b,r7
-      000938 EA               [12]  869 	mov	a,r2
-      000939 12 0C B1         [24]  870 	lcall	__gptrput
-      00093C A3               [24]  871 	inc	dptr
-      00093D EC               [12]  872 	mov	a,r4
-      00093E 12 0C B1         [24]  873 	lcall	__gptrput
+      000C1B E5 13            [12]  836 	mov	a,_bp
+      000C1D 24 F5            [12]  837 	add	a,#0xf5
+      000C1F F8               [12]  838 	mov	r0,a
+      000C20 86 05            [24]  839 	mov	ar5,@r0
+      000C22 08               [12]  840 	inc	r0
+      000C23 86 06            [24]  841 	mov	ar6,@r0
+      000C25 08               [12]  842 	inc	r0
+      000C26 86 07            [24]  843 	mov	ar7,@r0
+      000C28 74 08            [12]  844 	mov	a,#0x08
+      000C2A 29               [12]  845 	add	a, r1
+      000C2B F8               [12]  846 	mov	r0,a
+      000C2C 86 04            [24]  847 	mov	ar4,@r0
+      000C2E E5 13            [12]  848 	mov	a,_bp
+      000C30 24 04            [12]  849 	add	a,#0x04
+      000C32 F8               [12]  850 	mov	r0,a
+      000C33 08               [12]  851 	inc	r0
+      000C34 A6 04            [24]  852 	mov	@r0,ar4
+      000C36 18               [12]  853 	dec	r0
+      000C37 76 00            [12]  854 	mov	@r0,#0x00
+      000C39 74 09            [12]  855 	mov	a,#0x09
+      000C3B 29               [12]  856 	add	a, r1
+      000C3C F8               [12]  857 	mov	r0,a
+      000C3D 86 02            [24]  858 	mov	ar2,@r0
+      000C3F 7C 00            [12]  859 	mov	r4,#0x00
+      000C41 E5 13            [12]  860 	mov	a,_bp
+      000C43 24 04            [12]  861 	add	a,#0x04
+      000C45 F8               [12]  862 	mov	r0,a
+      000C46 08               [12]  863 	inc	r0
+      000C47 E6               [12]  864 	mov	a,@r0
+      000C48 42 04            [12]  865 	orl	ar4,a
+      000C4A 8D 82            [24]  866 	mov	dpl,r5
+      000C4C 8E 83            [24]  867 	mov	dph,r6
+      000C4E 8F F0            [24]  868 	mov	b,r7
+      000C50 EA               [12]  869 	mov	a,r2
+      000C51 12 0F C9         [24]  870 	lcall	__gptrput
+      000C54 A3               [24]  871 	inc	dptr
+      000C55 EC               [12]  872 	mov	a,r4
+      000C56 12 0F C9         [24]  873 	lcall	__gptrput
                                     874 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:67: *gy = ((int16_t)buf[10] << 8) | buf[11];
-      000941 E5 10            [12]  875 	mov	a,_bp
-      000943 24 F2            [12]  876 	add	a,#0xf2
-      000945 F8               [12]  877 	mov	r0,a
-      000946 86 05            [24]  878 	mov	ar5,@r0
-      000948 08               [12]  879 	inc	r0
-      000949 86 06            [24]  880 	mov	ar6,@r0
-      00094B 08               [12]  881 	inc	r0
-      00094C 86 07            [24]  882 	mov	ar7,@r0
-      00094E 74 0A            [12]  883 	mov	a,#0x0a
-      000950 29               [12]  884 	add	a, r1
-      000951 F8               [12]  885 	mov	r0,a
-      000952 86 04            [24]  886 	mov	ar4,@r0
-      000954 E5 10            [12]  887 	mov	a,_bp
-      000956 24 04            [12]  888 	add	a,#0x04
-      000958 F8               [12]  889 	mov	r0,a
-      000959 08               [12]  890 	inc	r0
-      00095A A6 04            [24]  891 	mov	@r0,ar4
-      00095C 18               [12]  892 	dec	r0
-      00095D 76 00            [12]  893 	mov	@r0,#0x00
-      00095F 74 0B            [12]  894 	mov	a,#0x0b
-      000961 29               [12]  895 	add	a, r1
-      000962 F8               [12]  896 	mov	r0,a
-      000963 86 02            [24]  897 	mov	ar2,@r0
-      000965 7C 00            [12]  898 	mov	r4,#0x00
-      000967 E5 10            [12]  899 	mov	a,_bp
-      000969 24 04            [12]  900 	add	a,#0x04
-      00096B F8               [12]  901 	mov	r0,a
-      00096C 08               [12]  902 	inc	r0
-      00096D E6               [12]  903 	mov	a,@r0
-      00096E 42 04            [12]  904 	orl	ar4,a
-      000970 8D 82            [24]  905 	mov	dpl,r5
-      000972 8E 83            [24]  906 	mov	dph,r6
-      000974 8F F0            [24]  907 	mov	b,r7
-      000976 EA               [12]  908 	mov	a,r2
-      000977 12 0C B1         [24]  909 	lcall	__gptrput
-      00097A A3               [24]  910 	inc	dptr
-      00097B EC               [12]  911 	mov	a,r4
-      00097C 12 0C B1         [24]  912 	lcall	__gptrput
+      000C59 E5 13            [12]  875 	mov	a,_bp
+      000C5B 24 F2            [12]  876 	add	a,#0xf2
+      000C5D F8               [12]  877 	mov	r0,a
+      000C5E 86 05            [24]  878 	mov	ar5,@r0
+      000C60 08               [12]  879 	inc	r0
+      000C61 86 06            [24]  880 	mov	ar6,@r0
+      000C63 08               [12]  881 	inc	r0
+      000C64 86 07            [24]  882 	mov	ar7,@r0
+      000C66 74 0A            [12]  883 	mov	a,#0x0a
+      000C68 29               [12]  884 	add	a, r1
+      000C69 F8               [12]  885 	mov	r0,a
+      000C6A 86 04            [24]  886 	mov	ar4,@r0
+      000C6C E5 13            [12]  887 	mov	a,_bp
+      000C6E 24 04            [12]  888 	add	a,#0x04
+      000C70 F8               [12]  889 	mov	r0,a
+      000C71 08               [12]  890 	inc	r0
+      000C72 A6 04            [24]  891 	mov	@r0,ar4
+      000C74 18               [12]  892 	dec	r0
+      000C75 76 00            [12]  893 	mov	@r0,#0x00
+      000C77 74 0B            [12]  894 	mov	a,#0x0b
+      000C79 29               [12]  895 	add	a, r1
+      000C7A F8               [12]  896 	mov	r0,a
+      000C7B 86 02            [24]  897 	mov	ar2,@r0
+      000C7D 7C 00            [12]  898 	mov	r4,#0x00
+      000C7F E5 13            [12]  899 	mov	a,_bp
+      000C81 24 04            [12]  900 	add	a,#0x04
+      000C83 F8               [12]  901 	mov	r0,a
+      000C84 08               [12]  902 	inc	r0
+      000C85 E6               [12]  903 	mov	a,@r0
+      000C86 42 04            [12]  904 	orl	ar4,a
+      000C88 8D 82            [24]  905 	mov	dpl,r5
+      000C8A 8E 83            [24]  906 	mov	dph,r6
+      000C8C 8F F0            [24]  907 	mov	b,r7
+      000C8E EA               [12]  908 	mov	a,r2
+      000C8F 12 0F C9         [24]  909 	lcall	__gptrput
+      000C92 A3               [24]  910 	inc	dptr
+      000C93 EC               [12]  911 	mov	a,r4
+      000C94 12 0F C9         [24]  912 	lcall	__gptrput
                                     913 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:68: *gz = ((int16_t)buf[12] << 8) | buf[13];
-      00097F E5 10            [12]  914 	mov	a,_bp
-      000981 24 EF            [12]  915 	add	a,#0xef
-      000983 F8               [12]  916 	mov	r0,a
-      000984 86 05            [24]  917 	mov	ar5,@r0
-      000986 08               [12]  918 	inc	r0
-      000987 86 06            [24]  919 	mov	ar6,@r0
-      000989 08               [12]  920 	inc	r0
-      00098A 86 07            [24]  921 	mov	ar7,@r0
-      00098C 74 0C            [12]  922 	mov	a,#0x0c
-      00098E 29               [12]  923 	add	a, r1
-      00098F F8               [12]  924 	mov	r0,a
-      000990 86 04            [24]  925 	mov	ar4,@r0
-      000992 E5 10            [12]  926 	mov	a,_bp
-      000994 24 04            [12]  927 	add	a,#0x04
-      000996 F8               [12]  928 	mov	r0,a
-      000997 08               [12]  929 	inc	r0
-      000998 A6 04            [24]  930 	mov	@r0,ar4
-      00099A 18               [12]  931 	dec	r0
-      00099B 76 00            [12]  932 	mov	@r0,#0x00
-      00099D 74 0D            [12]  933 	mov	a,#0x0d
-      00099F 29               [12]  934 	add	a, r1
-      0009A0 F9               [12]  935 	mov	r1,a
-      0009A1 87 02            [24]  936 	mov	ar2,@r1
-      0009A3 7C 00            [12]  937 	mov	r4,#0x00
-      0009A5 E5 10            [12]  938 	mov	a,_bp
-      0009A7 24 04            [12]  939 	add	a,#0x04
-      0009A9 F8               [12]  940 	mov	r0,a
-      0009AA 08               [12]  941 	inc	r0
-      0009AB E6               [12]  942 	mov	a,@r0
-      0009AC 42 04            [12]  943 	orl	ar4,a
-      0009AE 8D 82            [24]  944 	mov	dpl,r5
-      0009B0 8E 83            [24]  945 	mov	dph,r6
-      0009B2 8F F0            [24]  946 	mov	b,r7
-      0009B4 EA               [12]  947 	mov	a,r2
-      0009B5 12 0C B1         [24]  948 	lcall	__gptrput
-      0009B8 A3               [24]  949 	inc	dptr
-      0009B9 EC               [12]  950 	mov	a,r4
-      0009BA 12 0C B1         [24]  951 	lcall	__gptrput
+      000C97 E5 13            [12]  914 	mov	a,_bp
+      000C99 24 EF            [12]  915 	add	a,#0xef
+      000C9B F8               [12]  916 	mov	r0,a
+      000C9C 86 05            [24]  917 	mov	ar5,@r0
+      000C9E 08               [12]  918 	inc	r0
+      000C9F 86 06            [24]  919 	mov	ar6,@r0
+      000CA1 08               [12]  920 	inc	r0
+      000CA2 86 07            [24]  921 	mov	ar7,@r0
+      000CA4 74 0C            [12]  922 	mov	a,#0x0c
+      000CA6 29               [12]  923 	add	a, r1
+      000CA7 F8               [12]  924 	mov	r0,a
+      000CA8 86 04            [24]  925 	mov	ar4,@r0
+      000CAA E5 13            [12]  926 	mov	a,_bp
+      000CAC 24 04            [12]  927 	add	a,#0x04
+      000CAE F8               [12]  928 	mov	r0,a
+      000CAF 08               [12]  929 	inc	r0
+      000CB0 A6 04            [24]  930 	mov	@r0,ar4
+      000CB2 18               [12]  931 	dec	r0
+      000CB3 76 00            [12]  932 	mov	@r0,#0x00
+      000CB5 74 0D            [12]  933 	mov	a,#0x0d
+      000CB7 29               [12]  934 	add	a, r1
+      000CB8 F9               [12]  935 	mov	r1,a
+      000CB9 87 02            [24]  936 	mov	ar2,@r1
+      000CBB 7C 00            [12]  937 	mov	r4,#0x00
+      000CBD E5 13            [12]  938 	mov	a,_bp
+      000CBF 24 04            [12]  939 	add	a,#0x04
+      000CC1 F8               [12]  940 	mov	r0,a
+      000CC2 08               [12]  941 	inc	r0
+      000CC3 E6               [12]  942 	mov	a,@r0
+      000CC4 42 04            [12]  943 	orl	ar4,a
+      000CC6 8D 82            [24]  944 	mov	dpl,r5
+      000CC8 8E 83            [24]  945 	mov	dph,r6
+      000CCA 8F F0            [24]  946 	mov	b,r7
+      000CCC EA               [12]  947 	mov	a,r2
+      000CCD 12 0F C9         [24]  948 	lcall	__gptrput
+      000CD0 A3               [24]  949 	inc	dptr
+      000CD1 EC               [12]  950 	mov	a,r4
+      000CD2 12 0F C9         [24]  951 	lcall	__gptrput
                                     952 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:70: return 1;
-      0009BD 75 82 01         [24]  953 	mov	dpl, #0x01
+      000CD5 75 82 01         [24]  953 	mov	dpl, #0x01
                                     954 ;	C:\Users\Clovisf\Documents\ch552\mpu9250\mpu9250.c:71: }
-      0009C0 85 10 81         [24]  955 	mov	sp,_bp
-      0009C3 D0 10            [24]  956 	pop	_bp
-      0009C5 22               [24]  957 	ret
+      000CD8 85 13 81         [24]  955 	mov	sp,_bp
+      000CDB D0 13            [24]  956 	pop	_bp
+      000CDD 22               [24]  957 	ret
                                     958 	.area CSEG    (CODE)
                                     959 	.area CONST   (CODE)
                                     960 	.area XINIT   (CODE)
