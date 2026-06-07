@@ -9,6 +9,7 @@ static __bit going_up = 1;
 void timer0_ISR(void) __interrupt(1);
 void clock_init(void);
 void pwm_init(void);
+void blink_led(void);
 
 void clock_init(void) {
     SAFE_MOD = 0x55;
@@ -37,7 +38,13 @@ void timer0_init(void) {
     TR0 = 1;
     EA = 1;
 }
-
+void blink_led(void) {
+    if(tick_10ms % 50 < 25){
+        P3 |= (1 << 0);  // LED ON
+    } else {
+        P3 &= ~(1 << 0); // LED OFF
+    }
+}
 void pwm_init(void) {
     
     // Explicitly select PWM1 on P1.5 (not P3.0)
@@ -66,17 +73,24 @@ void main(void) {
     timer0_init();
     pwm_init();
 
+    // Configure P3.0 as push-pull output
+    // P3.0 bit = 0x01
+    P3_MOD_OC &= ~0x01;   // not open-drain
+    P3_DIR_PU |= 0x01;    // output, with pull-up
+
     while (1) {
         unsigned int t;
         EA = 0;
         t = tick_10ms;
         EA = 1;
 
+        blink_led();
+
         // Update brightness every 10ms tick
         if ((t - last_tick) >= 1) {
             last_tick = t;
 
-            if (going_up) {
+            /*if (going_up) {
                 if (pwm_value >= 252) {
                     pwm_value = 255;
                     going_up = 0;
@@ -90,6 +104,11 @@ void main(void) {
                 } else {
                     pwm_value -= 1;
                 }
+            }*/
+            if(pwm_value > 253){
+                pwm_value = 0;
+            }else{ 
+                pwm_value += 1;
             }
 
             // this is the register that receives the 8-bit PWM value

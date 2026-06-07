@@ -248,6 +248,7 @@
 	.globl _t
 	.globl _counter
 	.globl _serialTime
+	.globl _comparatorTime
 	.globl _tick_10ms
 	.globl _clock_init
 	.globl _timer0_ISR
@@ -510,6 +511,8 @@ _UIF_BUS_RST	=	0x00d8
 	.area DSEG    (DATA)
 _tick_10ms::
 	.ds 2
+_comparatorTime::
+	.ds 2
 _serialTime::
 	.ds 2
 _counter::
@@ -521,7 +524,6 @@ _blink_base:
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
-	.area	OSEG    (OVR,DATA)
 ;--------------------------------------------------------
 ; Stack segment in internal ram
 ;--------------------------------------------------------
@@ -656,19 +658,22 @@ sdcc_atomic_compare_exchange_gptr_impl::
 	clr	a
 	mov	_tick_10ms,a
 	mov	(_tick_10ms + 1),a
-;	analog-comparator.c:7: unsigned int serialTime= 0;
+;	analog-comparator.c:6: volatile unsigned int comparatorTime = 0;
+	mov	_comparatorTime,a
+	mov	(_comparatorTime + 1),a
+;	analog-comparator.c:8: unsigned int serialTime= 0;
 	mov	_serialTime,a
 	mov	(_serialTime + 1),a
-;	analog-comparator.c:8: unsigned int counter= 0;
+;	analog-comparator.c:9: unsigned int counter= 0;
 	mov	_counter,a
 	mov	(_counter + 1),a
-;	analog-comparator.c:11: static unsigned int blink_base = 0;
+;	analog-comparator.c:12: static unsigned int blink_base = 0;
 	mov	_blink_base,a
 	mov	(_blink_base + 1),a
-;	analog-comparator.c:6: volatile __bit ledON = 0;
+;	analog-comparator.c:7: volatile __bit ledON = 0;
 ;	assignBit
 	clr	_ledON
-;	analog-comparator.c:10: static __bit wdt_started = 0;
+;	analog-comparator.c:11: static __bit wdt_started = 0;
 ;	assignBit
 	clr	_wdt_started
 	.area GSFINAL (CODE)
@@ -688,7 +693,7 @@ __sdcc_program_startup:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'clock_init'
 ;------------------------------------------------------------
-;	analog-comparator.c:18: void clock_init(void) {
+;	analog-comparator.c:19: void clock_init(void) {
 ;	-----------------------------------------
 ;	 function clock_init
 ;	-----------------------------------------
@@ -701,25 +706,25 @@ _clock_init:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	analog-comparator.c:19: SAFE_MOD = 0x55;
+;	analog-comparator.c:20: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	analog-comparator.c:20: SAFE_MOD = 0xAA;
+;	analog-comparator.c:21: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	analog-comparator.c:21: CLOCK_CFG |= bOSC_EN_INT; 
+;	analog-comparator.c:22: CLOCK_CFG |= bOSC_EN_INT; 
 	orl	_CLOCK_CFG,#0x80
-;	analog-comparator.c:23: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
+;	analog-comparator.c:24: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
 	mov	a,#0xf8
 	anl	a,_CLOCK_CFG
 	orl	a,#0x06
 	mov	_CLOCK_CFG,a
-;	analog-comparator.c:25: SAFE_MOD = 0x00;
+;	analog-comparator.c:26: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	analog-comparator.c:26: }
+;	analog-comparator.c:27: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_ISR'
 ;------------------------------------------------------------
-;	analog-comparator.c:28: void timer0_ISR(void) __interrupt(1) __using(1){ 
+;	analog-comparator.c:29: void timer0_ISR(void) __interrupt(1) __using(1){ 
 ;	-----------------------------------------
 ;	 function timer0_ISR
 ;	-----------------------------------------
@@ -735,14 +740,14 @@ _timer0_ISR:
 	push	acc
 	push	psw
 	mov	psw,#0x08
-;	analog-comparator.c:30: TF0 = 0;  // clear overflow flag (important for robustness)
+;	analog-comparator.c:31: TF0 = 0;  // clear overflow flag (important for robustness)
 ;	assignBit
 	clr	_TF0
-;	analog-comparator.c:31: TH0 = 0xB1;
+;	analog-comparator.c:32: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	analog-comparator.c:32: TL0 = 0xE0;
+;	analog-comparator.c:33: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	analog-comparator.c:33: tick_10ms++; // this is the 10ms tick for LED blinking
+;	analog-comparator.c:34: tick_10ms++; // this is the 10ms tick for LED blinking
 	mov	r6,_tick_10ms
 	mov	r7,(_tick_10ms + 1)
 	mov	a,#0x01
@@ -751,7 +756,7 @@ _timer0_ISR:
 	clr	a
 	addc	a, r7
 	mov	(_tick_10ms + 1),a
-;	analog-comparator.c:35: }
+;	analog-comparator.c:36: }
 	pop	psw
 	pop	acc
 	reti
@@ -761,7 +766,7 @@ _timer0_ISR:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_init'
 ;------------------------------------------------------------
-;	analog-comparator.c:37: void timer0_init(void) {
+;	analog-comparator.c:38: void timer0_init(void) {
 ;	-----------------------------------------
 ;	 function timer0_init
 ;	-----------------------------------------
@@ -774,53 +779,53 @@ _timer0_init:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	analog-comparator.c:39: T2MOD &= ~bTMR_CLK;   // disable fast clock mode
+;	analog-comparator.c:40: T2MOD &= ~bTMR_CLK;   // disable fast clock mode
 	anl	_T2MOD,#0x7f
-;	analog-comparator.c:40: T2MOD &= ~bT0_CLK;    // Timer0 = Fsys/12
+;	analog-comparator.c:41: T2MOD &= ~bT0_CLK;    // Timer0 = Fsys/12
 	anl	_T2MOD,#0xef
-;	analog-comparator.c:41: TMOD &= ~0x03;  // clear Timer0 mode bits
+;	analog-comparator.c:42: TMOD &= ~0x03;  // clear Timer0 mode bits
 	anl	_TMOD,#0xfc
-;	analog-comparator.c:42: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
+;	analog-comparator.c:43: TMOD |=  0x01;  // Timer0 mode 1: 16-bit
 	orl	_TMOD,#0x01
-;	analog-comparator.c:45: TH0 = 0xB1;
+;	analog-comparator.c:46: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	analog-comparator.c:46: TL0 = 0xE0;
+;	analog-comparator.c:47: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	analog-comparator.c:48: TF0 = 0;
+;	analog-comparator.c:49: TF0 = 0;
 ;	assignBit
 	clr	_TF0
-;	analog-comparator.c:50: ET0 = 1;   // enable Timer0 interrupt
+;	analog-comparator.c:51: ET0 = 1;   // enable Timer0 interrupt
 ;	assignBit
 	setb	_ET0
-;	analog-comparator.c:51: TR0 = 1;   // start Timer0
+;	analog-comparator.c:52: TR0 = 1;   // start Timer0
 ;	assignBit
 	setb	_TR0
-;	analog-comparator.c:52: EA = 1;
+;	analog-comparator.c:53: EA = 1;
 ;	assignBit
 	setb	_EA
-;	analog-comparator.c:53: }
+;	analog-comparator.c:54: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'cmp_init'
 ;------------------------------------------------------------
-;	analog-comparator.c:54: void cmp_init(void) {
+;	analog-comparator.c:55: void cmp_init(void) {
 ;	-----------------------------------------
 ;	 function cmp_init
 ;	-----------------------------------------
 _cmp_init:
-;	analog-comparator.c:56: ADC_CFG = bCMP_EN;
+;	analog-comparator.c:57: ADC_CFG = bCMP_EN;
 	mov	_ADC_CFG,#0x04
-;	analog-comparator.c:61: ADC_CTRL = 0x00;
+;	analog-comparator.c:62: ADC_CTRL = 0x00;
 	mov	_ADC_CTRL,#0x00
-;	analog-comparator.c:64: P1_MOD_OC &= ~(1 << 1);
+;	analog-comparator.c:65: P1_MOD_OC &= ~(1 << 1);
 	anl	_P1_MOD_OC,#0xfd
-;	analog-comparator.c:65: P1_DIR_PU &= ~(1 << 1);
+;	analog-comparator.c:66: P1_DIR_PU &= ~(1 << 1);
 	anl	_P1_DIR_PU,#0xfd
-;	analog-comparator.c:68: P1_MOD_OC &= ~(1 << 4);
+;	analog-comparator.c:69: P1_MOD_OC &= ~(1 << 4);
 	anl	_P1_MOD_OC,#0xef
-;	analog-comparator.c:69: P1_DIR_PU &= ~(1 << 4);
+;	analog-comparator.c:70: P1_DIR_PU &= ~(1 << 4);
 	anl	_P1_DIR_PU,#0xef
-;	analog-comparator.c:70: }
+;	analog-comparator.c:71: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'blink_led'
@@ -828,14 +833,14 @@ _cmp_init:
 ;t             Allocated to registers r6 r7 
 ;phase         Allocated to registers r4 r5 
 ;------------------------------------------------------------
-;	analog-comparator.c:71: void blink_led(unsigned int t) {
+;	analog-comparator.c:72: void blink_led(unsigned int t) {
 ;	-----------------------------------------
 ;	 function blink_led
 ;	-----------------------------------------
 _blink_led:
 	mov	r6, dpl
 	mov	r7, dph
-;	analog-comparator.c:72: unsigned int phase = t - blink_base;
+;	analog-comparator.c:73: unsigned int phase = t - blink_base;
 	mov	a,r6
 	clr	c
 	subb	a,_blink_base
@@ -843,90 +848,107 @@ _blink_led:
 	mov	a,r7
 	subb	a,(_blink_base + 1)
 	mov	r5,a
-;	analog-comparator.c:74: if (phase < 15) {
+;	analog-comparator.c:75: if (phase < 15) {
 	clr	c
 	mov	a,r4
 	subb	a,#0x0f
 	mov	a,r5
 	subb	a,#0x00
 	jnc	00105$
-;	analog-comparator.c:75: P3 |= (1 << 0);
+;	analog-comparator.c:76: P3 |= (1 << 0);
 	orl	_P3,#0x01
 	ret
 00105$:
-;	analog-comparator.c:76: } else if (phase < 30) {
+;	analog-comparator.c:77: } else if (phase < 30) {
 	clr	c
 	mov	a,r4
 	subb	a,#0x1e
 	mov	a,r5
 	subb	a,#0x00
 	jnc	00102$
-;	analog-comparator.c:77: P3 &= ~(1 << 0);
+;	analog-comparator.c:78: P3 &= ~(1 << 0);
 	anl	_P3,#0xfe
 	ret
 00102$:
-;	analog-comparator.c:79: blink_base = t;         
+;	analog-comparator.c:80: blink_base = t;         
 	mov	_blink_base,r6
 	mov	(_blink_base + 1),r7
-;	analog-comparator.c:81: }
+;	analog-comparator.c:82: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;	analog-comparator.c:83: void main(void) {
+;	analog-comparator.c:84: void main(void) {
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	analog-comparator.c:84: clock_init();    
+;	analog-comparator.c:85: clock_init();    
 	lcall	_clock_init
-;	analog-comparator.c:85: timer0_init();  
+;	analog-comparator.c:86: timer0_init();  
 	lcall	_timer0_init
-;	analog-comparator.c:86: cmp_init();
+;	analog-comparator.c:87: cmp_init();
 	lcall	_cmp_init
-;	analog-comparator.c:90: P3_MOD_OC &= ~(1 << 0);   // push-pull
+;	analog-comparator.c:91: P3_MOD_OC &= ~(1 << 0);   // push-pull
 	anl	_P3_MOD_OC,#0xfe
-;	analog-comparator.c:91: P3_DIR_PU |=  (1 << 0);   // enable strong output drive
+;	analog-comparator.c:92: P3_DIR_PU |=  (1 << 0);   // enable strong output drive
 	orl	_P3_DIR_PU,#0x01
-;	analog-comparator.c:93: P3 &= ~(1 << 0);  // Make LED pin P3.0 "start" as OFF
+;	analog-comparator.c:94: P3 &= ~(1 << 0);  // Make LED pin P3.0 "start" as OFF
 	anl	_P3,#0xfe
-;	analog-comparator.c:95: while (1) {        
-00109$:
-;	analog-comparator.c:97: EA = 0;
+;	analog-comparator.c:96: while (1) {        
+00111$:
+;	analog-comparator.c:98: EA = 0;
 ;	assignBit
 	clr	_EA
-;	analog-comparator.c:98: t = tick_10ms;
+;	analog-comparator.c:99: t = tick_10ms;
 	mov	_t,_tick_10ms
 	mov	(_t + 1),(_tick_10ms + 1)
-;	analog-comparator.c:99: EA = 1;
+;	analog-comparator.c:100: EA = 1;
 ;	assignBit
 	setb	_EA
-;	analog-comparator.c:101: if (CMPO) {
+;	analog-comparator.c:102: if(t - comparatorTime > 10){
+	mov	a,_t
+	clr	c
+	subb	a,_comparatorTime
+	mov	r6,a
+	mov	a,(_t + 1)
+	subb	a,(_comparatorTime + 1)
+	mov	r7,a
+	clr	c
+	mov	a,#0x0a
+	subb	a,r6
+	clr	a
+	subb	a,r7
+	jnc	00107$
+;	analog-comparator.c:103: comparatorTime= t;
+	mov	_comparatorTime,_t
+	mov	(_comparatorTime + 1),(_t + 1)
+;	analog-comparator.c:105: if (CMPO) { // CMP0 does not latch and does not generate interrupts, it is just a mirror of the analog comparator
 	jnb	_CMPO,00104$
-;	analog-comparator.c:102: if (!ledON) {
-	jb	_ledON,00105$
-;	analog-comparator.c:103: ledON = 1;
+;	analog-comparator.c:106: if (!ledON) {
+	jb	_ledON,00107$
+;	analog-comparator.c:107: ledON = 1;
 ;	assignBit
 	setb	_ledON
-;	analog-comparator.c:104: blink_base = t;  // reset blink phase when comparator first triggers
+;	analog-comparator.c:108: blink_base = t;  // reset blink phase when comparator first triggers
 	mov	_blink_base,_t
 	mov	(_blink_base + 1),(_t + 1)
-	sjmp	00105$
+	sjmp	00107$
 00104$:
-;	analog-comparator.c:107: ledON = 0;
+;	analog-comparator.c:111: ledON = 0;
 ;	assignBit
 	clr	_ledON
-;	analog-comparator.c:108: P3 &= ~(1 << 0);  // make sure LED goes off immediately when pot drops below reference
+;	analog-comparator.c:112: P3 &= ~(1 << 0);  // make sure LED goes off immediately when pot drops below reference
 	anl	_P3,#0xfe
-00105$:
-;	analog-comparator.c:111: if (ledON) {
-	jnb	_ledON,00109$
-;	analog-comparator.c:112: blink_led(t);   // called every loop iteration while CMPO is high
+00107$:
+;	analog-comparator.c:117: if (ledON) {
+	jnb	_ledON,00111$
+;	analog-comparator.c:118: blink_led(t);   // called every loop iteration while CMPO is high
 	mov	dpl, _t
 	mov	dph, (_t + 1)
 	lcall	_blink_led
-;	analog-comparator.c:115: }
-	sjmp	00109$
+;	analog-comparator.c:121: }
+	sjmp	00111$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area XINIT   (CODE)

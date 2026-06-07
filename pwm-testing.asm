@@ -247,6 +247,7 @@
 	.globl _tick_10ms
 	.globl _clock_init
 	.globl _timer0_ISR
+	.globl _blink_led
 	.globl _pwm_init
 ;--------------------------------------------------------
 ; special function registers
@@ -669,7 +670,7 @@ __sdcc_program_startup:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'clock_init'
 ;------------------------------------------------------------
-;	pwm-testing.c:13: void clock_init(void) {
+;	pwm-testing.c:14: void clock_init(void) {
 ;	-----------------------------------------
 ;	 function clock_init
 ;	-----------------------------------------
@@ -682,25 +683,25 @@ _clock_init:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	pwm-testing.c:14: SAFE_MOD = 0x55;
+;	pwm-testing.c:15: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	pwm-testing.c:15: SAFE_MOD = 0xAA;
+;	pwm-testing.c:16: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	pwm-testing.c:16: CLOCK_CFG |= bOSC_EN_INT;
+;	pwm-testing.c:17: CLOCK_CFG |= bOSC_EN_INT;
 	orl	_CLOCK_CFG,#0x80
-;	pwm-testing.c:17: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
+;	pwm-testing.c:18: CLOCK_CFG = (CLOCK_CFG & ~MASK_SYS_CK_SEL) | 0x06;
 	mov	a,#0xf8
 	anl	a,_CLOCK_CFG
 	orl	a,#0x06
 	mov	_CLOCK_CFG,a
-;	pwm-testing.c:18: SAFE_MOD = 0x00;
+;	pwm-testing.c:19: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	pwm-testing.c:19: }
+;	pwm-testing.c:20: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_ISR'
 ;------------------------------------------------------------
-;	pwm-testing.c:21: void timer0_ISR(void) __interrupt(1) __using(1) {
+;	pwm-testing.c:22: void timer0_ISR(void) __interrupt(1) __using(1) {
 ;	-----------------------------------------
 ;	 function timer0_ISR
 ;	-----------------------------------------
@@ -716,14 +717,14 @@ _timer0_ISR:
 	push	acc
 	push	psw
 	mov	psw,#0x08
-;	pwm-testing.c:22: TF0 = 0;
+;	pwm-testing.c:23: TF0 = 0;
 ;	assignBit
 	clr	_TF0
-;	pwm-testing.c:23: TH0 = 0xB1;
+;	pwm-testing.c:24: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	pwm-testing.c:24: TL0 = 0xE0;
+;	pwm-testing.c:25: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	pwm-testing.c:25: tick_10ms++;
+;	pwm-testing.c:26: tick_10ms++;
 	mov	r6,_tick_10ms
 	mov	r7,(_tick_10ms + 1)
 	mov	a,#0x01
@@ -732,7 +733,7 @@ _timer0_ISR:
 	clr	a
 	addc	a, r7
 	mov	(_tick_10ms + 1),a
-;	pwm-testing.c:26: }
+;	pwm-testing.c:27: }
 	pop	psw
 	pop	acc
 	reti
@@ -742,7 +743,7 @@ _timer0_ISR:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timer0_init'
 ;------------------------------------------------------------
-;	pwm-testing.c:28: void timer0_init(void) {
+;	pwm-testing.c:29: void timer0_init(void) {
 ;	-----------------------------------------
 ;	 function timer0_init
 ;	-----------------------------------------
@@ -755,84 +756,128 @@ _timer0_init:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	pwm-testing.c:29: T2MOD &= ~bTMR_CLK;
+;	pwm-testing.c:30: T2MOD &= ~bTMR_CLK;
 	anl	_T2MOD,#0x7f
-;	pwm-testing.c:30: T2MOD &= ~bT0_CLK;
+;	pwm-testing.c:31: T2MOD &= ~bT0_CLK;
 	anl	_T2MOD,#0xef
-;	pwm-testing.c:31: TMOD &= ~0x03;
+;	pwm-testing.c:32: TMOD &= ~0x03;
 	anl	_TMOD,#0xfc
-;	pwm-testing.c:32: TMOD |=  0x01;
+;	pwm-testing.c:33: TMOD |=  0x01;
 	orl	_TMOD,#0x01
-;	pwm-testing.c:33: TH0 = 0xB1;
+;	pwm-testing.c:34: TH0 = 0xB1;
 	mov	_TH0,#0xb1
-;	pwm-testing.c:34: TL0 = 0xE0;
+;	pwm-testing.c:35: TL0 = 0xE0;
 	mov	_TL0,#0xe0
-;	pwm-testing.c:35: TF0 = 0;
+;	pwm-testing.c:36: TF0 = 0;
 ;	assignBit
 	clr	_TF0
-;	pwm-testing.c:36: ET0 = 1;
+;	pwm-testing.c:37: ET0 = 1;
 ;	assignBit
 	setb	_ET0
-;	pwm-testing.c:37: TR0 = 1;
+;	pwm-testing.c:38: TR0 = 1;
 ;	assignBit
 	setb	_TR0
-;	pwm-testing.c:38: EA = 1;
+;	pwm-testing.c:39: EA = 1;
 ;	assignBit
 	setb	_EA
-;	pwm-testing.c:39: }
+;	pwm-testing.c:40: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'blink_led'
+;------------------------------------------------------------
+;	pwm-testing.c:41: void blink_led(void) {
+;	-----------------------------------------
+;	 function blink_led
+;	-----------------------------------------
+_blink_led:
+;	pwm-testing.c:42: if(tick_10ms % 50 < 25){
+	mov	a,#0x32
+	push	acc
+	clr	a
+	push	acc
+	mov	dpl, _tick_10ms
+	mov	dph, (_tick_10ms + 1)
+	lcall	__moduint
+	mov	r6, dpl
+	mov	r7, dph
+	dec	sp
+	dec	sp
+	clr	c
+	mov	a,r6
+	subb	a,#0x19
+	mov	a,r7
+	subb	a,#0x00
+	jnc	00102$
+;	pwm-testing.c:43: P3 |= (1 << 0);  // LED ON
+	orl	_P3,#0x01
+	ret
+00102$:
+;	pwm-testing.c:45: P3 &= ~(1 << 0); // LED OFF
+	anl	_P3,#0xfe
+;	pwm-testing.c:47: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'pwm_init'
 ;------------------------------------------------------------
-;	pwm-testing.c:41: void pwm_init(void) {
+;	pwm-testing.c:48: void pwm_init(void) {
 ;	-----------------------------------------
 ;	 function pwm_init
 ;	-----------------------------------------
 _pwm_init:
-;	pwm-testing.c:44: PIN_FUNC &= ~bPWM1_PIN_X;
+;	pwm-testing.c:51: PIN_FUNC &= ~bPWM1_PIN_X;
 	anl	_PIN_FUNC,#0xfb
-;	pwm-testing.c:46: SPI0_CTRL &= ~bS0_MOSI_OE;  // make sure MOSI output is disabled
+;	pwm-testing.c:53: SPI0_CTRL &= ~bS0_MOSI_OE;  // make sure MOSI output is disabled
 	anl	_SPI0_CTRL,#0xbf
-;	pwm-testing.c:49: P1_MOD_OC &= ~(1 << 5);
+;	pwm-testing.c:56: P1_MOD_OC &= ~(1 << 5);
 	anl	_P1_MOD_OC,#0xdf
-;	pwm-testing.c:50: P1_DIR_PU  |=  (1 << 5);
+;	pwm-testing.c:57: P1_DIR_PU  |=  (1 << 5);
 	orl	_P1_DIR_PU,#0x20
-;	pwm-testing.c:54: PWM_CK_SE = 0x00; // this gives 2MHz / 256 = 7812.5 Hz ≈ 7.8kHz (without any divider)
+;	pwm-testing.c:61: PWM_CK_SE = 0x00; // this gives 2MHz / 256 = 7812.5 Hz ≈ 7.8kHz (without any divider)
 	mov	_PWM_CK_SE,#0x00
-;	pwm-testing.c:58: PWM_DATA1 = 0;
+;	pwm-testing.c:65: PWM_DATA1 = 0;
 	mov	_PWM_DATA1,#0x00
-;	pwm-testing.c:61: PWM_CTRL = bPWM1_OUT_EN;
+;	pwm-testing.c:68: PWM_CTRL = bPWM1_OUT_EN;
 	mov	_PWM_CTRL,#0x04
-;	pwm-testing.c:62: }
+;	pwm-testing.c:69: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
 ;t             Allocated to registers r6 r7 
 ;------------------------------------------------------------
-;	pwm-testing.c:64: void main(void) {
+;	pwm-testing.c:71: void main(void) {
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	pwm-testing.c:65: clock_init();
+;	pwm-testing.c:72: clock_init();
 	lcall	_clock_init
-;	pwm-testing.c:66: timer0_init();
+;	pwm-testing.c:73: timer0_init();
 	lcall	_timer0_init
-;	pwm-testing.c:67: pwm_init();
+;	pwm-testing.c:74: pwm_init();
 	lcall	_pwm_init
-;	pwm-testing.c:69: while (1) {
-00113$:
-;	pwm-testing.c:71: EA = 0;
+;	pwm-testing.c:78: P3_MOD_OC &= ~0x01;   // not open-drain
+	anl	_P3_MOD_OC,#0xfe
+;	pwm-testing.c:79: P3_DIR_PU |= 0x01;    // output, with pull-up
+	orl	_P3_DIR_PU,#0x01
+;	pwm-testing.c:81: while (1) {
+00107$:
+;	pwm-testing.c:83: EA = 0;
 ;	assignBit
 	clr	_EA
-;	pwm-testing.c:72: t = tick_10ms;
+;	pwm-testing.c:84: t = tick_10ms;
 	mov	r6,_tick_10ms
 	mov	r7,(_tick_10ms + 1)
-;	pwm-testing.c:73: EA = 1;
+;	pwm-testing.c:85: EA = 1;
 ;	assignBit
 	setb	_EA
-;	pwm-testing.c:76: if ((t - last_tick) >= 1) {
+;	pwm-testing.c:87: blink_led();
+	push	ar7
+	push	ar6
+	lcall	_blink_led
+	pop	ar6
+	pop	ar7
+;	pwm-testing.c:90: if ((t - last_tick) >= 1) {
 	mov	a,r6
 	clr	c
 	subb	a,_last_tick
@@ -845,49 +890,27 @@ _main:
 	subb	a,#0x01
 	mov	a,r5
 	subb	a,#0x00
-	jc	00113$
-;	pwm-testing.c:77: last_tick = t;
+	jc	00107$
+;	pwm-testing.c:91: last_tick = t;
 	mov	_last_tick,r6
 	mov	(_last_tick + 1),r7
-;	pwm-testing.c:79: if (going_up) {
-	jnb	_going_up,00108$
-;	pwm-testing.c:80: if (pwm_value >= 252) {
-	mov	a,#0x100 - 0xfc
-	add	a,_pwm_value
+;	pwm-testing.c:108: if(pwm_value > 253){
+	mov	a,_pwm_value
+	add	a,#0xff - 0xfd
 	jnc	00102$
-;	pwm-testing.c:81: pwm_value = 255;
-	mov	_pwm_value,#0xff
-;	pwm-testing.c:82: going_up = 0;
-;	assignBit
-	clr	_going_up
-	sjmp	00109$
+;	pwm-testing.c:109: pwm_value = 0;
+	mov	_pwm_value,#0x00
+	sjmp	00103$
 00102$:
-;	pwm-testing.c:84: pwm_value += 1;
+;	pwm-testing.c:111: pwm_value += 1;
 	mov	a,_pwm_value
 	inc	a
 	mov	_pwm_value,a
-	sjmp	00109$
-00108$:
-;	pwm-testing.c:87: if (pwm_value <= 3) {
-	mov	a,_pwm_value
-	add	a,#0xff - 0x03
-	jc	00105$
-;	pwm-testing.c:88: pwm_value = 0;
-	mov	_pwm_value,#0x00
-;	pwm-testing.c:89: going_up = 1;
-;	assignBit
-	setb	_going_up
-	sjmp	00109$
-00105$:
-;	pwm-testing.c:91: pwm_value -= 1;
-	mov	a,_pwm_value
-	dec	a
-	mov	_pwm_value,a
-00109$:
-;	pwm-testing.c:96: PWM_DATA1 = pwm_value; 
+00103$:
+;	pwm-testing.c:115: PWM_DATA1 = pwm_value; 
 	mov	_PWM_DATA1,_pwm_value
-;	pwm-testing.c:99: }
-	sjmp	00113$
+;	pwm-testing.c:118: }
+	sjmp	00107$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area XINIT   (CODE)

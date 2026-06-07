@@ -48,7 +48,7 @@ C:   00000008  l_REG_BANK_0
 C:   00000008  l_REG_BANK_1                    
 C:   00000008  s_REG_BANK_1                    
 C:   0000000A  l_GSINIT2                       
-C:   0000000D  l_GSINIT                        
+C:   00000010  l_GSINIT                        
 C:   00000010  s_REG_BANK_2                    
 C:   00000018  s_BIT_BANK                      
 C:   00000018  s_OSEG                          
@@ -72,17 +72,17 @@ C:   00000054  s_GSINIT0
 C:   00000057  s_GSINIT1                       
 C:   00000057  s_GSINIT2                       
 C:   00000061  s_GSINIT3                       
-C:   00000075  l_DSEG                          
+C:   00000077  l_DSEG                          
 C:   00000083  s_GSINIT4                       
 C:   000000AD  s_GSINIT                        
 C:   000000AD  s_GSINIT5                       
-C:   000000BA  s_GSFINAL                       
-C:   000000BD  s_CSEG                          
-C:   000000C0  l_CSEG                          
+C:   000000BD  s_GSFINAL                       
+C:   000000C0  s_CSEG                          
 C:   000000DF  l_SSEG                          
 C:   00000100  l_IRAM                          
-C:   0000017D  s_CONST                         
-C:   0000017D  s_XINIT                         
+C:   00000770  l_CSEG                          
+C:   00000830  s_CONST                         
+C:   00000830  s_XINIT                         
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -94,55 +94,55 @@ Area                                    Addr        Size        Decimal Bytes (A
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
      00000000  .__.ABS.                           _startup
-     00000080  _ADC_CHAN0                         pwm_testing
-     00000080  _ADC_CTRL                          pwm_testing
-     00000081  _ADC_CHAN1                         pwm_testing
-     00000081  _SP                                pwm_testing
-     00000082  _DPL                               pwm_testing
-     00000083  _CMP_CHAN                          pwm_testing
-     00000083  _DPH                               pwm_testing
-     00000084  _ADC_START                         pwm_testing
-     00000084  _ROM_ADDR_L                        pwm_testing
-     00000085  _ADC_IF                            pwm_testing
-     00000085  _ROM_ADDR_H                        pwm_testing
-     00000086  _CMP_IF                            pwm_testing
-     00000086  _ROM_CTRL                          pwm_testing
-     00000087  _CMPO                              pwm_testing
-     00000087  _PCON                              pwm_testing
-     00000088  _IT0                               pwm_testing
-     00000088  _TCON                              pwm_testing
-     00000089  _IE0                               pwm_testing
-     00000089  _TMOD                              pwm_testing
-     0000008A  _IT1                               pwm_testing
-     0000008A  _TL0                               pwm_testing
-     0000008B  _IE1                               pwm_testing
-     0000008B  _TL1                               pwm_testing
-     0000008C  _TH0                               pwm_testing
-     0000008C  _TR0                               pwm_testing
-     0000008D  _TF0                               pwm_testing
-     0000008D  _TH1                               pwm_testing
-     0000008E  _ROM_DATA_L                        pwm_testing
-     0000008E  _TR1                               pwm_testing
-     0000008F  _ROM_DATA_H                        pwm_testing
-     0000008F  _TF1                               pwm_testing
-     00000090  _CAP1                              pwm_testing
-     00000090  _P1                                pwm_testing
-     00000090  _T2                                pwm_testing
-     00000090  _TIN0                              pwm_testing
-     00000091  _AIN0                              pwm_testing
-     00000091  _CAP2                              pwm_testing
-     00000091  _T2EX                              pwm_testing
-     00000091  _TIN1                              pwm_testing
-     00000091  _USB_C_CTRL                        pwm_testing
-     00000091  _VBUS2                             pwm_testing
-     00000092  _P1_MOD_OC                         pwm_testing
-     00000092  _RXD_                              pwm_testing
-     00000093  _P1_DIR_PU                         pwm_testing
-     00000093  _TXD_                              pwm_testing
-     00000094  _AIN1                              pwm_testing
-     00000094  _CAP1_                             pwm_testing
-     00000094  _SCS                               pwm_testing
-     00000094  _T2_                               pwm_testing
+     00000080  _ADC_CHAN0                         spi
+     00000080  _ADC_CTRL                          spi
+     00000081  _ADC_CHAN1                         spi
+     00000081  _SP                                spi
+     00000082  _DPL                               spi
+     00000083  _CMP_CHAN                          spi
+     00000083  _DPH                               spi
+     00000084  _ADC_START                         spi
+     00000084  _ROM_ADDR_L                        spi
+     00000085  _ADC_IF                            spi
+     00000085  _ROM_ADDR_H                        spi
+     00000086  _CMP_IF                            spi
+     00000086  _ROM_CTRL                          spi
+     00000087  _CMPO                              spi
+     00000087  _PCON                              spi
+     00000088  _IT0                               spi
+     00000088  _TCON                              spi
+     00000089  _IE0                               spi
+     00000089  _TMOD                              spi
+     0000008A  _IT1                               spi
+     0000008A  _TL0                               spi
+     0000008B  _IE1                               spi
+     0000008B  _TL1                               spi
+     0000008C  _TH0                               spi
+     0000008C  _TR0                               spi
+     0000008D  _TF0                               spi
+     0000008D  _TH1                               spi
+     0000008E  _ROM_DATA_L                        spi
+     0000008E  _TR1                               spi
+     0000008F  _ROM_DATA_H                        spi
+     0000008F  _TF1                               spi
+     00000090  _CAP1                              spi
+     00000090  _P1                                spi
+     00000090  _T2                                spi
+     00000090  _TIN0                              spi
+     00000091  _AIN0                              spi
+     00000091  _CAP2                              spi
+     00000091  _T2EX                              spi
+     00000091  _TIN1                              spi
+     00000091  _USB_C_CTRL                        spi
+     00000091  _VBUS2                             spi
+     00000092  _P1_MOD_OC                         spi
+     00000092  _RXD_                              spi
+     00000093  _P1_DIR_PU                         spi
+     00000093  _TXD_                              spi
+     00000094  _AIN1                              spi
+     00000094  _CAP1_                             spi
+     00000094  _SCS                               spi
+     00000094  _T2_                               spi
 ASxxxx Linker V03.00/V05.40 + sdld,  page 4.
 Hexadecimal  [32-Bits]
 
@@ -152,57 +152,57 @@ Area                                    Addr        Size        Decimal Bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000094  _TIN2                              pwm_testing
-     00000094  _UCC1                              pwm_testing
-     00000095  _AIN2                              pwm_testing
-     00000095  _MOSI                              pwm_testing
-     00000095  _PWM1                              pwm_testing
-     00000095  _TIN3                              pwm_testing
-     00000095  _UCC2                              pwm_testing
-     00000096  _MISO                              pwm_testing
-     00000096  _P3_MOD_OC                         pwm_testing
-     00000096  _RXD1                              pwm_testing
-     00000096  _TIN4                              pwm_testing
-     00000097  _P3_DIR_PU                         pwm_testing
-     00000097  _SCK                               pwm_testing
-     00000097  _TIN5                              pwm_testing
-     00000097  _TXD1                              pwm_testing
-     00000098  _RI                                pwm_testing
-     00000098  _SCON                              pwm_testing
-     00000099  _SBUF                              pwm_testing
-     00000099  _TI                                pwm_testing
-     0000009A  _ADC_CFG                           pwm_testing
-     0000009A  _RB8                               pwm_testing
-     0000009B  _PWM_DATA2                         pwm_testing
-     0000009B  _TB8                               pwm_testing
-     0000009C  _PWM_DATA1                         pwm_testing
-     0000009C  _REN                               pwm_testing
-     0000009D  _PWM_CTRL                          pwm_testing
-     0000009D  _SM2                               pwm_testing
-     0000009E  _PWM_CK_SE                         pwm_testing
-     0000009E  _SM1                               pwm_testing
-     0000009F  _ADC_DATA                          pwm_testing
-     0000009F  _SM0                               pwm_testing
-     000000A0  _P2                                pwm_testing
+     00000094  _TIN2                              spi
+     00000094  _UCC1                              spi
+     00000095  _AIN2                              spi
+     00000095  _MOSI                              spi
+     00000095  _PWM1                              spi
+     00000095  _TIN3                              spi
+     00000095  _UCC2                              spi
+     00000096  _MISO                              spi
+     00000096  _P3_MOD_OC                         spi
+     00000096  _RXD1                              spi
+     00000096  _TIN4                              spi
+     00000097  _P3_DIR_PU                         spi
+     00000097  _SCK                               spi
+     00000097  _TIN5                              spi
+     00000097  _TXD1                              spi
+     00000098  _RI                                spi
+     00000098  _SCON                              spi
+     00000099  _SBUF                              spi
+     00000099  _TI                                spi
+     0000009A  _ADC_CFG                           spi
+     0000009A  _RB8                               spi
+     0000009B  _PWM_DATA2                         spi
+     0000009B  _TB8                               spi
+     0000009C  _PWM_DATA1                         spi
+     0000009C  _REN                               spi
+     0000009D  _PWM_CTRL                          spi
+     0000009D  _SM2                               spi
+     0000009E  _PWM_CK_SE                         spi
+     0000009E  _SM1                               spi
+     0000009F  _ADC_DATA                          spi
+     0000009F  _SM0                               spi
+     000000A0  _P2                                spi
      000000A0  __XPAGE                            
-     000000A1  _SAFE_MOD                          pwm_testing
-     000000A2  _XBUS_AUX                          pwm_testing
-     000000A8  _EX0                               pwm_testing
-     000000A8  _IE                                pwm_testing
-     000000A9  _ET0                               pwm_testing
-     000000A9  _WAKE_CTRL                         pwm_testing
-     000000AA  _EX1                               pwm_testing
-     000000AB  _ET1                               pwm_testing
-     000000AC  _ES                                pwm_testing
-     000000AD  _ET2                               pwm_testing
-     000000AE  _E_DIS                             pwm_testing
-     000000AF  _EA                                pwm_testing
-     000000B0  _P3                                pwm_testing
-     000000B0  _PWM1_                             pwm_testing
-     000000B0  _RXD                               pwm_testing
-     000000B1  _GLOBAL_CFG                        pwm_testing
-     000000B1  _PWM2_                             pwm_testing
-     000000B1  _TXD                               pwm_testing
+     000000A1  _SAFE_MOD                          spi
+     000000A2  _XBUS_AUX                          spi
+     000000A8  _EX0                               spi
+     000000A8  _IE                                spi
+     000000A9  _ET0                               spi
+     000000A9  _WAKE_CTRL                         spi
+     000000AA  _EX1                               spi
+     000000AB  _ET1                               spi
+     000000AC  _ES                                spi
+     000000AD  _ET2                               spi
+     000000AE  _E_DIS                             spi
+     000000AF  _EA                                spi
+     000000B0  _P3                                spi
+     000000B0  _PWM1_                             spi
+     000000B0  _RXD                               spi
+     000000B1  _GLOBAL_CFG                        spi
+     000000B1  _PWM2_                             spi
+     000000B1  _TXD                               spi
 ASxxxx Linker V03.00/V05.40 + sdld,  page 5.
 Hexadecimal  [32-Bits]
 
@@ -212,57 +212,57 @@ Area                                    Addr        Size        Decimal Bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000000B2  _AIN3                              pwm_testing
-     000000B2  _INT0                              pwm_testing
-     000000B2  _TXD1_                             pwm_testing
-     000000B2  _VBUS1                             pwm_testing
-     000000B3  _INT1                              pwm_testing
-     000000B4  _PWM2                              pwm_testing
-     000000B4  _RXD1_                             pwm_testing
-     000000B4  _T0                                pwm_testing
-     000000B5  _T1                                pwm_testing
-     000000B6  _UDP                               pwm_testing
-     000000B7  _UDM                               pwm_testing
-     000000B8  _IP                                pwm_testing
-     000000B8  _PX0                               pwm_testing
-     000000B9  _CLOCK_CFG                         pwm_testing
-     000000B9  _PT0                               pwm_testing
-     000000BA  _PX1                               pwm_testing
-     000000BB  _PT1                               pwm_testing
-     000000BC  _PS                                pwm_testing
-     000000BD  _PT2                               pwm_testing
-     000000BE  _PL_FLAG                           pwm_testing
-     000000BF  _PH_FLAG                           pwm_testing
-     000000C0  _SCON1                             pwm_testing
-     000000C0  _U1RI                              pwm_testing
-     000000C1  _SBUF1                             pwm_testing
-     000000C1  _U1TI                              pwm_testing
-     000000C2  _SBAUD1                            pwm_testing
-     000000C2  _U1RB8                             pwm_testing
-     000000C3  _TKEY_CTRL                         pwm_testing
-     000000C3  _U1TB8                             pwm_testing
-     000000C4  _TKEY_DATL                         pwm_testing
-     000000C4  _U1REN                             pwm_testing
-     000000C5  _TKEY_DATH                         pwm_testing
-     000000C5  _U1SMOD                            pwm_testing
-     000000C6  _PIN_FUNC                          pwm_testing
-     000000C7  _GPIO_IE                           pwm_testing
-     000000C7  _U1SM0                             pwm_testing
-     000000C8  _CP_RL2                            pwm_testing
-     000000C8  _T2CON                             pwm_testing
-     000000C9  _C_T2                              pwm_testing
-     000000C9  _T2MOD                             pwm_testing
-     000000CA  _RCAP2L                            pwm_testing
-     000000CA  _TR2                               pwm_testing
-     000000CB  _EXEN2                             pwm_testing
-     000000CB  _RCAP2H                            pwm_testing
-     000000CC  _TCLK                              pwm_testing
-     000000CC  _TL2                               pwm_testing
-     000000CD  _RCLK                              pwm_testing
-     000000CD  _TH2                               pwm_testing
-     000000CE  _EXF2                              pwm_testing
-     000000CE  _T2CAP1L                           pwm_testing
-     000000CF  _CAP1F                             pwm_testing
+     000000B2  _AIN3                              spi
+     000000B2  _INT0                              spi
+     000000B2  _TXD1_                             spi
+     000000B2  _VBUS1                             spi
+     000000B3  _INT1                              spi
+     000000B4  _PWM2                              spi
+     000000B4  _RXD1_                             spi
+     000000B4  _T0                                spi
+     000000B5  _T1                                spi
+     000000B6  _UDP                               spi
+     000000B7  _UDM                               spi
+     000000B8  _IP                                spi
+     000000B8  _PX0                               spi
+     000000B9  _CLOCK_CFG                         spi
+     000000B9  _PT0                               spi
+     000000BA  _PX1                               spi
+     000000BB  _PT1                               spi
+     000000BC  _PS                                spi
+     000000BD  _PT2                               spi
+     000000BE  _PL_FLAG                           spi
+     000000BF  _PH_FLAG                           spi
+     000000C0  _SCON1                             spi
+     000000C0  _U1RI                              spi
+     000000C1  _SBUF1                             spi
+     000000C1  _U1TI                              spi
+     000000C2  _SBAUD1                            spi
+     000000C2  _U1RB8                             spi
+     000000C3  _TKEY_CTRL                         spi
+     000000C3  _U1TB8                             spi
+     000000C4  _TKEY_DATL                         spi
+     000000C4  _U1REN                             spi
+     000000C5  _TKEY_DATH                         spi
+     000000C5  _U1SMOD                            spi
+     000000C6  _PIN_FUNC                          spi
+     000000C7  _GPIO_IE                           spi
+     000000C7  _U1SM0                             spi
+     000000C8  _CP_RL2                            spi
+     000000C8  _T2CON                             spi
+     000000C9  _C_T2                              spi
+     000000C9  _T2MOD                             spi
+     000000CA  _RCAP2L                            spi
+     000000CA  _TR2                               spi
+     000000CB  _EXEN2                             spi
+     000000CB  _RCAP2H                            spi
+     000000CC  _TCLK                              spi
+     000000CC  _TL2                               spi
+     000000CD  _RCLK                              spi
+     000000CD  _TH2                               spi
+     000000CE  _EXF2                              spi
+     000000CE  _T2CAP1L                           spi
+     000000CF  _CAP1F                             spi
 ASxxxx Linker V03.00/V05.40 + sdld,  page 6.
 Hexadecimal  [32-Bits]
 
@@ -272,57 +272,57 @@ Area                                    Addr        Size        Decimal Bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000000CF  _T2CAP1H                           pwm_testing
-     000000CF  _TF2                               pwm_testing
-     000000D0  _P                                 pwm_testing
-     000000D0  _PSW                               pwm_testing
-     000000D1  _F1                                pwm_testing
-     000000D1  _UDEV_CTRL                         pwm_testing
-     000000D2  _OV                                pwm_testing
-     000000D2  _UEP1_CTRL                         pwm_testing
-     000000D3  _RS0                               pwm_testing
-     000000D3  _UEP1_T_LEN                        pwm_testing
-     000000D4  _RS1                               pwm_testing
-     000000D4  _UEP2_CTRL                         pwm_testing
-     000000D5  _F0                                pwm_testing
-     000000D5  _UEP2_T_LEN                        pwm_testing
-     000000D6  _AC                                pwm_testing
-     000000D6  _UEP3_CTRL                         pwm_testing
-     000000D7  _CY                                pwm_testing
-     000000D7  _UEP3_T_LEN                        pwm_testing
-     000000D8  _UIF_BUS_RST                       pwm_testing
-     000000D8  _UIF_DETECT                        pwm_testing
-     000000D8  _USB_INT_FG                        pwm_testing
-     000000D9  _UIF_TRANSFER                      pwm_testing
-     000000D9  _USB_INT_ST                        pwm_testing
-     000000DA  _UIF_SUSPEND                       pwm_testing
-     000000DA  _USB_MIS_ST                        pwm_testing
-     000000DB  _UIF_HST_SOF                       pwm_testing
-     000000DB  _USB_RX_LEN                        pwm_testing
-     000000DC  _UEP0_CTRL                         pwm_testing
-     000000DC  _UIF_FIFO_OV                       pwm_testing
-     000000DD  _UEP0_T_LEN                        pwm_testing
-     000000DD  _U_SIE_FREE                        pwm_testing
-     000000DE  _UEP4_CTRL                         pwm_testing
-     000000DE  _U_TOG_OK                          pwm_testing
-     000000DF  _UEP4_T_LEN                        pwm_testing
-     000000DF  _U_IS_NAK                          pwm_testing
-     000000E0  _ACC                               pwm_testing
-     000000E1  _USB_INT_EN                        pwm_testing
-     000000E2  _USB_CTRL                          pwm_testing
-     000000E3  _USB_DEV_AD                        pwm_testing
-     000000E4  _UEP2_DMA_L                        pwm_testing
-     000000E5  _UEP2_DMA_H                        pwm_testing
-     000000E6  _UEP3_DMA_L                        pwm_testing
-     000000E7  _UEP3_DMA_H                        pwm_testing
-     000000E8  _IE_EX                             pwm_testing
-     000000E8  _IE_SPI0                           pwm_testing
-     000000E9  _IE_TKEY                           pwm_testing
-     000000E9  _IP_EX                             pwm_testing
-     000000EA  _IE_USB                            pwm_testing
-     000000EA  _UEP4_1_MOD                        pwm_testing
-     000000EB  _IE_ADC                            pwm_testing
-     000000EB  _UEP2_3_MOD                        pwm_testing
+     000000CF  _T2CAP1H                           spi
+     000000CF  _TF2                               spi
+     000000D0  _P                                 spi
+     000000D0  _PSW                               spi
+     000000D1  _F1                                spi
+     000000D1  _UDEV_CTRL                         spi
+     000000D2  _OV                                spi
+     000000D2  _UEP1_CTRL                         spi
+     000000D3  _RS0                               spi
+     000000D3  _UEP1_T_LEN                        spi
+     000000D4  _RS1                               spi
+     000000D4  _UEP2_CTRL                         spi
+     000000D5  _F0                                spi
+     000000D5  _UEP2_T_LEN                        spi
+     000000D6  _AC                                spi
+     000000D6  _UEP3_CTRL                         spi
+     000000D7  _CY                                spi
+     000000D7  _UEP3_T_LEN                        spi
+     000000D8  _UIF_BUS_RST                       spi
+     000000D8  _UIF_DETECT                        spi
+     000000D8  _USB_INT_FG                        spi
+     000000D9  _UIF_TRANSFER                      spi
+     000000D9  _USB_INT_ST                        spi
+     000000DA  _UIF_SUSPEND                       spi
+     000000DA  _USB_MIS_ST                        spi
+     000000DB  _UIF_HST_SOF                       spi
+     000000DB  _USB_RX_LEN                        spi
+     000000DC  _UEP0_CTRL                         spi
+     000000DC  _UIF_FIFO_OV                       spi
+     000000DD  _UEP0_T_LEN                        spi
+     000000DD  _U_SIE_FREE                        spi
+     000000DE  _UEP4_CTRL                         spi
+     000000DE  _U_TOG_OK                          spi
+     000000DF  _UEP4_T_LEN                        spi
+     000000DF  _U_IS_NAK                          spi
+     000000E0  _ACC                               spi
+     000000E1  _USB_INT_EN                        spi
+     000000E2  _USB_CTRL                          spi
+     000000E3  _USB_DEV_AD                        spi
+     000000E4  _UEP2_DMA_L                        spi
+     000000E5  _UEP2_DMA_H                        spi
+     000000E6  _UEP3_DMA_L                        spi
+     000000E7  _UEP3_DMA_H                        spi
+     000000E8  _IE_EX                             spi
+     000000E8  _IE_SPI0                           spi
+     000000E9  _IE_TKEY                           spi
+     000000E9  _IP_EX                             spi
+     000000EA  _IE_USB                            spi
+     000000EA  _UEP4_1_MOD                        spi
+     000000EB  _IE_ADC                            spi
+     000000EB  _UEP2_3_MOD                        spi
 ASxxxx Linker V03.00/V05.40 + sdld,  page 7.
 Hexadecimal  [32-Bits]
 
@@ -332,39 +332,42 @@ Area                                    Addr        Size        Decimal Bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000000EC  _IE_UART1                          pwm_testing
-     000000EC  _UEP0_DMA_L                        pwm_testing
-     000000ED  _IE_PWMX                           pwm_testing
-     000000ED  _UEP0_DMA_H                        pwm_testing
-     000000EE  _IE_GPIO                           pwm_testing
-     000000EE  _UEP1_DMA_L                        pwm_testing
-     000000EF  _IE_WDOG                           pwm_testing
-     000000EF  _UEP1_DMA_H                        pwm_testing
-     000000F0  _B                                 pwm_testing
-     000000F8  _S0_R_FIFO                         pwm_testing
-     000000F8  _SPI0_STAT                         pwm_testing
-     000000F9  _SPI0_DATA                         pwm_testing
-     000000FA  _S0_T_FIFO                         pwm_testing
-     000000FA  _SPI0_CTRL                         pwm_testing
-     000000FB  _S0_FREE                           pwm_testing
-     000000FB  _SPI0_CK_SE                        pwm_testing
-     000000FC  _S0_IF_BYTE                        pwm_testing
-     000000FC  _SPI0_SETUP                        pwm_testing
-     000000FD  _S0_IF_FIRST                       pwm_testing
-     000000FE  _RESET_KEEP                        pwm_testing
-     000000FE  _S0_IF_OV                          pwm_testing
-     000000FF  _S0_FST_ACT                        pwm_testing
-     000000FF  _WDOG_COUNT                        pwm_testing
-     00008584  _ROM_ADDR                          pwm_testing
-     00008F8E  _ROM_DATA                          pwm_testing
-     0000C5C4  _TKEY_DAT                          pwm_testing
-     0000CBCA  _RCAP2                             pwm_testing
-     0000CDCC  _T2COUNT                           pwm_testing
-     0000CFCE  _T2CAP1                            pwm_testing
-     0000E5E4  _UEP2_DMA                          pwm_testing
-     0000E7E6  _UEP3_DMA                          pwm_testing
-     0000EDEC  _UEP0_DMA                          pwm_testing
-     0000EFEE  _UEP1_DMA                          pwm_testing
+     000000EC  _IE_UART1                          spi
+     000000EC  _UEP0_DMA_L                        spi
+     000000ED  _IE_PWMX                           spi
+     000000ED  _UEP0_DMA_H                        spi
+     000000EE  _IE_GPIO                           spi
+     000000EE  _UEP1_DMA_L                        spi
+     000000EF  _IE_WDOG                           spi
+     000000EF  _UEP1_DMA_H                        spi
+     000000F0  _B                                 spi
+     000000F5  _B_5                               _gptrget
+     000000F6  _B_6                               _gptrget
+     000000F7  _B_7                               _gptrget
+     000000F8  _S0_R_FIFO                         spi
+     000000F8  _SPI0_STAT                         spi
+     000000F9  _SPI0_DATA                         spi
+     000000FA  _S0_T_FIFO                         spi
+     000000FA  _SPI0_CTRL                         spi
+     000000FB  _S0_FREE                           spi
+     000000FB  _SPI0_CK_SE                        spi
+     000000FC  _S0_IF_BYTE                        spi
+     000000FC  _SPI0_SETUP                        spi
+     000000FD  _S0_IF_FIRST                       spi
+     000000FE  _RESET_KEEP                        spi
+     000000FE  _S0_IF_OV                          spi
+     000000FF  _S0_FST_ACT                        spi
+     000000FF  _WDOG_COUNT                        spi
+     00008584  _ROM_ADDR                          spi
+     00008F8E  _ROM_DATA                          spi
+     0000C5C4  _TKEY_DAT                          spi
+     0000CBCA  _RCAP2                             spi
+     0000CDCC  _T2COUNT                           spi
+     0000CFCE  _T2CAP1                            spi
+     0000E5E4  _UEP2_DMA                          spi
+     0000E7E6  _UEP3_DMA                          spi
+     0000EDEC  _UEP0_DMA                          spi
+     0000EFEE  _UEP1_DMA                          spi
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 8.
 Hexadecimal  [32-Bits]
@@ -398,11 +401,12 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-DSEG                                00000000    00000075 =         117. bytes (REL,CON)
+DSEG                                00000000    00000077 =         119. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
      00000010  _tick_10ms                         pwm_testing
+     00000016  _bp                                _bp
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
 Hexadecimal  [32-Bits]
@@ -478,7 +482,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSINIT                              000000AD    0000000D =          13. bytes (REL,CON,CODE)
+GSINIT                              000000AD    00000010 =          16. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -487,7 +491,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSFINAL                             000000BA    00000003 =           3. bytes (REL,CON,CODE)
+GSFINAL                             000000BD    00000003 =           3. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -496,36 +500,84 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000BD    000000C0 =         192. bytes (REL,CON,CODE)
+CSEG                                000000C0    00000770 =        1904. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   000000BD  _clock_init                        pwm_testing
-C:   000000D2  _timer0_ISR                        pwm_testing
-C:   000000F3  _timer0_init                       pwm_testing
-C:   0000010E  _pwm_init                          pwm_testing
-C:   00000124  _main                              pwm_testing
-C:   00000179  ___sdcc_external_startup           _startup
+C:   000000C0  _clock_init                        pwm_testing
+C:   000000D5  _timer0_ISR                        pwm_testing
+C:   000000F6  _timer0_init                       pwm_testing
+C:   00000111  _blink_led                         pwm_testing
+C:   0000013A  _pwm_init                          pwm_testing
+C:   00000150  _main                              pwm_testing
+C:   0000019D  _ADCInit                           adc
+C:   000001AA  _ADC_ChannelSelect                 adc
+C:   000001E4  _VoltageCMPModeInit                adc
+C:   00000287  _MPU9250_init                      mpu9250
+C:   000002A2  _MPU9250_whoami                    mpu9250
+C:   000002A6  _MPU9250_readAccelGyro             mpu9250
+C:   0000044B  _Serial_begin                      serial
+C:   00000475  _Serial_write                      serial
+C:   0000047F  _Serial_print                      serial
+C:   000004AA  _Serial_print_uint                 serial
+C:   000005AA  _Serial_println                    serial
+C:   000005B9  _Serial_println_int                serial
+C:   0000069A  _Serial_println_uint               serial
+C:   000006A9  _SPIMasterModeSet                  spi
+C:   000006C9  _CH554SPIInterruptInit             spi
+C:   000006D5  _CH554SPIMasterWrite               spi
+C:   000006DC  _CH554SPIMasterRead                spi
+C:   000006E6  _SPISlvModeSet                     spi
+C:   000006F3  _CH554SPISlvWrite                  spi
+C:   000006FC  _CH554SPISlvRead                   spi
+C:   00000705  __divuint                          _divuint
+C:   0000070F  __divint                           _divuint
+C:   00000736  __gptrput                          _gptrput
+C:   00000751  __gptrget                          _gptrget
+C:   0000076D  __modsint                          _modsint
+C:   000007AA  __moduint                          _moduint
+C:   000007B4  __modint                           _moduint
+C:   000007EF  __divsint                          _divsint
+C:   0000082C  ___sdcc_external_startup           _startup
+
 ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
 
 Files Linked                              [ module(s) ]
 
 pwm-testing.rel                           [  ]
+adc.rel                                   [  ]
+mpu9250.rel                               [  ]
+serial.rel                                [  ]
+spi.rel                                   [  ]
 
 
 Libraries Linked                          [ object file ]
 
-C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib
+                                          [ _divuint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtclear.rel ]
-C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtxinit.rel ]
-C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
+                                          [ _gptrput.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtxclear.rel ]
-C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
+                                          [ _bp.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtpagesfr.rel ]
-C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtstart.rel ]
-C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
+                                          [ _gptrget.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib
+                                          [ _modsint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib
+                                          [ _moduint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib
+                                          [ _divsint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
                                           [ _startup.rel ]
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 22.

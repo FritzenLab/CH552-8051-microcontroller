@@ -3,6 +3,7 @@
 
 
 volatile unsigned int tick_10ms = 0;
+volatile unsigned int comparatorTime = 0;
 volatile __bit ledON = 0;
 unsigned int serialTime= 0;
 unsigned int counter= 0;
@@ -98,15 +99,20 @@ void main(void) {
         t = tick_10ms;
         EA = 1;
         
-        if (CMPO) {
-            if (!ledON) {
-                ledON = 1;
-                blink_base = t;  // reset blink phase when comparator first triggers
+        if(t - comparatorTime > 10){
+            comparatorTime= t;
+
+            if (CMPO) { // CMP0 does not latch and does not generate interrupts, it is just a mirror of the analog comparator
+                if (!ledON) {
+                    ledON = 1;
+                    blink_base = t;  // reset blink phase when comparator first triggers
+                }
+            } else {
+                ledON = 0;
+                P3 &= ~(1 << 0);  // make sure LED goes off immediately when pot drops below reference
             }
-        } else {
-            ledON = 0;
-            P3 &= ~(1 << 0);  // make sure LED goes off immediately when pot drops below reference
-        }
+
+        }        
 
         if (ledON) {
             blink_led(t);   // called every loop iteration while CMPO is high
