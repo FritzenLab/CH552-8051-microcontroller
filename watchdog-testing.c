@@ -85,7 +85,7 @@ void blink_led(unsigned int t) {
         P3 &= ~(1 << 0);
     } else {
         blink_base = t;
-        wdtCounter++; 
+        wdtCounter++; // increment watchdog activation "countdown"
     }
 }
 
@@ -99,16 +99,20 @@ void main(void) {
     P3_MOD_OC &= ~(1 << 0);   // push-pull
     P3_DIR_PU |=  (1 << 0);   // enable strong output drive
     
+    // Configure P3.1 (control) as push-pull output
+    P3_MOD_OC &= ~(1 << 1);   // push-pull
+    P3_DIR_PU |=  (1 << 1);   // enable strong output drive
     // Configure P3.3 as input pull-up for interrupt
     P3_MOD_OC &= ~(1 << 3);   // normal input
     P3_DIR_PU |=  (1 << 3);   // enable pull-up
     P3 |= (1 << 3);           // pull-up
     
     P3 &= ~(1 << 0);  // Make LED pin P3.0 "start" as OFF
+    P3 &= ~(1 << 1);  // Watchdog indicator pin to LOW
     
     while (1) {
         
-        if (!wdt_started && tick_10ms > 50) {  // wait ~500ms
+        if (!wdt_started && tick_10ms > 50) {  // wait ~500ms before activating watchdog
             SAFE_MOD = 0x55;
             SAFE_MOD = 0xAA;
             GLOBAL_CFG |= bWDOG_EN;
@@ -116,14 +120,10 @@ void main(void) {
             
             wdt_started = 1;
         }
-        // Feed watchdog every iteration unless we want a reset
-        if (wdtCounter < 5) {
-            WDOG_COUNT = 0x01;   // feed normally
-        }
         EA = 0;
         t = tick_10ms;
         EA = 1;
-        
+        // if push button on pin P3.3 is pressed, start LED blink
         if (button_irq && debounce) {
             button_irq = 0;
             //debounce= 1;
@@ -134,19 +134,24 @@ void main(void) {
                 ledON = 0;
             }
         }
-        
+        // LED is allowed to blink
         if (ledON) {
+            // P3.1 goes HIGH when P3.0 starts blinking. This helps us
+            // visualize when the watchdog is activated, since at that
+            // moment P3.1 goes low again
+            P3 |= (1 << 1);             
             blink_led(t);            
         }
-
         // Intentional watchdog trigger — stop feeding and hang
-        if (wdtCounter >= 5) {
+        if (wdtCounter >= 6) {
             SAFE_MOD = 0x55;
             SAFE_MOD = 0xAA;
             USB_CTRL = 0x00;
             SAFE_MOD = 0x00;
             EA = 0;
             while (1) { __asm nop __endasm; }
+        }else{ // Feed watchdog every iteration unless we want a reset
+            WDOG_COUNT = 0x01;   // feed normally
         }
     }
 }

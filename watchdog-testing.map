@@ -55,8 +55,8 @@ C:   00000018  s_REG_BANK_3
 C:   00000020  s_BSEG_BYTES                    
 C:   00000020  s__CODE                         
 C:   00000021  s_SSEG                          
-C:   00000022  l_GSINIT                        
 C:   00000022  l_GSINIT3                       
+C:   00000025  l_GSINIT                        
 ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
@@ -72,17 +72,17 @@ C:   0000005C  s_GSINIT0
 C:   0000005F  s_GSINIT1                       
 C:   0000005F  s_GSINIT2                       
 C:   00000069  s_GSINIT3                       
-C:   0000007E  l_DSEG                          
+C:   00000080  l_DSEG                          
 C:   0000008B  s_GSINIT4                       
 C:   000000B5  s_GSINIT                        
 C:   000000B5  s_GSINIT5                       
-C:   000000D7  s_GSFINAL                       
-C:   000000DA  s_CSEG                          
+C:   000000DA  s_GSFINAL                       
+C:   000000DD  s_CSEG                          
 C:   000000DF  l_SSEG                          
 C:   00000100  l_IRAM                          
-C:   0000015A  l_CSEG                          
-C:   00000234  s_CONST                         
-C:   00000234  s_XINIT                         
+C:   000007EC  l_CSEG                          
+C:   000008C9  s_CONST                         
+C:   000008C9  s_XINIT                         
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -94,55 +94,55 @@ Area                                    Addr        Size        Decimal Bytes (A
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
      00000000  .__.ABS.                           _startup
-     00000080  _ADC_CHAN0                         watchdog_testing
-     00000080  _ADC_CTRL                          watchdog_testing
-     00000081  _ADC_CHAN1                         watchdog_testing
-     00000081  _SP                                watchdog_testing
-     00000082  _DPL                               watchdog_testing
-     00000083  _CMP_CHAN                          watchdog_testing
-     00000083  _DPH                               watchdog_testing
-     00000084  _ADC_START                         watchdog_testing
-     00000084  _ROM_ADDR_L                        watchdog_testing
-     00000085  _ADC_IF                            watchdog_testing
-     00000085  _ROM_ADDR_H                        watchdog_testing
-     00000086  _CMP_IF                            watchdog_testing
-     00000086  _ROM_CTRL                          watchdog_testing
-     00000087  _CMPO                              watchdog_testing
-     00000087  _PCON                              watchdog_testing
-     00000088  _IT0                               watchdog_testing
-     00000088  _TCON                              watchdog_testing
-     00000089  _IE0                               watchdog_testing
-     00000089  _TMOD                              watchdog_testing
-     0000008A  _IT1                               watchdog_testing
-     0000008A  _TL0                               watchdog_testing
-     0000008B  _IE1                               watchdog_testing
-     0000008B  _TL1                               watchdog_testing
-     0000008C  _TH0                               watchdog_testing
-     0000008C  _TR0                               watchdog_testing
-     0000008D  _TF0                               watchdog_testing
-     0000008D  _TH1                               watchdog_testing
-     0000008E  _ROM_DATA_L                        watchdog_testing
-     0000008E  _TR1                               watchdog_testing
-     0000008F  _ROM_DATA_H                        watchdog_testing
-     0000008F  _TF1                               watchdog_testing
-     00000090  _CAP1                              watchdog_testing
-     00000090  _P1                                watchdog_testing
-     00000090  _T2                                watchdog_testing
-     00000090  _TIN0                              watchdog_testing
-     00000091  _AIN0                              watchdog_testing
-     00000091  _CAP2                              watchdog_testing
-     00000091  _T2EX                              watchdog_testing
-     00000091  _TIN1                              watchdog_testing
-     00000091  _USB_C_CTRL                        watchdog_testing
-     00000091  _VBUS2                             watchdog_testing
-     00000092  _P1_MOD_OC                         watchdog_testing
-     00000092  _RXD_                              watchdog_testing
-     00000093  _P1_DIR_PU                         watchdog_testing
-     00000093  _TXD_                              watchdog_testing
-     00000094  _AIN1                              watchdog_testing
-     00000094  _CAP1_                             watchdog_testing
-     00000094  _SCS                               watchdog_testing
-     00000094  _T2_                               watchdog_testing
+     00000080  _ADC_CHAN0                         spi
+     00000080  _ADC_CTRL                          spi
+     00000081  _ADC_CHAN1                         spi
+     00000081  _SP                                spi
+     00000082  _DPL                               spi
+     00000083  _CMP_CHAN                          spi
+     00000083  _DPH                               spi
+     00000084  _ADC_START                         spi
+     00000084  _ROM_ADDR_L                        spi
+     00000085  _ADC_IF                            spi
+     00000085  _ROM_ADDR_H                        spi
+     00000086  _CMP_IF                            spi
+     00000086  _ROM_CTRL                          spi
+     00000087  _CMPO                              spi
+     00000087  _PCON                              spi
+     00000088  _IT0                               spi
+     00000088  _TCON                              spi
+     00000089  _IE0                               spi
+     00000089  _TMOD                              spi
+     0000008A  _IT1                               spi
+     0000008A  _TL0                               spi
+     0000008B  _IE1                               spi
+     0000008B  _TL1                               spi
+     0000008C  _TH0                               spi
+     0000008C  _TR0                               spi
+     0000008D  _TF0                               spi
+     0000008D  _TH1                               spi
+     0000008E  _ROM_DATA_L                        spi
+     0000008E  _TR1                               spi
+     0000008F  _ROM_DATA_H                        spi
+     0000008F  _TF1                               spi
+     00000090  _CAP1                              spi
+     00000090  _P1                                spi
+     00000090  _T2                                spi
+     00000090  _TIN0                              spi
+     00000091  _AIN0                              spi
+     00000091  _CAP2                              spi
+     00000091  _T2EX                              spi
+     00000091  _TIN1                              spi
+     00000091  _USB_C_CTRL                        spi
+     00000091  _VBUS2                             spi
+     00000092  _P1_MOD_OC                         spi
+     00000092  _RXD_                              spi
+     00000093  _P1_DIR_PU                         spi
+     00000093  _TXD_                              spi
+     00000094  _AIN1                              spi
+     00000094  _CAP1_                             spi
+     00000094  _SCS                               spi
+     00000094  _T2_                               spi
 ASxxxx Linker V03.00/V05.40 + sdld,  page 4.
 Hexadecimal  [32-Bits]
 
@@ -152,57 +152,57 @@ Area                                    Addr        Size        Decimal Bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000094  _TIN2                              watchdog_testing
-     00000094  _UCC1                              watchdog_testing
-     00000095  _AIN2                              watchdog_testing
-     00000095  _MOSI                              watchdog_testing
-     00000095  _PWM1                              watchdog_testing
-     00000095  _TIN3                              watchdog_testing
-     00000095  _UCC2                              watchdog_testing
-     00000096  _MISO                              watchdog_testing
-     00000096  _P3_MOD_OC                         watchdog_testing
-     00000096  _RXD1                              watchdog_testing
-     00000096  _TIN4                              watchdog_testing
-     00000097  _P3_DIR_PU                         watchdog_testing
-     00000097  _SCK                               watchdog_testing
-     00000097  _TIN5                              watchdog_testing
-     00000097  _TXD1                              watchdog_testing
-     00000098  _RI                                watchdog_testing
-     00000098  _SCON                              watchdog_testing
-     00000099  _SBUF                              watchdog_testing
-     00000099  _TI                                watchdog_testing
-     0000009A  _ADC_CFG                           watchdog_testing
-     0000009A  _RB8                               watchdog_testing
-     0000009B  _PWM_DATA2                         watchdog_testing
-     0000009B  _TB8                               watchdog_testing
-     0000009C  _PWM_DATA1                         watchdog_testing
-     0000009C  _REN                               watchdog_testing
-     0000009D  _PWM_CTRL                          watchdog_testing
-     0000009D  _SM2                               watchdog_testing
-     0000009E  _PWM_CK_SE                         watchdog_testing
-     0000009E  _SM1                               watchdog_testing
-     0000009F  _ADC_DATA                          watchdog_testing
-     0000009F  _SM0                               watchdog_testing
-     000000A0  _P2                                watchdog_testing
+     00000094  _TIN2                              spi
+     00000094  _UCC1                              spi
+     00000095  _AIN2                              spi
+     00000095  _MOSI                              spi
+     00000095  _PWM1                              spi
+     00000095  _TIN3                              spi
+     00000095  _UCC2                              spi
+     00000096  _MISO                              spi
+     00000096  _P3_MOD_OC                         spi
+     00000096  _RXD1                              spi
+     00000096  _TIN4                              spi
+     00000097  _P3_DIR_PU                         spi
+     00000097  _SCK                               spi
+     00000097  _TIN5                              spi
+     00000097  _TXD1                              spi
+     00000098  _RI                                spi
+     00000098  _SCON                              spi
+     00000099  _SBUF                              spi
+     00000099  _TI                                spi
+     0000009A  _ADC_CFG                           spi
+     0000009A  _RB8                               spi
+     0000009B  _PWM_DATA2                         spi
+     0000009B  _TB8                               spi
+     0000009C  _PWM_DATA1                         spi
+     0000009C  _REN                               spi
+     0000009D  _PWM_CTRL                          spi
+     0000009D  _SM2                               spi
+     0000009E  _PWM_CK_SE                         spi
+     0000009E  _SM1                               spi
+     0000009F  _ADC_DATA                          spi
+     0000009F  _SM0                               spi
+     000000A0  _P2                                spi
      000000A0  __XPAGE                            
-     000000A1  _SAFE_MOD                          watchdog_testing
-     000000A2  _XBUS_AUX                          watchdog_testing
-     000000A8  _EX0                               watchdog_testing
-     000000A8  _IE                                watchdog_testing
-     000000A9  _ET0                               watchdog_testing
-     000000A9  _WAKE_CTRL                         watchdog_testing
-     000000AA  _EX1                               watchdog_testing
-     000000AB  _ET1                               watchdog_testing
-     000000AC  _ES                                watchdog_testing
-     000000AD  _ET2                               watchdog_testing
-     000000AE  _E_DIS                             watchdog_testing
-     000000AF  _EA                                watchdog_testing
-     000000B0  _P3                                watchdog_testing
-     000000B0  _PWM1_                             watchdog_testing
-     000000B0  _RXD                               watchdog_testing
-     000000B1  _GLOBAL_CFG                        watchdog_testing
-     000000B1  _PWM2_                             watchdog_testing
-     000000B1  _TXD                               watchdog_testing
+     000000A1  _SAFE_MOD                          spi
+     000000A2  _XBUS_AUX                          spi
+     000000A8  _EX0                               spi
+     000000A8  _IE                                spi
+     000000A9  _ET0                               spi
+     000000A9  _WAKE_CTRL                         spi
+     000000AA  _EX1                               spi
+     000000AB  _ET1                               spi
+     000000AC  _ES                                spi
+     000000AD  _ET2                               spi
+     000000AE  _E_DIS                             spi
+     000000AF  _EA                                spi
+     000000B0  _P3                                spi
+     000000B0  _PWM1_                             spi
+     000000B0  _RXD                               spi
+     000000B1  _GLOBAL_CFG                        spi
+     000000B1  _PWM2_                             spi
+     000000B1  _TXD                               spi
 ASxxxx Linker V03.00/V05.40 + sdld,  page 5.
 Hexadecimal  [32-Bits]
 
@@ -212,57 +212,57 @@ Area                                    Addr        Size        Decimal Bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000000B2  _AIN3                              watchdog_testing
-     000000B2  _INT0                              watchdog_testing
-     000000B2  _TXD1_                             watchdog_testing
-     000000B2  _VBUS1                             watchdog_testing
-     000000B3  _INT1                              watchdog_testing
-     000000B4  _PWM2                              watchdog_testing
-     000000B4  _RXD1_                             watchdog_testing
-     000000B4  _T0                                watchdog_testing
-     000000B5  _T1                                watchdog_testing
-     000000B6  _UDP                               watchdog_testing
-     000000B7  _UDM                               watchdog_testing
-     000000B8  _IP                                watchdog_testing
-     000000B8  _PX0                               watchdog_testing
-     000000B9  _CLOCK_CFG                         watchdog_testing
-     000000B9  _PT0                               watchdog_testing
-     000000BA  _PX1                               watchdog_testing
-     000000BB  _PT1                               watchdog_testing
-     000000BC  _PS                                watchdog_testing
-     000000BD  _PT2                               watchdog_testing
-     000000BE  _PL_FLAG                           watchdog_testing
-     000000BF  _PH_FLAG                           watchdog_testing
-     000000C0  _SCON1                             watchdog_testing
-     000000C0  _U1RI                              watchdog_testing
-     000000C1  _SBUF1                             watchdog_testing
-     000000C1  _U1TI                              watchdog_testing
-     000000C2  _SBAUD1                            watchdog_testing
-     000000C2  _U1RB8                             watchdog_testing
-     000000C3  _TKEY_CTRL                         watchdog_testing
-     000000C3  _U1TB8                             watchdog_testing
-     000000C4  _TKEY_DATL                         watchdog_testing
-     000000C4  _U1REN                             watchdog_testing
-     000000C5  _TKEY_DATH                         watchdog_testing
-     000000C5  _U1SMOD                            watchdog_testing
-     000000C6  _PIN_FUNC                          watchdog_testing
-     000000C7  _GPIO_IE                           watchdog_testing
-     000000C7  _U1SM0                             watchdog_testing
-     000000C8  _CP_RL2                            watchdog_testing
-     000000C8  _T2CON                             watchdog_testing
-     000000C9  _C_T2                              watchdog_testing
-     000000C9  _T2MOD                             watchdog_testing
-     000000CA  _RCAP2L                            watchdog_testing
-     000000CA  _TR2                               watchdog_testing
-     000000CB  _EXEN2                             watchdog_testing
-     000000CB  _RCAP2H                            watchdog_testing
-     000000CC  _TCLK                              watchdog_testing
-     000000CC  _TL2                               watchdog_testing
-     000000CD  _RCLK                              watchdog_testing
-     000000CD  _TH2                               watchdog_testing
-     000000CE  _EXF2                              watchdog_testing
-     000000CE  _T2CAP1L                           watchdog_testing
-     000000CF  _CAP1F                             watchdog_testing
+     000000B2  _AIN3                              spi
+     000000B2  _INT0                              spi
+     000000B2  _TXD1_                             spi
+     000000B2  _VBUS1                             spi
+     000000B3  _INT1                              spi
+     000000B4  _PWM2                              spi
+     000000B4  _RXD1_                             spi
+     000000B4  _T0                                spi
+     000000B5  _T1                                spi
+     000000B6  _UDP                               spi
+     000000B7  _UDM                               spi
+     000000B8  _IP                                spi
+     000000B8  _PX0                               spi
+     000000B9  _CLOCK_CFG                         spi
+     000000B9  _PT0                               spi
+     000000BA  _PX1                               spi
+     000000BB  _PT1                               spi
+     000000BC  _PS                                spi
+     000000BD  _PT2                               spi
+     000000BE  _PL_FLAG                           spi
+     000000BF  _PH_FLAG                           spi
+     000000C0  _SCON1                             spi
+     000000C0  _U1RI                              spi
+     000000C1  _SBUF1                             spi
+     000000C1  _U1TI                              spi
+     000000C2  _SBAUD1                            spi
+     000000C2  _U1RB8                             spi
+     000000C3  _TKEY_CTRL                         spi
+     000000C3  _U1TB8                             spi
+     000000C4  _TKEY_DATL                         spi
+     000000C4  _U1REN                             spi
+     000000C5  _TKEY_DATH                         spi
+     000000C5  _U1SMOD                            spi
+     000000C6  _PIN_FUNC                          spi
+     000000C7  _GPIO_IE                           spi
+     000000C7  _U1SM0                             spi
+     000000C8  _CP_RL2                            spi
+     000000C8  _T2CON                             spi
+     000000C9  _C_T2                              spi
+     000000C9  _T2MOD                             spi
+     000000CA  _RCAP2L                            spi
+     000000CA  _TR2                               spi
+     000000CB  _EXEN2                             spi
+     000000CB  _RCAP2H                            spi
+     000000CC  _TCLK                              spi
+     000000CC  _TL2                               spi
+     000000CD  _RCLK                              spi
+     000000CD  _TH2                               spi
+     000000CE  _EXF2                              spi
+     000000CE  _T2CAP1L                           spi
+     000000CF  _CAP1F                             spi
 ASxxxx Linker V03.00/V05.40 + sdld,  page 6.
 Hexadecimal  [32-Bits]
 
@@ -272,57 +272,57 @@ Area                                    Addr        Size        Decimal Bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000000CF  _T2CAP1H                           watchdog_testing
-     000000CF  _TF2                               watchdog_testing
-     000000D0  _P                                 watchdog_testing
-     000000D0  _PSW                               watchdog_testing
-     000000D1  _F1                                watchdog_testing
-     000000D1  _UDEV_CTRL                         watchdog_testing
-     000000D2  _OV                                watchdog_testing
-     000000D2  _UEP1_CTRL                         watchdog_testing
-     000000D3  _RS0                               watchdog_testing
-     000000D3  _UEP1_T_LEN                        watchdog_testing
-     000000D4  _RS1                               watchdog_testing
-     000000D4  _UEP2_CTRL                         watchdog_testing
-     000000D5  _F0                                watchdog_testing
-     000000D5  _UEP2_T_LEN                        watchdog_testing
-     000000D6  _AC                                watchdog_testing
-     000000D6  _UEP3_CTRL                         watchdog_testing
-     000000D7  _CY                                watchdog_testing
-     000000D7  _UEP3_T_LEN                        watchdog_testing
-     000000D8  _UIF_BUS_RST                       watchdog_testing
-     000000D8  _UIF_DETECT                        watchdog_testing
-     000000D8  _USB_INT_FG                        watchdog_testing
-     000000D9  _UIF_TRANSFER                      watchdog_testing
-     000000D9  _USB_INT_ST                        watchdog_testing
-     000000DA  _UIF_SUSPEND                       watchdog_testing
-     000000DA  _USB_MIS_ST                        watchdog_testing
-     000000DB  _UIF_HST_SOF                       watchdog_testing
-     000000DB  _USB_RX_LEN                        watchdog_testing
-     000000DC  _UEP0_CTRL                         watchdog_testing
-     000000DC  _UIF_FIFO_OV                       watchdog_testing
-     000000DD  _UEP0_T_LEN                        watchdog_testing
-     000000DD  _U_SIE_FREE                        watchdog_testing
-     000000DE  _UEP4_CTRL                         watchdog_testing
-     000000DE  _U_TOG_OK                          watchdog_testing
-     000000DF  _UEP4_T_LEN                        watchdog_testing
-     000000DF  _U_IS_NAK                          watchdog_testing
-     000000E0  _ACC                               watchdog_testing
-     000000E1  _USB_INT_EN                        watchdog_testing
-     000000E2  _USB_CTRL                          watchdog_testing
-     000000E3  _USB_DEV_AD                        watchdog_testing
-     000000E4  _UEP2_DMA_L                        watchdog_testing
-     000000E5  _UEP2_DMA_H                        watchdog_testing
-     000000E6  _UEP3_DMA_L                        watchdog_testing
-     000000E7  _UEP3_DMA_H                        watchdog_testing
-     000000E8  _IE_EX                             watchdog_testing
-     000000E8  _IE_SPI0                           watchdog_testing
-     000000E9  _IE_TKEY                           watchdog_testing
-     000000E9  _IP_EX                             watchdog_testing
-     000000EA  _IE_USB                            watchdog_testing
-     000000EA  _UEP4_1_MOD                        watchdog_testing
-     000000EB  _IE_ADC                            watchdog_testing
-     000000EB  _UEP2_3_MOD                        watchdog_testing
+     000000CF  _T2CAP1H                           spi
+     000000CF  _TF2                               spi
+     000000D0  _P                                 spi
+     000000D0  _PSW                               spi
+     000000D1  _F1                                spi
+     000000D1  _UDEV_CTRL                         spi
+     000000D2  _OV                                spi
+     000000D2  _UEP1_CTRL                         spi
+     000000D3  _RS0                               spi
+     000000D3  _UEP1_T_LEN                        spi
+     000000D4  _RS1                               spi
+     000000D4  _UEP2_CTRL                         spi
+     000000D5  _F0                                spi
+     000000D5  _UEP2_T_LEN                        spi
+     000000D6  _AC                                spi
+     000000D6  _UEP3_CTRL                         spi
+     000000D7  _CY                                spi
+     000000D7  _UEP3_T_LEN                        spi
+     000000D8  _UIF_BUS_RST                       spi
+     000000D8  _UIF_DETECT                        spi
+     000000D8  _USB_INT_FG                        spi
+     000000D9  _UIF_TRANSFER                      spi
+     000000D9  _USB_INT_ST                        spi
+     000000DA  _UIF_SUSPEND                       spi
+     000000DA  _USB_MIS_ST                        spi
+     000000DB  _UIF_HST_SOF                       spi
+     000000DB  _USB_RX_LEN                        spi
+     000000DC  _UEP0_CTRL                         spi
+     000000DC  _UIF_FIFO_OV                       spi
+     000000DD  _UEP0_T_LEN                        spi
+     000000DD  _U_SIE_FREE                        spi
+     000000DE  _UEP4_CTRL                         spi
+     000000DE  _U_TOG_OK                          spi
+     000000DF  _UEP4_T_LEN                        spi
+     000000DF  _U_IS_NAK                          spi
+     000000E0  _ACC                               spi
+     000000E1  _USB_INT_EN                        spi
+     000000E2  _USB_CTRL                          spi
+     000000E3  _USB_DEV_AD                        spi
+     000000E4  _UEP2_DMA_L                        spi
+     000000E5  _UEP2_DMA_H                        spi
+     000000E6  _UEP3_DMA_L                        spi
+     000000E7  _UEP3_DMA_H                        spi
+     000000E8  _IE_EX                             spi
+     000000E8  _IE_SPI0                           spi
+     000000E9  _IE_TKEY                           spi
+     000000E9  _IP_EX                             spi
+     000000EA  _IE_USB                            spi
+     000000EA  _UEP4_1_MOD                        spi
+     000000EB  _IE_ADC                            spi
+     000000EB  _UEP2_3_MOD                        spi
 ASxxxx Linker V03.00/V05.40 + sdld,  page 7.
 Hexadecimal  [32-Bits]
 
@@ -332,39 +332,42 @@ Area                                    Addr        Size        Decimal Bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000000EC  _IE_UART1                          watchdog_testing
-     000000EC  _UEP0_DMA_L                        watchdog_testing
-     000000ED  _IE_PWMX                           watchdog_testing
-     000000ED  _UEP0_DMA_H                        watchdog_testing
-     000000EE  _IE_GPIO                           watchdog_testing
-     000000EE  _UEP1_DMA_L                        watchdog_testing
-     000000EF  _IE_WDOG                           watchdog_testing
-     000000EF  _UEP1_DMA_H                        watchdog_testing
-     000000F0  _B                                 watchdog_testing
-     000000F8  _S0_R_FIFO                         watchdog_testing
-     000000F8  _SPI0_STAT                         watchdog_testing
-     000000F9  _SPI0_DATA                         watchdog_testing
-     000000FA  _S0_T_FIFO                         watchdog_testing
-     000000FA  _SPI0_CTRL                         watchdog_testing
-     000000FB  _S0_FREE                           watchdog_testing
-     000000FB  _SPI0_CK_SE                        watchdog_testing
-     000000FC  _S0_IF_BYTE                        watchdog_testing
-     000000FC  _SPI0_SETUP                        watchdog_testing
-     000000FD  _S0_IF_FIRST                       watchdog_testing
-     000000FE  _RESET_KEEP                        watchdog_testing
-     000000FE  _S0_IF_OV                          watchdog_testing
-     000000FF  _S0_FST_ACT                        watchdog_testing
-     000000FF  _WDOG_COUNT                        watchdog_testing
-     00008584  _ROM_ADDR                          watchdog_testing
-     00008F8E  _ROM_DATA                          watchdog_testing
-     0000C5C4  _TKEY_DAT                          watchdog_testing
-     0000CBCA  _RCAP2                             watchdog_testing
-     0000CDCC  _T2COUNT                           watchdog_testing
-     0000CFCE  _T2CAP1                            watchdog_testing
-     0000E5E4  _UEP2_DMA                          watchdog_testing
-     0000E7E6  _UEP3_DMA                          watchdog_testing
-     0000EDEC  _UEP0_DMA                          watchdog_testing
-     0000EFEE  _UEP1_DMA                          watchdog_testing
+     000000EC  _IE_UART1                          spi
+     000000EC  _UEP0_DMA_L                        spi
+     000000ED  _IE_PWMX                           spi
+     000000ED  _UEP0_DMA_H                        spi
+     000000EE  _IE_GPIO                           spi
+     000000EE  _UEP1_DMA_L                        spi
+     000000EF  _IE_WDOG                           spi
+     000000EF  _UEP1_DMA_H                        spi
+     000000F0  _B                                 spi
+     000000F5  _B_5                               _gptrget
+     000000F6  _B_6                               _gptrget
+     000000F7  _B_7                               _gptrget
+     000000F8  _S0_R_FIFO                         spi
+     000000F8  _SPI0_STAT                         spi
+     000000F9  _SPI0_DATA                         spi
+     000000FA  _S0_T_FIFO                         spi
+     000000FA  _SPI0_CTRL                         spi
+     000000FB  _S0_FREE                           spi
+     000000FB  _SPI0_CK_SE                        spi
+     000000FC  _S0_IF_BYTE                        spi
+     000000FC  _SPI0_SETUP                        spi
+     000000FD  _S0_IF_FIRST                       spi
+     000000FE  _RESET_KEEP                        spi
+     000000FE  _S0_IF_OV                          spi
+     000000FF  _S0_FST_ACT                        spi
+     000000FF  _WDOG_COUNT                        spi
+     00008584  _ROM_ADDR                          spi
+     00008F8E  _ROM_DATA                          spi
+     0000C5C4  _TKEY_DAT                          spi
+     0000CBCA  _RCAP2                             spi
+     0000CDCC  _T2COUNT                           spi
+     0000CFCE  _T2CAP1                            spi
+     0000E5E4  _UEP2_DMA                          spi
+     0000E7E6  _UEP3_DMA                          spi
+     0000EDEC  _UEP0_DMA                          spi
+     0000EFEE  _UEP1_DMA                          spi
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 8.
 Hexadecimal  [32-Bits]
@@ -398,7 +401,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-DSEG                                00000000    0000007E =         126. bytes (REL,CON)
+DSEG                                00000000    00000080 =         128. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -408,6 +411,8 @@ DSEG                                00000000    0000007E =         126. bytes (R
      00000016  _serialTime                        watchdog_testing
      00000018  _counter                           watchdog_testing
      0000001A  _t                                 watchdog_testing
+     0000001F  _bp                                _bp
+
 ASxxxx Linker V03.00/V05.40 + sdld,  page 12.
 Hexadecimal  [32-Bits]
 
@@ -482,7 +487,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSINIT                              000000B5    00000022 =          34. bytes (REL,CON,CODE)
+GSINIT                              000000B5    00000025 =          37. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -491,7 +496,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSFINAL                             000000D7    00000003 =           3. bytes (REL,CON,CODE)
+GSFINAL                             000000DA    00000003 =           3. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -500,39 +505,84 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                000000DA    0000015A =         346. bytes (REL,CON,CODE)
+CSEG                                000000DD    000007EC =        2028. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-C:   000000DA  _clock_init                        watchdog_testing
-C:   000000EF  _INT1_ISR                          watchdog_testing
-C:   00000100  _timer0_ISR                        watchdog_testing
-C:   0000014B  _timer0_init                       watchdog_testing
-C:   00000166  _extint1_init                      watchdog_testing
-C:   0000016B  _blink_led                         watchdog_testing
-C:   000001A4  _main                              watchdog_testing
-C:   00000230  ___sdcc_external_startup           _startup
-
+C:   000000DD  _clock_init                        watchdog_testing
+C:   000000F2  _INT1_ISR                          watchdog_testing
+C:   00000103  _timer0_ISR                        watchdog_testing
+C:   0000014E  _timer0_init                       watchdog_testing
+C:   00000169  _extint1_init                      watchdog_testing
+C:   0000016E  _blink_led                         watchdog_testing
+C:   000001A7  _main                              watchdog_testing
+C:   00000236  _ADCInit                           adc
+C:   00000243  _ADC_ChannelSelect                 adc
+C:   0000027D  _VoltageCMPModeInit                adc
+C:   00000320  _MPU9250_init                      mpu9250
+C:   0000033B  _MPU9250_whoami                    mpu9250
+C:   0000033F  _MPU9250_readAccelGyro             mpu9250
+C:   000004E4  _Serial_begin                      serial
+C:   0000050E  _Serial_write                      serial
+C:   00000518  _Serial_print                      serial
+C:   00000543  _Serial_print_uint                 serial
+C:   00000643  _Serial_println                    serial
+C:   00000652  _Serial_println_int                serial
+C:   00000733  _Serial_println_uint               serial
+C:   00000742  _SPIMasterModeSet                  spi
+C:   00000762  _CH554SPIInterruptInit             spi
+C:   0000076E  _CH554SPIMasterWrite               spi
+C:   00000775  _CH554SPIMasterRead                spi
+C:   0000077F  _SPISlvModeSet                     spi
+C:   0000078C  _CH554SPISlvWrite                  spi
+C:   00000795  _CH554SPISlvRead                   spi
+C:   0000079E  __divuint                          _divuint
+C:   000007A8  __divint                           _divuint
+C:   000007CF  __gptrput                          _gptrput
+C:   000007EA  __gptrget                          _gptrget
+C:   00000806  __modsint                          _modsint
+C:   00000843  __moduint                          _moduint
+C:   0000084D  __modint                           _moduint
+C:   00000888  __divsint                          _divsint
+C:   000008C5  ___sdcc_external_startup           _startup
 ASxxxx Linker V03.00/V05.40 + sdld,  page 21.
 
 Files Linked                              [ module(s) ]
 
 watchdog-testing.rel                      [  ]
+adc.rel                                   [  ]
+mpu9250.rel                               [  ]
+serial.rel                                [  ]
+spi.rel                                   [  ]
 
 
 Libraries Linked                          [ object file ]
 
-C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib
+                                          [ _divuint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtclear.rel ]
-C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtxinit.rel ]
-C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
+                                          [ _gptrput.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtxclear.rel ]
-C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
+                                          [ _bp.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtpagesfr.rel ]
-C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/mcs51.lib
                                           [ crtstart.rel ]
-C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
+                                          [ _gptrget.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib
+                                          [ _modsint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib
+                                          [ _moduint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libint.lib
+                                          [ _divsint.rel ]
+C:\Program Files\SDCC\bin\..\lib\small-stack-auto/libsdcc.lib
                                           [ _startup.rel ]
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 22.

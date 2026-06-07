@@ -530,7 +530,6 @@ _blink_base:
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
-	.area	OSEG    (OVR,DATA)
 ;--------------------------------------------------------
 ; Stack segment in internal ram
 ;--------------------------------------------------------
@@ -950,7 +949,7 @@ _blink_led:
 ;	watchdog-testing.c:87: blink_base = t;
 	mov	_blink_base,r6
 	mov	(_blink_base + 1),r7
-;	watchdog-testing.c:88: wdtCounter++; 
+;	watchdog-testing.c:88: wdtCounter++; // increment watchdog activation "countdown"
 	mov	r6,_wdtCounter
 	mov	r7,(_wdtCounter + 1)
 	mov	a,#0x01
@@ -979,17 +978,23 @@ _main:
 	anl	_P3_MOD_OC,#0xfe
 ;	watchdog-testing.c:100: P3_DIR_PU |=  (1 << 0);   // enable strong output drive
 	orl	_P3_DIR_PU,#0x01
-;	watchdog-testing.c:103: P3_MOD_OC &= ~(1 << 3);   // normal input
+;	watchdog-testing.c:103: P3_MOD_OC &= ~(1 << 1);   // push-pull
+	anl	_P3_MOD_OC,#0xfd
+;	watchdog-testing.c:104: P3_DIR_PU |=  (1 << 1);   // enable strong output drive
+	orl	_P3_DIR_PU,#0x02
+;	watchdog-testing.c:106: P3_MOD_OC &= ~(1 << 3);   // normal input
 	anl	_P3_MOD_OC,#0xf7
-;	watchdog-testing.c:104: P3_DIR_PU |=  (1 << 3);   // enable pull-up
+;	watchdog-testing.c:107: P3_DIR_PU |=  (1 << 3);   // enable pull-up
 	orl	_P3_DIR_PU,#0x08
-;	watchdog-testing.c:105: P3 |= (1 << 3);           // pull-up
+;	watchdog-testing.c:108: P3 |= (1 << 3);           // pull-up
 	orl	_P3,#0x08
-;	watchdog-testing.c:107: P3 &= ~(1 << 0);  // Make LED pin P3.0 "start" as OFF
+;	watchdog-testing.c:110: P3 &= ~(1 << 0);  // Make LED pin P3.0 "start" as OFF
 	anl	_P3,#0xfe
-;	watchdog-testing.c:109: while (1) {
-00120$:
-;	watchdog-testing.c:111: if (!wdt_started && tick_10ms > 50) {  // wait ~500ms
+;	watchdog-testing.c:111: P3 &= ~(1 << 1);  // Watchdog indicator pin to LOW
+	anl	_P3,#0xfd
+;	watchdog-testing.c:113: while (1) {
+00119$:
+;	watchdog-testing.c:115: if (!wdt_started && tick_10ms > 50) {  // wait ~500ms before activating watchdog
 	jb	_wdt_started,00102$
 	clr	c
 	mov	a,#0x32
@@ -997,28 +1002,18 @@ _main:
 	clr	a
 	subb	a,(_tick_10ms + 1)
 	jnc	00102$
-;	watchdog-testing.c:112: SAFE_MOD = 0x55;
+;	watchdog-testing.c:116: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	watchdog-testing.c:113: SAFE_MOD = 0xAA;
+;	watchdog-testing.c:117: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	watchdog-testing.c:114: GLOBAL_CFG |= bWDOG_EN;
+;	watchdog-testing.c:118: GLOBAL_CFG |= bWDOG_EN;
 	orl	_GLOBAL_CFG,#0x01
-;	watchdog-testing.c:115: SAFE_MOD = 0x00;
+;	watchdog-testing.c:119: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	watchdog-testing.c:117: wdt_started = 1;
+;	watchdog-testing.c:121: wdt_started = 1;
 ;	assignBit
 	setb	_wdt_started
 00102$:
-;	watchdog-testing.c:120: if (wdtCounter < 5) {
-	clr	c
-	mov	a,_wdtCounter
-	subb	a,#0x05
-	mov	a,(_wdtCounter + 1)
-	subb	a,#0x00
-	jnc	00105$
-;	watchdog-testing.c:121: WDOG_COUNT = 0x01;   // feed normally
-	mov	_WDOG_COUNT,#0x01
-00105$:
 ;	watchdog-testing.c:123: EA = 0;
 ;	assignBit
 	clr	_EA
@@ -1029,13 +1024,13 @@ _main:
 ;	assignBit
 	setb	_EA
 ;	watchdog-testing.c:127: if (button_irq && debounce) {
-	jnb	_button_irq,00110$
-	jnb	_debounce,00110$
+	jnb	_button_irq,00108$
+	jnb	_debounce,00108$
 ;	watchdog-testing.c:128: button_irq = 0;
 ;	assignBit
 	clr	_button_irq
 ;	watchdog-testing.c:130: if (ledON == 0) {
-	jb	_ledON,00107$
+	jb	_ledON,00105$
 ;	watchdog-testing.c:131: ledON = 1;
 ;	assignBit
 	setb	_ledON
@@ -1043,42 +1038,48 @@ _main:
 	clr	a
 	mov	_wdtCounter,a
 	mov	(_wdtCounter + 1),a
-	sjmp	00110$
-00107$:
+	sjmp	00108$
+00105$:
 ;	watchdog-testing.c:134: ledON = 0;
 ;	assignBit
 	clr	_ledON
-00110$:
+00108$:
 ;	watchdog-testing.c:138: if (ledON) {
-	jnb	_ledON,00113$
-;	watchdog-testing.c:139: blink_led(t);            
+	jnb	_ledON,00111$
+;	watchdog-testing.c:142: P3 |= (1 << 1);             
+	orl	_P3,#0x02
+;	watchdog-testing.c:143: blink_led(t);            
 	mov	dpl, _t
 	mov	dph, (_t + 1)
 	lcall	_blink_led
-00113$:
-;	watchdog-testing.c:143: if (wdtCounter >= 5) {
+00111$:
+;	watchdog-testing.c:146: if (wdtCounter >= 6) {
 	clr	c
 	mov	a,_wdtCounter
-	subb	a,#0x05
+	subb	a,#0x06
 	mov	a,(_wdtCounter + 1)
 	subb	a,#0x00
-	jc	00120$
-;	watchdog-testing.c:144: SAFE_MOD = 0x55;
+	jc	00116$
+;	watchdog-testing.c:147: SAFE_MOD = 0x55;
 	mov	_SAFE_MOD,#0x55
-;	watchdog-testing.c:145: SAFE_MOD = 0xAA;
+;	watchdog-testing.c:148: SAFE_MOD = 0xAA;
 	mov	_SAFE_MOD,#0xaa
-;	watchdog-testing.c:146: USB_CTRL = 0x00;
+;	watchdog-testing.c:149: USB_CTRL = 0x00;
 	mov	_USB_CTRL,#0x00
-;	watchdog-testing.c:147: SAFE_MOD = 0x00;
+;	watchdog-testing.c:150: SAFE_MOD = 0x00;
 	mov	_SAFE_MOD,#0x00
-;	watchdog-testing.c:148: EA = 0;
+;	watchdog-testing.c:151: EA = 0;
 ;	assignBit
 	clr	_EA
-;	watchdog-testing.c:149: while (1) { __asm nop __endasm; }
-00115$:
+;	watchdog-testing.c:152: while (1) { __asm nop __endasm; }
+00113$:
 	nop	
-;	watchdog-testing.c:152: }
-	sjmp	00115$
+	sjmp	00113$
+00116$:
+;	watchdog-testing.c:154: WDOG_COUNT = 0x01;   // feed normally
+	mov	_WDOG_COUNT,#0x01
+;	watchdog-testing.c:157: }
+	sjmp	00119$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area XINIT   (CODE)
