@@ -832,8 +832,8 @@ _pwm_init:
 	anl	_P1_MOD_OC,#0xdf
 ;	pwm-testing.c:57: P1_DIR_PU  |=  (1 << 5);
 	orl	_P1_DIR_PU,#0x20
-;	pwm-testing.c:61: PWM_CK_SE = 0x00; // this gives 2MHz / 256 = 7812.5 Hz ≈ 7.8kHz (without any divider)
-	mov	_PWM_CK_SE,#0x00
+;	pwm-testing.c:62: PWM_CK_SE = 0x08; // this gives 2MHz / 256 = 7812.5 Hz ≈ 7.8kHz divided by 8 which gives us 976.5Hz
+	mov	_PWM_CK_SE,#0x08
 ;	pwm-testing.c:65: PWM_DATA1 = 0;
 	mov	_PWM_DATA1,#0x00
 ;	pwm-testing.c:68: PWM_CTRL = bPWM1_OUT_EN;
@@ -894,22 +894,22 @@ _main:
 ;	pwm-testing.c:91: last_tick = t;
 	mov	_last_tick,r6
 	mov	(_last_tick + 1),r7
-;	pwm-testing.c:108: if(pwm_value > 253){
+;	pwm-testing.c:93: if(pwm_value > 253){
 	mov	a,_pwm_value
 	add	a,#0xff - 0xfd
 	jnc	00102$
-;	pwm-testing.c:109: pwm_value = 0;
+;	pwm-testing.c:94: pwm_value = 0;
 	mov	_pwm_value,#0x00
 	sjmp	00103$
 00102$:
-;	pwm-testing.c:111: pwm_value += 1;
+;	pwm-testing.c:96: pwm_value += 1;
 	mov	a,_pwm_value
 	inc	a
 	mov	_pwm_value,a
 00103$:
-;	pwm-testing.c:115: PWM_DATA1 = pwm_value; 
+;	pwm-testing.c:100: PWM_DATA1 = pwm_value; 
 	mov	_PWM_DATA1,_pwm_value
-;	pwm-testing.c:118: }
+;	pwm-testing.c:103: }
 	sjmp	00107$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)

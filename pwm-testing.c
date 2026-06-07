@@ -58,8 +58,8 @@ void pwm_init(void) {
     
     // PWM clock = Fsys/12 (PWM_CK_SE=0 means divide by 1 of the
     // already-divided clock, gives plenty of resolution)
-    PWM_CK_SE = 0x00; // this gives 2MHz / 256 = 7812.5 Hz ≈ 7.8kHz (without any divider)
-    //PWM_CK_SE = 0xFF; // this gives 2MHz / 256 = 7812.5 Hz ≈ 7.8kHz divided by 256 which gives us 30Hz
+    //PWM_CK_SE = 0x00; // this gives 2MHz / 256 = 7812.5 Hz ≈ 7.8kHz (without any divider)
+    PWM_CK_SE = 0x08; // this gives 2MHz / 256 = 7812.5 Hz ≈ 7.8kHz divided by 8 which gives us 976.5Hz
 
     // Start at zero brightness, default low polarity (active high)
     PWM_DATA1 = 0;

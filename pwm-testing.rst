@@ -832,8 +832,8 @@
       000140 53 92 DF         [24]  832 	anl	_P1_MOD_OC,#0xdf
                                     833 ;	pwm-testing.c:57: P1_DIR_PU  |=  (1 << 5);
       000143 43 93 20         [24]  834 	orl	_P1_DIR_PU,#0x20
-                                    835 ;	pwm-testing.c:61: PWM_CK_SE = 0x00; // this gives 2MHz / 256 = 7812.5 Hz ≈ 7.8kHz (without any divider)
-      000146 75 9E 00         [24]  836 	mov	_PWM_CK_SE,#0x00
+                                    835 ;	pwm-testing.c:62: PWM_CK_SE = 0x08; // this gives 2MHz / 256 = 7812.5 Hz ≈ 7.8kHz divided by 8 which gives us 976.5Hz
+      000146 75 9E 08         [24]  836 	mov	_PWM_CK_SE,#0x08
                                     837 ;	pwm-testing.c:65: PWM_DATA1 = 0;
       000149 75 9C 00         [24]  838 	mov	_PWM_DATA1,#0x00
                                     839 ;	pwm-testing.c:68: PWM_CTRL = bPWM1_OUT_EN;
@@ -894,22 +894,22 @@
                                     894 ;	pwm-testing.c:91: last_tick = t;
       000184 8E 12            [24]  895 	mov	_last_tick,r6
       000186 8F 13            [24]  896 	mov	(_last_tick + 1),r7
-                                    897 ;	pwm-testing.c:108: if(pwm_value > 253){
+                                    897 ;	pwm-testing.c:93: if(pwm_value > 253){
       000188 E5 14            [12]  898 	mov	a,_pwm_value
       00018A 24 02            [12]  899 	add	a,#0xff - 0xfd
       00018C 50 05            [24]  900 	jnc	00102$
-                                    901 ;	pwm-testing.c:109: pwm_value = 0;
+                                    901 ;	pwm-testing.c:94: pwm_value = 0;
       00018E 75 14 00         [24]  902 	mov	_pwm_value,#0x00
       000191 80 05            [24]  903 	sjmp	00103$
       000193                        904 00102$:
-                                    905 ;	pwm-testing.c:111: pwm_value += 1;
+                                    905 ;	pwm-testing.c:96: pwm_value += 1;
       000193 E5 14            [12]  906 	mov	a,_pwm_value
       000195 04               [12]  907 	inc	a
       000196 F5 14            [12]  908 	mov	_pwm_value,a
       000198                        909 00103$:
-                                    910 ;	pwm-testing.c:115: PWM_DATA1 = pwm_value; 
+                                    910 ;	pwm-testing.c:100: PWM_DATA1 = pwm_value; 
       000198 85 14 9C         [24]  911 	mov	_PWM_DATA1,_pwm_value
-                                    912 ;	pwm-testing.c:118: }
+                                    912 ;	pwm-testing.c:103: }
       00019B 80 C2            [24]  913 	sjmp	00107$
                                     914 	.area CSEG    (CODE)
                                     915 	.area CONST   (CODE)
