@@ -90,21 +90,6 @@ void main(void) {
         if ((t - last_tick) >= 1) {
             last_tick = t;
 
-            /*if (going_up) {
-                if (pwm_value >= 252) {
-                    pwm_value = 255;
-                    going_up = 0;
-                } else {
-                    pwm_value += 1;
-                }
-            } else {
-                if (pwm_value <= 3) {
-                    pwm_value = 0;
-                    going_up = 1;
-                } else {
-                    pwm_value -= 1;
-                }
-            }*/
             if(pwm_value > 253){
                 pwm_value = 0;
             }else{ 
